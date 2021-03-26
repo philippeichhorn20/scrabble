@@ -1,4 +1,4 @@
-package Basics;
+package basic;
 
 /*
  * @author Nils Schäfer
