@@ -4,9 +4,9 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
-public class startingMenuController {
+// @author mkolinsk
 
-    // @author mkolinsk
+public class startingMenuController {    
 
     @FXML
     private Button newProfileButton;
@@ -20,14 +20,14 @@ public class startingMenuController {
     private void newProfile() throws IOException{
 
         Main m = new Main();
-        m.changeScene("resources/createProfile.fxml");
+        m.changeScene("screens/createProfile.fxml");
     }
     public void logInto(ActionEvent e) throws IOException{
         logIn();
     }
     private void logIn() throws IOException{
         Main m = new Main();
-        m.changeScene("resources/existingProfile.fxml");
+        m.changeScene("screens/existingProfile.fxml");
 
     }
 }
