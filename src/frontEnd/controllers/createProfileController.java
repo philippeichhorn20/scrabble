@@ -21,7 +21,7 @@ public class createProfileController {
 
     boolean nonewNameAdded = true;
 
-    String jdbcUrl = "jdbc:sqlite:/E:\\IntelliJ\\scrabbleFront\\src\\resources/profilesdb.db";
+    String jdbcUrl = "jdbc:sqlite:/scrabble14-master/scrabble14-master/src/resources/profilesdb.db"";
 
     public void checkName(ActionEvent e) throws IOException {
         check();
@@ -39,7 +39,7 @@ public class createProfileController {
                     also change startingMenu.fxml to the mainMenu.fxml once it exists
                  */
                 Main m = new Main();
-                m.changeScene("resources/startingMenu.fxml");
+                m.changeScene("screens/startingMenu.fxml");
                 System.out.println("entered " + newName + "into the system");
             } catch (SQLException sqlE) {
                 sqlE.printStackTrace();
@@ -52,7 +52,7 @@ public class createProfileController {
 
     public void goBack(ActionEvent e) throws IOException {
         Main m = new Main();
-        m.changeScene("resources/startingMenu.fxml");
+        m.changeScene("screens/startingMenu.fxml");
     }
 
 
