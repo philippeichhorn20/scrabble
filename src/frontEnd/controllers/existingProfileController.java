@@ -55,7 +55,7 @@ public class existingProfileController {
 
     public void load(MouseEvent e) throws IOException {
         Button[] buttonNames = {button00,button01,button02,button03,button10,button11,button12,button13,button20,button21,button22,button23,button30,button31,button32,button33};
-        String jdbcUrl = "jdbc:sqlite:/E:\\IntelliJ\\scrabbleFront\\src\\resources/profilesdb.db";
+        String jdbcUrl = "jdbc:sqlite:/scrabble14-master/scrabble14-master/src/resources/profilesdb.db"";
         int i = 0;
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl);
