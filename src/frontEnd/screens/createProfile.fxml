@@ -15,7 +15,7 @@
          <children>
             <ImageView fitHeight="748.0" fitWidth="1206.0" layoutX="-35.0" layoutY="-23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@wooden-bg.jpg" />
+                  <Image url="@resources/wooden-bg.jpg" />
                </image>
             </ImageView>
             <Text boundsType="VISUAL" fill="#45da56" layoutX="234.0" layoutY="92.0" stroke="#4d7580" strokeType="OUTSIDE" style="-fx-font-size: 180;" text="Scrabble" textOrigin="CENTER" wrappingWidth="730.171875">
