@@ -1,8 +1,9 @@
-package basic;
+package backEnd.basic;
 
 import java.util.Random;
 
-import Basics.Tile.Tilestatus;
+import backEnd.basic.Tile.Tilestatus;
+
 
 /* @author Nils Schäfer
  * @version 1.0

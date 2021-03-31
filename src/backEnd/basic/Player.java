@@ -1,4 +1,4 @@
-package Basics;
+package backEnd.basic;
 
 /* @author nilschae
  * @version 1.0
