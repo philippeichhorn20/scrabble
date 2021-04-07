@@ -13,7 +13,7 @@ import java.io.IOException;
 // @author mkolinsk
 
 public class Main extends Application {
-    private static Profile profile;
+    public static Profile profile;
     private static Stage stg;
 
     /*
