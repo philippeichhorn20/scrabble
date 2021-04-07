@@ -1,3 +1,6 @@
+package frontEnd;
+
+import backEnd.basic.Profile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +13,7 @@ import java.io.IOException;
 // @author mkolinsk
 
 public class Main extends Application {
-
+    private static Profile profile;
     private static Stage stg;
 
     /*
@@ -20,6 +23,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         stg = primaryStage;
+        profile = new Profile("");
         primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("screens/startingMenu.fxml"));
         primaryStage.setTitle("Scrabble Application");
@@ -34,6 +38,13 @@ public class Main extends Application {
         Parent pane = FXMLLoader.load(getClass().getResource(fxml));
         stg.getScene().setRoot(pane);
     }
+    public Profile getProfile() {
+        return profile;
+    }
+    public void changeProfile(String name){
+        this.profile = new Profile(name);
+    }
+
 
     public static void main(String[] args) {
 	    launch(args);
