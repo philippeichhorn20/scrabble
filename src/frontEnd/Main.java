@@ -17,7 +17,7 @@ public class Main extends Application {
     private static Stage stg;
 
     /*
-    *    This is the first scene the user sees when starting the application
+    *   This is the first scene the user sees when starting the application
     *   Here they can choose to either create a new profile or to log into an already existing one
      */
     @Override
@@ -42,7 +42,7 @@ public class Main extends Application {
         return profile;
     }
     public void changeProfile(String name){
-        this.profile = new Profile(name);
+        profile = new Profile(name);
     }
 
 

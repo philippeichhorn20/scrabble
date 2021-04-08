@@ -96,7 +96,7 @@ public class Profile {
         this.games = games;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(int points, int id) {
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl);
             String sql = "UPDATE profiles SET points = ? WHERE rowid = ?";
