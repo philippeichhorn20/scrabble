@@ -1,4 +1,4 @@
-package srcTest.backEndTest.basicTest;
+package backEndTest.basicTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 

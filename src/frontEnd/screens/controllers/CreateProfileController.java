@@ -12,7 +12,7 @@ import java.sql.*;
 
 //@author mkolinsk
 
-public class createProfileController {
+public class CreateProfileController {
     @FXML
     private TextField username;
     @FXML
@@ -25,7 +25,7 @@ public class createProfileController {
     private Button backButton;
 
     boolean noNewNameAdded;
-    String jdbcUrl = "jdbc:sqlite:/IntelliJ/scrabble14-master/scrabble14-master/src/resources/profilesdb.db";
+    String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
 
     public void checkName(ActionEvent e) throws IOException {
         check();
@@ -50,10 +50,6 @@ public class createProfileController {
                 Main m = new Main();
                 m.changeProfile(newName);
                 m.changeScene("screens/statScreen.fxml");
-                System.out.println(m.getProfile().getName());
-                m.getProfile().setWins(234,m.getProfile().getId());
-                System.out.println(m.getProfile().getWins());
-
                 System.out.println("entered " + newName + " into the system");
             } catch (SQLException sqlE) {
                 sqlE.printStackTrace();

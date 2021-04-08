@@ -11,7 +11,7 @@ public class Profile {
     private int games;
     private int points;
 
-    String jdbcUrl = "jdbc:sqlite:/IntelliJ/scrabble14-master/scrabble14-master/src/resources/profilesdb.db"; //source of the database, will probably need to change that
+    String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db"; //source of the database, will probably need to change that
 
     public Profile(String name) {
         this.name = name;

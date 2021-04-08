@@ -10,9 +10,9 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.Locale;
 
-public class existingProfileController {
+
+public class ExistingProfileController {
     @FXML
     private Button button00;
     @FXML
@@ -67,7 +67,7 @@ public class existingProfileController {
         lastPageButton.setVisible(true);
         nextButton.setVisible(false);
         Button[] buttonNames = {button00, button01, button02, button03, button10, button11, button12, button13, button20, button21, button22, button23, button30, button31, button32, button33};
-        String jdbcUrl = "jdbc:sqlite:/IntelliJ/scrabble14-master/scrabble14-master/src/resources/profilesdb.db";
+        String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
         int i = 0;
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl);

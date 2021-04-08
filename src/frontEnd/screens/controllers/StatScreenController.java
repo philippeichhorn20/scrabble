@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class statScreenController {
+public class StatScreenController {
 
     @FXML
     private Text userTitle;
@@ -36,6 +36,12 @@ public class statScreenController {
         games.setText(Integer.toString(Main.profile.getGames()));
         wins.setText(Integer.toString(Main.profile.getWins()));
         points.setText(String.valueOf(Main.profile.getPoints()));
-        avgPoints.setText(String.valueOf(Main.profile.getPoints()/Main.profile.getGames()));
+        if (Main.profile.getGames() == 0){
+            avgPoints.setText("0");
+        }
+        else{
+            avgPoints.setText(String.valueOf(Main.profile.getPoints()/Main.profile.getGames()));
+        }
+
     }
 }

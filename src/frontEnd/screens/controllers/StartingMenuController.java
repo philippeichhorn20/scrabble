@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
-public class startingMenuController {
+public class StartingMenuController {
 
     // @author mkolinsk
 
