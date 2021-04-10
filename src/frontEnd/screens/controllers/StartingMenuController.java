@@ -24,7 +24,7 @@ public class StartingMenuController {
     private void newProfile() throws IOException {
 
         Main m = new Main();
-        m.changeScene("screens/createProfile.fxml");
+        m.changeScene("screens/gameScreen.fxml");
     }
 
     public void logInto(ActionEvent e) throws IOException {
