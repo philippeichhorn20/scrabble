@@ -8,6 +8,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 
 // @author mkolinsk
@@ -23,6 +27,17 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         stg = primaryStage;
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/resources/profilesdb");
+        if (connection != null){
+            DatabaseMetaData meta = connection.getMetaData();
+            connection = DriverManager.getConnection("jdbc:sqlite:src/resources/profilesdb.db");
+            Statement stmt = connection.createStatement();
+            stmt.execute("CREATE TABLE IF NOT EXISTS profiles (\n" +
+                    "name text,\n" +
+                    "games integer,\n" +
+                    "wins integer,\n" +
+                    "points integer)");
+        }
         profile = new Profile("");
         primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("screens/startingMenu.fxml"));
