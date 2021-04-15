@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import backEnd.basic.Profile;
+import backend.basic.Profile;
 
 public class ProfileTest {
     @Test

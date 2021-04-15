@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import backEnd.basic.Tile;
-import backEnd.basic.Tile.Tilestatus;
+import backend.basic.Tile;
+import backend.basic.Tile.Tilestatus;
 
 class TileTest {
 

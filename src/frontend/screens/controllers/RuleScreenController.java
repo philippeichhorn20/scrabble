@@ -1,4 +1,4 @@
-package frontEnd.screens.controllers;
+package frontend.screens.controllers;
 
 /*
     TODO:

@@ -1,11 +1,11 @@
-package backEnd.basic;
+package backend.basic;
 
 import java.util.Random;
 
-import backEnd.basic.Tile.Tilestatus;
+import backend.basic.Tile.Tilestatus;
 
 
-/* @author Nils Schäfer
+/* @author Nils Schï¿½fer
  * @version 1.0
  * @description A class which represents the tilebag of the game scrabbel with 100 Tiles and the standart letter set for english scrabbel*/
 public class TileBag {
