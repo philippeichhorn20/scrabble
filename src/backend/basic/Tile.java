@@ -1,16 +1,18 @@
 package backend.basic;
 
 /*
- * @author Nils Sch�fer
+ * @author Nils Schäfer
  * @version 1.0
  * */
 
 public class Tile {
 
-  private char letter; // A holder for a letter of a tile
-  private int value; // A holder for the value of a tile
-  private Tilestatus status; // A holder for the status of a tile
-  private boolean joker; // A holder if the tile is a joker or not
+  private char letter;      //A holder for a letter of a tile
+  private int value;        //A holder for the value of a tile
+  private Tilestatus status;  //A holder for the status of a tile
+  private boolean joker;    //A holder if the tile is a joker or not
+  private int x; //The position of the Tile in the field
+  private int y;//The position of the Tile in the field
 
   /*The main constructor of a tile
    * @param letter letter of the tile
@@ -59,27 +61,16 @@ public class Tile {
     return this.letter;
   }
 
-  /*@return the value of the letter
-   * */
-  public int getValue() {
-    return this.value;
-  }
-
-  /*@return the status of a tile
-   * */
-  public Tilestatus getStatus() {
-    return this.status;
-  }
-
-  /*@return if the tile is a joker*/
-  public boolean isJoker() {
-    return this.joker;
-  }
-
   /*@param letter set the letter of a tile
    * */
   public void setLetter(char letter) {
     this.letter = letter;
+  }
+
+  /*@return the value of the letter
+   * */
+  public int getValue() {
+    return this.value;
   }
 
   /*@param value set the value of a tile
@@ -88,15 +79,39 @@ public class Tile {
     this.value = value;
   }
 
+  /*@return the status of a tile
+   * */
+  public Tilestatus getStatus() {
+    return this.status;
+  }
+
   /*@param status set the status of a tile
    * */
   public void setStatus(Tilestatus status) {
     this.status = status;
   }
 
+  /*@return if the tile is a joker*/
+  public boolean isJoker() {
+    return this.joker;
+  }
+
   /*@param isJoker set if the tile is a Joker or not*/
   public void setJoker(boolean isJoker) {
     this.joker = isJoker;
+  }
+
+  public int getX() {
+    return this.x;
+  }
+
+  public int getY() {
+    return this.y;
+  }
+
+  public void setXY(int x, int y) {
+    this.x = x;
+    this.y = y;
   }
 
   /*A methode which compares a tile by it's joker status or letter*/
@@ -105,9 +120,7 @@ public class Tile {
       return true;
     } else {
       if (this.letter != 0 && tile.letter != 0) {
-        if (this.letter == tile.letter) {
-          return true;
-        }
+        return this.letter == tile.letter;
       }
     }
     return false;
@@ -118,6 +131,6 @@ public class Tile {
     INBAG,
     ONPLAYERRACK,
     ONBOARD,
-    ONSWITCHPANEL // Status for switching tiles back into the tilebag
+    ONSWITCHPANEL    //Status for switching tiles back into the tilebag
   }
 }
