@@ -38,7 +38,7 @@
             <Font name="Javanese Text" size="28.0" />
          </font>
       </Button>
-      <Text fx:id="userName" fill="#45da56" layoutX="964.0" layoutY="43.0" stroke="#4d7580" strokeType="OUTSIDE" text="Text" wrappingWidth="141.13671875">
+      <Text fx:id="userName" fill="#45da56" layoutX="964.0" layoutY="43.0" onMouseClicked="#goStats" onMouseEntered="#animateText" stroke="#4d7580" strokeType="OUTSIDE" text="Text" wrappingWidth="141.13671875">
          <font>
             <Font name="Impact" size="29.0" />
          </font>

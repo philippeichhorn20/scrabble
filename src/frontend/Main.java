@@ -39,13 +39,12 @@ public class Main extends Application {
       DatabaseMetaData meta = connection.getMetaData();
       connection = DriverManager.getConnection("jdbc:sqlite:src/resources/profilesdb.db");
       Statement stmt = connection.createStatement();
-      stmt.execute(
-          """
-              CREATE TABLE IF NOT EXISTS profiles (
-              name text,
-              games integer,
-              wins integer,
-              points integer)""");
+      stmt.execute("CREATE TABLE IF NOT EXISTS profiles (\n"
+          + "              name text,\n"
+          + "              games integer,\n"
+          + "              wins integer,\n"
+          + "              points integer)");
+
     }
     profile = new Profile("");
     primaryStage.setResizable(false);

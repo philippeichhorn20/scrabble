@@ -28,9 +28,13 @@ public class MainMenuController {
     new Pulse(b).play();
   }
 
+  public void animateText(MouseEvent e){
+    new Pulse(userName).play();
+  }
+
   public void goPlay(ActionEvent e) throws IOException {
     Main m = new Main();
-    m.changeScene("screens/lobbyScreen.fxml");
+    m.changeScene("screens/gameScreen.fxml");
   }
 
   public void goManage(ActionEvent e) throws IOException {
@@ -41,6 +45,10 @@ public class MainMenuController {
   public void goSettings(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/settingsScreen.fxml");
+  }
+  public void goStats(MouseEvent e) throws IOException {
+    Main m = new Main();
+    m.changeScene("screens/statsScreen.fxml");
   }
 
   /**
