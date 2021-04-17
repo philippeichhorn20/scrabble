@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
  * @description a class which represents a field on a scrabbel board*/
 public class Matchfield {
 
-  private backend.basic.Tile tileOnField;
+  private Tile tileOnField;
   private Premiumstatus isPremium;
   private Button field;
 
@@ -22,7 +22,6 @@ public class Matchfield {
    * @param height the height of the field
    * @param premiumstatus which kind of premiumfield it is
    * @param buttonListener adds a Listener to the field/button of the field*/
-  //Idea from Philipp: lets get the width and height from a constant saved in a different class and not put it in the constructor
   public Matchfield(double posX, double posY, double width, double height,
       Premiumstatus premiumstatus, EventHandler<ActionEvent> buttonListener) {
     this.isPremium = premiumstatus;
@@ -36,13 +35,6 @@ public class Matchfield {
 
     this.assambleBackgroundColour();
 
-  }
-
-  /*
-  Test Matchfield without UI elements - Philipp
-   */
-  public Matchfield(double posX, double posY, Premiumstatus premiumstatus) {
-    this.isPremium = premiumstatus;
   }
 
   /*A copy constructor
@@ -84,8 +76,16 @@ public class Matchfield {
     }
   }
 
-  public backend.basic.Tile getTile() {
+  public Tile getTile() {
     return this.tileOnField;
+  }
+
+  public Premiumstatus getPremiumstatus() {
+    return this.isPremium;
+  }
+
+  public Button getButtonOfField() {
+    return this.field;
   }
 
   public void setTile(Tile tileToPlaceOnField) {
@@ -96,17 +96,9 @@ public class Matchfield {
     return this.tileOnField != null;
   }
 
-  public Premiumstatus getPremiumstatus() {
-    return this.isPremium;
-  }
-
   public void setPremiumstatus(Premiumstatus status) {
     this.isPremium = status;
-//    this.assambleBackgroundColour();
-  }
-
-  public Button getButtonOfField() {
-    return this.field;
+    this.assambleBackgroundColour();
   }
 
   public void setButton(Button button) {
@@ -117,14 +109,12 @@ public class Matchfield {
     this.field.setOnAction(buttonListener);
   }
 
-
-}
-
-/*An enum which shows which kind of field we have*/
-enum Premiumstatus {
-  NOPREMIUM,
-  DOUBLELETTER,
-  TRIPLELETTER,
-  DOUBLEWORD,
-  TRIPLEWORD
+  /*An enum which shows which kind of field we have*/
+  public enum Premiumstatus {
+    NOPREMIUM,
+    DOUBLELETTER,
+    TRIPLELETTER,
+    DOUBLEWORD,
+    TRIPLEWORD
+  }
 }
