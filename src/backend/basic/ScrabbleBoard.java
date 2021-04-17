@@ -1,5 +1,6 @@
 package backend.basic;
 
+import backend.basic.Matchfield.Premiumstatus;
 import java.util.ArrayList;
 
 /* @author peichhor
@@ -48,26 +49,31 @@ class ScrabbleBoard {
     scrabbleBoard[7][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
   }
 
+
   static void printScrabbleBoard() {
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
         switch (scrabbleBoard[x][y].getPremiumstatus()) {
           case NOPREMIUM:
-            System.out.print("o" + "\t");
+            System.out.print("N" + "\t");
             break;
           case DOUBLELETTER:
-            System.out.print("2" + "\t");
+            System.out.print("2L" + "\t");
             break;
           case TRIPLELETTER:
-            System.out.print("3" + "\t");
+            System.out.print("3L" + "\t");
             break;
           case TRIPLEWORD:
-            System.out.print("33" + "\t");
+            System.out.print("3W" + "\t");
             break;
           case DOUBLEWORD:
-            System.out.print("22" + "\t");
+            System.out.print("2W" + "\t");
             break;
         }
+        if (scrabbleBoard[x][y].hasTile()) {
+          System.out.print(" : " + scrabbleBoard[x][y].getTile().getLetter());
+        }
+
 
       }
       System.out.println();
@@ -98,6 +104,7 @@ class ScrabbleBoard {
   checks all the current words and returns the word+descriptipn of the word
    */
   static boolean wordCheck() {
+    System.out.println("WordCheck started");
     for (int i = 0; i < ScrabbleBoard.editedWords.size(); i++) {
       final ArrayList<backend.basic.Tile> word = ScrabbleBoard.editedWords.get(i);
       String wordAsString = "";
@@ -105,6 +112,7 @@ class ScrabbleBoard {
         Tile tile = word.get(a);
         wordAsString += tile.getLetter();
       }
+      System.out.println(wordAsString);
       if (!WordCheckDB.findWord(wordAsString)) {
         return false;
       }
@@ -115,7 +123,7 @@ class ScrabbleBoard {
   /* this functions simulates the placing of a single tile on the board.
   It also stores it into the temporary list that keeps track of the current move
    */
-  void placeTile(final backend.basic.Tile newTile) {
+  static void placeTile(final backend.basic.Tile newTile) {
     ScrabbleBoard.newTilesOfCurrentMove.add(newTile);
     scrabbleBoard[newTile.getX()][newTile.getY()].setTile(newTile);
   }
@@ -124,7 +132,7 @@ class ScrabbleBoard {
   this function removes the Tile from the Board. It is only possible to remove it,
   if it was placed in the current turn. It removes true if that is the case and false if it was not
    */
-  boolean removeTile(final backend.basic.Tile tile) {
+  static boolean removeTile(final backend.basic.Tile tile) {
     if (ScrabbleBoard.newTilesOfCurrentMove.contains(tile)) {
       ScrabbleBoard.newTilesOfCurrentMove.remove(tile);
       return true;
@@ -133,11 +141,10 @@ class ScrabbleBoard {
     }
   }
 
-
   /*
   finishes its turn and submits all the words
    */
-  boolean submitTiles() {
+  static boolean submitTiles() {
     for (int i = 0; i < ScrabbleBoard.newTilesOfCurrentMove.size(); i++) {
       backend.basic.Tile tile = ScrabbleBoard.newTilesOfCurrentMove.get(i);
       //find the starting letter of the word in horizontal direction
@@ -164,10 +171,52 @@ class ScrabbleBoard {
       while ((tile.getY() + numberOfLetters <= 15) && scrabbleBoard[tile.getX()][tile.getY()
           + numberOfLetters].hasTile()) {
         word.add(scrabbleBoard[tile.getX()][tile.getY() + numberOfLetters].getTile());
+        numberOfLetters++;
       }
       ScrabbleBoard.addWordToEdited(word);
       word.clear();
     }
     return ScrabbleBoard.wordCheck();
+  }
+
+  /*
+  this method calculates the points of the current move
+   */
+  static int getPoints() {
+    int points = 0;
+    for (int wordNum = 0; wordNum < editedWords.size(); wordNum++) {
+      ArrayList<Matchfield> wordAsMatchfields = new ArrayList<>();
+      ArrayList<Tile> word = editedWords.get(wordNum);
+      int wordMultiplikant = 1;
+      for (int letterNum = 0; letterNum < wordAsMatchfields.size(); letterNum++) {
+        Tile letter = word.get(letterNum);
+        wordAsMatchfields.add(scrabbleBoard[letter.getX()][letter.getY()]);
+      }
+      for (int length = 0; length < wordAsMatchfields.size(); length++) {
+        int letterValue = 0;
+        Matchfield currentField = wordAsMatchfields.get(length);
+        letterValue = currentField.getTile().getValue();
+        switch (currentField.getPremiumstatus()) {
+          case DOUBLELETTER:
+            letterValue *= 2;
+            break;
+          case TRIPLELETTER:
+            letterValue *= 3;
+            break;
+          case DOUBLEWORD:
+            wordMultiplikant *= 2;
+            break;
+          case TRIPLEWORD:
+            wordMultiplikant *= 3;
+            break;
+          default:
+            break;
+
+        }
+        points += letterValue;
+      }
+      points *= wordMultiplikant;
+    }
+    return points;
   }
 }
