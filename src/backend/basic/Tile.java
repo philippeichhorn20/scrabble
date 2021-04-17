@@ -7,12 +7,12 @@ package backend.basic;
 
 public class Tile {
 
-  private char letter;      //A holder for a letter of a tile
-  private int value;        //A holder for the value of a tile
-  private Tilestatus status;  //A holder for the status of a tile
-  private boolean joker;    //A holder if the tile is a joker or not
-  private int x; //The position of the Tile in the field
-  private int y;//The position of the Tile in the field
+  private char letter; // A holder for a letter of a tile
+  private int value; // A holder for the value of a tile
+  private Tilestatus status; // A holder for the status of a tile
+  private boolean joker; // A holder if the tile is a joker or not
+  private int x; // The position of the Tile in the field
+  private int y; // The position of the Tile in the field
 
   /*The main constructor of a tile
    * @param letter letter of the tile
@@ -131,6 +131,6 @@ public class Tile {
     INBAG,
     ONPLAYERRACK,
     ONBOARD,
-    ONSWITCHPANEL    //Status for switching tiles back into the tilebag
+    ONSWITCHPANEL // Status for switching tiles back into the tilebag
   }
 }
