@@ -14,9 +14,11 @@ import java.sql.SQLException;
 public class Profile {
   private int id;
   private String name;
+  private String color;
   private int wins;
   private int games;
   private int points;
+
 
   String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
 
@@ -47,6 +49,9 @@ public class Profile {
   public String getName() {
     return name;
   }
+
+  /*@author nilschae*/
+  public String getColor() { return this.color;}
 
   public int getWins() {
     return wins;
@@ -146,5 +151,10 @@ public class Profile {
       sqle.printStackTrace();
     }
     this.points = points;
+  }
+
+  /*@author nilschae*/
+  public void setColor(String hexColor) {
+    this.color = hexColor;
   }
 }
