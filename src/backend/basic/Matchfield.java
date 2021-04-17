@@ -49,6 +49,13 @@ public class Matchfield {
     this.assambleBackgroundColour();
   }
 
+  /*
+  a matchfield constructor without the UI elements
+  */
+  public Matchfield(int x, int y, Premiumstatus premiumstatus) {
+    this.isPremium = premiumstatus;
+  }
+
   /*Set the backgroundcolour of the field based on the premiumstatus*/
   private void assambleBackgroundColour() {
     switch (this.isPremium) {
