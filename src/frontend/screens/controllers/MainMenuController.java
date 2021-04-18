@@ -34,7 +34,7 @@ public class MainMenuController {
 
   public void goPlay(ActionEvent e) throws IOException {
     Main m = new Main();
-    m.changeScene("screens/gameScreen.fxml");
+    m.changeScene("screens/lobbyScreen.fxml");
   }
 
   public void goManage(ActionEvent e) throws IOException {
