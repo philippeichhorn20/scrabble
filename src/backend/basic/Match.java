@@ -61,6 +61,7 @@ public class Match {
     if (players[nextPlayer].checkTimer()) {
       currentPlayer = nextPlayer;
     }
+    ScrabbleBoard.nextTurn();
   }
 
   /*

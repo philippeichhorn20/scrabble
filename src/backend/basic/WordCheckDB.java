@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /* @author peichhor
  * @version 1.0
@@ -33,6 +34,18 @@ public class WordCheckDB {
       return rs != null;
     } catch (SQLException e) {
       System.out.println(e.getMessage());
+    }
+    return false;
+  }
+
+  /*
+  TODO: this function will search for a word that can be build with the given Tiles in the bag
+  and on the board
+   */
+  static boolean findWordWithTiles(ArrayList<Tile> tilesOnScrabbleBoard) {
+    boolean wordFound = false;
+    for (int i = 0; i < tilesOnScrabbleBoard.size() && !wordFound; i++) {
+
     }
     return false;
   }

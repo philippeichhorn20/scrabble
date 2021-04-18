@@ -1,8 +1,8 @@
 package backend.basic;
 
 import backend.basic.Matchfield.Premiumstatus;
+import backend.basic.Tile.Tilestatus;
 import java.util.ArrayList;
-import backend.basic.Matchfield.Premiumstatus;
 /* @author peichhor
  * @version 1.0
  * @description this class is the representation of the physical scrabble board
@@ -25,6 +25,7 @@ class ScrabbleBoard {
   static Matchfield[][] scrabbleBoard = new Matchfield[15][15];
   static ArrayList<backend.basic.Tile> newTilesOfCurrentMove = new ArrayList<>();
   static ArrayList<ArrayList<backend.basic.Tile>> editedWords = new ArrayList<>();
+  private static final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
 
   /*
    * this function creates an empty Scrabble Board with all the right Matchfields
@@ -123,9 +124,11 @@ class ScrabbleBoard {
   /* this functions simulates the placing of a single tile on the board.
   It also stores it into the temporary list that keeps track of the current move
    */
-  static void placeTile(final backend.basic.Tile newTile) {
+  static void placeTile(backend.basic.Tile newTile) {
     ScrabbleBoard.newTilesOfCurrentMove.add(newTile);
     scrabbleBoard[newTile.getX()][newTile.getY()].setTile(newTile);
+    newTile.setStatus(Tilestatus.ONBOARD);
+    tilesOnScrabbleBoard.add(newTile);
   }
 
   /*
@@ -218,5 +221,17 @@ class ScrabbleBoard {
       points *= wordMultiplikant;
     }
     return points;
+  }
+
+  /*
+  this method clears the fields that are omnly tracking the information of the current move
+   */
+  public static void nextTurn() {
+    editedWords.clear();
+    newTilesOfCurrentMove.clear();
+  }
+
+  public static ArrayList<Tile> getTilesOnScrabbleBoard() {
+    return tilesOnScrabbleBoard;
   }
 }
