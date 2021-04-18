@@ -33,6 +33,9 @@
          <font>
             <Font name="Javanese Text" size="28.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <HBox layoutX="880.0" layoutY="8.0" prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -45,6 +48,9 @@
                <font>
                   <Font name="Impact" size="29.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Text>
          </children>
       </HBox>
@@ -54,8 +60,22 @@
                <image>
                   <Image url="@resources/outline_settings_black_24dp.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="ruleButton" layoutX="313.0" layoutY="575.0" mnemonicParsing="false" onAction="#goRule" onMouseEntered="#animate" prefHeight="110.0" prefWidth="455.0" style="-fx-background-radius: 20; -fx-border-color: brown; -fx-border-radius: 16; -fx-border-width: 3;" text="Rules">
+         <font>
+            <Font name="Javanese Text" size="28.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
    </children>
 </AnchorPane>

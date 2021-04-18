@@ -1,7 +1,6 @@
 package frontend.screens.controllers;
 
 import animatefx.animation.FadeIn;
-import animatefx.animation.ZoomOut;
 import frontend.Main;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -45,12 +44,11 @@ public class GameScreenController {
 
   public void goBack(ActionEvent e) throws IOException {
     Main m = new Main();
-    m.changeScene("screens/startingMenu.fxml");
+    m.changeScene("screens/mainMenu.fxml");
   }
 
   public void moveTile(MouseEvent e) throws IOException {
     Node n = (Node) e.getSource();
-    new ZoomOut(backButton).play();
     if (e.getSource() instanceof Rectangle) {
       Rectangle rec = (Rectangle) e.getSource();
       rec.setX(e.getX());

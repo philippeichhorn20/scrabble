@@ -48,7 +48,11 @@ public class MainMenuController {
   }
   public void goStats(MouseEvent e) throws IOException {
     Main m = new Main();
-    m.changeScene("screens/statsScreen.fxml");
+    m.changeScene("screens/statScreen.fxml");
+  }
+  public void goRule(ActionEvent e) throws IOException {
+    Main m = new Main();
+    m.changeScene("screens/ruleScreen.fxml");
   }
 
   /**

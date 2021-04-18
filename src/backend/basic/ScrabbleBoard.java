@@ -2,7 +2,7 @@ package backend.basic;
 
 import backend.basic.Matchfield.Premiumstatus;
 import java.util.ArrayList;
-
+import backend.basic.Matchfield.Premiumstatus;
 /* @author peichhor
  * @version 1.0
  * @description this class is the representation of the physical scrabble board

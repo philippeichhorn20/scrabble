@@ -36,6 +36,9 @@ public class LobbyScreenController {
       case "playLocalGame":
         scene += "gameScreen.fxml";
         break;
+      case "backButton":
+        scene += "mainMenu.fxml";
+        break;
     }
     m.changeScene(scene);
   }

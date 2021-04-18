@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -42,6 +43,9 @@
                <font>
                   <Font name="Ebrima" size="39.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Text fx:id="wrongText" fill="#cd1010" layoutX="145.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0">
                <font>
@@ -52,6 +56,9 @@
                <font>
                   <Font name="HoloLens MDL2 Assets" size="19.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
       </AnchorPane>
