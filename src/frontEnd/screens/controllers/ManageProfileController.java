@@ -2,6 +2,7 @@ package frontEnd.screens.controllers;
 
 import backend.basic.Profile;
 import frontend.Main;
+import java.io.IOException;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -86,6 +87,11 @@ public class ManageProfileController {
     LB_Games.setText("Games: " + currentProfile.getGames());
     LB_Points.setText("Points: " + currentProfile.getPoints());
     LB_Wins.setText("Wins: " + currentProfile.getWins());
+  }
+
+  public void goBack() throws IOException {
+    Main m = new Main();
+    m.changeScene("screens/mainMenu.fxml");
   }
 
 }
