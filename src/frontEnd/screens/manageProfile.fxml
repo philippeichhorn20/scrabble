@@ -50,7 +50,7 @@
             <Font name="Javanese Text" size="96.0" />
          </font>
       </Button>
-      <Button fx:id="BT_GoBack" layoutX="53.0" layoutY="554.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="938.0" style="-fx-font-size: 50; -fx-background-radius: 20; -fx-border-color: brown; -fx-border-radius: 16; -fx-border-width: 4; -fx-background-color: white;" text="&lt;--Go Back--">
+      <Button fx:id="BT_GoBack" layoutX="53.0" layoutY="554.0" mnemonicParsing="false" onMouseClicked="#goBack" prefHeight="93.0" prefWidth="938.0" style="-fx-font-size: 50; -fx-background-radius: 20; -fx-border-color: brown; -fx-border-radius: 16; -fx-border-width: 4; -fx-background-color: white;" text="&lt;--Go Back--">
          <font>
             <Font name="Javanese Text" size="96.0" />
          </font>
