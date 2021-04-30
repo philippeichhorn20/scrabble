@@ -6,7 +6,7 @@
     </option>
   </component>
   <component name="EclipseModuleManager" forced_jdk="true">
-    <libelement value="file://C:/Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
+    <libelement value="file://$MODULE_DIR$/../../../../../Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
     <libelement value="jar://$MODULE_DIR$/src/lib/javafx-sdk-11.0.2/lib/javafx-swt.jar!/" />
     <libelement value="jar://$MODULE_DIR$/src/lib/javafx-sdk-11.0.2/lib/javafx.base.jar!/" />
     <libelement value="jar://$MODULE_DIR$/src/lib/javafx-sdk-11.0.2/lib/javafx.controls.jar!/" />
@@ -19,7 +19,7 @@
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -32,7 +32,7 @@
     <orderEntry type="module-library">
       <library name="jrt-fs.jar">
         <CLASSES>
-          <root url="file://C:/Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
+          <root url="file://$MODULE_DIR$/../../../../../Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
