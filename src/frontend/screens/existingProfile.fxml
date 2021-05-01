@@ -1,192 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#load" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.ExistingProfileController">
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.ExistingProfileController">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
          <children>
-            <Button fx:id="nextButton1" layoutX="422.0" layoutY="711.0" mnemonicParsing="false" onAction="#nextPage" prefHeight="58.0" prefWidth="132.0" style="-fx-font-size: 28; -fx-background-color: #028e53; -fx-border-color: black;" text="&lt;----">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
-            <ImageView fitHeight="770.0" fitWidth="1134.0" layoutX="21.0" layoutY="32.0">
-               <image>
-                  <Image url="@resources/wooden-bg.jpg" />
-               </image>
-            </ImageView>
-            <Text fx:id="scrabbleText" boundsType="VISUAL" fill="#45da56" layoutX="245.0" layoutY="115.0" stroke="#4d7580" strokeType="OUTSIDE" style="-fx-font-size: 180;" text="Scrabble" textOrigin="CENTER" wrappingWidth="730.171875">
-               <font>
-                  <Font name="Javanese Text" size="34.0" />
-               </font>
-            </Text>
-            <Text fill="#45da56" layoutX="294.0" layoutY="290.0" stroke="#4d7580" strokeType="OUTSIDE" text="Choose a profile :">
-               <font>
-                  <Font size="64.0" />
-               </font>
-            </Text>
-            <GridPane layoutX="130.0" layoutY="354.0" prefHeight="357.0" prefWidth="848.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Button fx:id="button00" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true">
+            <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
+               <top>
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
+                           <font>
+                              <Font name="Consolas" size="60.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </top>
+               <center>
+                  <MenuButton contentDisplay="RIGHT" mnemonicParsing="false" popupSide="RIGHT" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Pick profile" textFill="WHITE" BorderPane.alignment="TOP_LEFT">
+                    <items>
+                      <MenuItem mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="1. Profil" />
+                      <MenuItem mnemonicParsing="false" text="2. Profil" />
+                    </items>
                      <font>
-                        <Font name="Sitka Small" size="35.0" />
+                        <Font name="Consolas Bold" size="20.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets top="50.0" />
+                     </BorderPane.margin>
+                  </MenuButton>
+               </center>
+               <bottom>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Consolas Bold" size="20.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <BorderPane.margin>
+                        <Insets bottom="20.0" />
+                     </BorderPane.margin>
                   </Button>
-                  <Button fx:id="button30" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button01" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="1">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button11" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button02" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true" GridPane.columnIndex="2">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button12" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button03" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true" GridPane.columnIndex="3">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button13" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button20" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="button23" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="button21" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="button31" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button33" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button32" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button10" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" wrapText="true" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="button22" alignment="CENTER" mnemonicParsing="false" onAction="#showStats" onMousePressed="#animate" prefHeight="99.0" prefWidth="212.0" style="-fx-border-color: black; -fx-background-color: #028e53;" textFill="#171615" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Sitka Small" size="35.0" />
-                     </font>
-                  </Button>
-               </children>
-            </GridPane>
-            <Button fx:id="backButton" layoutX="1027.0" layoutY="725.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
-               <font>
-                  <Font name="HoloLens MDL2 Assets" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button fx:id="nextButton" layoutX="554.0" layoutY="711.0" mnemonicParsing="false" onAction="#nextPage" prefHeight="58.0" prefWidth="132.0" style="-fx-font-size: 28; -fx-background-color: #028e53; -fx-border-color: black;" text="----&gt;" visible="false">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="lastPageButton" layoutX="422.0" layoutY="711.0" mnemonicParsing="false" onAction="#lastPage" prefHeight="58.0" prefWidth="132.0" style="-fx-font-size: 28; -fx-background-color: #028e53; -fx-border-color: black;" text="&lt;----" visible="false">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
+               </bottom>
+               <VBox.margin>
+                  <Insets left="-50.0" right="-50.0" />
+               </VBox.margin>
+            </BorderPane>
          </children>
-      </AnchorPane>
-   </center>
-</BorderPane>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <ImageView fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
+         <image>
+            <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</HBox>
