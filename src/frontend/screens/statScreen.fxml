@@ -1,107 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setStage" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.StatScreenController">
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<HBox prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.CreateProfileController">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
          <children>
-            <ImageView fitHeight="756.0" fitWidth="1106.0" layoutX="6.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-bg.jpg" />
-               </image>
-            </ImageView>
-            <Text fx:id="userTitle" boundsType="VISUAL" fill="#45da56" layoutX="204.0" layoutY="95.0" stroke="#4d7580" strokeType="OUTSIDE" style="-fx-font-size: 180;" text="Scrabble" textOrigin="CENTER" wrappingWidth="730.171875">
-               <font>
-                  <Font name="Javanese Text" size="34.0" />
-               </font>
-            </Text>
-            <ImageView fitHeight="133.0" fitWidth="294.0" layoutX="402.0" layoutY="193.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-sign.png" />
-               </image>
-            </ImageView>
-            <Text fill="#45da56" layoutX="456.0" layoutY="299.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="Statistics">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
-            <ImageView fitHeight="230.0" fitWidth="456.0" layoutX="707.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-sign2.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="230.0" fitWidth="456.0" layoutX="50.0" layoutY="309.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-sign2.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="230.0" fitWidth="456.0" layoutX="50.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-sign2.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="230.0" fitWidth="456.0" layoutX="707.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-sign2.png" />
-               </image>
-            </ImageView>
-            <Text fill="#45da56" layoutX="98.0" layoutY="354.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="Games played">
-               <font>
-                  <Font name="Segoe UI Light" size="42.0" />
-               </font>
-            </Text>
-            <Text fill="#45da56" layoutX="174.0" layoutY="548.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="Wins">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
-            <Text fill="#45da56" layoutX="826.0" layoutY="336.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="Points">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
-            <Text fx:id="games" fill="#ba2a1c" layoutX="222.0" layoutY="443.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="0">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
-            <Text fx:id="wins" fill="#ba2a1c" layoutX="222.0" layoutY="630.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="0">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
-            <Text fx:id="points" fill="#ba2a1c" layoutX="875.0" layoutY="441.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="0">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
-            <Button fx:id="backButton" layoutX="1015.0" layoutY="688.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
-               <font>
-                  <Font name="HoloLens MDL2 Assets" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Text fill="#45da56" layoutX="729.0" layoutY="535.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="Avg points per game">
-               <font>
-                  <Font name="Segoe UI Light" size="36.0" />
-               </font>
-            </Text>
-            <Text fx:id="avgPoints" fill="#ba2a1c" layoutX="874.0" layoutY="630.0" stroke="#221d1d" strokeType="OUTSIDE" strokeWidth="0.2" text="0">
-               <font>
-                  <Font name="Segoe UI Light" size="48.0" />
-               </font>
-            </Text>
+            <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
+               <top>
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
+                           <font>
+                              <Font name="Consolas" size="60.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </top>
+               <bottom>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Consolas Bold" size="20.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <BorderPane.margin>
+                        <Insets bottom="20.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </bottom>
+               <VBox.margin>
+                  <Insets left="-50.0" right="-50.0" />
+               </VBox.margin>
+               <center>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="50.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </center>
+            </BorderPane>
          </children>
-      </AnchorPane>
-   </center>
-</BorderPane>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <BorderPane prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: #805500;">
+         <center>
+            <VBox prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: #805500;" BorderPane.alignment="CENTER">
+               <children>
+                  <BorderPane prefHeight="100.0" prefWidth="200.0">
+                     <center>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Consolas Bold" size="24.0" />
+                           </font>
+                        </Text>
+                     </center>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </BorderPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                           <bottom>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Games played" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas" size="16.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </BorderPane.margin>
+                              </Text>
+                           </bottom>
+                           <left>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@resources/outline_sports_esports_white_24dp.png" />
+                                 </image>
+                                 <BorderPane.margin>
+                                    <Insets left="5.0" />
+                                 </BorderPane.margin>
+                              </ImageView>
+                           </left>
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                           <center>
+                              <Text fx:id="games" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                           </center>
+                        </BorderPane>
+                        <BorderPane prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                           <bottom>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Wins" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas" size="16.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </BorderPane.margin>
+                              </Text>
+                           </bottom>
+                           <left>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@resources/outline_emoji_events_white_24dp.png" />
+                                 </image>
+                                 <BorderPane.margin>
+                                    <Insets left="5.0" />
+                                 </BorderPane.margin>
+                              </ImageView>
+                           </left>
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                           <center>
+                              <Text fx:id="wins" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas" size="24.0" />
+                                 </font>
+                              </Text>
+                           </center>
+                        </BorderPane>
+                        <BorderPane prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                           <bottom>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Points" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas" size="16.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </BorderPane.margin>
+                              </Text>
+                           </bottom>
+                           <left>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@resources/outline_loyalty_white_24dp.png" />
+                                 </image>
+                                 <BorderPane.margin>
+                                    <Insets left="5.0" />
+                                 </BorderPane.margin>
+                              </ImageView>
+                           </left>
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                           <center>
+                              <Text fx:id="points" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                           </center>
+                        </BorderPane>
+                        <BorderPane prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                           <bottom>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Avg points per game" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas" size="16.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </BorderPane.margin>
+                              </Text>
+                           </bottom>
+                           <left>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@resources/outline_bar_chart_white_24dp.png" />
+                                 </image>
+                                 <BorderPane.margin>
+                                    <Insets left="5.0" />
+                                 </BorderPane.margin>
+                              </ImageView>
+                           </left>
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                           <center>
+                              <Text fx:id="avgPoints" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Consolas Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                           </center>
+                        </BorderPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</HBox>
