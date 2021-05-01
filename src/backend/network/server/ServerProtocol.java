@@ -1,10 +1,10 @@
 package backend.network.server;
 
-import backend.network.messages.ConnectionRefusedMessage;
-import backend.network.messages.GetIDMessage;
+import backend.network.messages.connection.ConnectionRefusedMessage;
+import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
-import backend.network.messages.SendIDMessage;
+import backend.network.messages.connection.SendIDMessage;
 import backend.network.tools.IDGeneratorBasic;
 import java.io.IOException;
 import java.io.ObjectInputStream;

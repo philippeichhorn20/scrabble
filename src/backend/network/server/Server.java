@@ -1,7 +1,7 @@
 package backend.network.server;
 
 import backend.network.messages.Message;
-import backend.network.messages.ShutDownMessage;
+import backend.network.messages.connection.ShutDownMessage;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

@@ -1,8 +1,8 @@
 package backend.network.client;
 
-import backend.network.messages.ConnectMessage;
-import backend.network.messages.ConnectionRefusedMessage;
-import backend.network.messages.DisconnectMessage;
+import backend.network.messages.connection.ConnectMessage;
+import backend.network.messages.connection.ConnectionRefusedMessage;
+import backend.network.messages.connection.DisconnectMessage;
 import backend.network.messages.Message;
 import java.io.IOException;
 import java.io.ObjectInputStream;

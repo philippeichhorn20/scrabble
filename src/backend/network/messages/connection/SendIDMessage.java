@@ -1,4 +1,7 @@
-package backend.network.messages;
+package backend.network.messages.connection;
+
+import backend.network.messages.Message;
+import backend.network.messages.MessageType;
 
 /*A message for the server to give away temporary ids
  * @author nilschae
