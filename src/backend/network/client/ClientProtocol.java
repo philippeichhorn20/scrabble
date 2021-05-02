@@ -56,6 +56,73 @@ public class ClientProtocol extends Thread{
             break;
 
           case SEND_ID:
+            //TODO At game controller there must be a methode which receive ID's
+            // for example for a tile
+            break;
+
+          case GAME_START:
+            //TODO At game controller there must be a methode which show
+            // the player the start of game
+            break;
+
+          case GAME_TURN:
+            //TODO At game controller there must be a methode which show
+            // that the player have the turn
+            break;
+
+          case GAME_WAIT:
+            //TODO At game controller there must be a methode which show
+            // that the player have to wait because of another players turn
+            break;
+
+          case GAME_OVER:
+            //TODO At game controller there must be a methode which show
+            // the player that the game is over
+            break;
+
+          case GAME_WIN:
+            //TODO At game controller there must be a methode which show
+            // that the player won
+            break;
+
+          case GAME_LOOSE:
+            //TODO At game controller there must be a methode which show
+            // that the player lost
+            break;
+
+          case GAME_PLACEMENT:
+            //TODO At game controller there must be a methode which show
+            // the player the placement
+            break;
+
+          case SEND_POINTS:
+            //TODO At game controller there must be a methode which add
+            // points to the player statistics
+            break;
+
+          case SEND_RACK_POINTS:
+            //TODO At game controller there must be a methode which
+            // calculate the points left on the rack
+            break;
+
+          case PLACE_TILES:
+            //TODO At game controller there must be a methode which
+            // place tiles on the board of the player
+            break;
+
+          case RECEIVE_SHUFFLE_TILES:
+            //TODO At game controller there must be a methode which
+            // add the shuffled tiles to the player rack
+            break;
+
+          case TIME_ALERT:
+            //TODO At game controller there must be a methode which
+            // alert the player that the time is over soon
+            break;
+
+          case TIME_SYNC:
+            //TODO At game controller there must be a methode which
+            // synchronize the time left the player have, with the server
             break;
 
           default:

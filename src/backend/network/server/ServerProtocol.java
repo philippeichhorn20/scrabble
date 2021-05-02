@@ -1,10 +1,13 @@
 package backend.network.server;
 
+import backend.basic.Tile;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.SendIDMessage;
+import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -100,6 +103,25 @@ public class ServerProtocol extends Thread{
             server.removeClient(message.getFrom());
             running = false;
             disconnect();
+            break;
+
+          case PLACE_TILES:
+            //TODO At game controller there must be a methode which add tiles to the board
+            // and return the points made
+            SendPointsMessage sendPointsMessage = new SendPointsMessage("server"); //points need to be added
+            sendToClient(sendPointsMessage);
+            break;
+
+          case SHUFFLE_TILES:
+            //TODO At game controller there must be a methode which shuffle tiles
+            // and return the shuffled tiles
+            Tile[] shuffledTiles = null;
+            ReceiveShuffleTilesMessage receiveShuffleTilesMessage = new ReceiveShuffleTilesMessage("server", shuffledTiles);
+            break;
+
+          case SEND_POINTS:
+            //TODO At game controller there must be a methode which add the points received from the racks
+            // at the end of a game to the statistics
             break;
 
           default:
