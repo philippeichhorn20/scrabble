@@ -82,6 +82,9 @@ public class ExistingProfileController {
     } catch (SQLException sqle) {
       sqle.printStackTrace();
     }
+    if (currentPage == totalPages-1){
+      nextButton.setVisible(false);
+    }
   }
 
   /**
@@ -90,7 +93,7 @@ public class ExistingProfileController {
    * @param e Click
    */
   public void lastPage(MouseEvent e) {
-
+    nextButton.setVisible(true);
     currentPage--;
     Button[] buttonNames = {
         button00, button01, button02, button03, button10, button11, button12, button13
