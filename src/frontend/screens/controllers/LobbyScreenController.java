@@ -1,10 +1,12 @@
 package frontend.screens.controllers;
 
+import animatefx.animation.Pulse;
 import frontend.Main;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 
 /*
 @author jawinter
@@ -41,6 +43,11 @@ public class LobbyScreenController {
         break;
     }
     m.changeScene(scene);
+  }
+
+  // Method responsible for animations
+  public void animate(MouseEvent e) {
+    new Pulse((Button) e.getSource()).play();
   }
 
 }
