@@ -150,7 +150,7 @@ class ScrabbleBoard {
     String[] words = getEditedWordsAsString(false);
     String[] explanations = new String[words.length];
     for (int i = 0; i < words.length; i++) {
-      explanations[i] = WordCheckDB.findWord(words[i]);
+      explanations[i] = String.valueOf(WordCheckDB.findWord(words[i]));
       if (explanations[i] != "") {
         System.out.println(explanations[i]);
       }

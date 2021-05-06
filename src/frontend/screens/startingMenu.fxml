@@ -27,7 +27,7 @@
                   <Insets left="-50.0" right="-50.0" />
                </VBox.margin>
             </Pane>
-            <Button fx:id="existProfileButton" mnemonicParsing="false" onAction="#logInto" onMouseEntered="#animate" prefHeight="50.0" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Log into existing Profile" textFill="WHITE">
+            <Button fx:id="newProfileButton" mnemonicParsing="false" onAction="#createNew" onMouseEntered="#animate" prefHeight="50.0" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Create new Profile" textFill="WHITE">
                <font>
                   <Font name="Consolas Bold" size="20.0" />
                </font>
@@ -38,7 +38,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="newProfileButton" mnemonicParsing="false" onAction="#createNew" onMouseEntered="#animate" prefHeight="50.0" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Create new Profile" textFill="WHITE">
+            <Button fx:id="existProfileButton" mnemonicParsing="false" onAction="#logInto" onMouseEntered="#animate" prefHeight="50.0" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Log into existing Profile" textFill="WHITE">
                <font>
                   <Font name="Consolas Bold" size="20.0" />
                </font>

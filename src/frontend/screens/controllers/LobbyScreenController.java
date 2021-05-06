@@ -6,7 +6,9 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 /*
 @author jawinter
@@ -15,12 +17,13 @@ import javafx.scene.input.MouseEvent;
  */
 public class LobbyScreenController {
 
+
   @FXML
-  private Button playTutorial;
+  private VBox joinGameView;
   @FXML
-  private Button playNetworkGame;
+  private ImageView lobbyView;
   @FXML
-  private Button playLocalGame;
+  private VBox startGameView;
 
   // Method determines button clicked and changes to desired scene
   @FXML
@@ -45,6 +48,19 @@ public class LobbyScreenController {
     m.changeScene(scene);
   }
 
+  //Makes settings visible to hosting player.
+  public void openStartGameView(ActionEvent e)  {
+    lobbyView.setVisible(false);
+    joinGameView.setVisible(false);
+    startGameView.setVisible(true);
+  }
+
+  //Allows player to enter a code to join hosting player's server
+  public void openJoinGameView(ActionEvent e) {
+    lobbyView.setVisible(false);
+    startGameView.setVisible(false);
+    joinGameView.setVisible(true);
+  }
   // Method responsible for animations
   public void animate(MouseEvent e) {
     new Pulse((Button) e.getSource()).play();

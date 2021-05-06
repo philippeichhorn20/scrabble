@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -34,7 +35,7 @@
                <center>
                   <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="playLocalGame" minWidth="380.0" mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Local Game" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Button fx:id="startGame" minWidth="380.0" mnemonicParsing="false" onAction="#openStartGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Start Game" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -45,7 +46,7 @@
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="playNetworkGame" minWidth="380.0" mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Network Game" textFill="WHITE">
+                        <Button fx:id="joinGame" minWidth="380.0" mnemonicParsing="false" onAction="#openJoinGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Join Game" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -92,10 +93,24 @@
             <Insets />
          </opaqueInsets>
       </VBox>
-      <ImageView fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
-         <image>
-            <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
-         </image>
-      </ImageView>
+      <AnchorPane prefHeight="720.0" prefWidth="1080.0">
+         <children>
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
+               <image>
+                  <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
+               </image>
+            </ImageView>
+            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #edbb99;" visible="false">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Starting a server..." wrappingWidth="346.0781555175781" />
+               </children>
+            </VBox>
+            <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #edbb99;" visible="false">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To join a server enter adress..." wrappingWidth="346.0781555175781" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
    </children>
 </HBox>
