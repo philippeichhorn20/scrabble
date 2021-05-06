@@ -1,66 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.CreateProfileController">
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.CreateProfileController">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
          <children>
-            <ImageView fitHeight="748.0" fitWidth="1206.0" layoutX="-35.0" layoutY="-23.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/wooden-bg.jpg" />
-               </image>
-            </ImageView>
-            <Text boundsType="VISUAL" fill="#45da56" layoutX="234.0" layoutY="92.0" stroke="#4d7580" strokeType="OUTSIDE" style="-fx-font-size: 180;" text="Scrabble" textOrigin="CENTER" wrappingWidth="730.171875">
-               <font>
-                  <Font name="Javanese Text" size="34.0" />
-               </font>
-            </Text>
-            <Text boundsType="VISUAL" fill="#45da56" layoutX="300.0" layoutY="249.0" stroke="#4d7580" strokeType="OUTSIDE" text="Create new profile" wrappingWidth="505.59619140625">
-               <font>
-                  <Font name="Javanese Text" size="61.0" />
-               </font>
-            </Text>
-            <Text fx:id="nameText" boundsType="VISUAL" fill="#45da56" layoutX="240.0" layoutY="368.0" strokeType="OUTSIDE" text="Enter your name:" wrappingWidth="623.1884765625">
-               <font>
-                  <Font name="Javanese Text" size="81.0" />
-               </font>
-            </Text>
-            <TextField fx:id="username" alignment="BOTTOM_LEFT" layoutX="320.0" layoutY="452.0" prefHeight="125.0" prefWidth="433.0">
-               <font>
-                  <Font size="51.0" />
-               </font>
-            </TextField>
-            <Button fx:id="enterButton" defaultButton="true" layoutX="418.0" layoutY="619.0" mnemonicParsing="false" onAction="#checkName" prefHeight="73.0" prefWidth="237.0" style="-fx-border-radius: 20; -fx-background-radius: 20;" text="Enter" textFill="#683333">
-               <font>
-                  <Font name="Ebrima" size="39.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Text fx:id="wrongText" fill="#cd1010" layoutX="145.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0">
-               <font>
-                  <Font name="Segoe UI Black" size="44.0" />
-               </font>
-            </Text>
-            <Button fx:id="backButton" layoutX="991.0" layoutY="686.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
-               <font>
-                  <Font name="HoloLens MDL2 Assets" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
+            <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
+               <top>
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
+                           <font>
+                              <Font name="Consolas" size="60.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </top>
+               <bottom>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Consolas Bold" size="20.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <BorderPane.margin>
+                        <Insets bottom="20.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </bottom>
+               <VBox.margin>
+                  <Insets left="-50.0" right="-50.0" />
+               </VBox.margin>
+               <center>
+                  <VBox BorderPane.alignment="TOP_CENTER">
+                     <BorderPane.margin>
+                        <Insets top="50.0" />
+                     </BorderPane.margin>
+                     <children>
+                        <Text fx:id="wrongText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
+                           <font>
+                              <Font name="Consolas" size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="username" prefHeight="50.0" promptText="Nickname" style="-fx-background-color: #A0522D;">
+                           <font>
+                              <Font name="Consolas" size="12.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="enterButton" minWidth="380.0" mnemonicParsing="false" onAction="#checkName" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Enter" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Consolas Bold" size="20.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+               </center>
+            </BorderPane>
          </children>
-      </AnchorPane>
-   </center>
-</BorderPane>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <ImageView fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
+         <image>
+            <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</HBox>

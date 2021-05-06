@@ -11,8 +11,8 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 /**
@@ -29,23 +29,15 @@ public class ExistingProfileController {
   @FXML private Button button11;
   @FXML private Button button12;
   @FXML private Button button13;
-  @FXML private Button button20;
-  @FXML private Button button21;
-  @FXML private Button button22;
-  @FXML private Button button23;
-  @FXML private Button button30;
-  @FXML private Button button31;
-  @FXML private Button button32;
-  @FXML private Button button33;
-  @FXML private BorderPane bp;
   @FXML private Button backButton;
-  @FXML private Button nextButton;
-  @FXML private Button lastPageButton;
+  @FXML private ImageView nextButton;
+  @FXML private ImageView lastPageButton;
   @FXML private Text scrabbleText;
 
   public String profile;
   private boolean first = true;
-
+  private static int currentPage = 0;
+  private int totalPages;
   public void goBack(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/startingMenu.fxml");
@@ -56,13 +48,13 @@ public class ExistingProfileController {
    *
    * @param e Click
    */
-  public void nextPage(ActionEvent e) {
+  public void nextPage(MouseEvent e) {
     clear();
+    currentPage++;
     lastPageButton.setVisible(true);
-    nextButton.setVisible(false);
+    //nextButton.setVisible(false);
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13, button20,
-      button21, button22, button23, button30, button31, button32, button33
+      button00, button01, button02, button03, button10, button11, button12, button13
     };
     String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
     int i = 0;
@@ -74,19 +66,24 @@ public class ExistingProfileController {
 
       ResultSet result = stmt.executeQuery(sql);
       while (result.next()) {
-        if (i < 16) {
-          buttonNames[i].setText(" ");
-
-        } else {
+        if (i < currentPage*8) {
+          //buttonNames[i].setText(" ");
+        }
+        else if (i >= (currentPage+1)*8){
+          break;
+        }else {
           String name = result.getString("name");
           name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-          buttonNames[i - 16].setText(name);
+          buttonNames[i - currentPage*8].setText(name);
         }
         i++;
       }
 
     } catch (SQLException sqle) {
       sqle.printStackTrace();
+    }
+    if (currentPage == totalPages-1){
+      nextButton.setVisible(false);
     }
   }
 
@@ -95,9 +92,41 @@ public class ExistingProfileController {
    *
    * @param e Click
    */
-  public void lastPage(ActionEvent e) {
-    loadProfiles();
-    lastPageButton.setVisible(false);
+  public void lastPage(MouseEvent e) {
+    nextButton.setVisible(true);
+    currentPage--;
+    Button[] buttonNames = {
+        button00, button01, button02, button03, button10, button11, button12, button13
+    };
+    String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
+    int i = 0;
+    try {
+      Connection connection = DriverManager.getConnection(jdbcUrl);
+      String sql = "SELECT rowid, name FROM profiles";
+
+      Statement stmt = connection.createStatement();
+
+      ResultSet result = stmt.executeQuery(sql);
+      while (result.next()) {
+        if (i < currentPage*8) {
+          //buttonNames[i].setText(" ");
+        }
+        else if (i >= (currentPage+1)*8){
+          break;
+        }else {
+          String name = result.getString("name");
+          name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+          buttonNames[i - currentPage*8].setText(name);
+        }
+        i++;
+      }
+
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    if(currentPage == 0){
+      lastPageButton.setVisible(false);
+    }
   }
 
   /**
@@ -120,13 +149,10 @@ public class ExistingProfileController {
    * @param e Click
    * @throws IOException IOException
    */
-  public void showStats(ActionEvent e) throws IOException {
+  public void goMainMenu(ActionEvent e) throws IOException {
     Button button = (Button) e.getSource();
     Main m = new Main();
     m.changeProfile(button.getText().toLowerCase());
-    System.out.println(button.getText());
-    System.out.println(Main.profile.getGames());
-    System.out.println(Main.profile.getPoints());
     m.changeScene("screens/mainMenu.fxml");
   }
 
@@ -137,11 +163,11 @@ public class ExistingProfileController {
   private void loadProfiles() {
 
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13, button20,
-      button21, button22, button23, button30, button31, button32, button33
+      button00, button01, button02, button03, button10, button11, button12, button13
     };
     String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
     int i = 0;
+    int j = 0;
     try {
       Connection connection = DriverManager.getConnection(jdbcUrl);
       String sql = "SELECT rowid, name FROM profiles";
@@ -149,8 +175,14 @@ public class ExistingProfileController {
       Statement stmt = connection.createStatement();
 
       ResultSet result = stmt.executeQuery(sql);
+      //calculates total number of profiles
+      while (result.next()){
+        j++;
+      }
+      totalPages = j/8+1;
+      result = stmt.executeQuery(sql);
       while (result.next()) {
-        if (i >= 16) {
+        if (i >= 8) {
           nextButton.setVisible(true);
           break;
         }
@@ -167,10 +199,9 @@ public class ExistingProfileController {
 
   private void clear() {
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13, button20,
-      button21, button22, button23, button30, button31, button32, button33
+      button00, button01, button02, button03, button10, button11, button12, button13
     };
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 8; i++) {
       buttonNames[i].setText(" ");
     }
   }

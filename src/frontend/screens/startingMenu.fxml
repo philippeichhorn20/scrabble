@@ -1,38 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.StartingMenuController">
-   <top>
-      <AnchorPane prefHeight="478.0" prefWidth="755.0" BorderPane.alignment="CENTER">
+<HBox prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.StartingMenuController">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
          <children>
-            <ImageView fitHeight="746.0" fitWidth="1103.0" layoutX="2.0">
-               <image>
-                  <Image url="@resources/wooden-bg.jpg" />
-               </image>
-            </ImageView>
-            <Button fx:id="newProfileButton" layoutX="300.0" layoutY="218.0" mnemonicParsing="false" onAction="#createNew" onMouseEntered="#animate" prefHeight="196.0" prefWidth="505.0" style="-fx-background-radius: 20; -fx-border-color: brown; -fx-border-radius: 16; -fx-border-width: 4;" text="Create new Profile">
+            <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;">
+               <children>
+                  <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
+                     <font>
+                        <Font name="Consolas" size="60.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets left="-50.0" right="-50.0" />
+               </VBox.margin>
+            </Pane>
+            <Button fx:id="existProfileButton" mnemonicParsing="false" onAction="#logInto" onMouseEntered="#animate" prefHeight="50.0" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Log into existing Profile" textFill="WHITE">
                <font>
-                  <Font name="Javanese Text" size="50.0" />
+                  <Font name="Consolas Bold" size="20.0" />
                </font>
+               <VBox.margin>
+                  <Insets left="-50.0" right="-50.0" top="50.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Button fx:id="existProfileButton" layoutX="303.0" layoutY="486.0" mnemonicParsing="false" onAction="#logInto" onMouseEntered="#animate" prefHeight="192.0" prefWidth="516.0" style="-fx-background-radius: 20; -fx-border-radius: 16; -fx-border-color: brown; -fx-border-width: 4;" text="Log into existing Profile">
+            <Button fx:id="newProfileButton" mnemonicParsing="false" onAction="#createNew" onMouseEntered="#animate" prefHeight="50.0" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Create new Profile" textFill="WHITE">
                <font>
-                  <Font name="Javanese Text" size="43.0" />
+                  <Font name="Consolas Bold" size="20.0" />
                </font>
+               <VBox.margin>
+                  <Insets left="-50.0" right="-50.0" top="50.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Text boundsType="VISUAL" fill="#45da56" layoutX="224.0" layoutY="82.0" stroke="#4d7580" strokeType="OUTSIDE" style="-fx-font-size: 180;" text="Scrabble" textOrigin="CENTER" wrappingWidth="730.171875">
-               <font>
-                  <Font name="Javanese Text" size="34.0" />
-               </font>
-            </Text>
          </children>
-      </AnchorPane>
-   </top>
-</BorderPane>
+         <padding>
+            <Insets left="50.0" right="50.0" />
+         </padding>
+      </VBox>
+      <ImageView fitHeight="720.0" fitWidth="700.0">
+         <image>
+            <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</HBox>

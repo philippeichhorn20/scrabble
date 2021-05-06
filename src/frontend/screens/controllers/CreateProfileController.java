@@ -80,7 +80,6 @@ public class CreateProfileController {
       ResultSet result = stmt.executeQuery(sql);
       while (result.next()) {
         if (name.equals(result.getString("name"))) {
-          nameText.setVisible(false);
           wrongText.setText("A profile with that name already exists!");
           new ZoomIn(wrongText).play();
           noNewNameAdded = false;
