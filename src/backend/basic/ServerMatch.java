@@ -1,5 +1,8 @@
 package backend.basic;
 
+import backend.network.messages.game.LobbyInformationMessage;
+import backend.network.server.Server;
+
 /*
 @author peichhor
 @version 1.0
@@ -11,22 +14,22 @@ to represent the actions of the current turn
 points at the player who's turn it is
 @param roundNum number of the current round
  */
-public class Match {
+public class ServerMatch {
 
-  private final TileBag tileBag;
-  private final int round = 0;
-  private Player[] players = new Player[4];
-  private ScrabbleBoard scrabbleBoard;
-  private int currentPlayer = 0;
+  private static final TileBag tileBag = new TileBag();
+  private static final int round = 0;
+  private static Player[] players = new Player[4];
+  private static ScrabbleBoard scrabbleBoard;
+  private static int currentPlayer = 0;
+  private static Server server;
 
   /*
   this constructor creates a game with a default scrabbnleboard, tilebag and adds only the
   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
    */
-  public Match(Player playerHost) {
+  public ServerMatch(Player playerHost) {
     ScrabbleBoard.setUpScrabbleBoard();
     scrabbleBoard = new ScrabbleBoard();
-    tileBag = new TileBag();
     players[0] = playerHost;
   }
 
@@ -34,17 +37,28 @@ public class Match {
   this constructor creates a game with a default scrabbnleboard, tilebag and adds all the
    players to the game. Players cannot be added with addPlayer() afterwords
    */
-  public Match(Player[] players) {
+  public ServerMatch(Player[] players) {
     ScrabbleBoard.setUpScrabbleBoard();
-    tileBag = new TileBag();
-    this.players = players;
+    ServerMatch.players = players;
   }
 
-
   /*
-  @method runs constantly and manages the timer of the player of the current turn
-   */
-  public void checkTimer() {
+    @method checks if Tiles are left in the bag
+     */
+  public static boolean checkTileBag() {
+    return tileBag.size() > 0;
+  }
+
+  public static int getRound() {
+    return round;
+  }
+
+  public static TileBag getTileBag() {
+    return tileBag;
+  }
+
+  public static Player getCurrentPlayer() {
+    return players[currentPlayer];
   }
 
   /*
@@ -64,23 +78,45 @@ public class Match {
     ScrabbleBoard.nextTurn();
   }
 
+  public static Player[] getPlayers() {
+    return players;
+  }
+
   /*
-    @method checks if Tiles are left in the bag
-     */
-  public boolean checkTileBag() {
-    return tileBag.size() > 0;
+  match logic:
+  0. Send player profiles to all
+  0,5. buildRacks, send startGame message
+  1. Send out message to player whos turn it is
+  2a. Player places tiles -> submits tiles -> player receives info if input is valid -> either: back to 2 or: update leaderboard and nextPlayer()
+  2b. Draws new Tiles -> nextPlayer()
+  2b. does Nothing -> nextPlayer()
+  3. again 1.
+   */
+/*
+adds a server to the match
+ */
+  public void addServer(Server s) {
+    server = s;
   }
 
-  public int getRound() {
-    return this.round;
+  /*
+  send current player profiles to All (occures when somebody joins or leaves)
+   */
+  public void sendOutPlayerInfos() {
+    server.sendToAll(new LobbyInformationMessage("Host"));
   }
 
-  public TileBag getTileBag() {
-    return this.tileBag;
+  /*
+  send Game start information
+   */
+  public void itIsYourTurn() {
   }
 
-  public Player getCurrentPlayer() {
-    return players[currentPlayer];
+  /*
+  @method runs constantly and manages the timer of the player of the current turn
+   */
+  public void checkTimer() {
+
   }
 
   /*
