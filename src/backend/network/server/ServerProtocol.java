@@ -19,10 +19,10 @@ import java.net.Socket;
 * @author nilschae
 * @version 1.0 */
 public class ServerProtocol extends Thread{
-  private Socket socket;
+  private final Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
-  private Server server;
+  private final Server server;
   private String clientName;
   private boolean running = true;
 
@@ -108,15 +108,18 @@ public class ServerProtocol extends Thread{
           case PLACE_TILES:
             //TODO At game controller there must be a methode which add tiles to the board
             // and return the points made
-            SendPointsMessage sendPointsMessage = new SendPointsMessage("server"); //points need to be added
+            SendPointsMessage sendPointsMessage = new SendPointsMessage(
+                "server"); //points need to be added
             sendToClient(sendPointsMessage);
             break;
 
           case SHUFFLE_TILES:
             //TODO At game controller there must be a methode which shuffle tiles
             // and return the shuffled tiles
-            Tile[] shuffledTiles = null;
-            ReceiveShuffleTilesMessage receiveShuffleTilesMessage = new ReceiveShuffleTilesMessage("server", shuffledTiles);
+            Tile[] shuffledTilesBefore = null;
+            Tile[] shuffledTilesAfter = null;
+            ReceiveShuffleTilesMessage receiveShuffleTilesMessage = new ReceiveShuffleTilesMessage(
+                "server", shuffledTilesBefore, shuffledTilesAfter);
             break;
 
           case SEND_POINTS:

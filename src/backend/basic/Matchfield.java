@@ -106,7 +106,7 @@ public class Matchfield {
 
   public void setPremiumstatus(Premiumstatus status) {
     this.isPremium = status;
-    this.assambleBackgroundColour();
+   // this.assambleBackgroundColour();
   }
 
   public void setButton(Button button) {

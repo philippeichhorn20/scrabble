@@ -48,11 +48,7 @@ public class Player {
 
   /*check if the timer is out of time. When timer out of time it return false, when time is left it returns true*/
   public boolean checkTimer() {
-    if (this.timer > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.timer > 0;
   }
 
   /*A methode which fills the rack bag to 7 tiles*/
@@ -81,6 +77,22 @@ public class Player {
       }
     }
     return null;
+  }
+
+  /*
+  this methode updates the tile rack. It looks weather a Tile was requested to be exchanged.
+  If so it replaces it with a new Tile.
+  This method is stable concerning tilesBefore and the rack. i.e.: if Tile a is in front of Tile b
+  in rack, it expects Tile a to be in front of Tile b in tilesBefore as well.
+   */
+  public void updateRack(Tile[] tilesBefore, Tile[] tilesAfter) {
+    int i = 0;
+    for (int x = 0; x < this.rack.length; x++) {
+      if (this.rack[x] == tilesBefore[i]) {
+        this.rack[x] = tilesAfter[i];
+        i++;
+      }
+    }
   }
 
   public Tile getTileOnPositionInRack(int pos) {

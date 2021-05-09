@@ -22,6 +22,7 @@ public class ServerMatch {
   private static ScrabbleBoard scrabbleBoard;
   private static int currentPlayer = 0;
   private static Server server;
+  private static Thread timer;
 
   /*
   this constructor creates a game with a default scrabbnleboard, tilebag and adds only the

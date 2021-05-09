@@ -41,7 +41,7 @@ public class CreateProfileController {
     check();
     if (noNewNameAdded) {
       String newName = username.getText();
-      newName = newName.strip();
+      newName = newName.trim();
       newName = newName.toLowerCase();
       try {
         Connection connection = DriverManager.getConnection(jdbcUrl);
@@ -70,7 +70,7 @@ public class CreateProfileController {
   /** Checks if the profile with the given name already exists in the database. */
   private void check() {
     String name = username.getText();
-    name = name.strip();
+    name = name.trim();
     name = name.toLowerCase();
     noNewNameAdded = true;
     try {

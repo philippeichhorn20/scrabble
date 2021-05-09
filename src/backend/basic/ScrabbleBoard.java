@@ -22,18 +22,17 @@ import java.util.ArrayList;
 
 class ScrabbleBoard {
 
+  private static final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
   static Matchfield[][] scrabbleBoard = new Matchfield[15][15];
   static ArrayList<backend.basic.Tile> newTilesOfCurrentMove = new ArrayList<>();
   static ArrayList<ArrayList<backend.basic.Tile>> editedWords = new ArrayList<>();
-  private static final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
 
   /*
    * this function creates an empty Scrabble Board with all the right Matchfields
    * TODO: add the rest of the Premiumstatuses
    */
 
-
-  static void setUpScrabbleBoard() {
+  public static void setUpScrabbleBoard() {
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
         scrabbleBoard[x][y] = new Matchfield(x, y, Premiumstatus.NOPREMIUM);
@@ -55,7 +54,7 @@ class ScrabbleBoard {
   }
 
 
-  static void printScrabbleBoard() {
+  public static void printScrabbleBoard() {
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
         if (scrabbleBoard[x][y].hasTile()) {
@@ -87,7 +86,7 @@ class ScrabbleBoard {
 
   }
 
-  static void printEditedWords() {
+  public static void printEditedWords() {
     for (int i = 0; i < editedWords.size(); i++) {
       ArrayList<Tile> word = editedWords.get(i);
       System.out.print("wordsize " + word.size() + ": ");
@@ -100,7 +99,7 @@ class ScrabbleBoard {
   }
 
 
-  static Tile getLeadingTileVertical(Tile tile) {
+  public static Tile getLeadingTileVertical(Tile tile) {
     while (tile.getY() > 0 && scrabbleBoard[tile.getX()][tile.getY() - 1].hasTile()) {
       tile = scrabbleBoard[tile.getX()][tile.getY() - 1].getTile();
     }
@@ -115,7 +114,7 @@ class ScrabbleBoard {
     return tile;
   }
 
-  static ArrayList<Tile> getWordFromLeadingTileVertical(Tile tile) {
+  public static ArrayList<Tile> getWordFromLeadingTileVertical(Tile tile) {
     ArrayList<Tile> word = new ArrayList<Tile>();
 
     word.add(tile);
@@ -146,7 +145,8 @@ class ScrabbleBoard {
   /*
   checks all the current words and returns the word+descriptipn of the word
    */
-  static String[] wordCheck() {
+  public static String[][] wordCheck() {
+    String[][] result = new String[2][];
     String[] words = getEditedWordsAsString(false);
     String[] explanations = new String[words.length];
     for (int i = 0; i < words.length; i++) {
@@ -155,13 +155,22 @@ class ScrabbleBoard {
         System.out.println(explanations[i]);
       }
     }
-    return explanations;
+    result[0] = words;
+    result[1] = explanations;
+    return result;
+  }
+
+  public static boolean inputValudation(String[][] result) {
+    for (int x = 0; x < result[0].length; x++) {
+      return result[1][x] != "";
+    }
+    return true;
   }
 
   /* this functions simulates the placing of a single tile on the board.
   It also stores it into the temporary list that keeps track of the current move
    */
-  static void placeTile(backend.basic.Tile newTile, int x, int y) {
+  public static void placeTile(backend.basic.Tile newTile, int x, int y) {
     ScrabbleBoard.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
     scrabbleBoard[x][y].setTile(newTile);
@@ -173,7 +182,7 @@ class ScrabbleBoard {
   this function removes the Tile from the Board. It is only possible to remove it,
   if it was placed in the current turn. It removes true if that is the case and false if it was not
    */
-  static boolean removeTile(final backend.basic.Tile tile) {
+  public static boolean removeTile(final backend.basic.Tile tile) {
     if (ScrabbleBoard.newTilesOfCurrentMove.contains(tile)) {
       ScrabbleBoard.newTilesOfCurrentMove.remove(tile);
       return true;
@@ -182,7 +191,7 @@ class ScrabbleBoard {
     }
   }
 
-  static boolean isInEditedTiles(Tile tile) {
+  public static boolean isInEditedTiles(Tile tile) {
     for (int i = 0; i < editedWords.size(); i++) {
       int x = tile.getX();
       int y = tile.getY();
@@ -206,7 +215,7 @@ class ScrabbleBoard {
   /*
   finishes its turn and submits all the words
    */
-  static void submitTiles() {
+  public static String[][] submitTiles() {
     for (int i = 0; i < ScrabbleBoard.newTilesOfCurrentMove.size(); i++) {
       if (getWordFromLeadingTileHorizontal(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))
           .size() > 1 && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
@@ -219,13 +228,13 @@ class ScrabbleBoard {
             getWordFromLeadingTileVertical(getLeadingTileVertical(newTilesOfCurrentMove.get(i))));
       }
     }
-
+    return wordCheck();
   }
 
   /*
   this method calculates the points of the current move
    */
-  static int getPoints() {
+  public static int getPoints() {
     int points = 0;
     for (int wordNum = 0; wordNum < editedWords.size(); wordNum++) {
       int pointsOfWord = 0;

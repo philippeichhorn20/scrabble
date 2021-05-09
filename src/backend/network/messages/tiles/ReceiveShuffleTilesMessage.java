@@ -5,21 +5,33 @@ import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
 /*Message which gives the player the shuffeld tiles
-* @author nilschae
-* @version 1.0*/
+ * @author nilschae
+ * @version 1.0*/
 public class ReceiveShuffleTilesMessage extends Message {
-  Tile[] tiles;
 
-  public ReceiveShuffleTilesMessage(String from, Tile[] shuffledTiles) {
+  Tile[] tilesBefore;
+  Tile[] tilesAfter;
+
+  public ReceiveShuffleTilesMessage(String from, Tile[] shuffledTilesBefor,
+      Tile[] shuffledTilesAfter) {
     super(MessageType.RECEIVE_SHUFFLE_TILES, from);
-    this.tiles = shuffledTiles;
+    this.tilesBefore = shuffledTilesBefor;
+    this.tilesAfter = shuffledTilesBefor;
   }
 
-  public Tile[] getTiles() {
-    return this.tiles;
+  public Tile[] getTilesBefore() {
+    return this.tilesBefore;
   }
 
-  public void setTiles(Tile[] shuffledTiles) {
-    this.tiles = shuffledTiles;
+  public void setTilesBefore(Tile[] shuffledTiles) {
+    this.tilesBefore = shuffledTiles;
+  }
+
+  public Tile[] getTilesAfter() {
+    return this.tilesAfter;
+  }
+
+  public void setTilesAfter(Tile[] shuffledTiles) {
+    this.tilesAfter = shuffledTiles;
   }
 }

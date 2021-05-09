@@ -20,7 +20,7 @@ public class WordCheckDB {
   if not it returns null
   The function ignores weather the word is in small or capital letters to reduce errors
    */
-  static boolean findWord(String word) {
+  static String findWord(String word) {
     try {
       Class.forName("org.sqlite.JDBC");
     } catch (final ClassNotFoundException e) {
@@ -31,11 +31,16 @@ public class WordCheckDB {
       word = word.toUpperCase();
       ResultSet rs = stm
           .executeQuery("SELECT description FROM words WHERE (word = '" + word + "');");
-      return rs != null;
+      if (rs.first()) {
+        System.out.println(word + " not found");
+        return "";
+      } else {
+        return rs.getString(0);
+      }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
-    return false;
+    return "";
   }
 
   /*
@@ -50,4 +55,17 @@ public class WordCheckDB {
     return false;
   }
 
+  static void importTextToDB() {
+    try {
+      Class.forName("org.sqlite.JDBC");
+    } catch (final ClassNotFoundException e) {
+      System.out.println(e);
+    }
+    try (Connection conn = DriverManager.getConnection(WordCheckDB.url)) {
+      java.sql.Statement stm = conn.createStatement();
+      stm.executeQuery("CREATE TABLE dictionary(word VARCHAR(255), description VARCHAR(255));");
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+  }
 }
