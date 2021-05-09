@@ -12,11 +12,11 @@ public class ReceiveShuffleTilesMessage extends Message {
   Tile[] tilesBefore;
   Tile[] tilesAfter;
 
-  public ReceiveShuffleTilesMessage(String from, Tile[] shuffledTilesBefor,
+  public ReceiveShuffleTilesMessage(String from, Tile[] shuffledTilesBefore,
       Tile[] shuffledTilesAfter) {
     super(MessageType.RECEIVE_SHUFFLE_TILES, from);
-    this.tilesBefore = shuffledTilesBefor;
-    this.tilesAfter = shuffledTilesBefor;
+    this.tilesBefore = shuffledTilesBefore;
+    this.tilesAfter = shuffledTilesBefore;
   }
 
   public Tile[] getTilesBefore() {

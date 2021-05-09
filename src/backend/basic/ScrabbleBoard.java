@@ -22,17 +22,17 @@ import java.util.ArrayList;
 
 class ScrabbleBoard {
 
-  private static final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
-  static Matchfield[][] scrabbleBoard = new Matchfield[15][15];
-  static ArrayList<backend.basic.Tile> newTilesOfCurrentMove = new ArrayList<>();
-  static ArrayList<ArrayList<backend.basic.Tile>> editedWords = new ArrayList<>();
+  private final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
+  Matchfield[][] scrabbleBoard = new Matchfield[15][15];
+  ArrayList<backend.basic.Tile> newTilesOfCurrentMove = new ArrayList<>();
+  ArrayList<ArrayList<backend.basic.Tile>> editedWords = new ArrayList<>();
 
   /*
    * this function creates an empty Scrabble Board with all the right Matchfields
    * TODO: add the rest of the Premiumstatuses
    */
 
-  public static void setUpScrabbleBoard() {
+  public void setUpScrabbleBoard() {
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
         scrabbleBoard[x][y] = new Matchfield(x, y, Premiumstatus.NOPREMIUM);
@@ -54,7 +54,7 @@ class ScrabbleBoard {
   }
 
 
-  public static void printScrabbleBoard() {
+  public void printScrabbleBoard() {
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
         if (scrabbleBoard[x][y].hasTile()) {
@@ -86,7 +86,7 @@ class ScrabbleBoard {
 
   }
 
-  public static void printEditedWords() {
+  public void printEditedWords() {
     for (int i = 0; i < editedWords.size(); i++) {
       ArrayList<Tile> word = editedWords.get(i);
       System.out.print("wordsize " + word.size() + ": ");
@@ -99,14 +99,14 @@ class ScrabbleBoard {
   }
 
 
-  public static Tile getLeadingTileVertical(Tile tile) {
+  public Tile getLeadingTileVertical(Tile tile) {
     while (tile.getY() > 0 && scrabbleBoard[tile.getX()][tile.getY() - 1].hasTile()) {
       tile = scrabbleBoard[tile.getX()][tile.getY() - 1].getTile();
     }
     return tile;
   }
 
-  static Tile getLeadingTileHorizontal(Tile tile) {
+  Tile getLeadingTileHorizontal(Tile tile) {
     while (tile.getX() > 0 && scrabbleBoard[tile.getX() - 1][tile.getY()].hasTile()) {
       tile = scrabbleBoard[tile.getX() - 1][tile.getY()].getTile();
     }
@@ -114,7 +114,7 @@ class ScrabbleBoard {
     return tile;
   }
 
-  public static ArrayList<Tile> getWordFromLeadingTileVertical(Tile tile) {
+  public ArrayList<Tile> getWordFromLeadingTileVertical(Tile tile) {
     ArrayList<Tile> word = new ArrayList<Tile>();
 
     word.add(tile);
@@ -127,7 +127,7 @@ class ScrabbleBoard {
 
   }
 
-  static ArrayList<Tile> getWordFromLeadingTileHorizontal(Tile tile) {
+  ArrayList<Tile> getWordFromLeadingTileHorizontal(Tile tile) {
     ArrayList<Tile> word = new ArrayList<Tile>();
     word.add(tile);
     while (tile.getX() < 15 && tile.getY() < 15 && scrabbleBoard[tile.getX() + 1][tile.getY()]
@@ -145,7 +145,7 @@ class ScrabbleBoard {
   /*
   checks all the current words and returns the word+descriptipn of the word
    */
-  public static String[][] wordCheck() {
+  public String[][] wordCheck() {
     String[][] result = new String[2][];
     String[] words = getEditedWordsAsString(false);
     String[] explanations = new String[words.length];
@@ -160,7 +160,7 @@ class ScrabbleBoard {
     return result;
   }
 
-  public static boolean inputValudation(String[][] result) {
+  public boolean inputValudation(String[][] result) {
     for (int x = 0; x < result[0].length; x++) {
       return result[1][x] != "";
     }
@@ -170,8 +170,8 @@ class ScrabbleBoard {
   /* this functions simulates the placing of a single tile on the board.
   It also stores it into the temporary list that keeps track of the current move
    */
-  public static void placeTile(backend.basic.Tile newTile, int x, int y) {
-    ScrabbleBoard.newTilesOfCurrentMove.add(newTile);
+  public void placeTile(backend.basic.Tile newTile, int x, int y) {
+    this.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
     scrabbleBoard[x][y].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
@@ -182,16 +182,16 @@ class ScrabbleBoard {
   this function removes the Tile from the Board. It is only possible to remove it,
   if it was placed in the current turn. It removes true if that is the case and false if it was not
    */
-  public static boolean removeTile(final backend.basic.Tile tile) {
-    if (ScrabbleBoard.newTilesOfCurrentMove.contains(tile)) {
-      ScrabbleBoard.newTilesOfCurrentMove.remove(tile);
+  public boolean removeTile(final backend.basic.Tile tile) {
+    if (newTilesOfCurrentMove.contains(tile)) {
+      newTilesOfCurrentMove.remove(tile);
       return true;
     } else {
       return false;
     }
   }
 
-  public static boolean isInEditedTiles(Tile tile) {
+  public boolean isInEditedTiles(Tile tile) {
     for (int i = 0; i < editedWords.size(); i++) {
       int x = tile.getX();
       int y = tile.getY();
@@ -215,8 +215,8 @@ class ScrabbleBoard {
   /*
   finishes its turn and submits all the words
    */
-  public static String[][] submitTiles() {
-    for (int i = 0; i < ScrabbleBoard.newTilesOfCurrentMove.size(); i++) {
+  public String[][] submitTiles() {
+    for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
       if (getWordFromLeadingTileHorizontal(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))
           .size() > 1 && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
         editedWords.add(getWordFromLeadingTileHorizontal(
@@ -234,7 +234,7 @@ class ScrabbleBoard {
   /*
   this method calculates the points of the current move
    */
-  public static int getPoints() {
+  public int getPoints() {
     int points = 0;
     for (int wordNum = 0; wordNum < editedWords.size(); wordNum++) {
       int pointsOfWord = 0;
@@ -277,12 +277,12 @@ class ScrabbleBoard {
   /*
   this method clears the fields that are only tracking the information of the current move
    */
-  public static void nextTurn() {
+  public void nextTurn() {
     editedWords.clear();
     newTilesOfCurrentMove.clear();
   }
 
-  public static String[] getEditedWordsAsString(boolean printIt) {
+  public String[] getEditedWordsAsString(boolean printIt) {
     String[] words = new String[editedWords.size()];
     for (int x = 0; x < words.length; x++) {
       words[x] = "";
@@ -296,7 +296,7 @@ class ScrabbleBoard {
     return words;
   }
 
-  public static ArrayList<Tile> getTilesOnScrabbleBoard() {
+  public ArrayList<Tile> getTilesOnScrabbleBoard() {
     return tilesOnScrabbleBoard;
   }
 }

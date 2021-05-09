@@ -31,7 +31,7 @@ public class ClientMatch {
 
 
   public void placeTile(Tile tile, int x, int y) throws IOException {
-    ScrabbleBoard.placeTile(tile, x, y);
+    scrabbleBoard.placeTile(tile, x, y);
 
     protocol.sendToServer(new PlaceTilesMessage(from, tile));
 
@@ -46,18 +46,18 @@ public class ClientMatch {
   }
 
   public String submitTilesOfClient() throws IOException {
-    String[][] result = ScrabbleBoard.submitTiles();
-    boolean isValid = ScrabbleBoard.inputValudation(result);
+    String[][] result = scrabbleBoard.submitTiles();
+    boolean isValid = scrabbleBoard.inputValudation(result);
     String resultString = "";
     if (isValid) {
       resultString += "the following valid words were added:\n";
       for (int i = 0; i < result[0].length; i++) {
         resultString += result[0][i] + ", explanation: " + result[1][i] + "\n";
       }
-      this.points = ScrabbleBoard.getPoints();
-      resultString += "they were worth a whopping" + ScrabbleBoard.getPoints()
+      this.points = scrabbleBoard.getPoints();
+      resultString += "they were worth a whopping" + scrabbleBoard.getPoints()
           + " ! You are now up to " + this.points + " points.";
-      ScrabbleBoard.nextTurn();
+      scrabbleBoard.nextTurn();
       protocol.sendToServer(new GameTurnMessage(from));
     } else {
       resultString += "what the heck do you mean by ";

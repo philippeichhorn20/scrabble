@@ -1,7 +1,6 @@
 package backend.network.messages.game;
 
 import backend.basic.Player;
-import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
@@ -14,9 +13,9 @@ public class LobbyInformationMessage extends Message {
 
   Player[] players;
 
-  public LobbyInformationMessage(String from) {
+  public LobbyInformationMessage(String from, Player[] players) {
     super(MessageType.GAME_INFO, from);
-    players = ServerMatch.getPlayers();
+    this.players = players;
   }
 
 }

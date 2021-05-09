@@ -16,50 +16,73 @@ points at the player who's turn it is
  */
 public class ServerMatch {
 
-  private static final TileBag tileBag = new TileBag();
-  private static final int round = 0;
-  private static Player[] players = new Player[4];
-  private static ScrabbleBoard scrabbleBoard;
-  private static int currentPlayer = 0;
-  private static Server server;
-  private static Thread timer;
+  private final TileBag tileBag = new TileBag();
+  private final int round = 0;
+  private Player[] players = new Player[4];
+  private ScrabbleBoard scrabbleBoard;
+  private int currentPlayer = 0;
+  private Server server;
+  private Timer timer;
 
   /*
   this constructor creates a game with a default scrabbnleboard, tilebag and adds only the
   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
    */
   public ServerMatch(Player playerHost) {
-    ScrabbleBoard.setUpScrabbleBoard();
     scrabbleBoard = new ScrabbleBoard();
+    scrabbleBoard.setUpScrabbleBoard();
     players[0] = playerHost;
+    timer = new Timer();
+    server = new Server();
+    Runnable r = new Runnable() {
+      public void run() {
+        server.listen();
+      }
+    };
+    new Thread(r).start();
   }
+
 
   /*
   this constructor creates a game with a default scrabbnleboard, tilebag and adds all the
    players to the game. Players cannot be added with addPlayer() afterwords
    */
   public ServerMatch(Player[] players) {
-    ScrabbleBoard.setUpScrabbleBoard();
-    ServerMatch.players = players;
+    scrabbleBoard.setUpScrabbleBoard();
+    this.players = players;
   }
 
   /*
     @method checks if Tiles are left in the bag
      */
-  public static boolean checkTileBag() {
+  public boolean checkTileBag() {
     return tileBag.size() > 0;
   }
 
-  public static int getRound() {
+  public int getRound() {
     return round;
   }
 
-  public static TileBag getTileBag() {
+  public TileBag getTileBag() {
     return tileBag;
   }
 
-  public static Player getCurrentPlayer() {
+  public Player getCurrentPlayer() {
     return players[currentPlayer];
+  }
+
+  /*
+  @method stars the match. It triggers the start of the thread, as well as different methods
+   */
+  public void startMatch() {
+    timer.start();
+  }
+
+  /*
+@method ends the match. It triggers the end of the thread, as well as different methods
+ */
+  public void endMatch() {
+    timer.stopTimer();
   }
 
   /*
@@ -76,10 +99,10 @@ public class ServerMatch {
     if (players[nextPlayer].checkTimer()) {
       currentPlayer = nextPlayer;
     }
-    ScrabbleBoard.nextTurn();
+    scrabbleBoard.nextTurn();
   }
 
-  public static Player[] getPlayers() {
+  public Player[] getPlayers() {
     return players;
   }
 
@@ -103,8 +126,8 @@ adds a server to the match
   /*
   send current player profiles to All (occures when somebody joins or leaves)
    */
-  public void sendOutPlayerInfos() {
-    server.sendToAll(new LobbyInformationMessage("Host"));
+  public void sendOutPlayerInfos(Player[] players) {
+    server.sendToAll(new LobbyInformationMessage("Host", players));
   }
 
   /*
