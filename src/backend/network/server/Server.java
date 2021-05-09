@@ -25,12 +25,6 @@ public class Server {
 
   private HashMap<Integer, String> objecIDMap = new HashMap<>(); // map with owners of object ids
 
-  /*Hashsets which hold object to add, remove and edit*/
-  private HashSet<Integer> objAddByHost = new HashSet<>();
-  private HashSet<Integer> objRemByHost = new HashSet<>();
-  private HashSet<Integer> objEdByHost = new HashSet<>();
-
-
   /*
   * remove clients together with the matching protocol
   * @param clientName the name of the client who gets removed*/
@@ -67,51 +61,6 @@ public class Server {
 
   public synchronized String getOwner(Integer id){
     return objecIDMap.get(id);
-  }
-
-  /* checks whether the host claimed to add object */
-  synchronized boolean authAddByHostP(Integer id){
-    return this.objRemByHost.contains(id);
-  }
-
-  /* checks whether the host claimed to remove object */
-  synchronized boolean authRemByHostP(Integer id){
-    return this.objRemByHost.contains(id);
-  }
-
-  /* checks whether the host claimed to edit object */
-  synchronized boolean authEditByHostP(Integer id){
-    return this.objEdByHost.contains(id);
-  }
-
-  /* adds id to the id set containing all ids from server */
-  public synchronized void addAuthIdAdd(Integer id){
-    this.objAddByHost.add(id);
-  }
-
-  /*removes id from the id set containing all ids from server*/
-  public synchronized void removeAuthIdAdd(Integer id){
-    this.objAddByHost.remove(id);
-  }
-
-  /*adds id of the object which have to be removed by host*/
-  public synchronized void addAuthIdRemove(Integer id){
-    this.objRemByHost.add(id);
-  }
-
-  /*removes id of the object which have to be removed by host*/
-  public synchronized void removeAuthIdRemove(Integer id){
-    this.objRemByHost.remove(id);
-  }
-
-  /*adds id of the object which have to be edited by host*/
-  public synchronized void addAuthIdEdit(Integer id){
-    this.objEdByHost.add(id);
-  }
-
-  /*adds id of the object which have to be edited by host*/
-  public synchronized void removeAuthIdEdit(Integer id){
-    this.objEdByHost.remove(id);
   }
 
   // setup server +  listen to connection requests from clients
