@@ -11,6 +11,7 @@ import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -31,37 +32,46 @@ public class SettingsScreenController {
 	private Button backButton;
 	@FXML
 	private static Slider volumeKey;
+	@FXML
+	private RadioButton radioButton;
 
 	public void goBack(ActionEvent e) throws IOException {
 		Main m = new Main();
 		m.changeScene("screens/mainMenu.fxml");
 	}
 
-	//The user should be able to change the volume from here
-	public static void music(String[] args) throws URISyntaxException{
-	    
-	    String path = "/music/hero.mp3";
-	    Media media = new Media(path);
-	    MediaPlayer player = new MediaPlayer(media);
-	       
-	    media = new Media(new File(path).toURI().toString());
+	// The user should be able to change the volume from here
+	public static void music(String[] args) throws URISyntaxException {
+
+		String path = "/music/hero.mp3";
+		Media media = new Media(path);
+		MediaPlayer player = new MediaPlayer(media);
+
+		media = new Media(new File(path).toURI().toString());
+		player.setVolume(40);
 		player.play();
 		player.setAutoPlay(true);
-				
-		
-		volumeKey.setValue(player.getVolume()*100);
+
+		volumeKey.setValue(player.getVolume() * 100);
 		volumeKey.valueProperty().addListener(new InvalidationListener() {
-			
+
 			@Override
 			public void invalidated(Observable observable) {
-				
+
 				player.setVolume(volumeKey.getValue() / 100);
 			}
 		});
-	    
-		// RadioButton to be implemented for music on/off
-		
-		
-		//Dictionaries to be changed
+
+		RadioButton radioButton = new RadioButton("Music On/Off");
+
+		radioButton.setOnAction(event -> {
+			if (radioButton.isSelected()) {
+				player.pause();
+			} else {
+				player.play();
+			}
+		});
+
+		// Dictionaries to be changed/added
 	}
 }
