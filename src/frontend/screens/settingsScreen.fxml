@@ -23,7 +23,7 @@
             <Font size="51.0" />
          </font>
       </Label>
-      <Label layoutX="271.0" layoutY="258.0" text="Volume">
+      <Label layoutX="246.0" layoutY="190.0" text="Volume">
          <font>
             <Font size="36.0" />
          </font>
@@ -31,7 +31,7 @@
             <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
          </effect>
       </Label>
-      <Slider fx:id="volumeKey" layoutX="430.0" layoutY="263.0" onMouseReleased="#music" prefHeight="43.0" prefWidth="293.0" />
+      <Slider fx:id="volumeKey" layoutX="437.0" layoutY="195.0" onMouseReleased="#music" prefHeight="43.0" prefWidth="293.0" />
       <Button fx:id="backButton" layoutX="969.0" layoutY="673.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
          <font>
             <Font name="HoloLens MDL2 Assets" size="19.0" />
@@ -40,7 +40,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="286.0" layoutY="372.0" text="Music">
+      <Label layoutX="261.0" layoutY="299.0" text="Music">
          <font>
             <Font size="36.0" />
          </font>
@@ -48,10 +48,18 @@
             <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
          </effect>
       </Label>
-      <RadioButton fx:id="radioButton" layoutX="446.0" layoutY="385.0" mnemonicParsing="false" text="On/Off">
+      <RadioButton fx:id="radioButton" layoutX="438.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#music" prefHeight="27.0" prefWidth="123.0" text="On/Off">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="System Bold" size="21.0" />
          </font>
       </RadioButton>
+      <Label layoutX="179.0" layoutY="395.0" text="Dictionary Used:">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <effect>
+            <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
+         </effect>
+      </Label>
    </children>
 </AnchorPane>
