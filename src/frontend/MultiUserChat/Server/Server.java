@@ -1,4 +1,4 @@
-package frontEnd.MultiUserChat.Server;
+package frontend.MultiUserChat.Server;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
