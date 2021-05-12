@@ -1,15 +1,14 @@
 package frontend.screens.controllers;
 
-import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.w3c.dom.Text;
-
 import frontend.Main;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /*
@@ -26,7 +25,14 @@ public class RuleScreenController {
 		Main m = new Main();
 		m.changeScene("screens/gameScreen.fxml");
 	}	
- 
 
+	@FXML TextFlow rulesTextFlow;  
 	
+	// gets the text from here and adds it to the RuleScreen
+	public void initialize(URL url, ResourceBundle rb) {
+    Text text = new Text();
+    rulesTextFlow.getChildren().add(text);
+    
+
+	}
 }
