@@ -4,7 +4,10 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
-
+/*
+ * @author vivanova
+ * @version 1.0
+ */
 public class Server {
 
 

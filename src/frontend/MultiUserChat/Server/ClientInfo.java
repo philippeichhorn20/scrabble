@@ -1,7 +1,10 @@
 package frontend.MultiUserChat.Server;
 
 import java.net.InetAddress;
-
+/*
+ * @author vivanova
+ * @version 1.0
+ */
 /* 
  * Gives information about all the connected clients. 
  */
