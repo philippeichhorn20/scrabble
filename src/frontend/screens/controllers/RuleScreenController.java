@@ -1,6 +1,7 @@
 package frontend.screens.controllers;
 
 import java.awt.event.ActionEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,7 +13,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /*
-    TODO:
+ * @author vivanova
+ * @version 1.0
+ */
+/*
+   
     This is a controller for the rules screen. Here the user is able to get to know the rules of the game.
     
     There is a back button included, that leads to back the game. 

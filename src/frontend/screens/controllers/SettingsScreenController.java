@@ -1,36 +1,67 @@
 package frontend.screens.controllers;
 
 import frontend.Main;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /*
-   TODO:
+ * @author vivanova
+ * @version 1.0
+ */
+
+/*
    This is an empty controller for the settings screen. Here the user should be able to change multiple settings concerning the game.
    (Ideas: sound, different backgrounds, dictionary used)
+   
+   Till now music and volume key implemented. !!!DICTIONARIES TO BE ADDED!!
 */
 public class SettingsScreenController {
-  @FXML private Button backButton;
+	@FXML
+	private Button backButton;
+	@FXML
+	private static Slider volumeKey;
 
-  public void goBack(ActionEvent e) throws IOException {
-    Main m = new Main();
-    m.changeScene("screens/mainMenu.fxml");
-  }
-  
-  public static void main(String[] args){
-	    MediaPlayer player = new MediaPlayer( new Media(uriString));
-	    player.play();
-	    Media media = null;
-	    try {
-	      media = new Media(getClass().getResource("/music/hero.mp3").toURI().toString());
-	    } catch (URISyntaxException e) {
-	      e.printStackTrace();
-	    } 
+	public void goBack(ActionEvent e) throws IOException {
+		Main m = new Main();
+		m.changeScene("screens/mainMenu.fxml");
+	}
+
+	//The user should be able to change the volume from here
+	public static void music(String[] args) throws URISyntaxException{
+	    
+	    String path = "/music/hero.mp3";
+	    Media media = new Media(path);
+	    MediaPlayer player = new MediaPlayer(media);
+	       
+	    media = new Media(new File(path).toURI().toString());
+		player.play();
+		player.setAutoPlay(true);
+				
+		
+		volumeKey.setValue(player.getVolume()*100);
+		volumeKey.valueProperty().addListener(new InvalidationListener() {
+			
+			@Override
+			public void invalidated(Observable observable) {
+				
+				player.setVolume(volumeKey.getValue() / 100);
+			}
+		});
+	    
+		// RadioButton to be implemented for music on/off
+		
+		
+		//Dictionaries to be changed
 	}
 }
