@@ -3,6 +3,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
@@ -10,14 +11,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SettingsScreenController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SettingsScreenController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0" layoutX="-2.0" layoutY="-1.0">
          <image>
             <Image url="@resources/wooden-bg.jpg" />
          </image>
       </ImageView>
-      <Label layoutX="486.0" layoutY="79.0" text="Settings" textFill="#30fd02">
+      <Label layoutX="401.0" layoutY="77.0" text="Settings" textFill="#30fd02">
          <font>
             <Font size="51.0" />
          </font>
@@ -30,7 +31,7 @@
             <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
          </effect>
       </Label>
-      <Slider layoutX="430.0" layoutY="263.0" prefHeight="43.0" prefWidth="293.0" />
+      <Slider fx:id="VolumeKey" layoutX="430.0" layoutY="263.0" prefHeight="43.0" prefWidth="293.0" />
       <Button fx:id="backButton" layoutX="969.0" layoutY="673.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
          <font>
             <Font name="HoloLens MDL2 Assets" size="19.0" />
@@ -39,5 +40,18 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <Label layoutX="286.0" layoutY="372.0" text="Music">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <effect>
+            <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
+         </effect>
+      </Label>
+      <RadioButton fx:id="RadioButton" layoutX="446.0" layoutY="385.0" mnemonicParsing="false" text="On/Off">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </RadioButton>
    </children>
 </AnchorPane>
