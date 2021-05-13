@@ -16,11 +16,11 @@ public class GetNewTilesMessage extends Message {
     super(MessageType.GET_NEW_TILES, from);
   }
 
-  public Tile[] getTiles(){
+  public Tile[] getTiles() {
     return this.tiles;
   }
 
-  public void setTiles(Tile[] newTiles){
-    this.tiles=newTiles;
+  public void setTiles(Tile[] newTiles) {
+    this.tiles = newTiles;
   }
 }
