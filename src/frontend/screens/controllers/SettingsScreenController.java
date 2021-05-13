@@ -5,7 +5,6 @@ import frontend.Main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -42,8 +41,8 @@ public class SettingsScreenController {
 
 	// The user should be able to change the volume from here
 	public static void music(String[] args) throws URISyntaxException {
-
-		String path = "/music/hero.mp3";
+		
+		String path = "src\\lib\\music\\Somewhere_Off_Jazz_Street.mp3";
 		Media media = new Media(path);
 		MediaPlayer player = new MediaPlayer(media);
 
@@ -74,4 +73,9 @@ public class SettingsScreenController {
 
 		// Dictionaries to be changed/added
 	}
+	/*public static void main(String[] args) {
+		String basePath = new File("").getAbsolutePath();
+		System.out.println(basePath);
+					
+	}*/
 }
