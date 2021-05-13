@@ -6,6 +6,7 @@ import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
+import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.server.Server;
 import backend.network.server.ServerProtocol;
 import java.io.IOException;
@@ -149,6 +150,36 @@ public class ServerMatch {
     //server.sendToAll(new);
   }
 
+  public void shuffleTilesOfPlayer(String from, Tile[] oldTiles, Tile[] saveTiles) {
+    int playerNum = getPlayersNumber(from);
+    if (playerNum == -1) {
+      System.out.println("Player not found, at shuffel request");
+    } else if (playerNum != currentPlayer) {
+      System.out.println("Wrong plasyer, at shuffel request");
+    } else {
+      if (players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
+        server.sendOnlyTo(from,
+            new ReceiveShuffleTilesMessage("server", players[playerNum].getRack()));
+      } else {
+        System.out.println("couldn't shuffle since bag was empty");
+        server.sendOnlyTo(from,
+            new ReceiveShuffleTilesMessage("server", players[playerNum].getRack()));
+      }
+    }
+  }
+
+  /*
+  @method finds the player with the inputted name. Returns the number of him in the array. If not found, returns -1
+   */
+  public int getPlayersNumber(String name) {
+    for (int x = 0; x < players.length; x++) {
+      if (players[x].name.equals(name)) {
+        return x;
+      }
+    }
+    return -1;
+  }
+
   public void sendTurn() {
     //schikct turn raus
   }
@@ -233,5 +264,29 @@ adds a server to the match
       }
     }
     return false;
+  }
+
+  public ScrabbleBoard getScrabbleBoard() {
+    return scrabbleBoard;
+  }
+
+  public Server getServer() {
+    return server;
+  }
+
+  public void setServer(Server server) {
+    this.server = server;
+  }
+
+  public ServerProtocol getProtocol() {
+    return protocol;
+  }
+
+  public void setProtocol(ServerProtocol protocol) {
+    this.protocol = protocol;
+  }
+
+  public void setCurrentPlayer(int currentPlayer) {
+    this.currentPlayer = currentPlayer;
   }
 }

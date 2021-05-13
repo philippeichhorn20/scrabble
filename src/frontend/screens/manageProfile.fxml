@@ -8,17 +8,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontEnd.screens.controllers.ManageProfileController">
-   <children>
-      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@resources/wooden-bg.jpg" />
-         </image>
-      </ImageView>
-      <Label fx:id="LB_ProfileName" layoutX="53.0" layoutY="32.0" prefHeight="73.0" prefWidth="329.0" text="Profile name:" textFill="#121212">
-         <font>
-            <Font size="50.0" />
-         </font>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1080.0"
+  xmlns="http://javafx.com/javafx/15"
+  fx:controller="frontend.screens.controllers.ManageProfileController">
+  <children>
+    <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@resources/wooden-bg.jpg"/>
+      </image>
+    </ImageView>
+    <Label fx:id="LB_ProfileName" layoutX="53.0" layoutY="32.0" prefHeight="73.0" prefWidth="329.0"
+      text="Profile name:" textFill="#121212">
+      <font>
+        <Font size="50.0"/>
+      </font>
       </Label>
       <Label fx:id="LB_ProfileColor" layoutX="53.0" layoutY="105.0" prefHeight="159.0" prefWidth="563.0" text="Profile color:">
          <font>

@@ -143,14 +143,32 @@ public class Server {
     running = false;
     sendToAll(new ShutDownMessage("Server"));
 
-    if (!serverSocket.isClosed()){
+    if (!serverSocket.isClosed()) {
       try {
         serverSocket.close();
-      } catch (IOException e){
+      } catch (IOException e) {
         e.printStackTrace();
         System.exit(0);
       }
     }
 
   }
+
+
+  public ServerMatch getServerMatch() {
+    return serverMatch;
+  }
+
+  public void setServerMatch(ServerMatch serverMatch) {
+    this.serverMatch = serverMatch;
+  }
+
+  public ServerSocket getServerSocket() {
+    return serverSocket;
+  }
+
+  public void setServerSocket(ServerSocket serverSocket) {
+    this.serverSocket = serverSocket;
+  }
+
 }

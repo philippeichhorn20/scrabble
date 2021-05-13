@@ -11,6 +11,12 @@ import java.util.ArrayList;
 /*
   @peichhor
   this class represents a Player
+
+ @method nextPlayer() sets the current player to the next number, deletes "currentMove" properties from scrabbleboard
+ @method receiveShuffledTiles
+ @method submitTilesOfClient submits the tiles and validates the, informes the player with a string about valid and invalid inputs
+//TODO: delete the invalid input fields
+
  */
 public class ClientMatch {
 
@@ -26,6 +32,8 @@ public class ClientMatch {
   private int myNumber;
   private boolean isOver = false;
   private boolean youWon = false;
+  private boolean waitingForShuffledTiles = false;
+
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
     protocol.run();
@@ -39,29 +47,11 @@ public class ClientMatch {
   @method
   places the tile on the scrabbleboard and sends the info to server
    */
-  public void placeTiles(Tile tile, int x, int y) throws IOException {
-    scrabbleBoard.placeTile(tile, x, y);
-  }
 
-  public void youWon() {
-    this.youWon = true;
-  }
 
-  public void youLost() {
-    this.youWon = true;
-  }
-
-  public void isOver() {
-    isOver = true;
-  }
-
-  public int getMyNumber() {
-    return myNumber;
-  }
-
-  public int getCurrentPlayer() {
-    return currentPlayer;
-  }
+  /*
+  @method
+   */
 
   public void nextPlayer() {
     int notActivePlayers = 0;
@@ -77,13 +67,18 @@ public class ClientMatch {
     scrabbleBoard.nextTurn();
   }
 
-  public void receiveShuffleTile(ReceiveShuffleTilesMessage message) {
-    player.updateRack(message.getTilesBefore(), message.getTilesAfter());
+  public static int getRound() {
+    return round;
   }
 
-  public void shuffleTiles(Tile[] oldTiles, Tile[] saveTiles) throws IOException {
-    protocol.sendToServer(new ShuffleTilesMessage(from, oldTiles));
+  public static Tile[] tileArrayToList(ArrayList<Tile> tiles) {
+    Tile[] tiles1 = new Tile[tiles.size()];
+    for (int x = 0; x < tiles1.length; x++) {
+      tiles1[x] = tiles.get(x);
+    }
+    return tiles1;
   }
+
 
   public String submitTilesOfClient() throws IOException {
     String[][] result = scrabbleBoard.submitTiles();
@@ -112,17 +107,6 @@ public class ClientMatch {
     return resultString;
   }
 
-  public Tile[] tileArrayToList(ArrayList<Tile> tiles) {
-    Tile[] tiles1 = new Tile[tiles.size()];
-    for (int x = 0; x < tiles1.length; x++) {
-      tiles1[x] = tiles.get(x);
-    }
-    return tiles1;
-  }
-
-  public void endMatch() {
-    protocol.disconnect();
-  }
 
   public void placeTilesOfOtherPlayers(Tile[] tiles) {
     for (int x = 0; x < tiles.length; x++) {
@@ -133,8 +117,75 @@ public class ClientMatch {
 
   }
 
+  //extended getter and setterr
+
+  public void shuffleTiles(Tile[] oldTiles, Tile[] saveTiles) throws IOException {
+    waitingForShuffledTiles = true;
+    protocol.sendToServer(new ShuffleTilesMessage(from, oldTiles, saveTiles));
+  }
 
   public void addPointsToPlayer(int points) {
     this.players[this.currentPlayer].addPoints(points);
+  }
+
+  public void receiveShuffleTiles(ReceiveShuffleTilesMessage message) {
+    player.updateRack(message.getRack());
+    waitingForShuffledTiles = false;
+  }
+
+  public void endMatch() {
+    protocol.disconnect();
+  }
+
+  public void youWon() {
+    this.youWon = true;
+  }
+
+  public void youLost() {
+    this.youWon = true;
+  }
+
+  public void isOver() {
+    isOver = true;
+  }
+
+  //getter and setter
+
+  public int getMyNumber() {
+    return myNumber;
+  }
+
+  public int getCurrentPlayer() {
+    return currentPlayer;
+  }
+
+  public Player[] getPlayers() {
+    return players;
+  }
+
+  public ClientProtocol getProtocol() {
+    return protocol;
+  }
+
+  public int getPoints() {
+    return points;
+  }
+
+  public void setPoints(int points) {
+    this.points = points;
+  }
+
+  public ScrabbleBoard getScrabbleBoard() {
+    return scrabbleBoard;
+  }
+
+  public void setScrabbleBoard(ScrabbleBoard scrabbleBoard) {
+    this.scrabbleBoard = scrabbleBoard;
+  }
+
+  //statics
+
+  public String getFrom() {
+    return from;
   }
 }

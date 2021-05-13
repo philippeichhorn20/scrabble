@@ -85,14 +85,8 @@ public class Player {
   This method is stable concerning tilesBefore and the rack. i.e.: if Tile a is in front of Tile b
   in rack, it expects Tile a to be in front of Tile b in tilesBefore as well.
    */
-  public void updateRack(Tile[] tilesBefore, Tile[] tilesAfter) {
-    int i = 0;
-    for (int x = 0; x < this.rack.length; x++) {
-      if (this.rack[x] == tilesBefore[i]) {
-        this.rack[x] = tilesAfter[i];
-        i++;
-      }
-    }
+  public void updateRack(Tile[] newRack) {
+    this.rack = newRack;
   }
 
   public Tile getTileOnPositionInRack(int pos) {

@@ -6,7 +6,7 @@
     </option>
   </component>
   <component name="EclipseModuleManager" forced_jdk="true">
-    <libelement value="file://$MODULE_DIR$/../../../../../Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
+    <libelement value="file:///Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
     <libelement value="jar://$MODULE_DIR$/src/lib/javafx-sdk-11.0.2/lib/javafx-swt.jar!/" />
     <libelement value="jar://$MODULE_DIR$/src/lib/javafx-sdk-11.0.2/lib/javafx.base.jar!/" />
     <libelement value="jar://$MODULE_DIR$/src/lib/javafx-sdk-11.0.2/lib/javafx.controls.jar!/" />
@@ -32,7 +32,7 @@
     <orderEntry type="module-library">
       <library name="jrt-fs.jar">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../../../../Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
+          <root url="file:///Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

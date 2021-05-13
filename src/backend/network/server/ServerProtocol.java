@@ -1,5 +1,7 @@
 package backend.network.server;
 
+import backend.basic.Player;
+import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
@@ -24,6 +26,7 @@ public class ServerProtocol extends Thread{
   private final Server server;
   private String clientName;
   private boolean running = true;
+  private Player[] players;
 
 
   /*A Constructor which connects a client with the server
@@ -65,12 +68,16 @@ public class ServerProtocol extends Thread{
   }
 
   public void run() {
+    //(TODO) the start
+    this.server.setServerMatch(new ServerMatch(this.players));
+    this.server.getServerMatch().startMatch();
+
     Message message;
     try {
       message = (Message) in.readObject();
-      if (message.getMessageType() == MessageType.CONNECT){
+      if (message.getMessageType() == MessageType.CONNECT) {
         String from = message.getFrom();
-        if (server.userExistsP(from)){
+        if (server.userExistsP(from)) {
           Message connectionRefused = new ConnectionRefusedMessage("host",
               "Username already connected to the server!");
           out.writeObject(connectionRefused);
@@ -85,7 +92,6 @@ public class ServerProtocol extends Thread{
       } else { // first message of client have to be connection message
         disconnect();
       }
-
       while (running) {
         message = (Message) in.readObject();
         int id = 0;
