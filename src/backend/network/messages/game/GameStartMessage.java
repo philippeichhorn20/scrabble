@@ -1,5 +1,6 @@
 package backend.network.messages.game;
 
+import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
@@ -8,7 +9,10 @@ import backend.network.messages.MessageType;
 * @version 1.0*/
 public class GameStartMessage extends Message {
 
-  public GameStartMessage(String from) {
+  Tile[] tiles;
+
+  public GameStartMessage(String from, Tile[] tiles) {
     super(MessageType.GAME_START, from);
+    this.tiles = tiles;
   }
 }

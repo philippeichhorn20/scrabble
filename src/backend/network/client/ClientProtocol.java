@@ -1,9 +1,14 @@
 package backend.network.client;
 
+import backend.basic.ClientMatch;
+import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
+import backend.network.messages.Message;
 import backend.network.messages.connection.ConnectMessage;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.DisconnectMessage;
-import backend.network.messages.Message;
+import backend.network.messages.game.LobbyInformationMessage;
+import backend.network.messages.points.SendPointsMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,6 +19,7 @@ public class ClientProtocol extends Thread{
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
+  private ClientMatch match;
   private boolean running = true;
 
   public ClientProtocol(String ip, int port, String username) {
@@ -66,43 +72,63 @@ public class ClientProtocol extends Thread{
             break;
 
           case GAME_TURN:
-            //TODO At game controller there must be a methode which show
-            // that the player have the turn
+            if (this.match.getMyNumber() == this.match.getCurrentPlayer() + 1) {
+              this.match.nextPlayer();
+            } else {
+
+            }
             break;
 
           case GAME_WAIT:
             //TODO At game controller there must be a methode which show
             // that the player have to wait because of another players turn
+
+            //redundant in my view, happens with GAME_TURN already
             break;
 
           case GAME_OVER:
             //TODO At game controller there must be a methode which show
             // the player that the game is over
+            this.match.isOver();
             break;
 
           case GAME_WIN:
             //TODO At game controller there must be a methode which show
             // that the player won
+            this.match.youWon();
             break;
 
           case GAME_LOOSE:
             //TODO At game controller there must be a methode which show
             // that the player lost
+            this.match.youLost();
             break;
 
           case GAME_PLACEMENT:
             //TODO At game controller there must be a methode which show
             // the player the placement
+
+            //redundant, by sending out the Player info, this info can be taken from Game Lobby
             break;
 
+          case GAME_INFO:
+            LobbyInformationMessage message1 = (LobbyInformationMessage) message;
+            this.match = new ClientMatch(this, message1.getPlayers(), "server",
+                new Player("ToDo", "TOdO", 0,
+                    Playerstatus.WAIT));
+            break;
           case SEND_POINTS:
             //TODO At game controller there must be a methode which add
             // points to the player statistics
+            SendPointsMessage message2 = (SendPointsMessage) message;
+            this.match.addPointsToPlayer(message2.getPoints());
             break;
 
           case SEND_RACK_POINTS:
             //TODO At game controller there must be a methode which
             // calculate the points left on the rack
+
+            //Why and also when?
             break;
 
           case PLACE_TILES:

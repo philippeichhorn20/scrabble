@@ -1,7 +1,14 @@
 package backend.basic;
 
+import backend.network.messages.game.GameStartMessage;
+import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
+import backend.network.messages.points.PlayFeedbackMessage;
+import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.server.Server;
+import backend.network.server.ServerProtocol;
+import java.io.IOException;
 
 /*
 @author peichhor
@@ -18,14 +25,16 @@ public class ServerMatch {
 
   private final TileBag tileBag = new TileBag();
   private final int round = 0;
-  private Player[] players = new Player[4];
-  private ScrabbleBoard scrabbleBoard;
+  private final Player[] players = new Player[4];
+  private final ScrabbleBoard scrabbleBoard;
   private int currentPlayer = 0;
+  private final Timer timer;
   private Server server;
-  private Timer timer;
+  private ServerProtocol protocol;
 
   /*
-  this constructor creates a game with a default scrabbnleboard, tilebag and adds only the
+  @method
+  this constructor creates a game with a default scrabbleboard, tilebag and adds only the
   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
    */
   public ServerMatch(Player playerHost) {
@@ -48,9 +57,19 @@ public class ServerMatch {
    players to the game. Players cannot be added with addPlayer() afterwords
    */
   public ServerMatch(Player[] players) {
+    scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
-    this.players = players;
+    players = players;
+    timer = new Timer();
+    server = new Server();
+    Runnable r = new Runnable() {
+      public void run() {
+        server.listen();
+      }
+    };
+    new Thread(r).start();
   }
+
 
   /*
     @method checks if Tiles are left in the bag
@@ -71,12 +90,70 @@ public class ServerMatch {
     return players[currentPlayer];
   }
 
+  public void removePlayer(String player) {
+    for (int x = 0; x < this.players.length; x++) {
+      if (this.players[x].name.equals(player)) {
+        this.players[x] = null;
+      }
+    }
+  }
+
+  public String getPlayerName() {
+    return players[this.currentPlayer].name;
+  }
+
+  public void placeTiles(Tile[] tiles, String from) throws IOException {
+    if (from.equals(players[this.currentPlayer].name)) {
+      for (int i = 0; i < tiles.length; i++) {
+        scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
+      }
+      String[][] feedback = scrabbleBoard.submitTiles();
+      if (scrabbleBoard.inputValudation(feedback)) {
+        server.sendOnlyTo(players[this.currentPlayer].name,
+            new PlayFeedbackMessage("server", feedback, true));
+        int points = scrabbleBoard.getPoints();
+        players[this.currentPlayer].addPoints(points);
+        server.sendToAll(new SendPointsMessage(this.getPlayerName(), points));
+        server.sendToAllBut(players[this.currentPlayer].name,
+            new PlaceTilesMessage(players[this.currentPlayer].name, tiles));
+        nextPlayer();
+      } else {
+        server.sendOnlyTo(players[this.currentPlayer].name,
+            new PlayFeedbackMessage("server", feedback, true));
+      }
+    } else {
+      System.out.println("wrong player requested game move: Place Tiles");
+    }
+  }
+
+  public Timer getTimer() {
+    return timer;
+  }
+
   /*
-  @method stars the match. It triggers the start of the thread, as well as different methods
-   */
+    @method stars the match. It triggers the start of the thread, as well as different methods
+     */
   public void startMatch() {
     timer.start();
+    server.sendToAll(new LobbyInformationMessage("server", players));
+    for (int i = 0; i < players.length; i++) {
+      Tile[] tiles = new Tile[8];
+      for (int x = 0; x < tiles.length; x++) {
+        tiles[x] = tileBag.drawTile();
+      }
+      server.sendOnlyTo(players[i].name, new GameStartMessage("server", tiles));
+    }
+
+    // server message, find out turn, send turn message && send wait message, send out initial tiles,
+    // start game thread programmieren. Diese ruft das auf
+    //server.sendToAll(new);
   }
+
+  public void sendTurn() {
+    //schikct turn raus
+  }
+
+  //
 
   /*
 @method ends the match. It triggers the end of the thread, as well as different methods
@@ -100,6 +177,7 @@ public class ServerMatch {
       currentPlayer = nextPlayer;
     }
     scrabbleBoard.nextTurn();
+    server.sendOnlyTo(this.players[this.currentPlayer].name, new GameTurnMessage("server"));
   }
 
   public Player[] getPlayers() {

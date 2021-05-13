@@ -19,8 +19,8 @@ public class Player {
     this.status = status;
   }
 
-  /*A methode to shuffle choosen tiles from the players rack and drawing new random tile instead*/
-  public boolean ShuffleRack(Tile[] tilesToShuffel, TileBag bag) {
+  /*A methode to shuffle chosen tiles from the players rack and drawing new random tile instead*/
+  public boolean shuffleRack(Tile[] tilesToShuffel, TileBag bag) {
     Tile[] newTiles = new Tile[tilesToShuffel.length];
 
     if (bag.size() >= 7) {

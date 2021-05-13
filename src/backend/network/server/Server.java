@@ -1,5 +1,6 @@
 package backend.network.server;
 
+import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.connection.ShutDownMessage;
 import java.io.IOException;
@@ -12,31 +13,31 @@ import java.util.List;
 import java.util.Set;
 
 /*
-* @author nilschae
-* @version 1.0
-* @description A Server which manage the transfer of data between users
-*
-* */
+ * @author nilschae
+ * @version 1.0
+ * @description A Server which manage the transfer of data between users
+ *
+ * */
 public class Server {
+
   private ServerSocket serverSocket;
   private boolean running;
-
-  private HashMap<String, ServerProtocol> clients = new HashMap<>(); // map with serverprotocols of clients
-
-  private HashMap<Integer, String> objecIDMap = new HashMap<>(); // map with owners of object ids
+  private final HashMap<String, ServerProtocol> clients = new HashMap<>(); // map with serverprotocols of clients
+  private final HashMap<Integer, String> objecIDMap = new HashMap<>(); // map with owners of object ids
+  ServerMatch serverMatch;
 
   /*
-  * remove clients together with the matching protocol
-  * @param clientName the name of the client who gets removed*/
+   * remove clients together with the matching protocol
+   * @param clientName the name of the client who gets removed*/
   public synchronized void removeClient(String clientName) {
     this.clients.remove(clientName);
   }
 
   /* look up if the user already exist in the clients hashmap
-  * @param name the name of the user which get looked up
+   * @param name the name of the user which get looked up
   * @return if the user exist true if not false  */
   public synchronized boolean userExistsP(String name){
-    return this.clients.keySet().contains(name);
+    return this.clients.containsKey(name);
   }
 
   /*Add a client to the clients hashmap with a given serverprotocol
@@ -96,7 +97,7 @@ public class Server {
     for (String cName : clientNames) {
       try {
         ServerProtocol c = clients.get(cName);
-        c.sendToClient((Message)(message));
+        c.sendToClient(message);
       } catch (IOException e) {
         cFails.add(cName); // notice to remove
         continue;
@@ -110,16 +111,26 @@ public class Server {
 
 
   /* send a message to all clients which are connected to the server
-  * @param message the message which gets send to all clients*/
+   * @param message the message which gets send to all clients*/
   public void sendToAll(Message message) {
-    sendTo(new ArrayList<String> (getClientNames()),(Message)(message));
+    sendTo(new ArrayList<String>(getClientNames()), message);
+  }
+
+  /* send a message to one clients which is connected to the server
+   * @param message the message which gets send to all clients
+   * @param recipient the client who the message is send to
+   */
+  public void sendOnlyTo(String recepient, Message message) {
+    ArrayList<String> list = new ArrayList<>();
+    list.add(recepient);
+    sendTo(list, message);
   }
 
   /* sends a message to all clients except one client
-  * @param name the name of the client who don't get the message
-  * @param message the message which gets send*/
-  public void sendToAllBut(String name, Message message){
-    synchronized(this.clients){
+   * @param name the name of the client who don't get the message
+   * @param message the message which gets send*/
+  public void sendToAllBut(String name, Message message) {
+    synchronized (this.clients) {
       Set<String> senderList = getClientNames();
       senderList.remove(name);
       sendTo(new ArrayList<String>(senderList), message);

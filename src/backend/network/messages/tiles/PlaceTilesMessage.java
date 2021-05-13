@@ -9,18 +9,18 @@ import backend.network.messages.MessageType;
  * @version 1.0*/
 public class PlaceTilesMessage extends Message {
 
-  Tile tile;
+  Tile[] tiles;
 
-  public PlaceTilesMessage(String from, Tile tilesToPlace) {
+  public PlaceTilesMessage(String from, Tile[] tilesToPlace) {
     super(MessageType.PLACE_TILES, from);
-    this.tile = tilesToPlace;
+    this.tiles = tilesToPlace;
   }
 
-  public Tile getTiles() {
-    return this.tile;
+  public Tile[] getTiles() {
+    return this.tiles;
   }
 
-  public void setTiles(Tile tilesToPlace) {
-    this.tile = tilesToPlace;
+  public void setTiles(Tile[] tilesToPlace) {
+    this.tiles = tilesToPlace;
   }
 }

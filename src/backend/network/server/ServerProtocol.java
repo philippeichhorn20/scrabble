@@ -1,13 +1,12 @@
 package backend.network.server;
 
-import backend.basic.Tile;
-import backend.network.messages.connection.ConnectionRefusedMessage;
-import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
+import backend.network.messages.connection.ConnectionRefusedMessage;
+import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.connection.SendIDMessage;
-import backend.network.messages.points.SendPointsMessage;
-import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
+import backend.network.messages.tiles.PlaceTilesMessage;
+import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,6 +24,7 @@ public class ServerProtocol extends Thread{
   private final Server server;
   private String clientName;
   private boolean running = true;
+
 
   /*A Constructor which connects a client with the server
   * @param client the client that is being communicated with
@@ -102,29 +102,32 @@ public class ServerProtocol extends Thread{
           case DISCONNECT:
             server.removeClient(message.getFrom());
             running = false;
+            server.serverMatch.removePlayer(message.getFrom());
             disconnect();
             break;
 
           case PLACE_TILES:
-            //TODO At game controller there must be a methode which add tiles to the board
-            // and return the points made
-            SendPointsMessage sendPointsMessage = new SendPointsMessage(
-                "server"); //points need to be added
-            sendToClient(sendPointsMessage);
+            PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
+            server.serverMatch
+                .placeTiles(placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
             break;
 
           case SHUFFLE_TILES:
             //TODO At game controller there must be a methode which shuffle tiles
             // and return the shuffled tiles
-            Tile[] shuffledTilesBefore = null;
-            Tile[] shuffledTilesAfter = null;
-            ReceiveShuffleTilesMessage receiveShuffleTilesMessage = new ReceiveShuffleTilesMessage(
-                "server", shuffledTilesBefore, shuffledTilesAfter);
+            ShuffleTilesMessage shuffleTilesMessage = (ShuffleTilesMessage) message;
             break;
 
+          case GAME_TURN:
+            if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
+              server.serverMatch.nextPlayer();
+            }
+            break;
           case SEND_POINTS:
             //TODO At game controller there must be a methode which add the points received from the racks
             // at the end of a game to the statistics
+
+            // does it automatically after game move
             break;
 
           default:
@@ -142,9 +145,14 @@ public class ServerProtocol extends Thread{
           e1.printStackTrace();
         }
       }
-    } catch (ClassNotFoundException e2){
+    } catch (ClassNotFoundException e2) {
       System.out.println(e2.getMessage());
       e2.printStackTrace();
     }
+  }
+
+
+  public Server getServer() {
+    return server;
   }
 }

@@ -18,4 +18,7 @@ public class LobbyInformationMessage extends Message {
     this.players = players;
   }
 
+  public Player[] getPlayers() {
+    return players;
+  }
 }
