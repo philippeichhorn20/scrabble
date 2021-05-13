@@ -53,6 +53,18 @@ public class ClientMatch {
   @method
    */
 
+  public static int getRound() {
+    return round;
+  }
+
+  public static Tile[] tileArrayToList(ArrayList<Tile> tiles) {
+    Tile[] tiles1 = new Tile[tiles.size()];
+    for (int x = 0; x < tiles1.length; x++) {
+      tiles1[x] = tiles.get(x);
+    }
+    return tiles1;
+  }
+
   public void nextPlayer() {
     int notActivePlayers = 0;
     int nextPlayer = 4 % (currentPlayer + 1);
@@ -64,19 +76,8 @@ public class ClientMatch {
     if (players[nextPlayer].checkTimer()) {
       currentPlayer = nextPlayer;
     }
+    this.player.getTimer().nextPlayer();
     scrabbleBoard.nextTurn();
-  }
-
-  public static int getRound() {
-    return round;
-  }
-
-  public static Tile[] tileArrayToList(ArrayList<Tile> tiles) {
-    Tile[] tiles1 = new Tile[tiles.size()];
-    for (int x = 0; x < tiles1.length; x++) {
-      tiles1[x] = tiles.get(x);
-    }
-    return tiles1;
   }
 
 
@@ -107,6 +108,13 @@ public class ClientMatch {
     return resultString;
   }
 
+  public void thirtySecondsAlert() {
+//TODO
+  }
+
+  public void oneMinuteAlert() {
+//TODO
+  }
 
   public void placeTilesOfOtherPlayers(Tile[] tiles) {
     for (int x = 0; x < tiles.length; x++) {
@@ -181,6 +189,10 @@ public class ClientMatch {
 
   public void setScrabbleBoard(ScrabbleBoard scrabbleBoard) {
     this.scrabbleBoard = scrabbleBoard;
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
   //statics

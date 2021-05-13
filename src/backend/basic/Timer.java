@@ -27,6 +27,9 @@ public class Timer extends Thread {
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
+      if (timerCurrentPlayer == 60 * 2) {
+
+      }
     }
   }
 
@@ -43,6 +46,14 @@ public class Timer extends Thread {
    */
   public void nextPlayer() {
     timerCurrentPlayer = 0;
+  }
+
+  public void setTimerCurrentPlayer(long timerCurrentPlayer) {
+    this.timerCurrentPlayer = timerCurrentPlayer;
+  }
+
+  public void setTimerOverall(long timerOverall) {
+    this.timerOverall = timerOverall;
   }
 
   public void stopTimer() {

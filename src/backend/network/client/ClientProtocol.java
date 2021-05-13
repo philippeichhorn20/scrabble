@@ -11,6 +11,7 @@ import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.SendPointsMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
+import backend.network.messages.time.TimeAlertMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -116,8 +117,7 @@ public class ClientProtocol extends Thread{
           case GAME_INFO:
             LobbyInformationMessage message1 = (LobbyInformationMessage) message;
             this.match = new ClientMatch(this, message1.getPlayers(), "server",
-                new Player("ToDo", "TodO", 0,
-                    Playerstatus.WAIT));
+                new Player("ToDo", "TodO", Playerstatus.WAIT));
             break;
           case SEND_POINTS:
             //TODO At game controller there must be a methode which add
@@ -143,13 +143,26 @@ public class ClientProtocol extends Thread{
             break;
 
           case TIME_ALERT:
-            //TODO At game controller there must be a methode which
-            // alert the player that the time is over soon
+            TimeAlertMessage timeAlertMessage = (TimeAlertMessage) message;
+            switch (timeAlertMessage.getAlertType()) {
+              case TIME_OVER:
+                match.nextPlayer();
+                break;
+              case TIMER_STARTED:
+                match.getPlayer().setTimerPersonalTimerToZero();
+                break;
+              case ONE_MINUTE_LEFT:
+                match.oneMinuteAlert();
+                break;
+              case THIRTY_SECONDS_LEFT:
+                match.thirtySecondsAlert();
+                break;
+            }
             break;
 
           case TIME_SYNC:
-            //TODO At game controller there must be a methode which
-            // synchronize the time left the player have, with the server
+            //it nulls the timer
+            this.match.getPlayer().setTimerToZero();
             break;
 
           default:
