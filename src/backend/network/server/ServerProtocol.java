@@ -7,6 +7,7 @@ import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.connection.SendIDMessage;
+import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
@@ -129,13 +130,28 @@ public class ServerProtocol extends Thread{
               server.serverMatch.nextPlayer();
             }
             break;
+            
           case SEND_POINTS:
             //TODO At game controller there must be a methode which add the points received from the racks
             // at the end of a game to the statistics
 
             // does it automatically after game move
             break;
-
+            
+            /**
+             * @author vivanova
+             */
+          // Server receives a Relay message from Client
+          case RELAY:
+        	  // Server sends the message to everyone
+        	  TextMessage textMessage = (TextMessage)message;
+        	  if(textMessage.getText()!= null) {
+        		  server.sendToAll(
+            			  // with a new Flag that means it has to be rendered in the chat area
+            			  new TextMessage(textMessage.getFrom(), textMessage.getText()));
+        	  }
+        	break;
+        	
           default:
             break;
         }

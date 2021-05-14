@@ -61,6 +61,10 @@ public class ServerMatch {
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
     players = players;
+//  Possible solution
+//    for(int i = 0; i < players.length; i++) {
+//    	this.players[i] = players[i];
+//    }
     timer = new Timer();
     server = new Server();
     Runnable r = new Runnable() {
