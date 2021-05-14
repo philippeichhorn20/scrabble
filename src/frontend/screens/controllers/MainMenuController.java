@@ -17,10 +17,14 @@ import javafx.scene.text.Text;
  */
 public class MainMenuController {
 
-  @FXML private Button playButton;
-  @FXML private Button manageButton;
-  @FXML private Button settingsButton;
-  @FXML private Text userName;
+  @FXML
+  private Button playButton;
+  @FXML
+  private Button manageButton;
+  @FXML
+  private Button settingsButton;
+  @FXML
+  private Text userName;
   private boolean setUpDone = false;
 
   public void animate(MouseEvent e) {
@@ -28,7 +32,7 @@ public class MainMenuController {
     new Pulse(b).play();
   }
 
-  public void animateText(MouseEvent e){
+  public void animateText(MouseEvent e) {
     new Pulse(userName).play();
   }
 
@@ -39,17 +43,14 @@ public class MainMenuController {
 
   public void goManage(ActionEvent e) throws IOException {
     Main m = new Main();
-    m.changeScene("screens/manageProfile.fxml");
+    m.changeScene("screens/statScreen.fxml");
   }
 
   public void goSettings(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/settingsScreen.fxml");
   }
-  public void goStats(MouseEvent e) throws IOException {
-    Main m = new Main();
-    m.changeScene("screens/statScreen.fxml");
-  }
+
   public void goRule(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/ruleScreen.fxml");
