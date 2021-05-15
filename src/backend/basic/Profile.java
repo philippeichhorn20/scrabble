@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * The profile class is a representation of the data entry from a database.
@@ -12,6 +13,7 @@ import java.sql.SQLException;
  * @author mkolinsk
  */
 public class Profile {
+
   private int id;
   private String name;
   private String color;
@@ -51,7 +53,9 @@ public class Profile {
   }
 
   /*@author nilschae*/
-  public String getColor() { return this.color;}
+  public String getColor() {
+    return this.color;
+  }
 
   public int getWins() {
     return wins;
@@ -73,7 +77,7 @@ public class Profile {
    * Updates the name of a profile in the database.
    *
    * @param name New name of the profile.
-   * @param id  Profile's unique id.
+   * @param id   Profile's unique id.
    */
   public void setName(String name, int id) {
     try {
@@ -93,8 +97,8 @@ public class Profile {
   /**
    * Updates the wins statistic in the database.
    *
-   * @param wins  Number of wins.
-   * @param id  Profile's unique id.
+   * @param wins Number of wins.
+   * @param id   Profile's unique id.
    */
   public void setWins(int wins, int id) {
     try {
@@ -115,7 +119,7 @@ public class Profile {
    * Updates games statistic in the database.
    *
    * @param games Number of games.
-   * @param id Profile's unique id.
+   * @param id    Profile's unique id.
    */
   public void setGames(int games, int id) {
     try {
@@ -136,7 +140,7 @@ public class Profile {
    * Updates the points in the database.
    *
    * @param points Number of points.
-   * @param id  Profile's unique id.
+   * @param id     Profile's unique id.
    */
   public void setPoints(int points, int id) {
     try {
@@ -156,5 +160,29 @@ public class Profile {
   /*@author nilschae*/
   public void setColor(String hexColor) {
     this.color = hexColor;
+  }
+
+  /*
+  @author jawinter
+  Method should be used before setting a name to check, whether it already was used. Return
+  boolean value is true if the name was not used.
+   */
+  public boolean checkName(String name) {
+    boolean nameNotExists = true;
+    name = name.trim().toLowerCase();
+    try {
+      Connection connection = DriverManager.getConnection(jdbcUrl);
+      String sql = "SELECT * FROM profiles";
+      Statement stmt = connection.createStatement();
+      ResultSet result = stmt.executeQuery(sql);
+      while (result.next()) {
+        if (name.equals(result.getString("name").trim().toLowerCase())) {
+          nameNotExists = false;
+        }
+      }
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+    return nameNotExists;
   }
 }

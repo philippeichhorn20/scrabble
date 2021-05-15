@@ -3,7 +3,7 @@ package backend.basic;
 import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
-//import backend.network.messages.points.PlayFeedbackMessage;
+import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
 import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
@@ -117,7 +117,8 @@ public class ServerMatch {
       if (scrabbleBoard.inputValudation(feedback)) {
         server.sendOnlyTo(players[this.currentPlayer].name,
             new PlayFeedbackMessage("server", feedback, true));
-        server.sendOnlyTo(players[this.currentPlayer].name,new GetNewTilesMessage(players[this.currentPlayer].name,drawNewTiles(tiles.length)));
+        server.sendOnlyTo(players[this.currentPlayer].name,
+            new GetNewTilesMessage(players[this.currentPlayer].name, drawNewTiles(tiles.length)));
         int points = scrabbleBoard.getPoints();
         players[this.currentPlayer].addPoints(points);
         server.sendToAll(new SendPointsMessage(this.getPlayerName(), points));
@@ -134,9 +135,9 @@ public class ServerMatch {
   }
 
   //Method gives back field with random tiles with the size of needed tiles
-  public Tile[] drawNewTiles(int amountNeeded){
+  public Tile[] drawNewTiles(int amountNeeded) {
     Tile[] newTiles = new Tile[amountNeeded];
-    for(int i=0;i<amountNeeded;i++) {
+    for (int i = 0; i < amountNeeded; i++) {
       newTiles[i] = this.tileBag.drawTile();
     }
     return newTiles;

@@ -59,18 +59,26 @@ public class StatScreenController {
   public void saveChanges(ActionEvent e) {
     String newColor = profileColor.getText();
     String newName = profileNickname.getText();
-    Main.profile.setColor(newColor);
-    Main.profile.setName(newName, Main.profile.getId());
+    if (Main.profile.checkName(newName)) {
+      Main.profile.setColor(newColor);
+      Main.profile.setName(newName, Main.profile.getId());
 
-    Alert successfulSaved = new Alert(AlertType.INFORMATION);
-    successfulSaved.setTitle("Successful saved!");
-    successfulSaved.setContentText("Your name and color has been saved as:\n"
-        + "name: " + newName + "color: " + newColor);
+      Alert successfulSaved = new Alert(AlertType.INFORMATION);
+      successfulSaved.setTitle("Successful saved!");
+      successfulSaved.setContentText("Your name and color has been saved as:\n"
+          + "name: " + newName + "color: " + newColor);
 
-    Optional<ButtonType> confirm = successfulSaved.showAndWait();
-    userTitle.setText(Main.profile.getName());
-    profileNickname.setText(Main.profile.getName());
-    profileColor.setText(Main.profile.getColor());
+      Optional<ButtonType> confirm = successfulSaved.showAndWait();
+      userTitle.setText(Main.profile.getName());
+      profileNickname.setText(Main.profile.getName());
+      profileColor.setText(Main.profile.getColor());
+    } else {
+      Alert nameExists = new Alert(AlertType.ERROR);
+      nameExists.setTitle("Change of name failed");
+      nameExists
+          .setContentText("The typed name: " + newName + " already exists. Please use another!");
+      Optional<ButtonType> proceed = nameExists.showAndWait();
+    }
   }
 
   //Resets all statistics to zero.
@@ -82,7 +90,7 @@ public class StatScreenController {
 
     Optional<ButtonType> result = areYouSure.showAndWait();
 
-    if(result.get() == ButtonType.OK) {
+    if (result.get() == ButtonType.OK) {
       Profile player = Main.profile;
       player.setGames(0, player.getId());
       player.setPoints(0, player.getId());
