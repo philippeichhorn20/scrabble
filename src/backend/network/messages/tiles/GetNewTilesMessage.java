@@ -12,7 +12,10 @@ public class GetNewTilesMessage extends Message {
 
   private Tile[] tiles;
 
-  public GetNewTilesMessage(Tile[] newTiles, String from) {
+  /*
+  @param newTiles will be filled with the tiles given to player
+   */
+  public GetNewTilesMessage(String from,Tile[] newTiles) {
     super(MessageType.GET_NEW_TILES, from);
   }
 

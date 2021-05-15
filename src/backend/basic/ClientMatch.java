@@ -1,7 +1,9 @@
 package backend.basic;
 
 import backend.network.client.ClientProtocol;
+import backend.network.messages.MessageType;
 import backend.network.messages.game.GameTurnMessage;
+import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
@@ -78,6 +80,11 @@ public class ClientMatch {
     }
     this.player.getTimer().nextPlayer();
     scrabbleBoard.nextTurn();
+  }
+
+  // Method is called, when player decides to not do anything this turn
+  public void pass() throws IOException {
+    protocol.sendToServer(new PassMessage(MessageType.PASS,"server"));
   }
 
 

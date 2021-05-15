@@ -112,13 +112,13 @@ public class ServerProtocol extends Thread{
             server.serverMatch.removePlayer(message.getFrom());
             disconnect();
             break;
-
+/*
           case PLACE_TILES:
             PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
             server.serverMatch
                 .placeTiles(placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
             break;
-
+*/
           case SHUFFLE_TILES:
             //TODO At game controller there must be a methode which shuffle tiles
             // and return the shuffled tiles
@@ -136,6 +136,13 @@ public class ServerProtocol extends Thread{
             // at the end of a game to the statistics
 
             // does it automatically after game move
+            break;
+
+            // Pass leads to the server telling next player it's his turn.
+          case PASS:
+            if(server.serverMatch.getPlayerName().equals(message.getFrom())) {
+              server.serverMatch.nextPlayer();
+            }
             break;
             
             /**
