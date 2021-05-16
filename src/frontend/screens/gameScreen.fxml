@@ -2,26 +2,82 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setUp" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.GameScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setUp" onMouseMoved="#update" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.GameScreenController">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="805.0" fitWidth="1113.0" layoutX="5.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="720.0" fitWidth="1080.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@resources/wooden-bg.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="backButton" layoutX="1021.0" layoutY="706.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
+            <ImageView fitHeight="572.0" fitWidth="603.0" layoutX="276.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@resources/scrabbleboard.png" />
+               </image>
+            </ImageView>
+            <GridPane fx:id="board" onMouseClicked="#highlight" prefHeight="720.0" prefWidth="1080.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="279.3333435058594" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="0.0" prefWidth="34.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="0.0" prefWidth="35.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="0.0" prefWidth="33.666656494140625" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="0.0" prefWidth="35.33331298828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="0.0" prefWidth="34.333343505859375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="0.0" prefWidth="34.33331298828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="0.0" prefWidth="34.666656494140625" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="0.0" prefWidth="34.6666259765625" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="0.0" prefWidth="33.33331298828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="0.0" prefWidth="35.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="35.3333740234375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="33.33331298828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="285.0" minWidth="10.0" prefWidth="35.33331298828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="352.0" minWidth="10.0" prefWidth="35.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="352.0" minWidth="10.0" prefWidth="33.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="352.0" minWidth="10.0" prefWidth="279.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="87.0" minHeight="10.0" prefHeight="32.33333206176758" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="105.0000057220459" minHeight="10.0" prefHeight="37.66666793823242" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="40.333335876464844" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="38.66667175292969" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="36.66667175292969" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="135.0" minHeight="10.0" prefHeight="38.33332824707031" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="37.333343505859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="36.33335876464844" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="37.66668701171875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="37.33331298828125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="38.333343505859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="35.666656494140625" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="37.66668701171875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="37.33331298828125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="38.33331298828125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="80.0" minHeight="0.0" prefHeight="35.66668701171875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="79.0" minHeight="0.0" prefHeight="66.33331298828125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fx:id="tileBagIcon" fitHeight="95.0" fitWidth="131.0" onMouseClicked="#getNewTiles" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="16">
+                     <image>
+                        <Image url="@resources/tilebagicon.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </GridPane>
+            <Button fx:id="backButton" layoutX="972.0" layoutY="670.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
                <font>
                   <Font name="HoloLens MDL2 Assets" size="19.0" />
                </font>
@@ -29,75 +85,142 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <ImageView fitHeight="95.0" fitWidth="297.0" layoutX="452.0" layoutY="640.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="95.0" fitWidth="297.0" layoutX="383.0" layoutY="614.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@resources/rack.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="572.0" fitWidth="603.0" layoutX="295.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <Rectangle fx:id="tile1" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="402.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Rectangle fx:id="tile2" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="438.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Rectangle fx:id="tile3" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="474.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Rectangle fx:id="tile4" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="508.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Rectangle fx:id="tile5" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="544.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Rectangle fx:id="tile6" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="580.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Rectangle fx:id="tile7" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="616.0" layoutY="644.0" onMouseClicked="#highlightTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Rectangle>
+            <Text fx:id="text2" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></Text>
+            <Text fx:id="text1" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Text>
+            <Text fx:id="text3" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Text>
+            <Text fx:id="text6" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Text>
+            <Text fx:id="text7" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Text>
+            <Text fx:id="text5" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Text>
+            <Text fx:id="text4" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Text>
+            <TitledPane animated="false" layoutX="826.0" layoutY="39.0" prefHeight="236.0" prefWidth="243.0" style="-fx-background-color: #ffe5b4;" text="Scoreboard">
+               <content>
+                  <AnchorPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #ffe5b4;">
+                     <children>
+                        <Label fx:id="name1" layoutX="17.0" layoutY="23.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="name2" layoutX="17.0" layoutY="70.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="name3" layoutX="20.0" layoutY="110.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="name4" layoutX="20.0" layoutY="142.0" prefHeight="31.0" prefWidth="68.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="nameScore1" layoutX="121.0" layoutY="23.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="nameScore4" layoutX="121.0" layoutY="143.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="nameScore3" layoutX="121.0" layoutY="108.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="nameScore2" layoutX="121.0" layoutY="70.0" text="Label">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+               </content>
+               <font>
+                  <Font name="Candara Light" size="25.0" />
+               </font>
+            </TitledPane>
+            <Label layoutX="817.0" layoutY="274.0" text="Time: ">
+               <font>
+                  <Font size="44.0" />
+               </font>
+            </Label>
+            <Label fx:id="time" layoutX="948.0" layoutY="285.0" prefHeight="54.0" prefWidth="103.0" text="05:00" textFill="#c4eff5">
+               <font>
+                  <Font name="Franklin Gothic Medium" size="39.0" />
+               </font>
+            </Label>
+            <Label layoutX="854.0" layoutY="379.0" prefHeight="41.0" prefWidth="160.0" text="Current turn:">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="876.0" layoutY="420.0" prefHeight="40.0" prefWidth="145.0" text="Player" textFill="#751e1e">
+               <font>
+                  <Font name="Trebuchet MS" size="42.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="settingsButton" fitHeight="51.0" fitWidth="74.0" layoutX="14.0" layoutY="15.0" onMouseClicked="#goSettings" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@resources/scrabbleboard.png" />
+                  <Image url="@resources/outline_settings_black_24dp.png" />
                </image>
             </ImageView>
-            <Rectangle fx:id="tile1" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="472.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Rectangle fx:id="tile2" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="508.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Rectangle fx:id="tile3" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="543.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Rectangle fx:id="tile4" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="574.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Rectangle fx:id="tile5" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="610.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Rectangle fx:id="tile6" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="646.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Rectangle fx:id="tile7" arcHeight="5.0" arcWidth="5.0" fill="#ffe5b4" height="36.0" layoutX="682.0" layoutY="670.0" onMouseDragged="#moveTile" stroke="BLACK" strokeType="INSIDE" width="36.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Rectangle>
-            <Text fx:id="text4" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <Text fx:id="text5" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <Text fx:id="text6" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <Text fx:id="text7" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <Text fx:id="text1" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <Text fx:id="text2" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <Text fx:id="text3" layoutX="129.0" layoutY="196.0" onMouseDragged="#moveTile" strokeType="OUTSIDE" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
-               </cursor></Text>
-            <TextArea fx:id="chatArea" layoutX="858.0" layoutY="278.0" prefHeight="200.0" prefWidth="200.0" />
-            <TextField fx:id="chatField" layoutX="858.0" layoutY="478.0" prefHeight="25.0" prefWidth="200.0" />
-            <Button fx:id="chatSend" layoutX="1015.0" layoutY="478.0" mnemonicParsing="false" text="Send" />
          </children>
       </AnchorPane>
    </center>

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @description this class is the representation of the physical scrabble board
  *
- * @param scrabbleBoard is the physical representation fo the actual boards. It conatins matchfield
+ * @param scrabbleBoard is the physical representation fo the actual boards. It contains matchfield
  * which all have a certain premiumstatus that is used to calcualte the points of a play. After
  * a tile is played this tile will be added to the matchfield that it is placed on
  *
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * TODO: int getPoints() which returns the points of a play
  * */
 
-class ScrabbleBoard {
+public class ScrabbleBoard {
 
   private final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
   Matchfield[][] scrabbleBoard = new Matchfield[15][15];
