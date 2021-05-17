@@ -18,8 +18,7 @@
 <?import javafx.scene.text.Text?>
 
 <HBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity"
-  minHeight="-Infinity"
-  minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
+  minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
   xmlns="http://javafx.com/javafx/15.0.1"
   fx:controller="frontend.screens.controllers.LobbyScreenController">
   <children>
