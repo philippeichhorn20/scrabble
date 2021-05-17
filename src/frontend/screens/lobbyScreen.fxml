@@ -17,104 +17,480 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.LobbyScreenController">
-   <children>
-      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
-         <children>
-            <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
-               <top>
-                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
-                     <children>
-                        <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
-                           <font>
-                              <Font name="Consolas" size="60.0" />
-                           </font>
+<HBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity"
+  minHeight="-Infinity"
+  minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0"
+  xmlns="http://javafx.com/javafx/15.0.1"
+  fx:controller="frontend.screens.controllers.LobbyScreenController">
+  <children>
+    <AnchorPane prefHeight="720.0" prefWidth="1080.0">
+      <children>
+        <ImageView fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false"
+          fx:id="lobbyView">
+          <image>
+            <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg"/>
+          </image>
+        </ImageView>
+        <VBox style="-fx-background-color: #805500;" prefHeight="720.0" prefWidth="700.0"
+          visible="false" fx:id="startGameView">
+          <children>
+            <Label style="-fx-border-color: #000000; -fx-border-style: none none solid none"
+              alignment="CENTER" prefWidth="700.0" text="Starting a server..."
+              textAlignment="CENTER">
+              <VBox.margin>
+                <Insets/>
+              </VBox.margin>
+            </Label>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+              <children>
+                <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                  maxWidth="620.0" prefWidth="620.0">
+                  <VBox.margin>
+                    <Insets top="50.0"/>
+                  </VBox.margin>
+                  <center>
+                    <HBox maxWidth="620.0" prefHeight="100.0" prefWidth="200.0">
+                      <children>
+                        <Label prefWidth="250.0" text="Host ID:" textFill="WHITE">
+                          <HBox.margin>
+                            <Insets/>
+                          </HBox.margin>
+                          <font>
+                            <Font name="Consolas Bold" size="20.0"/>
+                          </font>
+                        </Label>
+                        <TextField style="-fx-background-color: #A0522D;"
+                          promptText="Something went wrong" fx:id="profileNickname"/>
+                      </children>
+                    </HBox>
+                  </center>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                </BorderPane>
+                <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                  prefHeight="200.0" prefWidth="200.0">
+                  <VBox.margin>
+                    <Insets top="30.0"/>
+                  </VBox.margin>
+                  <left>
+                    <BorderPane BorderPane.alignment="CENTER" prefWidth="300.0">
+                      <center>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                          <children>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                <Button style="-fx-background-color: #A0522D;" minWidth="50.0"
+                                  mnemonicParsing="false" text="1" textFill="WHITE">
+                                  <HBox.margin>
+                                    <Insets left="5.0" right="5.0"/>
+                                  </HBox.margin>
+                                  <font>
+                                    <Font name="Consolas" size="20.0"/>
+                                  </font>
+                                </Button>
+                                <Button style="-fx-background-color: #A0522D;" minWidth="50.0"
+                                  mnemonicParsing="false" text="2" textFill="WHITE">
+                                  <HBox.margin>
+                                    <Insets left="5.0" right="5.0"/>
+                                  </HBox.margin>
+                                  <font>
+                                    <Font name="Consolas" size="20.0"/>
+                                  </font>
+                                </Button>
+                                <Button style="-fx-background-color: #A0522D;" minWidth="50.0"
+                                  mnemonicParsing="false" text="3" textFill="WHITE">
+                                  <HBox.margin>
+                                    <Insets left="5.0" right="5.0"/>
+                                  </HBox.margin>
+                                  <font>
+                                    <Font name="Consolas" size="20.0"/>
+                                  </font>
+                                </Button>
+                              </children>
+                            </HBox>
+                            <Label text="Quantity" textFill="WHITE">
+                              <VBox.margin>
+                                <Insets bottom="10.0"/>
+                              </VBox.margin>
+                              <font>
+                                <Font name="Consolas" size="20.0"/>
+                              </font>
+                            </Label>
+                          </children>
+                        </VBox>
+                      </center>
+                    </BorderPane>
+                  </left>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                  <right>
+                    <BorderPane BorderPane.alignment="CENTER" prefWidth="300.0">
+                      <center>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                          <children>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                <Button style="-fx-background-color: #A0522D;" minWidth="50.0"
+                                  mnemonicParsing="false" text="Easy" textFill="WHITE">
+                                  <HBox.margin>
+                                    <Insets left="5.0" right="5.0"/>
+                                  </HBox.margin>
+                                  <font>
+                                    <Font name="Consolas" size="20.0"/>
+                                  </font>
+                                </Button>
+                                <Button style="-fx-background-color: #A0522D;" minWidth="50.0"
+                                  mnemonicParsing="false" text="Hard" textFill="WHITE">
+                                  <HBox.margin>
+                                    <Insets left="5.0" right="5.0"/>
+                                  </HBox.margin>
+                                  <font>
+                                    <Font name="Consolas" size="20.0"/>
+                                  </font>
+                                </Button>
+                              </children>
+                            </HBox>
+                            <Label text="Difficulty" textFill="WHITE">
+                              <VBox.margin>
+                                <Insets bottom="10.0"/>
+                              </VBox.margin>
+                              <font>
+                                <Font name="Consolas" size="20.0"/>
+                              </font>
+                            </Label>
+                          </children>
+                        </VBox>
+                      </center>
+                    </BorderPane>
+                  </right>
+                  <top>
+                    <Label BorderPane.alignment="CENTER" text="AI Oppnonents" textFill="WHITE">
+                      <BorderPane.margin>
+                        <Insets bottom="20.0"/>
+                      </BorderPane.margin>
+                      <font>
+                        <Font name="Consolas Bold" size="20.0"/>
+                      </font>
+                    </Label>
+                  </top>
+                </BorderPane>
+                <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                  prefHeight="200.0" prefWidth="200.0">
+                  <VBox.margin>
+                    <Insets top="30.0"/>
+                  </VBox.margin>
+                  <center>
+                    <MenuButton style="-fx-background-color: #A0522D;" BorderPane.alignment="CENTER"
+                      minWidth="100.0" mnemonicParsing="false" text="Choose" textFill="WHITE">
+                      <items>
+                        <MenuItem mnemonicParsing="false" text="Dictionary 1"/>
+                        <MenuItem mnemonicParsing="false" text="Dictionary 2"/>
+                      </items>
+                    </MenuButton>
+                  </center>
+                  <left>
+                    <Label BorderPane.alignment="CENTER" text="Dictionary" textFill="WHITE">
+                      <font>
+                        <Font name="Consolas Bold" size="20.0"/>
+                      </font>
+                    </Label>
+                  </left>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                </BorderPane>
+                <BorderPane>
+                  <VBox.margin>
+                    <Insets top="50.0"/>
+                  </VBox.margin>
+                  <center>
+                    <Button style="-fx-background-color: #22cb30;" mnemonicParsing="false"
+                      onAction="#startGame" text="Start Game" textFill="WHITE"
+                      fx:id="startGameButton">
+                      <font>
+                        <Font name="Consolas Bold" size="20.0"/>
+                      </font>
+                    </Button>
+                  </center>
+                </BorderPane>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <children>
+                    <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                      prefHeight="100.0" prefWidth="100.0">
+                      <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                      </HBox.margin>
+                      <bottom>
+                        <Text BorderPane.alignment="CENTER" fill="WHITE" strokeType="OUTSIDE"
+                          strokeWidth="0.0" text="Player 1">
+                          <BorderPane.margin>
+                            <Insets bottom="5.0"/>
+                          </BorderPane.margin>
+                          <font>
+                            <Font name="Consolas" size="16.0"/>
+                          </font>
                         </Text>
-                     </children>
-                  </Pane>
-               </top>
-               <VBox.margin>
-                  <Insets left="-50.0" right="-50.0" />
-               </VBox.margin>
-               <center>
-                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <Button fx:id="startGame" minWidth="380.0" mnemonicParsing="false" onAction="#openStartGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Start Game" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                           <font>
-                              <Font name="Consolas Bold" size="20.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <VBox.margin>
-                              <Insets top="50.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button fx:id="joinGame" minWidth="380.0" mnemonicParsing="false" onAction="#openJoinGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Join Game" textFill="WHITE">
-                           <font>
-                              <Font name="Consolas Bold" size="20.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <VBox.margin>
-                              <Insets top="50.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button fx:id="playTutorial" minWidth="380.0" mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Tutorial" textFill="WHITE">
-                           <font>
-                              <Font name="Consolas Bold" size="20.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <VBox.margin>
-                              <Insets top="50.0" />
-                           </VBox.margin>
-                        </Button>
-                     </children>
-                  </VBox>
-               </center>
-               <bottom>
-                  <Button fx:id="backButton" minWidth="380.0" mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font name="Consolas Bold" size="20.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <BorderPane.margin>
-                        <Insets bottom="20.0" />
-                     </BorderPane.margin>
-                  </Button>
-               </bottom>
+                      </bottom>
+                      <center>
+                        <ImageView BorderPane.alignment="CENTER" fitHeight="50.0" fitWidth="50.0"
+                          pickOnBounds="true" preserveRatio="true">
+                          <BorderPane.margin>
+                            <Insets left="5.0"/>
+                          </BorderPane.margin>
+                          <image>
+                            <Image url="@resources/outline_sports_esports_white_24dp.png"/>
+                          </image>
+                        </ImageView>
+                      </center>
+                    </BorderPane>
+                    <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                      layoutX="310.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0">
+                      <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                      </HBox.margin>
+                      <bottom>
+                        <Text BorderPane.alignment="CENTER" fill="WHITE" strokeType="OUTSIDE"
+                          strokeWidth="0.0" text="Player 2">
+                          <BorderPane.margin>
+                            <Insets bottom="5.0"/>
+                          </BorderPane.margin>
+                          <font>
+                            <Font name="Consolas" size="16.0"/>
+                          </font>
+                        </Text>
+                      </bottom>
+                      <center>
+                        <ImageView BorderPane.alignment="CENTER" fitHeight="50.0" fitWidth="50.0"
+                          pickOnBounds="true" preserveRatio="true">
+                          <BorderPane.margin>
+                            <Insets left="5.0"/>
+                          </BorderPane.margin>
+                          <image>
+                            <Image url="@resources/outline_sports_esports_white_24dp.png"/>
+                          </image>
+                        </ImageView>
+                      </center>
+                    </BorderPane>
+                    <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                      layoutX="330.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0">
+                      <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                      </HBox.margin>
+                      <bottom>
+                        <Text BorderPane.alignment="CENTER" fill="WHITE" strokeType="OUTSIDE"
+                          strokeWidth="0.0" text="Easy AI">
+                          <BorderPane.margin>
+                            <Insets bottom="5.0"/>
+                          </BorderPane.margin>
+                          <font>
+                            <Font name="Consolas" size="16.0"/>
+                          </font>
+                        </Text>
+                      </bottom>
+                      <center>
+                        <ImageView BorderPane.alignment="CENTER" fitHeight="50.0" fitWidth="50.0"
+                          pickOnBounds="true" preserveRatio="true">
+                          <BorderPane.margin>
+                            <Insets left="5.0"/>
+                          </BorderPane.margin>
+                          <image>
+                            <Image url="@resources/aiPlayer.png"/>
+                          </image>
+                        </ImageView>
+                      </center>
+                    </BorderPane>
+                    <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+                      layoutX="390.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0">
+                      <HBox.margin>
+                        <Insets left="10.0" right="10.0"/>
+                      </HBox.margin>
+                      <bottom>
+                        <Text BorderPane.alignment="CENTER" fill="WHITE" strokeType="OUTSIDE"
+                          strokeWidth="0.0" text="Waiting">
+                          <BorderPane.margin>
+                            <Insets bottom="5.0"/>
+                          </BorderPane.margin>
+                          <font>
+                            <Font name="Consolas" size="16.0"/>
+                          </font>
+                        </Text>
+                      </bottom>
+                      <center>
+                        <ImageView BorderPane.alignment="CENTER" fitHeight="50.0" fitWidth="50.0"
+                          pickOnBounds="true" preserveRatio="true">
+                          <BorderPane.margin>
+                            <Insets left="5.0"/>
+                          </BorderPane.margin>
+                          <image>
+                            <Image url="@resources/waiting.png"/>
+                          </image>
+                        </ImageView>
+                      </center>
+                    </BorderPane>
+                  </children>
+                </HBox>
+                <Label alignment="CENTER" prefWidth="700.0" text="Players" textFill="WHITE">
+                  <VBox.margin>
+                    <Insets bottom="20.0"/>
+                  </VBox.margin>
+                  <font>
+                    <Font name="Consolas Bold" size="20.0"/>
+                  </font>
+                </Label>
+              </children>
+            </VBox>
+          </children>
+          <padding>
+            <Insets left="50.0" right="50.0" top="50.0"/>
+          </padding>
+        </VBox>
+        <VBox style="-fx-background-color: #805500;" prefHeight="720.0" prefWidth="700.0"
+          fx:id="joinGameView">
+          <children>
+            <BorderPane style="-fx-background-color: #4d3300; -fx-background-radius: 10px;"
+              maxWidth="620.0" prefHeight="0.0" prefWidth="620.0">
+              <VBox.margin>
+                <Insets top="30.0"/>
+              </VBox.margin>
+              <center>
+                <HBox maxWidth="620.0" prefHeight="100.0" prefWidth="200.0">
+                  <children>
+                    <Label prefWidth="250.0" text="Enter Host ID:" textFill="WHITE">
+                      <HBox.margin>
+                        <Insets/>
+                      </HBox.margin>
+                      <font>
+                        <Font name="Consolas Bold" size="20.0"/>
+                      </font>
+                    </Label>
+                    <TextField style="-fx-background-color: #A0522D;"
+                      promptText="Something went wrong" fx:id="profileNickname1"/>
+                  </children>
+                </HBox>
+              </center>
+              <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+              </padding>
             </BorderPane>
-         </children>
-         <padding>
-            <Insets left="50.0" right="50.0" />
-         </padding>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
-      <AnchorPane prefHeight="720.0" prefWidth="1080.0">
-         <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
-               <image>
-                  <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
-               </image>
-            </ImageView>
-            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #edbb99;" visible="false">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Starting a server..." wrappingWidth="346.0781555175781" />
-               </children>
+            <BorderPane>
+              <VBox.margin>
+                <Insets top="50.0"/>
+              </VBox.margin>
+              <center>
+                <Button style="-fx-background-color: #22cb30;" mnemonicParsing="false"
+                  onAction="#enterLobby" text="Enter lobby" textFill="WHITE"
+                  fx:id="enterLobbyButton">
+                  <font>
+                    <Font name="Consolas Bold" size="20.0"/>
+                  </font>
+                </Button>
+              </center>
+            </BorderPane>
+            <Label style="-fx-border-color: #000000;" alignment="CENTER" contentDisplay="CENTER"
+              prefWidth="700.0" text="To join a server enter adress...">
+              <VBox.margin>
+                <Insets top="50.0"/>
+              </VBox.margin>
+            </Label>
+          </children>
+          <padding>
+            <Insets left="50.0" right="50.0"/>
+          </padding>
+        </VBox>
+      </children>
+    </AnchorPane>
+    <VBox style="-fx-background-color: #8b4513;" prefHeight="720.0" prefWidth="380.0">
+      <children>
+        <BorderPane VBox.vgrow="ALWAYS" prefHeight="720.0" prefWidth="380.0">
+          <VBox.margin>
+            <Insets left="-50.0" right="-50.0"/>
+          </VBox.margin>
+          <bottom>
+            <Button style="-fx-background-color: #A0522D;" BorderPane.alignment="CENTER"
+              minWidth="380.0" mnemonicParsing="false" onAction="#changeScene"
+              onMouseEntered="#animate" prefHeight="50.0" text="Back" textFill="WHITE"
+              fx:id="backButton">
+              <BorderPane.margin>
+                <Insets bottom="20.0"/>
+              </BorderPane.margin>
+              <cursor>
+                <Cursor fx:constant="HAND"/>
+              </cursor>
+              <font>
+                <Font name="Consolas Bold" size="20.0"/>
+              </font>
+            </Button>
+          </bottom>
+          <center>
+            <VBox BorderPane.alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+              <children>
+                <Button style="-fx-background-color: #A0522D;" minWidth="380.0"
+                  mnemonicParsing="false" onAction="#openStartGameView" onMouseEntered="#animate"
+                  prefHeight="50.0" text="Start Game" textAlignment="CENTER" textFill="WHITE"
+                  wrapText="true" fx:id="startGame">
+                  <VBox.margin>
+                    <Insets top="50.0"/>
+                  </VBox.margin>
+                  <cursor>
+                    <Cursor fx:constant="HAND"/>
+                  </cursor>
+                  <font>
+                    <Font name="Consolas Bold" size="20.0"/>
+                  </font>
+                </Button>
+                <Button style="-fx-background-color: #A0522D;" minWidth="380.0"
+                  mnemonicParsing="false" onAction="#openJoinGameView" onMouseEntered="#animate"
+                  prefHeight="50.0" text="Join Game" textFill="WHITE" fx:id="joinGame">
+                  <VBox.margin>
+                    <Insets top="50.0"/>
+                  </VBox.margin>
+                  <cursor>
+                    <Cursor fx:constant="HAND"/>
+                  </cursor>
+                  <font>
+                    <Font name="Consolas Bold" size="20.0"/>
+                  </font>
+                </Button>
+                <Button style="-fx-background-color: #A0522D;" minWidth="380.0"
+                  mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate"
+                  prefHeight="50.0" text="Tutorial" textFill="WHITE" fx:id="playTutorial">
+                  <VBox.margin>
+                    <Insets top="50.0"/>
+                  </VBox.margin>
+                  <cursor>
+                    <Cursor fx:constant="HAND"/>
+                  </cursor>
+                  <font>
+                    <Font name="Consolas Bold" size="20.0"/>
+                  </font>
+                </Button>
+              </children>
             </VBox>
-            <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #edbb99;" visible="false">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="To join a server enter adress..." wrappingWidth="346.0781555175781" />
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
-   </children>
+          </center>
+          <top>
+            <Pane style="-fx-background-color: #996600;" BorderPane.alignment="CENTER"
+              prefHeight="150.0" prefWidth="380.0">
+              <children>
+                <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE"
+                  strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER"
+                  wrappingWidth="289.5306091308594">
+                  <font>
+                    <Font name="Consolas" size="60.0"/>
+                  </font>
+                </Text>
+              </children>
+            </Pane>
+          </top>
+        </BorderPane>
+      </children>
+      <opaqueInsets>
+        <Insets/>
+      </opaqueInsets>
+      <padding>
+        <Insets left="50.0" right="50.0"/>
+      </padding>
+    </VBox>
+  </children>
 </HBox>
