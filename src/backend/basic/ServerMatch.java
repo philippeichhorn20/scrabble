@@ -160,7 +160,6 @@ public class ServerMatch {
       }
       server.sendOnlyTo(players[i].name, new GameStartMessage("server", tiles));
     }
-
     // server message, find out turn, send turn message && send wait message, send out initial tiles,
     // start game thread programmieren. Diese ruft das auf
     //server.sendToAll(new);
@@ -226,7 +225,6 @@ public class ServerMatch {
     scrabbleBoard.nextTurn();
     server.sendOnlyTo(this.players[this.currentPlayer].name, new GameTurnMessage("server"));
   }
-
   public Player[] getPlayers() {
     return players;
   }

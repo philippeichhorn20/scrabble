@@ -87,7 +87,6 @@ public class ClientMatch {
     protocol.sendToServer(new PassMessage(MessageType.PASS,"server"));
   }
 
-
   public String submitTilesOfClient() throws IOException {
     String[][] result = scrabbleBoard.submitTiles();
     boolean isValid = scrabbleBoard.inputValudation(result);

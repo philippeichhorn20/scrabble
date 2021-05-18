@@ -299,7 +299,33 @@ public class ScrabbleBoard {
   public ArrayList<Tile> getTilesOnScrabbleBoard() {
     return tilesOnScrabbleBoard;
   }
+
+
+  public ArrayList<ArrayList<Tile>> getEditedWords() {
+    return editedWords;
+  }
+
+  public void setEditedWords(ArrayList<ArrayList<Tile>> editedWords) {
+    this.editedWords = editedWords;
+  }
+
+  public ArrayList<Tile> getNewTilesOfCurrentMove() {
+    return newTilesOfCurrentMove;
+  }
+
+  public void setNewTilesOfCurrentMove(ArrayList<Tile> newTilesOfCurrentMove) {
+    this.newTilesOfCurrentMove = newTilesOfCurrentMove;
+  }
+
+  public Matchfield[][] getScrabbleBoard() {
+    return scrabbleBoard;
+  }
+
+  public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
+    this.scrabbleBoard = scrabbleBoard;
+  }
 }
+
 
 
 /*

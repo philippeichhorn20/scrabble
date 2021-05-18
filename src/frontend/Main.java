@@ -1,6 +1,7 @@
 package frontend;
 
 import animatefx.animation.FadeIn;
+import backend.basic.Lobby;
 import backend.basic.Profile;
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,6 +26,7 @@ public class Main extends Application {
 
   private static Stage stg;
 
+  public static Lobby lobby;
   /**
    * Starts the application, creates an empty database if not already created.
    *

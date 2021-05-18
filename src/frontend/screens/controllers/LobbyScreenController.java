@@ -1,6 +1,9 @@
 package frontend.screens.controllers;
 
 import animatefx.animation.Pulse;
+import backend.basic.Lobby;
+import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
 import frontend.Main;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -52,6 +55,7 @@ public class LobbyScreenController {
     lobbyView.setVisible(false);
     joinGameView.setVisible(false);
     startGameView.setVisible(true);
+    startGame(e);
   }
 
   //Allows player to enter a code to join hosting player's server
@@ -63,13 +67,14 @@ public class LobbyScreenController {
 
   //Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
-    //TODO
+    Main.lobby = new Lobby(
+        new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT));
   }
 
   //Method connects joining player to lobby or server of hosting player.
   public void enterLobby(ActionEvent e) {
     openStartGameView(e);
-    //TODO
+    Main.lobby.newMatch();
   }
 
   // Method responsible for animations
