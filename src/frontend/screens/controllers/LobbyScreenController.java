@@ -12,8 +12,7 @@ import javafx.scene.layout.VBox;
 
 /*
 @author jawinter
-    TODO:
-    This is an empty controller for the lobby screen. Here the user should be able to choose between hosting and joining a game, or starting a tutorial.
+    This is the controller for the lobby screen. Here the user should be able to choose between hosting and joining a game, or starting a tutorial.
  */
 public class LobbyScreenController {
 
@@ -49,7 +48,7 @@ public class LobbyScreenController {
   }
 
   //Makes settings visible to hosting player.
-  public void openStartGameView(ActionEvent e)  {
+  public void openStartGameView(ActionEvent e) {
     lobbyView.setVisible(false);
     joinGameView.setVisible(false);
     startGameView.setVisible(true);
@@ -61,9 +60,22 @@ public class LobbyScreenController {
     startGameView.setVisible(false);
     joinGameView.setVisible(true);
   }
+
+  //Method switches to playboard and starts game.
+  public void startGame(ActionEvent e) {
+    //TODO
+  }
+
+  //Method connects joining player to lobby or server of hosting player.
+  public void enterLobby(ActionEvent e) {
+    openStartGameView(e);
+    //TODO
+  }
+
   // Method responsible for animations
   public void animate(MouseEvent e) {
     new Pulse((Button) e.getSource()).play();
   }
 
 }
+
