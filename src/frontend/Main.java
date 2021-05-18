@@ -67,6 +67,13 @@ public class Main extends Application {
     stg.getScene().setRoot(pane);
   }
 
+  @Override
+  public void stop() {
+    if(lobby.getServer()!=null) {
+      lobby.getServer().stopServer();
+    }
+  }
+
   /**
    * Changes the scene but with an animation. The animation is fixed for now, feel free to add new
    * methods with different animation or change this one.

@@ -99,7 +99,7 @@
       </VBox>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
                </image>
@@ -228,7 +228,7 @@
                            <center>
                               <HBox maxWidth="620.0" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label prefWidth="250.0" text="Host ID:" textFill="WHITE">
+                                    <Label prefWidth="250.0" text="Host IP:" textFill="WHITE">
                                        <font>
                                           <Font name="Consolas Bold" size="20.0" />
                                        </font>
@@ -236,7 +236,7 @@
                                           <Insets />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="profileNickname" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
+                                    <TextField fx:id="hostIP" editable="false" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
                                  </children>
                               </HBox>
                            </center>
@@ -391,7 +391,7 @@
                   <Insets left="50.0" right="50.0" top="50.0" />
                </padding>
             </VBox>
-            <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;" visible="false">
+            <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="700.0" style="-fx-border-color: #000000;" text="To join a server enter adress...">
                      <VBox.margin>
@@ -410,7 +410,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="profileNickname1" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
+                              <TextField fx:id="adressIP" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
                            </children>
                         </HBox>
                      </center>

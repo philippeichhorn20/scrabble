@@ -32,6 +32,10 @@ public class ScrabbleBoard {
    * TODO: add the rest of the Premiumstatuses
    */
 
+  public Matchfield[][] getScrabbleBoard(){
+    return this.scrabbleBoard;
+  }
+
   public void setUpScrabbleBoard() {
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
@@ -317,9 +321,6 @@ public class ScrabbleBoard {
     this.newTilesOfCurrentMove = newTilesOfCurrentMove;
   }
 
-  public Matchfield[][] getScrabbleBoard() {
-    return scrabbleBoard;
-  }
 
   public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
     this.scrabbleBoard = scrabbleBoard;

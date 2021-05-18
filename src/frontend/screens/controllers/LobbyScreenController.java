@@ -4,11 +4,15 @@ import animatefx.animation.Pulse;
 import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
+import backend.network.client.ClientProtocol;
+import backend.network.server.ServerProtocol;
+import backend.network.server.ServerSettings;
 import frontend.Main;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -26,6 +30,10 @@ public class LobbyScreenController {
   private ImageView lobbyView;
   @FXML
   private VBox startGameView;
+  @FXML
+  private TextField hostIP;
+  @FXML
+  private TextField adressIP;
 
   // Method determines button clicked and changes to desired scene
   @FXML
@@ -69,12 +77,20 @@ public class LobbyScreenController {
   public void startGame(ActionEvent e) {
     Main.lobby = new Lobby(
         new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT));
+    hostIP.setText(Main.lobby.getIp());
+    ClientProtocol clientProtocol = new ClientProtocol(hostIP.getText(),ServerSettings.port,Main.profile.getName());
+
   }
 
   //Method connects joining player to lobby or server of hosting player.
   public void enterLobby(ActionEvent e) {
+    boolean validIP = true;
+    if(validIP) {
+      ClientProtocol cp = new ClientProtocol(adressIP.getText(), ServerSettings.port,Main.profile.getName());
+    }
     openStartGameView(e);
     Main.lobby.newMatch();
+
   }
 
   // Method responsible for animations
