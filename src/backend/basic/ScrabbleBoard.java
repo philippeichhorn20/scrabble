@@ -32,7 +32,7 @@ public class ScrabbleBoard {
    * TODO: add the rest of the Premiumstatuses
    */
 
-  public Matchfield[][] getScrabbleBoard(){
+  public Matchfield[][] getScrabbleBoard() {
     return this.scrabbleBoard;
   }
 
@@ -59,27 +59,28 @@ public class ScrabbleBoard {
 
 
   public void printScrabbleBoard() {
-    for (int x = 0; x < 15; x++) {
-      for (int y = 0; y < 15; y++) {
+    for (int y = 0; y < 15; y++) {
+      for (int x = 0; x < 15; x++) {
         if (scrabbleBoard[x][y].hasTile()) {
           System.out.print(scrabbleBoard[x][y].getTile().getLetter() + ":");
-        }
-        switch (scrabbleBoard[x][y].getPremiumstatus()) {
-          case NOPREMIUM:
-            System.out.print("N" + "\t");
-            break;
-          case DOUBLELETTER:
-            System.out.print("2L" + "\t");
-            break;
-          case TRIPLELETTER:
-            System.out.print("3L" + "\t");
-            break;
-          case TRIPLEWORD:
-            System.out.print("3W" + "\t");
-            break;
-          case DOUBLEWORD:
-            System.out.print("2W" + "\t");
-            break;
+        } else {
+          switch (scrabbleBoard[x][y].getPremiumstatus()) {
+            case NOPREMIUM:
+              System.out.print("N" + "\t");
+              break;
+            case DOUBLELETTER:
+              System.out.print("N" + "\t");
+              break;
+            case TRIPLELETTER:
+              System.out.print("N" + "\t");
+              break;
+            case TRIPLEWORD:
+              System.out.print("N" + "\t");
+              break;
+            case DOUBLEWORD:
+              System.out.print("N" + "\t");
+              break;
+          }
         }
       }
       System.out.println();
