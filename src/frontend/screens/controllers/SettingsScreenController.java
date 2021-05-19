@@ -2,9 +2,13 @@ package frontend.screens.controllers;
 
 import frontend.Main;
 
+
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -14,6 +18,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
 
 /*
  * @author vivanova
@@ -34,22 +39,33 @@ public class SettingsScreenController {
 	@FXML
 	private RadioButton radioButton;
 
+	public static MediaPlayer player;
+	
 	public void goBack(ActionEvent e) throws IOException {
 		Main m = new Main();
 		m.changeScene("screens/mainMenu.fxml");
 	}
 
 	// The user should be able to change the volume from here
-	public static void music(String[] args) throws URISyntaxException {
+	
+	public static void startMusic() {
+//		String path = "src\\lib\\music\\Somewhere_Off_Jazz_Street.mp3";
+//		Media media = new Media(new File(path).toURI().toString());
+//		player = new MediaPlayer(media);
+//		player.setVolume(40);
+//		player.play();
+//		player.setAutoPlay(true);
+	}
+	
+	@FXML
+	public static  void music() throws URISyntaxException {
 		
 		String path = "src\\lib\\music\\Somewhere_Off_Jazz_Street.mp3";
-		Media media = new Media(path);
-		MediaPlayer player = new MediaPlayer(media);
-
-		media = new Media(new File(path).toURI().toString());
-		player.setVolume(40);
+		Media media = new Media(Paths.get(path).toUri().toString());
+		player = new MediaPlayer(media);
 		player.play();
-		player.setAutoPlay(true);
+		//player.setAutoPlay(true);
+		player.setVolume(0.1);
 
 		volumeKey.setValue(player.getVolume() * 100);
 		volumeKey.valueProperty().addListener(new InvalidationListener() {
@@ -59,23 +75,32 @@ public class SettingsScreenController {
 
 				player.setVolume(volumeKey.getValue() / 100);
 			}
-		});
 
-		RadioButton radioButton = new RadioButton("Music On/Off");
-
-		radioButton.setOnAction(event -> {
-			if (radioButton.isSelected()) {
-				player.pause();
-			} else {
-				player.play();
-			}
+			
 		});
+	}
+		public void radioButton(ActionEvent e) throws IOException {
+			
+			RadioButton radioButton = new RadioButton("Music On/Off");
+
+			radioButton.setOnAction(event -> {
+				if (radioButton.isSelected()) {
+					player.pause();
+				} else {
+					player.play();
+				}
+			
+		
+		
 
 		// Dictionaries to be changed/added
-	}
-	/*public static void main(String[] args) {
-		String basePath = new File("").getAbsolutePath();
-		System.out.println(basePath);
+	});
+		}
+
+
+			 public static void main(String[] args) throws URISyntaxException {
+				    music();
+				  }
 					
-	}*/
+	
 }
