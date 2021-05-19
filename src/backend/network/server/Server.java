@@ -1,8 +1,16 @@
 package backend.network.server;
 
+import backend.basic.ClientMatch;
+import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.connection.ShutDownMessage;
+import backend.network.messages.game.LobbyInformationMessage;
+import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.tiles.PlaceTilesMessage;
+import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
+import backend.network.messages.time.TimeAlertMessage;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,9 +30,13 @@ public class Server {
 
   private ServerSocket serverSocket;
   private boolean running;
+  private boolean nextMessageOnlyForHost = false;
+  private boolean nextMessageAdditionalForHost = false;
   private final HashMap<String, ServerProtocol> clients = new HashMap<>(); // map with serverprotocols of clients
   private final HashMap<Integer, String> objecIDMap = new HashMap<>(); // map with owners of object ids
   ServerMatch serverMatch;
+  ClientMatch match;
+
 
   /*
    * remove clients together with the matching protocol
@@ -93,20 +105,31 @@ public class Server {
   * @param clientNames names of the clients which receive the message
   * @param message the message which have to be sent*/
   private synchronized void sendTo(List<String> clientNames, Message message){
-    List<String> cFails = new ArrayList<String>();
-    for (String cName : clientNames) {
-      try {
-        ServerProtocol c = clients.get(cName);
-        c.sendToClient(message);
-      } catch (IOException e) {
-        cFails.add(cName); // notice to remove
-        continue;
+    if (!nextMessageOnlyForHost) {
+      List<String> cFails = new ArrayList<String>();
+      for (String cName : clientNames) {
+        try {
+          ServerProtocol c = clients.get(cName);
+          c.sendToClient(message);
+        } catch (IOException e) {
+          cFails.add(cName); // notice to remove
+          continue;
+        }
       }
+      for (String c : cFails) {
+        System.out.println("Client " + c + " removed (because of send failure).");
+        removeClient(c);
+      }
+
+      if(nextMessageAdditionalForHost) {
+        updateHostGame(message);
+        nextMessageAdditionalForHost = false;
+      }
+    } else {
+      updateHostGame(message);
+      nextMessageOnlyForHost = false;
     }
-    for (String c : cFails) {
-      System.out.println("Client " + c + " removed (because of send failure).");
-      removeClient(c);
-    }
+
   }
 
 
@@ -171,4 +194,114 @@ public class Server {
     this.serverSocket = serverSocket;
   }
 
+  public void updateHostGame(Message message) {
+    switch(message.getMessageType()) {
+      case GAME_START:
+        //TODO At game controller there must be a methode which show
+        // the player the start of game
+        break;
+
+      case GAME_TURN:
+        if (this.match.getMyNumber() == this.match.getCurrentPlayer() + 1) {
+          this.match.nextPlayer();
+        } else {
+
+        }
+        break;
+
+      case GAME_WAIT:
+        //TODO At game controller there must be a methode which show
+        // that the player have to wait because of another players turn
+
+        //redundant in my view, happens with GAME_TURN already
+        break;
+
+      case GAME_OVER:
+        //TODO At game controller there must be a methode which show
+        // the player that the game is over
+        this.match.isOver();
+        break;
+
+      case GAME_WIN:
+        //TODO At game controller there must be a methode which show
+        // that the player won
+        this.match.youWon();
+        break;
+
+      case GAME_LOOSE:
+        //TODO At game controller there must be a methode which show
+        // that the player lost
+        this.match.youLost();
+        break;
+
+      case GAME_PLACEMENT:
+        //TODO At game controller there must be a methode which show
+        // the player the placement
+
+        //redundant, by sending out the Player info, this info can be taken from Game Lobby
+        break;
+
+      case GAME_INFO:
+        LobbyInformationMessage message1 = (LobbyInformationMessage) message;
+        //this.match = new ClientMatch(this, message1.getPlayers(), "server",
+        //    new Player("ToDo", "TodO", Playerstatus.WAIT));
+        break;
+      case SEND_POINTS:
+        //TODO At game controller there must be a methode which add
+        // points to the player statistics
+        SendPointsMessage message2 = (SendPointsMessage) message;
+        this.match.addPointsToPlayer(message2.getPoints());
+        break;
+
+      case SEND_RACK_POINTS:
+        //TODO At game controller there must be a methode which
+        // calculate the points left on the rack
+
+        //Why and also when?
+        break;
+
+      case PLACE_TILES:
+        PlaceTilesMessage message3 = (PlaceTilesMessage) message;
+        match.placeTilesOfOtherPlayers(message3.getTiles());
+        break;
+
+      case RECEIVE_SHUFFLE_TILES:
+        match.receiveShuffleTiles((ReceiveShuffleTilesMessage) message);
+        break;
+
+      case TIME_ALERT:
+        TimeAlertMessage timeAlertMessage = (TimeAlertMessage) message;
+        switch (timeAlertMessage.getAlertType()) {
+          case TIME_OVER:
+            match.nextPlayer();
+            break;
+          case TIMER_STARTED:
+            match.getPlayer().setTimerPersonalTimerToZero();
+            break;
+          case ONE_MINUTE_LEFT:
+            match.oneMinuteAlert();
+            break;
+          case THIRTY_SECONDS_LEFT:
+            match.thirtySecondsAlert();
+            break;
+        }
+        break;
+
+      case TIME_SYNC:
+        //it nulls the timer
+        this.match.getPlayer().setTimerToZero();
+        break;
+
+      default:
+        break;
+      }
+    }
+
+    public void setNextMessageOnlyForHost() {
+      this.nextMessageOnlyForHost = true;
+    }
+
+    public void setNextMessageAdditionalForHost() {
+      this.nextMessageAdditionalForHost = true;
+    }
 }
