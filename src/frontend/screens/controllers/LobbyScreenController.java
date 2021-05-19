@@ -82,7 +82,7 @@ public class LobbyScreenController {
 
   //Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
-
+    Main.lobby.newMatch();
   }
 
   //Method connects joining player to lobby or server of hosting player.

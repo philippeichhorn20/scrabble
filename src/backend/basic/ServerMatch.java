@@ -44,13 +44,6 @@ public class ServerMatch {
     scrabbleBoard.setUpScrabbleBoard();
     players[0] = playerHost;
     timer = new Timer();
-    server = new Server();
-    Runnable r = new Runnable() {
-      public void run() {
-        server.listen();
-      }
-    };
-    new Thread(r).start();
   }
 
 
@@ -66,13 +59,6 @@ public class ServerMatch {
     	this.players[i] = players[i];
     }
     timer = new Timer();
-    server = new Server();
-    Runnable r = new Runnable() {
-      public void run() {
-        server.listen();
-      }
-    };
-    new Thread(r).start();
   }
 
 

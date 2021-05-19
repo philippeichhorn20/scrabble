@@ -60,23 +60,23 @@ public class Matchfield {
   private void assambleBackgroundColour() {
     switch (this.isPremium) {
       case NOPREMIUM:
-        this.field.setStyle("-fx-background-color: #ffffff; "); // #ffffff code for white
+        //this.field.setStyle("-fx-background-color: #ffffff; "); // #ffffff code for white
         break;
 
       case DOUBLELETTER:
-        this.field.setStyle("-fx-background-color: #85f3ff; "); // #85f3ff code for lightblue
+        //this.field.setStyle("-fx-background-color: #85f3ff; "); // #85f3ff code for lightblue
         break;
 
       case TRIPLELETTER:
-        this.field.setStyle("-fx-background-color: #3e52c7; "); // #3e52c7 code for darkblue
+        //this.field.setStyle("-fx-background-color: #3e52c7; "); // #3e52c7 code for darkblue
         break;
 
       case DOUBLEWORD:
-        this.field.setStyle("-fx-background-color: #ff69fa; "); // #ff69fa code for pink
+        //this.field.setStyle("-fx-background-color: #ff69fa; "); // #ff69fa code for pink
         break;
 
       case TRIPLEWORD:
-        this.field.setStyle("-fx-background-color: #ff0000; "); // #ff0000 code for red
+        //this.field.setStyle("-fx-background-color: #ff0000; "); // #ff0000 code for red
         break;
 
       default:
