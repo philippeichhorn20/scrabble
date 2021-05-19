@@ -62,10 +62,9 @@ public class ServerMatch {
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
     players = players;
-//  Possible solution
-//    for(int i = 0; i < players.length; i++) {
-//    	this.players[i] = players[i];
-//    }
+    for(int i = 0; i < players.length; i++) {
+    	this.players[i] = players[i];
+    }
     timer = new Timer();
     server = new Server();
     Runnable r = new Runnable() {
@@ -158,7 +157,9 @@ public class ServerMatch {
       for (int x = 0; x < tiles.length; x++) {
         tiles[x] = tileBag.drawTile();
       }
-      server.sendOnlyTo(players[i].name, new GameStartMessage("server", tiles));
+      if(players[i]!=null) {
+        server.sendOnlyTo(players[i].name, new GameStartMessage("server", tiles));
+      }
     }
     // server message, find out turn, send turn message && send wait message, send out initial tiles,
     // start game thread programmieren. Diese ruft das auf

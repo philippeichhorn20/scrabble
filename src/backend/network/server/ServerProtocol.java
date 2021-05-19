@@ -1,6 +1,7 @@
 package backend.network.server;
 
 import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
@@ -11,6 +12,7 @@ import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
+import frontend.Main;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -70,9 +72,6 @@ public class ServerProtocol extends Thread{
 
   public void run() {
     //(TODO) the start
-    this.server.setServerMatch(new ServerMatch(this.players));
-    this.server.getServerMatch().startMatch();
-
     Message message;
     try {
       message = (Message) in.readObject();
@@ -88,6 +87,8 @@ public class ServerProtocol extends Thread{
         } else {
           this.clientName = from;
           server.addClient(from,this);
+          Player clientPlayer = new Player(from,"#000000", Playerstatus.WAIT);
+          Main.lobby.addPlayer(clientPlayer);
         }
 
       } else { // first message of client have to be connection message

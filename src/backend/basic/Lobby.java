@@ -25,6 +25,8 @@ public class Lobby {
 
   public void newMatch() {
     match = new ServerMatch(players);
+    this.server.setServerMatch(new ServerMatch(this.players));
+    this.server.getServerMatch().startMatch();
   }
 
   public boolean addPlayer(Player player) {
