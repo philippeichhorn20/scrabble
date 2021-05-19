@@ -63,7 +63,7 @@ public class LobbyScreenController {
     lobbyView.setVisible(false);
     joinGameView.setVisible(false);
     startGameView.setVisible(true);
-    startGame(e);
+    startLobby(e);
   }
 
   //Allows player to enter a code to join hosting player's server
@@ -73,12 +73,15 @@ public class LobbyScreenController {
     joinGameView.setVisible(true);
   }
 
-  //Method switches to playboard and starts game.
-  public void startGame(ActionEvent e) {
+  public void startLobby(ActionEvent e) {
     Main.lobby = new Lobby(
         new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT));
     hostIP.setText(Main.lobby.getIp());
     ClientProtocol clientProtocol = new ClientProtocol(hostIP.getText(),ServerSettings.port,Main.profile.getName());
+  }
+
+  //Method switches to playboard and starts game.
+  public void startGame(ActionEvent e) {
 
   }
 
