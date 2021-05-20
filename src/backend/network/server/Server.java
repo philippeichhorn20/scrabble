@@ -3,6 +3,7 @@ package backend.network.server;
 import backend.basic.ClientMatch;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
+import backend.network.messages.MessageType;
 import backend.network.messages.connection.ShutDownMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.SendPointsMessage;
@@ -104,35 +105,25 @@ public class Server {
   * @param clientNames names of the clients which receive the message
   * @param message the message which have to be sent*/
   private synchronized void sendTo(List<String> clientNames, Message message){
-    if (!nextMessageOnlyForHost) {
-      List<String> cFails = new ArrayList<String>();
-      for (String cName : clientNames) {
-        try {
-          System.out.println("message sending to " + cName);
-          System.out.println("exists: " + clients.containsKey(cName));
-          ServerProtocol c = clients.get(cName);
-          c.sendToClient(message);
+    List<String> cFails = new ArrayList<String>();
+    for (String cName : clientNames) {
+      try {
+        System.out.println("message sending to " + cName);
+        System.out.println("exists: " + clients.containsKey(cName));
+        ServerProtocol c = clients.get(cName);
+        c.sendToClient(new Message(MessageType.SEND_ID, "server"));
 
-        } catch (IOException e) {
-          e.printStackTrace();
-          cFails.add(cName); // notice to remove
-          continue;
-        }
+      } catch (IOException e) {
+        e.printStackTrace();
+        cFails.add(cName); // notice to remove
+        continue;
       }
-      for (String c : cFails) {
-        System.out.println("Client " + c + " removed (because of send failure).");
-        removeClient(c);
-      }
-
-      if(nextMessageAdditionalForHost) {
-        //updateHostGame(message);
-        nextMessageAdditionalForHost = false;
-      }
-    } else {
-      //updateHostGame(message);
-      nextMessageOnlyForHost = false;
     }
 
+    for (String c : cFails) {
+      System.out.println("Client " + c + " removed (because of send failure).");
+      removeClient(c);
+    }
   }
 
 

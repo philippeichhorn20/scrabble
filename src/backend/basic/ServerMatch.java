@@ -40,10 +40,12 @@ public class ServerMatch {
   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
    */
-  public ServerMatch() {
+  public ServerMatch(Server s) {
+    this.server = s;
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
     timer = new Timer();
+
   }
 
 
@@ -204,13 +206,6 @@ public class ServerMatch {
   public void sendPlacedTilesToClients(Tile[] tiles) {
     server.sendToAllBut(Main.lobby.players[this.currentPlayer].name, new PlaceTilesMessage("server",
         scrabbleBoard.lastPlacedTiles()));
-  }
-
-  /*
-  adds a server to the match
-   */
-  public void addServer(Server s) {
-    server = s;
   }
 
   /*

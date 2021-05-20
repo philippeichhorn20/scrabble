@@ -18,8 +18,7 @@ public class Lobby {
   }
 
   public void newMatch() {
-    this.server.setServerMatch(new ServerMatch());
-    this.server.getServerMatch().addServer(this.server);
+    this.server.setServerMatch(new ServerMatch(this.server));
     this.server.getServerMatch().startMatch();
   }
 
