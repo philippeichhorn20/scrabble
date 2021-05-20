@@ -17,7 +17,6 @@ import java.util.ArrayList;
  * to find out which words were affected by this play.
  *
  * @param editedWords Those are then saved in the editedWords variable
- * TODO: int getPoints() which returns the points of a play
  * */
 
 public class ScrabbleBoard {
@@ -96,7 +95,7 @@ public class ScrabbleBoard {
       ArrayList<Tile> word = editedWords.get(i);
       System.out.print("wordsize " + word.size() + ": ");
       for (int s = 0; s < word.size(); s++) {
-        System.out.print(editedWords.get(i).get(s).getLetter());
+        System.out.print(editedWords.get(s).get(i).getLetter());
       }
       System.out.println();
     }
@@ -326,7 +325,17 @@ public class ScrabbleBoard {
   public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
     this.scrabbleBoard = scrabbleBoard;
   }
+
+  public Tile[] lastPlacedTiles() {
+    Tile[] tiles = new Tile[this.newTilesOfCurrentMove.size()];
+    for (int x = 0; x < this.newTilesOfCurrentMove.size(); x++) {
+      tiles[x] = this.newTilesOfCurrentMove.get(x);
+    }
+    return tiles;
+  }
+
 }
+
 
 
 

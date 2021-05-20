@@ -7,11 +7,14 @@ import backend.network.messages.Message;
 import backend.network.messages.connection.ConnectMessage;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.DisconnectMessage;
+import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.LobbyInformationMessage;
+import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.time.TimeAlertMessage;
+import frontend.Main;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,7 +29,6 @@ public class ClientProtocol extends Thread{
   private boolean running = true;
 
   public ClientProtocol(String ip, int port, String username) {
-
     try {
       this.username = username;
       this.clientSocket = new Socket(ip, port);
@@ -56,6 +58,7 @@ public class ClientProtocol extends Thread{
 
         switch (message.getMessageType()) {
           case CONNECTION_REFUSED:
+            System.out.println("Connection closed, since connection refused");
             ConnectionRefusedMessage connectionRefusedMessage = (ConnectionRefusedMessage)message;
             disconnect();
             break;
@@ -69,24 +72,18 @@ public class ClientProtocol extends Thread{
             // for example for a tile
             break;
 
-          case GAME_START:
-            //TODO At game controller there must be a methode which show
-            // the player the start of game
-            break;
-
           case GAME_TURN:
-            if (this.match.getMyNumber() == this.match.getCurrentPlayer() + 1) {
-              this.match.nextPlayer();
-            } else {
 
-            }
             break;
-
+          case PLAY_FEEDBACK:
+            PlayFeedbackMessage message6 = (PlayFeedbackMessage) message;
+            this.match.playFeedBackIntegration(message6.isSuccessfulMove());
+            break;
           case GAME_WAIT:
-            //TODO At game controller there must be a methode which show
+            //At game controller there must be a methode which show
             // that the player have to wait because of another players turn
-
-            //redundant in my view, happens with GAME_TURN already
+            this.match.nextPlayer();
+            System.out.println("you have to wait, its someboody elses turn");
             break;
 
           case GAME_OVER:
@@ -114,10 +111,11 @@ public class ClientProtocol extends Thread{
             //redundant, by sending out the Player info, this info can be taken from Game Lobby
             break;
 
+          //initialized the game with the lobby information
           case GAME_INFO:
             LobbyInformationMessage message1 = (LobbyInformationMessage) message;
             this.match = new ClientMatch(this, message1.getPlayers(), "server",
-                new Player("ToDo", "TodO", Playerstatus.WAIT));
+                new Player(this.username, "#000000'", Playerstatus.WAIT));
             break;
           case SEND_POINTS:
             //TODO At game controller there must be a methode which add
@@ -126,6 +124,14 @@ public class ClientProtocol extends Thread{
             this.match.addPointsToPlayer(message2.getPoints());
             break;
 
+          case GAME_START:
+            //TODO At game controller there must be a methode which add
+            // points to the player statistics
+            GameStartMessage message3 = (GameStartMessage) message;
+            this.match.getPlayer().updateRack(message3.getTiles());
+            Main m = new Main();
+            m.changeScene("screens/lobbyScreen.fxml");
+            break;
           case SEND_RACK_POINTS:
             //TODO At game controller there must be a methode which
             // calculate the points left on the rack
@@ -134,8 +140,8 @@ public class ClientProtocol extends Thread{
             break;
 
           case PLACE_TILES:
-            PlaceTilesMessage message3 = (PlaceTilesMessage) message;
-            match.placeTilesOfOtherPlayers(message3.getTiles());
+            PlaceTilesMessage message4 = (PlaceTilesMessage) message;
+            match.placeTilesOfOtherPlayers(message4.getTiles());
             break;
 
           case RECEIVE_SHUFFLE_TILES:

@@ -1,8 +1,6 @@
 package backend.network.server;
 
 import backend.basic.ClientMatch;
-import backend.basic.Player;
-import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.connection.ShutDownMessage;
@@ -56,7 +54,8 @@ public class Server {
   * @param name the name of the client to add
   * @param protocol the server protocol which gets added with the name */
   public synchronized void addClient(String name, ServerProtocol protocol) {
-    this.clients.put(name,protocol);
+    this.clients.put(name, protocol);
+    System.out.println(name + " : new client has been added");
   }
 
   /*@return give back a set of clients which are connected to the server*/
@@ -109,9 +108,13 @@ public class Server {
       List<String> cFails = new ArrayList<String>();
       for (String cName : clientNames) {
         try {
+          System.out.println("message sending to " + cName);
+          System.out.println("exists: " + clients.containsKey(cName));
           ServerProtocol c = clients.get(cName);
           c.sendToClient(message);
+
         } catch (IOException e) {
+          e.printStackTrace();
           cFails.add(cName); // notice to remove
           continue;
         }

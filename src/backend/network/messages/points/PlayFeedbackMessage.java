@@ -43,4 +43,8 @@ public class PlayFeedbackMessage extends Message {
   public void setSuccessfulMove(boolean successfulMove) {
     this.successfulMove = successfulMove;
   }
+
+  public boolean isSuccessfulMove() {
+    return successfulMove;
+  }
 }

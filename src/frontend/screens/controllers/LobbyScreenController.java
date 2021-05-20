@@ -5,7 +5,6 @@ import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.network.client.ClientProtocol;
-import backend.network.server.ServerProtocol;
 import backend.network.server.ServerSettings;
 import frontend.Main;
 import java.io.IOException;
@@ -81,8 +80,10 @@ public class LobbyScreenController {
   }
 
   //Method switches to playboard and starts game.
-  public void startGame(ActionEvent e) {
+  public void startGame(ActionEvent e) throws IOException {
     Main.lobby.newMatch();
+    Main m = new Main();
+    m.changeScene("screens/gameScreen.fxml");
   }
 
   //Method connects joining player to lobby or server of hosting player.

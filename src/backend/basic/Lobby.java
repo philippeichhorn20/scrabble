@@ -8,13 +8,14 @@ public class Lobby {
   ServerMatch match;
   Server server;
   Player[] players = new Player[4];
+  Player hostPlayer;
   String ip = "";
 
   public Lobby(Player hostPlayer) {
     server = new Server();
     this.addPlayer(hostPlayer);
+    this.hostPlayer = hostPlayer;
     ip = ServerSettings.getLocalHostIp4Address();
-    server = new Server();
     Runnable r = new Runnable(){
       public void run(){
         server.listen();
@@ -24,7 +25,7 @@ public class Lobby {
   }
 
   public void newMatch() {
-    this.server.setServerMatch(new ServerMatch(this.players));
+    this.server.setServerMatch(new ServerMatch());
     this.server.getServerMatch().addServer(this.server);
     this.server.getServerMatch().startMatch();
   }
@@ -37,6 +38,14 @@ public class Lobby {
       }
     }
     return false;
+  }
+
+  public void removePlayer(String player) {
+    for (int x = 0; x < this.players.length; x++) {
+      if (this.players[x].name.equals(player)) {
+        this.players[x] = null;
+      }
+    }
   }
 
   public String getIp() {

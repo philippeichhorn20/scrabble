@@ -133,6 +133,15 @@ public class Player {
     return this.status;
   }
 
+  public void putBackOnRack(Tile tile) {
+    for (int x = 0; x < rack.length; x++) {
+      if (this.rack[x] == null) {
+        this.rack[x] = tile;
+        break;
+      }
+    }
+  }
+
   public enum Playerstatus {
     OUTOFGAME,
     WAIT,

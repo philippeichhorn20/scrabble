@@ -2,7 +2,6 @@ package backend.network.server;
 
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
-import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
@@ -76,8 +75,10 @@ public class ServerProtocol extends Thread{
     try {
       message = (Message) in.readObject();
       if (message.getMessageType() == MessageType.CONNECT) {
+        System.out.println("new User attempts to connect...");
         String from = message.getFrom();
-        if (server.userExistsP(from)) {
+     /*   if (server.userExistsP(from)) {
+          System.out.println("unsuccessful since already in lobby...");
           Message connectionRefused = new ConnectionRefusedMessage("host",
               "Username already connected to the server!");
           out.writeObject(connectionRefused);
@@ -85,15 +86,25 @@ public class ServerProtocol extends Thread{
           out.reset();
           disconnect();
         } else {
-          this.clientName = from;
-          server.addClient(from,this);
-          Player clientPlayer = new Player(from,"#000000", Playerstatus.WAIT);
+          */
+        System.out.println("successful");
+        this.clientName = from;
+        server.addClient(from, this);
+        Player clientPlayer = new Player(from, "#000000", Playerstatus.WAIT);
+        if (Main.lobby.addPlayer(clientPlayer)) {
           Main.lobby.addPlayer(clientPlayer);
+        } else {
+          Message connectionRefused = new ConnectionRefusedMessage("server",
+              "Lobby is full!");
         }
 
+        //    }
+
       } else { // first message of client have to be connection message
+        System.out.println("server disconnected");
         disconnect();
       }
+      System.out.println("server connection established successfully, now running");
       while (running) {
         message = (Message) in.readObject();
         int id = 0;
@@ -110,16 +121,17 @@ public class ServerProtocol extends Thread{
           case DISCONNECT:
             server.removeClient(message.getFrom());
             running = false;
-            server.serverMatch.removePlayer(message.getFrom());
+            Main.lobby.removePlayer(message.getFrom());
             disconnect();
             break;
-/*
+
           case PLACE_TILES:
             PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
             server.serverMatch
                 .placeTiles(placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
+
             break;
-*/
+
           case SHUFFLE_TILES:
             //TODO At game controller there must be a methode which shuffle tiles
             // and return the shuffled tiles
@@ -131,7 +143,7 @@ public class ServerProtocol extends Thread{
               server.serverMatch.nextPlayer();
             }
             break;
-            
+
           case SEND_POINTS:
             //TODO At game controller there must be a methode which add the points received from the racks
             // at the end of a game to the statistics
@@ -167,7 +179,7 @@ public class ServerProtocol extends Thread{
     } catch (IOException e) {
       running = false;
       if (socket.isClosed()){
-        System.out.println("Socket closed.Name of disconnected Client: " +  this.clientName);
+        System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
       } else {
         try {
           socket.close();

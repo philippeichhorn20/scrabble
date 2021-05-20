@@ -1,8 +1,8 @@
 package backend.basic;
 
+import backend.basic.Tile.Tilestatus;
 import backend.network.client.ClientProtocol;
 import backend.network.messages.MessageType;
-import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
@@ -35,6 +35,9 @@ public class ClientMatch {
   private boolean isOver = false;
   private boolean youWon = false;
   private boolean waitingForShuffledTiles = false;
+  private final boolean yourTurn = false;
+  private int yourTurnNum;
+  private String gameEvents = "";
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
@@ -67,6 +70,13 @@ public class ClientMatch {
     return tiles1;
   }
 
+  public void yourTurn() {
+    yourTurnNum = currentPlayer;
+    scrabbleBoard.nextTurn();
+    this.player.getTimer().nextPlayer();
+    newGameEvent("It is now your turn");
+  }
+
   public void nextPlayer() {
     int notActivePlayers = 0;
     int nextPlayer = 4 % (currentPlayer + 1);
@@ -80,6 +90,7 @@ public class ClientMatch {
     }
     this.player.getTimer().nextPlayer();
     scrabbleBoard.nextTurn();
+    newGameEvent("It is now " + players[currentPlayer].getName() + "'s turn");
   }
 
   // Method is called, when player decides to not do anything this turn
@@ -102,7 +113,6 @@ public class ClientMatch {
       this.protocol.sendToServer(
           new PlaceTilesMessage(player.name, tileArrayToList(scrabbleBoard.newTilesOfCurrentMove)));
       scrabbleBoard.nextTurn();
-      protocol.sendToServer(new GameTurnMessage(from));
     } else {
       resultString += "what the heck do you mean by ";
       for (int i = 0; i < result[0].length; i++) {
@@ -120,6 +130,23 @@ public class ClientMatch {
 
   public void oneMinuteAlert() {
 //TODO
+  }
+
+  public void playFeedBackIntegration(boolean successfulMove) {
+    if (successfulMove) {
+      scrabbleBoard.nextTurn();
+    } else {
+      removeChangedTiles();
+    }
+  }
+
+  private void removeChangedTiles() {
+    for (int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++) {
+      Tile tile = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
+      tile.setStatus(Tilestatus.ONPLAYERRACK);
+      tile.setXY(0, 0);
+      this.player.putBackOnRack(tile);
+    }
   }
 
   public void placeTilesOfOtherPlayers(Tile[] tiles) {
@@ -205,5 +232,10 @@ public class ClientMatch {
 
   public String getFrom() {
     return from;
+  }
+
+  public void newGameEvent(String eventString) {
+    this.gameEvents += "";
+    this.gameEvents += "\n";
   }
 }
