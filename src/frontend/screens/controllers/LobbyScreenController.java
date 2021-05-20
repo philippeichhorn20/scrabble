@@ -1,6 +1,7 @@
 package frontend.screens.controllers;
 
 import animatefx.animation.Pulse;
+import backend.basic.ClientMatch;
 import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
@@ -35,6 +36,8 @@ public class LobbyScreenController {
   private TextField hostIP;
   @FXML
   private TextField adressIP;
+  @FXML
+  private Button startGameButton;
 
   // Method determines button clicked and changes to desired scene
   @FXML
@@ -88,8 +91,10 @@ public class LobbyScreenController {
 
     Main.lobby.setServer(server);
     hostIP.setText(Main.lobby.getIp());
-    ClientProtocol clientProtocol = new ClientProtocol(hostIP.getText(),ServerSettings.port,Main.profile.getName());
+    ClientProtocol clientProtocol = new ClientProtocol(hostIP.getText(),ServerSettings.port,Main.profile.getName(), new ClientMatch(Main.profile.getName(), new Player(Main.profile.getName(), "", Playerstatus.WAIT)));
     clientProtocol.start();
+
+    clientProtocol.getMatch().addProtocol(clientProtocol);
   }
 
   //Method switches to playboard and starts game.
@@ -100,14 +105,16 @@ public class LobbyScreenController {
   //Method connects joining player to lobby or server of hosting player.
   public void enterLobby(ActionEvent e) {
     boolean validIP = true;
+
     if(validIP) {
-      ClientProtocol cp = new ClientProtocol(adressIP.getText(), ServerSettings.port,Main.profile.getName());
+      ClientProtocol cp = new ClientProtocol(adressIP.getText(), ServerSettings.port,Main.profile.getName(), new ClientMatch(Main.profile.getName(), new Player(Main.profile.getName(),"", Playerstatus.WAIT)));
       cp.start();
+      cp.getMatch().addProtocol(cp);
+
     }
 
     openStartGameView(e);
-    Main.lobby.newMatch();
-
+    startGameButton.setVisible(false);
   }
 
   // Method responsible for animations

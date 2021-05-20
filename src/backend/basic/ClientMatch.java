@@ -25,7 +25,7 @@ public class ClientMatch {
   private static final int round = 0;
   private final Player[] players;
   private final Player player;
-  private final ClientProtocol protocol;
+  private ClientProtocol protocol;
   private final String from;
   private ScrabbleBoard scrabbleBoard;
   private int points = 0;
@@ -41,11 +41,17 @@ public class ClientMatch {
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
-    protocol.run();
     this.player = player;
     this.protocol = protocol;
     this.players = players;
     this.from = from;
+  }
+
+  public ClientMatch(String from, Player player) {
+    this.player = player;
+    this.from = from;
+    this.players = new Player[4];
+    this.players[0] = player;
   }
 
   /*
@@ -228,6 +234,10 @@ public class ClientMatch {
     return player;
   }
 
+  public void addProtocol(ClientProtocol cp) {
+    this.protocol = cp;
+  }
+
   //statics
 
   public String getFrom() {
@@ -238,4 +248,5 @@ public class ClientMatch {
     this.gameEvents += "";
     this.gameEvents += "\n";
   }
+
 }

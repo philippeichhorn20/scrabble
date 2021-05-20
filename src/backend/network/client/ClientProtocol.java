@@ -28,7 +28,7 @@ public class ClientProtocol extends Thread{
   private ClientMatch match;
   private boolean running = true;
 
-  public ClientProtocol(String ip, int port, String username) {
+  public ClientProtocol(String ip, int port, String username, ClientMatch match) {
     try {
       this.username = username;
       this.clientSocket = new Socket(ip, port);
@@ -39,6 +39,8 @@ public class ClientProtocol extends Thread{
       out.flush();
       out.reset();
       System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
+      this.match = match;
+
     } catch (IOException e) {
       System.out.println(e.getMessage());
       System.out.println("Could not establish connection to " + ip + ":" + port + ".\n"
@@ -127,11 +129,13 @@ public class ClientProtocol extends Thread{
           case GAME_START:
             //TODO At game controller there must be a methode which add
             // points to the player statistics
+            System.out.println("Test 420");
             GameStartMessage message3 = (GameStartMessage) message;
             this.match.getPlayer().updateRack(message3.getTiles());
             Main m = new Main();
-            m.changeScene("screens/lobbyScreen.fxml");
+            m.changeScene("screens/gameScreen.fxml");
             break;
+
           case SEND_RACK_POINTS:
             //TODO At game controller there must be a methode which
             // calculate the points left on the rack
@@ -198,5 +202,9 @@ public class ClientProtocol extends Thread{
     this.out.writeObject(message);
     out.flush();
     out.reset();
+  }
+
+  public ClientMatch getMatch() {
+    return this.match;
   }
 }
