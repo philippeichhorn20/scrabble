@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -143,7 +144,7 @@ public class GameScreenController {
   private void drawTiles() {
     resetColor();
     for (GraphicTile gt : gtiles) {
-      if (gt.toDraw()) {
+      if (!gt.isVisiblee() || gt.toDraw()) {
         // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
         Tile newTile = new TileBag().drawTile();
         Text let = new Text(String.valueOf(newTile.getLetter()));
@@ -265,7 +266,37 @@ public class GameScreenController {
       }
     }
   }
+  private int keyIterator = 0;
+  public void highlightTileKey(KeyEvent e){
 
+
+    if (e.getCode().equals(KeyCode.D)){
+      resetColor();
+      for (GraphicTile gt:gtiles){
+        gt.highlight(false);
+      }
+
+      while(!checkNextVisible()){
+        keyIterator++;
+      }
+      gtiles[keyIterator].highlight(true);
+      gtiles[keyIterator].getRec().setFill(Color.RED);
+      keyIterator++;
+      if(keyIterator >= 7){
+        keyIterator = 0;
+      }
+    }
+  }
+  private boolean checkNextVisible(){
+    if (keyIterator >= 7){
+      keyIterator = 0;
+    }
+    if (gtiles[keyIterator].isVisiblee()){
+      return true;
+    }else{
+      return false;
+    }
+  }
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
       gtiles[0] = new GraphicTile(tile1, text1);
