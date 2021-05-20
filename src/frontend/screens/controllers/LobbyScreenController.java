@@ -89,6 +89,7 @@ public class LobbyScreenController {
     Main.lobby.setServer(server);
     hostIP.setText(Main.lobby.getIp());
     ClientProtocol clientProtocol = new ClientProtocol(hostIP.getText(),ServerSettings.port,Main.profile.getName());
+    clientProtocol.start();
   }
 
   //Method switches to playboard and starts game.
@@ -101,7 +102,9 @@ public class LobbyScreenController {
     boolean validIP = true;
     if(validIP) {
       ClientProtocol cp = new ClientProtocol(adressIP.getText(), ServerSettings.port,Main.profile.getName());
+      cp.start();
     }
+
     openStartGameView(e);
     Main.lobby.newMatch();
 
