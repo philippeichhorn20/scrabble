@@ -1,12 +1,14 @@
 package backend.ai;
 
 import backend.basic.Player;
+import backend.basic.ScrabbleBoard;
 
 public class HardAI extends Player {
 
-  Brain hardBrain = new Brain();
+  Brain hardBrain;
 
-  public HardAI(String name, String color, Playerstatus status) {
+  public HardAI(String name, String color, Playerstatus status, ScrabbleBoard board) {
     super(name, color, status);
+    this.hardBrain = new Brain(board);
   }
 }

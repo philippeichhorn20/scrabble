@@ -15,6 +15,7 @@ public class WordPossibility {
 
   private int xPos;
   private int yPos;
+  private char letter;
   private int aboveSpace;
   private int rightSpace;
   private int belowSpace;
@@ -22,7 +23,8 @@ public class WordPossibility {
   private ScrabbleBoard board;
 
   //Instructor for initialization
-  public WordPossibility(int xPosition, int yPosition, ScrabbleBoard scrabbleBoard) {
+  public WordPossibility(char givenLetter,int xPosition, int yPosition, ScrabbleBoard scrabbleBoard) {
+    this.letter = givenLetter;
     if (xPosition < 15 && xPosition >= 0) {
       this.xPos = xPosition;
     } else {
@@ -51,7 +53,7 @@ public class WordPossibility {
         aboveSpace = i;
         aboveDone = true;
       }
-      if ((x + i >= 14 || scrabbleBoard[x + i][y].hasTile()) && !rightDone) {
+      if ((x + i >= 14 || scrabbleBoard[x + i + 1][y].hasTile()) && !rightDone) {
         rightSpace = i;
         rightDone = true;
       }
@@ -64,6 +66,34 @@ public class WordPossibility {
         leftDone = true;
       }
     }
+  }
+
+  public char getLetter() {
+    return letter;
+  }
+
+  public int getxPos() {
+    return xPos;
+  }
+
+  public int getyPos() {
+    return yPos;
+  }
+
+  public int getAboveSpace() {
+    return aboveSpace;
+  }
+
+  public int getBelowSpace() {
+    return belowSpace;
+  }
+
+  public int getLeftSpace() {
+    return leftSpace;
+  }
+
+  public int getRightSpace() {
+    return rightSpace;
   }
 
   @Override

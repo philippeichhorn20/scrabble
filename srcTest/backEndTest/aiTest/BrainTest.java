@@ -29,6 +29,7 @@ public class BrainTest {
 
     Matchfield[] result = Brain.getNeighbors(testBoard, 3, 2);
     Matchfield[] result2 = Brain.getNeighbors(testBoard, 13, 13);
+
     for (int i = 0; i < 4; i++) {
       if (result[i] != null && result[i].hasTile()) {
         System.out.print(result[i].getTile().getLetter() + " " + result[i].getTile().getX() + " ");
@@ -41,17 +42,13 @@ public class BrainTest {
       }
     }
     Matchfield[] emptyList = new Matchfield[4];
-    EasyAI firstAI = new EasyAI("computer1", "#000000", Playerstatus.WAIT);
-    ArrayList<WordPossibility> list = firstAI.easyBrain.getWordPossibilities(testBoard);
+    EasyAI firstAI = new EasyAI("computer1", "#000000", Playerstatus.WAIT,testBoard);
+    ArrayList<WordPossibility> list = firstAI.easyBrain.getWordPossibilities();
 
+    for(int i = 0;i<list.size();i++) {
+      System.out.println(list.get(i));
+    }
     System.out.println(list.size());
     testBoard.printScrabbleBoard();
-    WordPossibility wordP = new WordPossibility(3, 2, testBoard);
-    WordPossibility wordP2 = new WordPossibility(0, 0, testBoard);
-    WordPossibility wordP3 = new WordPossibility(12, 8, testBoard);
-    WordPossibility wordP4 = new WordPossibility(14, 14, testBoard);
-    WordPossibility wordP5 = new WordPossibility(0, 14, testBoard);
-    WordPossibility wordP6 = new WordPossibility(14, 0, testBoard);
-    WordPossibility wordP7 = new WordPossibility(10, 7, testBoard);
   }
 }
