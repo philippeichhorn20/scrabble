@@ -125,11 +125,11 @@ public class Server {
       }
 
       if(nextMessageAdditionalForHost) {
-        updateHostGame(message);
+        //updateHostGame(message);
         nextMessageAdditionalForHost = false;
       }
     } else {
-      updateHostGame(message);
+      //updateHostGame(message);
       nextMessageOnlyForHost = false;
     }
 
@@ -197,7 +197,7 @@ public class Server {
     this.serverSocket = serverSocket;
   }
 
-  public void updateHostGame(Message message) {
+/*  public void updateHostGame(Message message) {
     switch(message.getMessageType()) {
       case GAME_START:
         //TODO At game controller there must be a methode which show
@@ -306,5 +306,5 @@ public class Server {
 
     public void setNextMessageAdditionalForHost() {
       this.nextMessageAdditionalForHost = true;
-    }
+    }*/
 }

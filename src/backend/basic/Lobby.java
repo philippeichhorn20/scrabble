@@ -12,16 +12,9 @@ public class Lobby {
   String ip = "";
 
   public Lobby(Player hostPlayer) {
-    server = new Server();
     this.addPlayer(hostPlayer);
     this.hostPlayer = hostPlayer;
     ip = ServerSettings.getLocalHostIp4Address();
-    Runnable r = new Runnable(){
-      public void run(){
-        server.listen();
-      }
-    };
-    new Thread(r).start();
   }
 
   public void newMatch() {
@@ -54,5 +47,9 @@ public class Lobby {
 
   public Server getServer() {
     return server;
+  }
+
+  public void setServer(Server server) {
+    this.server = server;
   }
 }
