@@ -74,8 +74,14 @@
                      <image>
                         <Image url="@resources/tilebagicon.jpg" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </GridPane>
             <Button fx:id="backButton" layoutX="972.0" layoutY="670.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
                <font>
@@ -120,11 +126,11 @@
                </cursor></Rectangle>
             <Text fx:id="text2" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0">
                <cursor>
-                  <Cursor fx:constant="TEXT" />
+                  <Cursor fx:constant="HAND" />
                </cursor></Text>
             <Text fx:id="text1" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
                <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
+                  <Cursor fx:constant="HAND" />
                </cursor></Text>
             <Text fx:id="text3" layoutX="129.0" layoutY="196.0" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0">
                <cursor>
@@ -220,7 +226,16 @@
                <image>
                   <Image url="@resources/outline_settings_black_24dp.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
+            <Button fx:id="endTurnButton" layoutX="780.0" layoutY="650.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="48.0" prefWidth="118.0" text="End Turn">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Button>
+            <Button fx:id="resetTilesButton" layoutX="820.0" layoutY="559.0" mnemonicParsing="false" onAction="#resetTiles" prefHeight="36.0" prefWidth="92.0" text="Set back" />
          </children>
       </AnchorPane>
    </center>

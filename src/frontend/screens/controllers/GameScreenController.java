@@ -3,14 +3,18 @@ package frontend.screens.controllers;
 import backend.basic.ClientMatch;
 import backend.basic.GraphicTile;
 import backend.basic.ScrabbleBoard;
+import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
 import frontend.Main;
 import java.io.IOException;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -62,24 +66,21 @@ public class GameScreenController {
   @FXML private AnchorPane pane;
   private ScrabbleBoard scrabbleBoard;
   ClientMatch match;
+  private ServerMatch servMatch;
+  private Tile[] placedTiles;
+  private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
 
-  {
-    assert match != null;
-    //scrabbleBoard = match.getScrabbleBoard();
-  }
   private boolean setUpDone = false;
-
-
-
+  private int totalNubmerOfTiles =0;
   private GraphicTile gtile1;
   private GraphicTile gtile2;
-  private  GraphicTile gtile3;
+  private GraphicTile gtile3;
   private GraphicTile gtile4;
   private GraphicTile gtile5;
   private GraphicTile gtile6;
   private GraphicTile gtile7;
   private GraphicTile[] gtiles = new GraphicTile[7];
-
+  private int turn = 0;
   public void goBack(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/mainMenu.fxml");
@@ -91,17 +92,22 @@ public class GameScreenController {
   }
 
   public void getBounds(ActionEvent e) {
-    Tile tile = new Tile('c',5);
-    setTile(tile,5,7);
+    Tile tile = new Tile('c', 5);
+    setTile(tile, 5, 7);
   }
-  public void update(MouseEvent e){
-    //Player[] players = match.getPlayers();
+
+  public void update(MouseEvent e) {
+    // Player[] players = match.getPlayers();
     // currPlayer.setText(players[match.getCurrentPlayer()].getName());
-    //time.setText(String.valueOf(players[match.getCurrentPlayer()].getTimer().getTimerCurrentPlayer()));
+    // time.setText(String.valueOf(players[match.getCurrentPlayer()].getTimer().getTimerCurrentPlayer()));
 
   }
 
-
+  public void endTurn(ActionEvent e) throws IOException {
+    // servMatch.placeTileMessage(placedTiles);
+    // servMatch.endTurnMessage();
+    turn++;
+  }
 
   public void sendWinBox() {
     AlertBox.display("You win!", "Congratulations,you have won!");
@@ -117,60 +123,102 @@ public class GameScreenController {
     newTile.setStyle("-fx-stroke-width: 1");
     Text letter = new Text("  " + String.valueOf(tile.getLetter()));
     letter.setFont(new Font("Times New Roman", 20));
-    GraphicTile gt = new GraphicTile(newTile,letter);
-    board.add(gt,x,y);
+    GraphicTile gt = new GraphicTile(newTile, letter);
+    board.add(gt, x, y);
   }
 
-  public void getNewTiles(MouseEvent e){
-    for (GraphicTile gt:gtiles){
-      if (!gt.isVisiblee()){
-        TileBag tb = new TileBag();
-        Tile newTile = tb.drawTile();
+  public void getNewTiles(MouseEvent e) {
+    for (GraphicTile gt : gtiles) {
+      if (!gt.isVisiblee()) {
+        // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
+        Tile newTile = new TileBag().drawTile();
         Text let = new Text(String.valueOf(newTile.getLetter()));
         let.setLayoutX((gt.getLetter().getLayoutX()));
         let.setLayoutY((gt.getLetter().getLayoutY()));
         let.setFont(gt.getLetter().getFont());
         pane.getChildren().add(let);
-        gt.setXY(gt.getRec().getLayoutX(),gt.getRec().getLayoutY());
+        gt.setXY(gt.getRec().getLayoutX(), gt.getRec().getLayoutY());
         gt.setLetter(let);
         gt.setVisiblee(true);
       }
     }
   }
+
   public void highlight(MouseEvent e) {
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
-        Bounds b = board.getCellBounds(i,j);
+        Bounds b = board.getCellBounds(i, j);
         if (b.contains(e.getX(), e.getY())) {
-          for (int k = 0; k < 7;k++){
-            if (gtiles[k].isHighlighted()){
-              Rectangle rec = new Rectangle(gtiles[k].getRec().getX(),gtiles[k].getRec().getY(),gtiles[k].getRec().getWidth(),gtiles[k].getRec().getHeight());
+          for (int k = 0; k < 7; k++) {
+            if (gtiles[k].isHighlighted()) {
+              Rectangle rec =
+                  new Rectangle(
+                      gtiles[k].getRec().getX(),
+                      gtiles[k].getRec().getY(),
+                      gtiles[k].getRec().getWidth(),
+                      gtiles[k].getRec().getHeight());
               rec.setFill(Color.web("#ffe5b4"));
-              Text let = new Text(gtiles[k].getX(),gtiles[k].getY(),gtiles[k].getLetter().getText());
-              let.setFont(new Font("Times New Roman Bold",20));
+              Text let =
+                  new Text(gtiles[k].getX(), gtiles[k].getY(), gtiles[k].getLetter().getText());
+              let.setFont(new Font("Times New Roman Bold", 20));
               let.setText("  " + let.getText());
-              board.add(rec,i,j);
-              board.add(let,i,j);
-              let.setX((let.getX()+5));
+              rec.setId("tile" + turn);
+              let.setId("tile" + turn);
+              totalNubmerOfTiles++;
+              board.add(rec, i, j);
+              board.add(let, i, j);
+
+              let.setX((let.getX() + 5));
               gtiles[k].highlight(false);
               gtiles[k].setVisiblee(false);
+              Tile newTile = new Tile(gtiles[k].getLetter().getText().charAt(0), 0);
+              newTile.setXY(i, j);
+              int ite = 0;
+              placeTilesList.add(newTile);
+            //  while (placedTiles[ite] != null) {
+              //  ite++;
+            //  }
+              //  placedTiles[ite] = newTile;
               resetColor();
             }
           }
-
         }
       }
     }
   }
+
+  public void resetTiles(ActionEvent e) {
+    ObservableList<Node> boardChildren = board.getChildren();
+    Node[] nodesToRemove;
+    nodesToRemove = new Node[14];
+    int i = 0;
+    for (Node node:boardChildren){
+      if (node.getId().equals("tile"+turn)){
+        nodesToRemove[i] = node;
+        i++;
+      }
+    }
+    for (GraphicTile gt:gtiles){
+      if(!gt.isVisiblee()){
+        gt.setVisiblee(true);
+
+      }
+    }
+    for (Node node: nodesToRemove){
+      board.getChildren().remove(node);
+    }
+    nodesToRemove = null;
+  }
+
   public void highlightTile(MouseEvent e) {
     Rectangle tile = (Rectangle) e.getSource();
-    if (tile.getFill() == Color.RED){
+    if (tile.getFill() == Color.RED) {
       tile.setFill(Color.web("#ffe5b4"));
-    }else{
+    } else {
       resetColor();
       tile.setFill(Color.RED);
-      for (int i = 0;i<7;i++){
-        if (gtiles[i].getRec().getBoundsInParent().contains(e.getSceneX(),e.getSceneY())){
+      for (int i = 0; i < 7; i++) {
+        if (gtiles[i].getRec().getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
           gtiles[i].highlight(true);
         }
       }
@@ -179,50 +227,51 @@ public class GameScreenController {
 
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
-      gtiles[0] = new GraphicTile(tile1,text1);
-      gtiles[1] = new GraphicTile(tile2,text2);
-      gtiles[2] = new GraphicTile(tile3,text3);
-      gtiles[3] = new GraphicTile(tile4,text4);
-      gtiles[4] = new GraphicTile(tile5,text5);
-      gtiles[5] = new GraphicTile(tile6,text6);
-      gtiles[6] = new GraphicTile(tile7,text7);
+      gtiles[0] = new GraphicTile(tile1, text1);
+      gtiles[1] = new GraphicTile(tile2, text2);
+      gtiles[2] = new GraphicTile(tile3, text3);
+      gtiles[3] = new GraphicTile(tile4, text4);
+      gtiles[4] = new GraphicTile(tile5, text5);
+      gtiles[5] = new GraphicTile(tile6, text6);
+      gtiles[6] = new GraphicTile(tile7, text7);
 
-      for (int i = 0;i<7;i++){
-        gtiles[i].getLetter().setText("A");
+      for (int i = 0; i < 7; i++) {
+        TileBag tb = new TileBag();
+        gtiles[i].getLetter().setText(String.valueOf(tb.drawTile().getLetter()));
         gtiles[i].getLetter().setFont(new Font(20));
-        gtiles[i].setXY(402 + (i * 36),644);
+        gtiles[i].setXY(402 + (i * 36), 644);
         gtiles[i].getLetter().setVisible(true);
       }
-        /*unlock when it works
-        Player[] players = sMatch.getPlayers();
+      /*unlock when it works
+      Player[] players = sMatch.getPlayers();
 
-          name1.setText(players[0].getName() + ":");
-          name2.setText(players[1].getName() + ":");
-          name3.setText(players[2].getName() + ":");
-          name4.setText(players[3].getName() + ":");
-          nameScore1.setText("0");
-          nameScore2.setText("0");
-          nameScore3.setText("0");
-          nameScore4.setText("0");*/
+        name1.setText(players[0].getName() + ":");
+        name2.setText(players[1].getName() + ":");
+        name3.setText(players[2].getName() + ":");
+        name4.setText(players[3].getName() + ":");
+        nameScore1.setText("0");
+        nameScore2.setText("0");
+        nameScore3.setText("0");
+        nameScore4.setText("0");*/
 
       setUpDone = true;
     }
   }
 
-
-  private void resetColor(){
-    GraphicTile gtile1 = new GraphicTile(tile1,text1);
-    GraphicTile gtile2 = new GraphicTile(tile2,text2);
-    GraphicTile gtile3 = new GraphicTile(tile3,text3);
-    GraphicTile gtile4 = new GraphicTile(tile4,text4);
-    GraphicTile gtile5 = new GraphicTile(tile5,text5);
-    GraphicTile gtile6 = new GraphicTile(tile6,text6);
-    GraphicTile gtile7 = new GraphicTile(tile7,text7);
-    GraphicTile[] gtiles = {gtile1 , gtile2 , gtile3 , gtile4 , gtile5 , gtile6 , gtile7};
-    for (int i = 0;i<7;i++){
+  private void resetColor() {
+    GraphicTile gtile1 = new GraphicTile(tile1, text1);
+    GraphicTile gtile2 = new GraphicTile(tile2, text2);
+    GraphicTile gtile3 = new GraphicTile(tile3, text3);
+    GraphicTile gtile4 = new GraphicTile(tile4, text4);
+    GraphicTile gtile5 = new GraphicTile(tile5, text5);
+    GraphicTile gtile6 = new GraphicTile(tile6, text6);
+    GraphicTile gtile7 = new GraphicTile(tile7, text7);
+    GraphicTile[] gtiles = {gtile1, gtile2, gtile3, gtile4, gtile5, gtile6, gtile7};
+    for (int i = 0; i < 7; i++) {
       gtiles[i].getRec().setFill(Color.web("#ffe5b4"));
     }
   }
+
   public static class AlertBox {
     public static void display(String title, String message) {
       Stage window = new Stage();
