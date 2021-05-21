@@ -29,7 +29,7 @@ public class ServerProtocol extends Thread{
   private String clientName;
   private boolean running = true;
   private Player[] players;
-  private Message lastMessage;
+  private Message lastMessage = new Message(MessageType.GAME_WIN, "");
 
 
   /*A Constructor which connects a client with the server

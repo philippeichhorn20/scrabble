@@ -4,6 +4,7 @@ import backend.basic.ClientMatch;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
+import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.DisconnectMessage;
@@ -27,7 +28,7 @@ public class ClientProtocol extends Thread{
   private ObjectInputStream in;
   private ClientMatch match;
   private boolean running = true;
-  private Message lastMessage;
+  private Message lastMessage = new Message(MessageType.GAME_LOOSE, "");
 
   public ClientProtocol(String ip, int port, String username, ClientMatch match) {
     try {
