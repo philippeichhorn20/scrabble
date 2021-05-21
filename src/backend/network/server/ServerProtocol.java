@@ -29,6 +29,7 @@ public class ServerProtocol extends Thread{
   private String clientName;
   private boolean running = true;
   private Player[] players;
+  private Message lastMessage;
 
 
   /*A Constructor which connects a client with the server
@@ -108,89 +109,90 @@ public class ServerProtocol extends Thread{
       while (running) {
         message = (Message) in.readObject();
         int id = 0;
+        if (message != null && lastMessage != null && !lastMessage.equals(message)) {
+          switch (message.getMessageType()) {
+            case GET_ID:
+              id = IDGeneratorBasic.createID();
+              SendIDMessage idMessage =
+                  new SendIDMessage("Host", id + "", ((GetIDMessage) message).getTmpId());
+              sendToClient(idMessage);
+              server.addIDToClient(id, clientName);
+              break;
 
-        switch (message.getMessageType()) {
+            case DISCONNECT:
+              server.removeClient(message.getFrom());
+              running = false;
+              Main.lobby.removePlayer(message.getFrom());
+              disconnect();
+              break;
 
-          case GET_ID:
-            id = IDGeneratorBasic.createID();
-            SendIDMessage idMessage = new SendIDMessage("Host", id + "", ((GetIDMessage)message).getTmpId());
-            sendToClient(idMessage);
-            server.addIDToClient(id, clientName);
-            break;
+            case PLACE_TILES:
+              PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
+              server.serverMatch.placeTiles(
+                  placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
 
-          case DISCONNECT:
-            server.removeClient(message.getFrom());
-            running = false;
-            Main.lobby.removePlayer(message.getFrom());
-            disconnect();
-            break;
+              break;
 
-          case PLACE_TILES:
-            PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
-            server.serverMatch
-                .placeTiles(placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
+            case SHUFFLE_TILES:
+              // TODO At game controller there must be a methode which shuffle tiles
+              // and return the shuffled tiles
+              ShuffleTilesMessage shuffleTilesMessage = (ShuffleTilesMessage) message;
+              break;
 
-            break;
+            case GAME_TURN:
+              if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
+                server.serverMatch.nextPlayer();
+              }
+              break;
 
-          case SHUFFLE_TILES:
-            //TODO At game controller there must be a methode which shuffle tiles
-            // and return the shuffled tiles
-            ShuffleTilesMessage shuffleTilesMessage = (ShuffleTilesMessage) message;
-            break;
+            case SEND_POINTS:
+              // TODO At game controller there must be a methode which add the points received from
+              // the racks
+              // at the end of a game to the statistics
 
-          case GAME_TURN:
-            if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
-              server.serverMatch.nextPlayer();
+              // does it automatically after game move
+              break;
+
+              // Pass leads to the server telling next player it's his turn.
+            case PASS:
+              if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
+                server.serverMatch.nextPlayer();
+              }
+              break;
+
+              /** @author vivanova */
+              // Server receives a Relay message from Client
+            case RELAY:
+              // Server sends the message to everyone
+              TextMessage textMessage = (TextMessage) message;
+              if (textMessage.getText() != null) {
+                server.sendToAll(
+                    // with a new Flag that means it has to be rendered in the chat area
+                    new TextMessage(textMessage.getFrom(), textMessage.getText()));
+              }
+              break;
+
+            default:
+              break;
             }
-            break;
-
-          case SEND_POINTS:
-            //TODO At game controller there must be a methode which add the points received from the racks
-            // at the end of a game to the statistics
-
-            // does it automatically after game move
-            break;
-
-            // Pass leads to the server telling next player it's his turn.
-          case PASS:
-            if(server.serverMatch.getPlayerName().equals(message.getFrom())) {
-              server.serverMatch.nextPlayer();
-            }
-            break;
-            
-            /**
-             * @author vivanova
-             */
-          // Server receives a Relay message from Client
-          case RELAY:
-        	  // Server sends the message to everyone
-        	  TextMessage textMessage = (TextMessage)message;
-        	  if(textMessage.getText()!= null) {
-        		  server.sendToAll(
-            			  // with a new Flag that means it has to be rendered in the chat area
-            			  new TextMessage(textMessage.getFrom(), textMessage.getText()));
-        	  }
-        	break;
-        	
-          default:
-            break;
+            lastMessage = message;
+          }
         }
-      }
-    } catch (IOException e) {
-      running = false;
-      if (socket.isClosed()){
-        System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
-      } else {
-        try {
-          socket.close();
-        } catch (IOException e1) {
-          e1.printStackTrace();
+      } catch (IOException e) {
+        running = false;
+        if (socket.isClosed()){
+          System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
+        } else {
+          try {
+            socket.close();
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
         }
+      } catch (ClassNotFoundException e2) {
+        System.out.println(e2.getMessage());
+        e2.printStackTrace();
       }
-    } catch (ClassNotFoundException e2) {
-      System.out.println(e2.getMessage());
-      e2.printStackTrace();
-    }
   }
 
 
