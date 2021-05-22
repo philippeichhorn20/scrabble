@@ -4,14 +4,19 @@ import animatefx.animation.Pulse;
 import animatefx.animation.SlideInLeft;
 import animatefx.animation.ZoomIn;
 import animatefx.animation.ZoomInDown;
+import backend.basic.ClientMatch;
 import backend.basic.GraphicTile;
+import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
 import backend.basic.ScrabbleBoard;
+import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
-import backend.network.messages.points.PlayFeedbackMessage;
+import backend.network.server.Server;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -70,13 +75,17 @@ public class GameScreenController {
   @FXML private Label currPlayer;
   @FXML private Label time;
   @FXML private AnchorPane pane;
-  private ScrabbleBoard scrabbleBoard = Main.clientMatch.getScrabbleBoard();
+  private ScrabbleBoard scrabbleBoard;
+  Player thisPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
+  ClientMatch match = new ClientMatch(Main.profile.getName(),thisPlayer);
+  private ServerMatch servMatch = new ServerMatch();
   private Tile[] placedTiles;
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
   private static char jokerChar;
 
+  private Server server = servMatch.getServer();
   private boolean setUpDone = false;
-  private int totalNubmerOfTiles = 0;
+  private int totalNumberOfTiles = 0;
   private GraphicTile gtile1;
   private GraphicTile gtile2;
   private GraphicTile gtile3;
@@ -101,37 +110,21 @@ public class GameScreenController {
     Tile tile = new Tile('c', 5);
     setTile(tile, 5, 7);
   }
-
+  int timInt = 0;
   public void update(MouseEvent e) {
     // Player[] players = match.getPlayers();
     // currPlayer.setText(players[match.getCurrentPlayer()].getName());
-    // time.setText(String.valueOf(players[match.getCurrentPlayer()].getTimer().getTimerCurrentPlayer()));
+
+
 
   }
 
   public void endTurn(ActionEvent e) throws IOException {
-    //simpleResponseMessage(Main.clientMatch.submitTilesOfClient());
-    System.out.println("end turn triggered");
-    Main.clientMatch.sendPlacedTilesToServer();
+    // servMatch.placeTileMessage(placedTiles);
+    // servMatch.endTurnMessage();
     turn++;
     drawTiles();
-  }
-
-
-  public void sendWaitingForResponseBox() {
-    AlertBox.display("Waiting for response!", "Wait a sec");
-  }
-
-  public void simpleResponseMessage(String responseString){
-    AlertBox.display(responseString, "");
-
-  }
-
-  public void respondTurnHandler(PlayFeedbackMessage feedbackMessage) {
-    if(!feedbackMessage.isSuccessfulMove()){
-      resetTiles();
-    }
-    AlertBox.display(feedbackMessage.getFeedback(), feedbackMessage.isSuccessfulMove()? "it is the next players turn now": "try again");
+    System.out.println("Haha");
   }
 
   public void sendWinBox() {
@@ -199,7 +192,7 @@ public class GameScreenController {
               let.setText("  " + let.getText());
               rec.setId("tile" + turn);
               let.setId("tile" + turn);
-              totalNubmerOfTiles++;
+              totalNumberOfTiles++;
               board.add(rec, i, j);
               board.add(let, i, j);
               new ZoomIn(rec).play();
@@ -223,7 +216,7 @@ public class GameScreenController {
     }
   }
 
-  public void resetTiles() {
+  public void resetTiles(ActionEvent e) {
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
     nodesToRemove = new Node[14];
@@ -314,6 +307,28 @@ public class GameScreenController {
   }
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
+      Thread taskThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          int progress = 100;
+          for (int i = 0;i<100;i++){
+            try{
+              Thread.sleep(1000);
+            }catch(InterruptedException ie){
+              ie.printStackTrace();
+            }
+            progress -= 1;
+            final double reportedProgress = progress;
+            Platform.runLater(new Runnable() {
+              @Override
+              public void run() {
+                time.setText(String.valueOf(reportedProgress));
+              }
+            });
+          }
+        }
+      });
+      taskThread.start();
       gtiles[0] = new GraphicTile(tile1, text1);
       gtiles[1] = new GraphicTile(tile2, text2);
       gtiles[2] = new GraphicTile(tile3, text3);
