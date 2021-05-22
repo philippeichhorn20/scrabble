@@ -1,6 +1,7 @@
 package frontend;
 
 import animatefx.animation.FadeIn;
+import backend.basic.ClientMatch;
 import backend.basic.Lobby;
 import backend.basic.Profile;
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class Main extends Application {
   private static Stage stg;
 
   public static Lobby lobby;
+
+
+  public static ClientMatch clientMatch;
   /**
    * Starts the application, creates an empty database if not already created.
    *
@@ -55,6 +59,7 @@ public class Main extends Application {
     primaryStage.setScene(new Scene(root, 1080, 720));
     primaryStage.show();
   }
+
 
   /**
    * Changes the scene.
@@ -98,6 +103,10 @@ public class Main extends Application {
    */
   public void changeProfile(String name) {
     profile = new Profile(name);
+  }
+
+  public static Stage getStg() {
+    return stg;
   }
 
   public static void main(String[] args) {

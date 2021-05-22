@@ -1,5 +1,7 @@
 package backend.basic;
 
+import java.io.Serializable;
+
 /*
 @peichhor
 This class represents a clock
@@ -7,7 +9,7 @@ This class represents a clock
 @param timerOverall keeps track of how long this turn has been going on
 @param isRunning keeps track of weather or not the game is running
  */
-public class Timer extends Thread {
+public class Timer extends Thread implements Serializable {
 
   long timerOverall = 0; //in seconds
   long timerCurrentPlayer = 0; //in seconds

@@ -7,7 +7,6 @@ import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.network.client.ClientProtocol;
 import backend.network.server.Server;
-import backend.network.server.ServerProtocol;
 import backend.network.server.ServerSettings;
 import frontend.Main;
 import java.io.IOException;
@@ -39,6 +38,8 @@ public class LobbyScreenController {
   @FXML
   private Button startGameButton;
 
+  boolean isHost = true;
+
   // Method determines button clicked and changes to desired scene
   @FXML
   public void changeScene(ActionEvent e) throws IOException {
@@ -46,6 +47,9 @@ public class LobbyScreenController {
     Button trigger = (Button) e.getSource();
     String scene = "screens/";
     switch (trigger.getId()) {
+      case "startGameButton":
+        startLobby(e);
+        break;
       case "playTutorial":
         scene += "gameScreen.fxml";
         break;
@@ -56,28 +60,37 @@ public class LobbyScreenController {
         scene += "gameScreen.fxml";
         break;
       case "backButton":
+        isHost = true;
         scene += "mainMenu.fxml";
         break;
+
     }
     m.changeScene(scene);
   }
 
   //Makes settings visible to hosting player.
   public void openStartGameView(ActionEvent e) {
+    System.out.println("openStartGameView called");
     lobbyView.setVisible(false);
     joinGameView.setVisible(false);
     startGameView.setVisible(true);
-    startLobby(e);
+    if(isHost){
+      startLobby(e);
+    }
+
   }
 
   //Allows player to enter a code to join hosting player's server
   public void openJoinGameView(ActionEvent e) {
+      System.out.println("openJoinGameView called");
     lobbyView.setVisible(false);
     startGameView.setVisible(false);
     joinGameView.setVisible(true);
   }
 
   public void startLobby(ActionEvent e) {
+      System.out.println("start Lobby called");
+    isHost = true;
     Main.lobby = new Lobby(
         new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT));
 
@@ -91,31 +104,36 @@ public class LobbyScreenController {
 
     Main.lobby.setServer(server);
     hostIP.setText(Main.lobby.getIp());
+
     ClientProtocol clientProtocol = new ClientProtocol(hostIP.getText(),ServerSettings.port,Main.profile.getName(), new ClientMatch(Main.profile.getName(), new Player(Main.profile.getName(), "", Playerstatus.WAIT)));
     clientProtocol.start();
 
     clientProtocol.getMatch().addProtocol(clientProtocol);
+
   }
 
   //Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
+    System.out.println("Start match triggered");
     Main.lobby.newMatch();
   }
 
   //Method connects joining player to lobby or server of hosting player.
   public void enterLobby(ActionEvent e) {
+    System.out.println("enter Lobby called");
     boolean validIP = true;
 
     if(validIP) {
       ClientProtocol cp = new ClientProtocol(adressIP.getText(), ServerSettings.port,Main.profile.getName(), new ClientMatch(Main.profile.getName(), new Player(Main.profile.getName(),"", Playerstatus.WAIT)));
       cp.start();
       cp.getMatch().addProtocol(cp);
-
     }
-
+    isHost = false;
     openStartGameView(e);
     startGameButton.setVisible(false);
+
   }
+
 
   // Method responsible for animations
   public void animate(MouseEvent e) {
@@ -123,4 +141,5 @@ public class LobbyScreenController {
   }
 
 }
+
 

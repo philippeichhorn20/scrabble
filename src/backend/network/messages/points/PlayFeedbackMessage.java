@@ -8,14 +8,28 @@ import backend.network.messages.MessageType;
  */
 public class PlayFeedbackMessage extends Message {
 
-  String[][] feedback;
+  String feedback;
   boolean successfulMove;
 
   public PlayFeedbackMessage(String from, String[][] feedback, boolean successfulMove) {
     super(MessageType.GAME_TURN, from);
-    this.feedback = feedback;
-    this.successfulMove = successfulMove;
+    String feedBackString = "";
+    if(feedback.length == 0){
+      feedBackString = "no new Tiles detected";
+    }else{
+      for(int x = 0; x < feedback.length; x++){
+        for(int i = 0; i < feedback[x].length; x++){
+          feedBackString += feedback[x][i];
+          feedBackString+= "\t";
+        }
+        feedBackString+= "\n";
+      }
+      this.feedback = feedBackString;
+      this.successfulMove = successfulMove;
+    }
+
   }
+
 
   @Override
   public String getFrom() {
@@ -27,11 +41,11 @@ public class PlayFeedbackMessage extends Message {
     super.setFrom(name);
   }
 
-  public String[][] getFeedback() {
+  public String getFeedback() {
     return feedback;
   }
 
-  public void setFeedback(String[][] feedback) {
+  public void setFeedback(String feedback) {
     this.feedback = feedback;
   }
 

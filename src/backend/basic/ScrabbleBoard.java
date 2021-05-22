@@ -31,11 +31,23 @@ public class ScrabbleBoard {
    * TODO: add the rest of the Premiumstatuses
    */
 
+  public ScrabbleBoard(){
+    this.scrabbleBoard = getScrabbleBoard();
+  }
+
+  /*
+  in case tiles were already placed
+   */
+  public ScrabbleBoard(Matchfield[][] scrabbleBoard){
+    this.scrabbleBoard = scrabbleBoard;
+  }
+
   public Matchfield[][] getScrabbleBoard() {
     return this.scrabbleBoard;
   }
 
-  public void setUpScrabbleBoard() {
+  public static Matchfield[][] setUpScrabbleBoard() {
+    Matchfield[][] scrabbleBoard = new Matchfield[15][15];
     for (int x = 0; x < 15; x++) {
       for (int y = 0; y < 15; y++) {
         scrabbleBoard[x][y] = new Matchfield(x, y, Premiumstatus.NOPREMIUM);
@@ -54,6 +66,7 @@ public class ScrabbleBoard {
     scrabbleBoard[7][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
 
 
+    return scrabbleBoard;
   }
 
 

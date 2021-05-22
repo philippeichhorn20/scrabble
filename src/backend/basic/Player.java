@@ -1,9 +1,11 @@
 package backend.basic;
 
+import java.io.Serializable;
+
 /* @author nilschae
  * @version 1.0
  * @description a class which represents a player in the game scrabble*/
-public class Player {
+public class Player implements Serializable {
   Timer timer;
   String name;
   long score;

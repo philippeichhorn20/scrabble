@@ -6,6 +6,7 @@ import backend.network.server.ServerSettings;
 public class Lobby {
 
   ServerMatch match;
+  ClientMatch clientMatch;
   Server server;
   Player[] players = new Player[4];
   Player hostPlayer;
@@ -21,6 +22,12 @@ public class Lobby {
     this.server.setServerMatch(new ServerMatch(this.server));
     this.server.getServerMatch().startMatch();
   }
+
+  public void newClientMatch(ClientMatch match){
+    this.clientMatch = match;
+  }
+
+
 
   public boolean addPlayer(Player player) {
     for (int i = 0; i < players.length; i++) {

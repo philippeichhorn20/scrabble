@@ -4,12 +4,11 @@ import animatefx.animation.Pulse;
 import animatefx.animation.SlideInLeft;
 import animatefx.animation.ZoomIn;
 import animatefx.animation.ZoomInDown;
-import backend.basic.ClientMatch;
 import backend.basic.GraphicTile;
 import backend.basic.ScrabbleBoard;
-import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
+import backend.network.messages.points.PlayFeedbackMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,9 +70,7 @@ public class GameScreenController {
   @FXML private Label currPlayer;
   @FXML private Label time;
   @FXML private AnchorPane pane;
-  private ScrabbleBoard scrabbleBoard;
-  ClientMatch match;
-  private ServerMatch servMatch;
+  private ScrabbleBoard scrabbleBoard = Main.clientMatch.getScrabbleBoard();
   private Tile[] placedTiles;
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
   private static char jokerChar;
@@ -113,10 +110,28 @@ public class GameScreenController {
   }
 
   public void endTurn(ActionEvent e) throws IOException {
-    // servMatch.placeTileMessage(placedTiles);
-    // servMatch.endTurnMessage();
+    //simpleResponseMessage(Main.clientMatch.submitTilesOfClient());
+    System.out.println("end turn triggered");
+    Main.clientMatch.sendPlacedTilesToServer();
     turn++;
     drawTiles();
+  }
+
+
+  public void sendWaitingForResponseBox() {
+    AlertBox.display("Waiting for response!", "Wait a sec");
+  }
+
+  public void simpleResponseMessage(String responseString){
+    AlertBox.display(responseString, "");
+
+  }
+
+  public void respondTurnHandler(PlayFeedbackMessage feedbackMessage) {
+    if(!feedbackMessage.isSuccessfulMove()){
+      resetTiles();
+    }
+    AlertBox.display(feedbackMessage.getFeedback(), feedbackMessage.isSuccessfulMove()? "it is the next players turn now": "try again");
   }
 
   public void sendWinBox() {
@@ -208,7 +223,7 @@ public class GameScreenController {
     }
   }
 
-  public void resetTiles(ActionEvent e) {
+  public void resetTiles() {
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
     nodesToRemove = new Node[14];

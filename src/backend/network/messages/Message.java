@@ -10,7 +10,7 @@ public class Message implements Serializable {
   private MessageType messageType;
   private String from;
 
-  /*Constructor for standart message
+  /*Constructor for standard message
   * @param type the type of message which will be send
   * @param from a string to save from who the message is*/
   public Message(MessageType type, String from) {

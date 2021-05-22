@@ -8,6 +8,7 @@ import backend.network.messages.MessageType;
 * @version 1.0*/
 public class GameWaitMessage extends Message {
 
+
   public GameWaitMessage(String from) {
     super(MessageType.GAME_WAIT, from);
   }

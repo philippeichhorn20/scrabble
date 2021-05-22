@@ -3,14 +3,9 @@ package backend.network.server;
 import backend.basic.ClientMatch;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
-import backend.network.messages.MessageType;
 import backend.network.messages.connection.ShutDownMessage;
-import backend.network.messages.game.LobbyInformationMessage;
-import backend.network.messages.points.SendPointsMessage;
-import backend.network.messages.tiles.PlaceTilesMessage;
-import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
-import backend.network.messages.time.TimeAlertMessage;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -92,7 +87,9 @@ public class Server {
       }
 
 
-    } catch (IOException e) {
+    } catch (BindException e){
+      e.printStackTrace();
+    }catch (IOException e) {
       if (serverSocket != null && serverSocket.isClosed()){
         System.out.println("Server stopped.");
       } else {
@@ -110,8 +107,11 @@ public class Server {
       try {
         System.out.println("message sending to " + cName);
         System.out.println("exists: " + clients.containsKey(cName));
+        if(!clients.containsKey(cName)){
+          System.out.println(cName+" does not exist in client array");
+        }
         ServerProtocol c = clients.get(cName);
-        c.sendToClient(new Message(MessageType.SEND_ID, "server"));
+        c.sendToClient(message);
 
       } catch (IOException e) {
         e.printStackTrace();

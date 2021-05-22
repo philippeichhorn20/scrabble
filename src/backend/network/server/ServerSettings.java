@@ -8,7 +8,6 @@ import java.util.Enumeration;
 
 public class ServerSettings {
   public static final int port = 8421;
-
   /**
    * @author
    * aus Stackoverflow

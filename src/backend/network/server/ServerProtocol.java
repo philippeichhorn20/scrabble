@@ -71,7 +71,6 @@ public class ServerProtocol extends Thread{
   }
 
   public void run() {
-    //(TODO) the start
     Message message;
     try {
       message = (Message) in.readObject();
@@ -130,7 +129,6 @@ public class ServerProtocol extends Thread{
               PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
               server.serverMatch.placeTiles(
                   placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
-
               break;
 
             case SHUFFLE_TILES:

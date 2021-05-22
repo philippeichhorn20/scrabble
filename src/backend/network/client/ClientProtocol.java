@@ -74,13 +74,16 @@ public class ClientProtocol extends Thread{
               break;
 
             case SEND_ID:
+              System.out.println("send id received");
               // TODO At game controller there must be a methode which receive ID's
               // for example for a tile
               break;
 
             case GAME_TURN:
+              System.out.println("game turn message received");
               break;
             case PLAY_FEEDBACK:
+              System.out.println("play feedback message received");
               PlayFeedbackMessage message6 = (PlayFeedbackMessage) message;
               this.match.playFeedBackIntegration(message6.isSuccessfulMove());
               break;
@@ -118,6 +121,7 @@ public class ClientProtocol extends Thread{
 
               // initialized the game with the lobby information
             case GAME_INFO:
+              System.out.println("Game info message received");
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
               this.match =
                   new ClientMatch(
@@ -125,6 +129,7 @@ public class ClientProtocol extends Thread{
                       message1.getPlayers(),
                       "server",
                       new Player(this.username, "#000000'", Playerstatus.WAIT));
+              Main.clientMatch = this.match;
               break;
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add
@@ -134,9 +139,9 @@ public class ClientProtocol extends Thread{
               break;
 
             case GAME_START:
+              System.out.println("game start message received");
               // TODO At game controller there must be a methode which add
               // points to the player statistics
-              System.out.println("Test 420");
               GameStartMessage message3 = (GameStartMessage) message;
               this.match.getPlayer().updateRack(message3.getTiles());
               Main m = new Main();

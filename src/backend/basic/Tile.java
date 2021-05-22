@@ -5,7 +5,9 @@ package backend.basic;
  * @version 1.0
  * */
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
 
   private char letter; // A holder for a letter of a tile
   private int value; // A holder for the value of a tile

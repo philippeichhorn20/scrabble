@@ -2,7 +2,6 @@ package backend.basic;
 
 import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.GameTurnMessage;
-import backend.network.messages.game.GameWaitMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
@@ -25,7 +24,8 @@ to represent the actions of the current turn
 points at the player who's turn it is
 @param roundNum number of the current round
  */
-public class ServerMatch {
+
+public class ServerMatch extends Match{
 
   private final TileBag tileBag = new TileBag();
   private final int round = 0;
@@ -41,6 +41,7 @@ public class ServerMatch {
   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
    */
   public ServerMatch(Server s) {
+    super();
     this.server = s;
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
@@ -50,9 +51,10 @@ public class ServerMatch {
 
 
   /*
-  this constructor creates a game with a default scrabbnleboard, tilebag and adds all the
+  this constructor creates a game with a default scrabbleboard, tilebag and adds all the
    players to the game. Players cannot be added with addPlayer() afterwords
    */
+
 
 
 
@@ -76,31 +78,38 @@ public class ServerMatch {
   }
 
   public void placeTiles(Tile[] tiles, String from) throws IOException {
+    String[][] feedback = new String[0][0];
     if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
-      for (int i = 0; i < tiles.length; i++) {
-        scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
-      }
-      String[][] feedback = scrabbleBoard.submitTiles();
-      if (scrabbleBoard.inputValudation(feedback)) {
-        server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
-            new PlayFeedbackMessage("server", feedback, true));
-        server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
-            new GetNewTilesMessage(Main.lobby.players[this.currentPlayer].name,
-                drawNewTiles(tiles.length)));
-        int points = scrabbleBoard.getPoints();
-        Main.lobby.players[this.currentPlayer].addPoints(points);
-        server
-            .sendToAll(new SendPointsMessage(Main.lobby.players[currentPlayer].getName(), points));
-        server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
-            new PlaceTilesMessage(Main.lobby.players[this.currentPlayer].name, tiles));
-        nextPlayer();
-      } else {
-        server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
-            new PlayFeedbackMessage("server", feedback, false));
+      if(tiles.length != 0){
+        for (int i = 0; i < tiles.length; i++) {
+          scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
+        }
+        feedback = scrabbleBoard.submitTiles();
+        if (scrabbleBoard.inputValudation(feedback)) {
+          System.out.println("input was valid");
+          server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
+              new PlayFeedbackMessage("server", feedback, true));
+          server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
+              new GetNewTilesMessage(Main.lobby.players[this.currentPlayer].name,
+                  drawNewTiles(tiles.length)));
+          int points = scrabbleBoard.getPoints();
+          Main.lobby.players[this.currentPlayer].addPoints(points);
+          server
+              .sendToAll(new SendPointsMessage(Main.lobby.players[currentPlayer].getName(), points));
+          server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
+              new PlaceTilesMessage(Main.lobby.players[this.currentPlayer].name, tiles));
+          nextPlayer();
+      }else {
+          System.out.println("input was invalid");
+          server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
+              new PlayFeedbackMessage("server", feedback, false));
+        }
+
       }
     } else {
       System.out.println("wrong player requested game move: Place Tiles");
     }
+
   }
 
   //Method gives back field with random tiles with the size of needed tiles
@@ -116,12 +125,15 @@ public class ServerMatch {
     return timer;
   }
 
+
+
   /*
     @method stars the match. It triggers the start of the thread, as well as different methods
-     */
+    */
   public void startMatch() {
     timer.start();
     server.sendToAll(new LobbyInformationMessage("server", Main.lobby.players));
+   System.out.println("Players in Lobby: "+ Main.lobby.players.length);
     int count = 0;
     for (int i = 0; i < Main.lobby.players.length; i++) {
       Tile[] tiles = new Tile[8];
@@ -130,6 +142,7 @@ public class ServerMatch {
       }
       if (Main.lobby.players[i] != null) {
         server.sendOnlyTo(Main.lobby.players[i].name, new GameStartMessage("server", tiles));
+        System.out.println("send GameStartMessage to" + Main.lobby.players[i].name);
         count++;
       }
       System.out.println("player count:" + count);
@@ -198,8 +211,7 @@ public class ServerMatch {
       currentPlayer = nextPlayer;
     }
     scrabbleBoard.nextTurn();
-    server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name, new GameTurnMessage("server"));
-    server.sendToAllBut(Main.lobby.players[this.currentPlayer].name, new GameWaitMessage("server"));
+    server.sendToAll(new GameTurnMessage("server", currentPlayer));
   }
 
 

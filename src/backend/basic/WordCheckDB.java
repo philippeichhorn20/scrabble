@@ -68,4 +68,6 @@ public class WordCheckDB {
       System.out.println(e.getMessage());
     }
   }
+
+
 }

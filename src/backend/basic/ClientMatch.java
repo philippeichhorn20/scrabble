@@ -20,7 +20,7 @@ import java.util.ArrayList;
 //TODO: delete the invalid input fields
 
  */
-public class ClientMatch {
+public class ClientMatch extends Match{
 
   private static final int round = 0;
   private final Player[] players;
@@ -41,17 +41,21 @@ public class ClientMatch {
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
+    super();
     this.player = player;
     this.protocol = protocol;
     this.players = players;
     this.from = from;
+    this.scrabbleBoard = new ScrabbleBoard();
   }
 
   public ClientMatch(String from, Player player) {
+    super();
     this.player = player;
     this.from = from;
     this.players = new Player[4];
     this.players[0] = player;
+    this.scrabbleBoard = new ScrabbleBoard();
   }
 
   /*
@@ -80,7 +84,30 @@ public class ClientMatch {
     yourTurnNum = currentPlayer;
     scrabbleBoard.nextTurn();
     this.player.getTimer().nextPlayer();
+    //TODO send out info to player interface
     newGameEvent("It is now your turn");
+  }
+
+  public void turnTaken(int nowTurn){
+    currentPlayer = nowTurn;
+    if(nowTurn == this.yourTurnNum){
+      yourTurn();
+    }else{
+      //TODO send out info to player interface
+    }
+  }
+
+  public void sendPlacedTilesToServer(){
+    Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
+    for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
+      tiles[x] = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
+    }
+    try{
+      protocol.sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
+    }catch(IOException e){
+      System.out.println("couldnt send your tiles to server");
+    }
+
   }
 
   public void nextPlayer() {
@@ -161,7 +188,6 @@ public class ClientMatch {
       //nextTurn only clears the edited lists
       this.scrabbleBoard.nextTurn();
     }
-
   }
 
   //extended getter and setterr

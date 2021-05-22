@@ -8,7 +8,10 @@ import backend.network.messages.MessageType;
 * @version 1.0*/
 public class GameTurnMessage extends Message {
 
-  public GameTurnMessage(String from) {
+  int nowTurn; //indicates which players turn it is (in order of array)
+
+  public GameTurnMessage(String from, int nowTurn) {
     super(MessageType.GAME_TURN, from);
+    this.nowTurn = nowTurn;
   }
 }

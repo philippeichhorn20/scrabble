@@ -1,5 +1,6 @@
 package backend.basic;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import backend.basic.Tile.Tilestatus;
@@ -7,7 +8,7 @@ import backend.basic.Tile.Tilestatus;
 /* @author Nils Sch�fer
  * @version 1.0
  * @description A class which represents the tilebag of the game scrabbel with 100 Tiles and the standart letter set for english scrabbel*/
-public class TileBag {
+public class TileBag  implements Serializable {
   private Tile[] bag = new Tile[100]; // stores the tiles in the tilebag
 
   /*A constructor which creates a tilebag and directly assign a standart letter set */
