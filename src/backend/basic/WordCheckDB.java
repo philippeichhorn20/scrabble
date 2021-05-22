@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * */
 public class WordCheckDB {
 
-  static String url = "jdbc:sqlite:ScrabbleWordsDB";
+  static String url = "jdbc:sqlite:src/resources/wordsList.db";
 
   /*
   looks up the given word in the database. If it exists it returns the decsription of the word,
@@ -44,17 +44,31 @@ public class WordCheckDB {
   }
 
   /*
-  TODO: this function will search for a word that can be build with the given Tiles in the bag
-  and on the board
+  @author jawinter
+  This function returns true if the string is in dictionary
    */
-  static boolean findWordWithTiles(ArrayList<Tile> tilesOnScrabbleBoard) {
-    boolean wordFound = false;
-    for (int i = 0; i < tilesOnScrabbleBoard.size() && !wordFound; i++) {
-
+  public static boolean checkWord(String word) {
+    boolean exists = false;
+    try {
+      Class.forName("org.sqlite.JDBC");
+    } catch (final ClassNotFoundException e) {
+      System.out.println(e);
     }
-    return false;
+    try (Connection conn = DriverManager.getConnection(WordCheckDB.url)) {
+      java.sql.Statement stm = conn.createStatement();
+      word = word.toUpperCase();
+      ResultSet rs = stm
+          .executeQuery("SELECT description FROM words WHERE (word = '" + word + "');");
+      if (rs.next()) {
+        exists = true;
+      } else {
+        exists = false;
+      }
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+    return exists;
   }
-
   static void importTextToDB() {
     try {
       Class.forName("org.sqlite.JDBC");
