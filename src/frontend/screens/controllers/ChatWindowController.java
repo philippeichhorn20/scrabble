@@ -11,18 +11,19 @@ public class ChatWindowController {
 	@FXML private static TextArea chatTextArea;
 	@FXML private Button bttnSend;
 	@FXML private TextFlow typeField;
+	
 
 	public void send(ActionEvent e) throws IOException {
-			/*
-		bttnSend.addActionListener(e -> {
-			if(!messageField.getText().equals("")) {			
 			
-			client.send(messageField.getText());
-			messageField.setText("");
-			}
-		});
+		//bttnSend.addActionListener(e -> {
+			//if(!messageField.getText().equals("")) {
+			
+			//client.send(messageField.getText());
+		//	messageField.setText("");
+		//	}
+		//});
+		
 
-*/
 	}
 	
 	public static void printToConsole(String message) {
@@ -31,7 +32,6 @@ public class ChatWindowController {
  		
 	}
 }
-
 
 
 

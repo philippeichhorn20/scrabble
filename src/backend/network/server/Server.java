@@ -23,6 +23,11 @@ import java.util.Set;
 public class Server {
 
   private ServerSocket serverSocket;
+
+  public boolean isRunning() {
+    return running;
+  }
+
   private boolean running;
   private boolean nextMessageOnlyForHost = false;
   private boolean nextMessageAdditionalForHost = false;

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 //TODO: delete the invalid input fields
 
  */
-public class ClientMatch extends Match{
+public class ClientMatch {
 
   private static final int round = 0;
   private final Player[] players;

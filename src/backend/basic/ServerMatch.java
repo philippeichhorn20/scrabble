@@ -25,7 +25,7 @@ points at the player who's turn it is
 @param roundNum number of the current round
  */
 
-public class ServerMatch extends Match{
+public class ServerMatch {
 
   private final TileBag tileBag = new TileBag();
   private final int round = 0;

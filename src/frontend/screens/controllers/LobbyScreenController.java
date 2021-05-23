@@ -2,6 +2,7 @@ package frontend.screens.controllers;
 
 import animatefx.animation.Pulse;
 import backend.basic.ClientMatch;
+import backend.basic.GameInformation;
 import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
@@ -80,6 +81,8 @@ public class LobbyScreenController {
 
   }
 
+
+
   //Allows player to enter a code to join hosting player's server
   public void openJoinGameView(ActionEvent e) {
       System.out.println("openJoinGameView called");
@@ -91,8 +94,9 @@ public class LobbyScreenController {
   public void startLobby(ActionEvent e) {
       System.out.println("start Lobby called");
     isHost = true;
+    Player host = new Player(Main.profile.getName(),Main.profile.getColor(),Playerstatus.WAIT);
     Main.lobby = new Lobby(
-        new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT));
+        host);
 
     Server server = new Server();
     Runnable r = new Runnable(){
@@ -109,6 +113,12 @@ public class LobbyScreenController {
     clientProtocol.start();
 
     clientProtocol.getMatch().addProtocol(clientProtocol);
+    GameInformation gameInformation = GameInformation.getInstance();
+    gameInformation.setProfile(Main.profile);
+    gameInformation.setHost(host);
+    ClientMatch cm = new ClientMatch(Main.profile.getName(),host);
+    gameInformation.setClientmatch(cm);
+
 
   }
 
@@ -141,5 +151,6 @@ public class LobbyScreenController {
   }
 
 }
+
 
 

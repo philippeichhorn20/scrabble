@@ -27,6 +27,9 @@ public class ClientProtocol extends Thread{
   private ObjectOutputStream out;
   private ObjectInputStream in;
   private ClientMatch match;
+
+
+
   private boolean running = true;
   private Message lastMessage = new Message(MessageType.GAME_LOOSE, "");
 
@@ -212,7 +215,9 @@ public class ClientProtocol extends Thread{
       e.printStackTrace();
     }
   }
-
+  public boolean isRunning() {
+    return running;
+  }
   /*Send messages from client to server*/
   public void sendToServer(Message message) throws IOException {
     this.out.writeObject(message);

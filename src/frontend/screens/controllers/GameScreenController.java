@@ -5,6 +5,7 @@ import animatefx.animation.SlideInLeft;
 import animatefx.animation.ZoomIn;
 import animatefx.animation.ZoomInDown;
 import backend.basic.ClientMatch;
+import backend.basic.GameInformation;
 import backend.basic.GraphicTile;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
@@ -12,7 +13,6 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
-import backend.network.server.Server;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +27,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -45,7 +46,7 @@ import javafx.stage.Stage;
    This is an empty controller of the game screen. This is the main screen the user sees when they're playing the scrabble game.
    This should contain the board, tiles, chat, points and much more.
 */
-public class GameScreenController {
+public class GameScreenController extends Thread{
   @FXML private Rectangle tile1;
   @FXML private Rectangle tile2;
   @FXML private Rectangle tile3;
@@ -75,15 +76,21 @@ public class GameScreenController {
   @FXML private Label currPlayer;
   @FXML private Label time;
   @FXML private AnchorPane pane;
+  @FXML private ImageView tileBagIcon;
+  @FXML private Button resetTilesButton;
+  @FXML private Label currPlayerText;
   private ScrabbleBoard scrabbleBoard;
   Player thisPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
   ClientMatch match = new ClientMatch(Main.profile.getName(),thisPlayer);
-  private ServerMatch servMatch = new ServerMatch();
+  private GameInformation gameInformation = GameInformation.getInstance();
+  private ServerMatch servMatch = gameInformation.getServermatch();
   private Tile[] placedTiles;
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
   private static char jokerChar;
+  private boolean[][] tilesOnBoard = new boolean[17][16];
 
-  private Server server = servMatch.getServer();
+
+
   private boolean setUpDone = false;
   private int totalNumberOfTiles = 0;
   private GraphicTile gtile1;
@@ -122,9 +129,13 @@ public class GameScreenController {
   public void endTurn(ActionEvent e) throws IOException {
     // servMatch.placeTileMessage(placedTiles);
     // servMatch.endTurnMessage();
+    endTurnB();
+  }
+  private void endTurnB(){
     turn++;
     drawTiles();
-    System.out.println("Haha");
+    tileBagIcon.setVisible(true);
+    resetTilesButton.setVisible(true);
   }
 
   public void sendWinBox() {
@@ -168,6 +179,8 @@ public class GameScreenController {
         gt.setTile(newTile);
         new SlideInLeft(gt.getRec()).play();
         new SlideInLeft(gt.getLetter()).play();
+        tileBagIcon.setVisible(false);
+        resetTilesButton.setVisible(false);
       }
     }
   }
@@ -176,9 +189,17 @@ public class GameScreenController {
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
         Bounds b = board.getCellBounds(i, j);
+        if (i == 0 || j == 0 || i == 16 || i == 17 || j == 16){
+
+        }else{
         if (b.contains(e.getX(), e.getY())) {
+          tileBagIcon.setVisible(false);
           for (int k = 0; k < 7; k++) {
             if (gtiles[k].isHighlighted()) {
+              if(tilesOnBoard[i][j]){
+                break;
+              }
+
               Rectangle rec =
                   new Rectangle(
                       gtiles[k].getRec().getX(),
@@ -204,11 +225,13 @@ public class GameScreenController {
               newTile.setXY(i, j);
               int ite = 0;
               placeTilesList.add(newTile);
+              tilesOnBoard[i][j]=true;
               //  while (placedTiles[ite] != null) {
               //  ite++;
               //  }
               //  placedTiles[ite] = newTile;
               resetColor();
+            }
             }
           }
         }
@@ -221,6 +244,7 @@ public class GameScreenController {
     Node[] nodesToRemove;
     nodesToRemove = new Node[14];
     int i = 0;
+    tileBagIcon.setVisible(true);
     for (Node node : boardChildren) {
       if (node.getId().equals("tile" + turn)) {
         nodesToRemove[i] = node;
@@ -252,6 +276,7 @@ public class GameScreenController {
     } else {
       for (GraphicTile gt : gtiles) {
         gt.highlight(false);
+        gt.setToDraw(false);
       }
       if (tile.getFill() == Color.RED) {
         tile.setFill(Color.web("#ffe5b4"));
@@ -267,6 +292,7 @@ public class GameScreenController {
             if (gtiles[i].getTile().isJoker()) {
               AlertBox.display("Choose Joker", "Enter the letter the Joker should assume:");
               gtiles[i].setLetter(jokerChar);
+              gtiles[i].getTile().setJoker(false);
               gtiles[i].getLetter().setFill(Color.PURPLE);
             }
           }
@@ -276,24 +302,32 @@ public class GameScreenController {
   }
   private int keyIterator = 0;
   public void highlightTileKey(KeyEvent e){
-
-
-    if (e.getCode().equals(KeyCode.D)){
-      resetColor();
-      for (GraphicTile gt:gtiles){
-        gt.highlight(false);
+    if (e.getCode().equals(KeyCode.D)) {
+      boolean allInvis = true;
+      for (int i = 0; i < 7; i++) {
+        if (gtiles[i].isVisiblee()) {
+          allInvis = false;
+        }
       }
+      if (allInvis) {
 
-      while(!checkNextVisible()){
+      } else {
+        resetColor();
+        for (GraphicTile gt : gtiles) {
+          gt.highlight(false);
+        }
+
+        while (!checkNextVisible()) {
+          keyIterator++;
+        }
+        gtiles[keyIterator].highlight(true);
+        gtiles[keyIterator].getRec().setFill(Color.RED);
         keyIterator++;
+        if (keyIterator >= 7) {
+          keyIterator = 0;
+        }
       }
-      gtiles[keyIterator].highlight(true);
-      gtiles[keyIterator].getRec().setFill(Color.RED);
-      keyIterator++;
-      if(keyIterator >= 7){
-        keyIterator = 0;
       }
-    }
   }
   private boolean checkNextVisible(){
     if (keyIterator >= 7){
@@ -311,17 +345,25 @@ public class GameScreenController {
         @Override
         public void run() {
           int progress = 100;
-          for (int i = 0;i<100;i++){
+          while (Main.lobby.getServer().isRunning()) { //for (int i = 0;i<100;i++){
             try{
               Thread.sleep(1000);
             }catch(InterruptedException ie){
               ie.printStackTrace();
             }
             progress -= 1;
+            if (progress <= 0){
+              break;
+            }
             final double reportedProgress = progress;
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
+                if(reportedProgress==1){
+                  sendLostBox();
+                  endTurnB();
+                }
+
                 time.setText(String.valueOf(reportedProgress));
               }
             });
@@ -329,6 +371,7 @@ public class GameScreenController {
         }
       });
       taskThread.start();
+
       gtiles[0] = new GraphicTile(tile1, text1);
       gtiles[1] = new GraphicTile(tile2, text2);
       gtiles[2] = new GraphicTile(tile3, text3);
@@ -336,7 +379,11 @@ public class GameScreenController {
       gtiles[4] = new GraphicTile(tile5, text5);
       gtiles[5] = new GraphicTile(tile6, text6);
       gtiles[6] = new GraphicTile(tile7, text7);
-
+      for (int i = 0;i<17;i++){
+        for (int j = 0;j<16;j++){
+          tilesOnBoard[i][j] = false;
+        }
+      }
       for (int i = 0; i < 7; i++) {
         TileBag tb = new TileBag();
         // gtiles[i].getLetter().setText(String.valueOf(servMatch.getTileBag().drawTile().getLetter()));
@@ -347,17 +394,19 @@ public class GameScreenController {
         gtiles[i].setXY(402 + (i * 36), 644);
         gtiles[i].getLetter().setVisible(true);
       }
-      /*unlock when it works
-      Player[] players = servMatch.getPlayers();
+      Player[] players = GameInformation.getInstance().getClientmatch().getPlayers();
 
-        name1.setText(players[0].getName() + ":");
-        name2.setText(players[1].getName() + ":");
-        name3.setText(players[2].getName() + ":");
-        name4.setText(players[3].getName() + ":");
+
+
+        currPlayerText.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
+        name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
+        //name2.setText(players[1].getName() + ":");
+        //name3.setText(players[2].getName() + ":");
+        //name4.setText(players[3].getName() + ":");
         nameScore1.setText("0");
         nameScore2.setText("0");
         nameScore3.setText("0");
-        nameScore4.setText("0");*/
+        nameScore4.setText("0");
 
       setUpDone = true;
     }
