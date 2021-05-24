@@ -79,6 +79,7 @@ public class ServerMatch {
 
   public void placeTiles(Tile[] tiles, String from) throws IOException {
     String[][] feedback = new String[0][0];
+    System.out.println("PLACE TILES SERVER SIDE");
     if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
       if(tiles.length != 0){
         for (int i = 0; i < tiles.length; i++) {

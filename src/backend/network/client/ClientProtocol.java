@@ -100,7 +100,7 @@ public class ClientProtocol extends Thread{
             case GAME_OVER:
               // TODO At game controller there must be a methode which show
               // the player that the game is over
-              this.match.isOver();
+              this.match.setOver(true);
               break;
 
             case GAME_WIN:
@@ -160,6 +160,7 @@ public class ClientProtocol extends Thread{
 
             case PLACE_TILES:
               PlaceTilesMessage message4 = (PlaceTilesMessage) message;
+              System.out.println("babal");
               match.placeTilesOfOtherPlayers(message4.getTiles());
               break;
 

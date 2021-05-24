@@ -6,6 +6,7 @@ import backend.basic.GameInformation;
 import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
+import backend.basic.ServerMatch;
 import backend.network.client.ClientProtocol;
 import backend.network.server.Server;
 import backend.network.server.ServerSettings;
@@ -99,13 +100,14 @@ public class LobbyScreenController {
         host);
 
     Server server = new Server();
+
     Runnable r = new Runnable(){
       public void run(){
         server.listen();
       }
     };
     new Thread(r).start();
-
+    server.setServerMatch(new ServerMatch(server));
     Main.lobby.setServer(server);
     hostIP.setText(Main.lobby.getIp());
 
@@ -116,8 +118,9 @@ public class LobbyScreenController {
     GameInformation gameInformation = GameInformation.getInstance();
     gameInformation.setProfile(Main.profile);
     gameInformation.setHost(host);
-    ClientMatch cm = new ClientMatch(Main.profile.getName(),host);
-    gameInformation.setClientmatch(cm);
+
+
+    gameInformation.setClientmatch(clientProtocol.getMatch());
 
 
   }
@@ -137,6 +140,11 @@ public class LobbyScreenController {
       ClientProtocol cp = new ClientProtocol(adressIP.getText(), ServerSettings.port,Main.profile.getName(), new ClientMatch(Main.profile.getName(), new Player(Main.profile.getName(),"", Playerstatus.WAIT)));
       cp.start();
       cp.getMatch().addProtocol(cp);
+      Player player = new Player(Main.profile.getName(),Main.profile.getColor(),Playerstatus.WAIT);
+      GameInformation gameInformation = GameInformation.getInstance();
+      gameInformation.setProfile(Main.profile);
+      gameInformation.setHost(player);
+      gameInformation.setClientmatch(cp.getMatch());
     }
     isHost = false;
     openStartGameView(e);

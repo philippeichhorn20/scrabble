@@ -127,6 +127,8 @@ public class ServerProtocol extends Thread{
 
             case PLACE_TILES:
               PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
+              System.out.println(server);
+              System.out.println(server.serverMatch);
               server.serverMatch.placeTiles(
                   placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
               break;

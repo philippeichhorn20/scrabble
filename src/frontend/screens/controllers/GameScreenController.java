@@ -1,5 +1,7 @@
 package frontend.screens.controllers;
 
+import animatefx.animation.FadeIn;
+import animatefx.animation.FadeOut;
 import animatefx.animation.Pulse;
 import animatefx.animation.SlideInLeft;
 import animatefx.animation.ZoomIn;
@@ -13,6 +15,7 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
+import backend.network.messages.tiles.PlaceTilesMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,7 +82,7 @@ public class GameScreenController extends Thread{
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
   @FXML private Label currPlayerText;
-  private ScrabbleBoard scrabbleBoard;
+  private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   Player thisPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
   ClientMatch match = new ClientMatch(Main.profile.getName(),thisPlayer);
   private GameInformation gameInformation = GameInformation.getInstance();
@@ -93,6 +96,18 @@ public class GameScreenController extends Thread{
 
   private boolean setUpDone = false;
   private int totalNumberOfTiles = 0;
+  @FXML private Label history1;
+  @FXML private Label history2;
+  @FXML private Label history3;
+  @FXML private Label history4;
+  @FXML private Label history5;
+  @FXML private Label history6;
+  @FXML private Label history7;
+  @FXML private Label history8;
+  @FXML private Label history9;
+  @FXML private Label history10;
+  @FXML private Label history11;
+  private Label[] history = new Label[11];// = {history1,history2,history3,history4,history5,history6,history7,history8,history9,history10,history11};
   private GraphicTile gtile1;
   private GraphicTile gtile2;
   private GraphicTile gtile3;
@@ -125,17 +140,21 @@ public class GameScreenController extends Thread{
 
 
   }
-
+  int fdg = 1;
   public void endTurn(ActionEvent e) throws IOException {
     // servMatch.placeTileMessage(placedTiles);
     // servMatch.endTurnMessage();
     endTurnB();
+
+    newHistoryMessage(String.valueOf(fdg) + "is the number of times you entered this ");
+    fdg++;
   }
   private void endTurnB(){
     turn++;
     drawTiles();
     tileBagIcon.setVisible(true);
     resetTilesButton.setVisible(true);
+    new FadeIn(tileBagIcon).play();
   }
 
   public void sendWinBox() {
@@ -179,6 +198,7 @@ public class GameScreenController extends Thread{
         gt.setTile(newTile);
         new SlideInLeft(gt.getRec()).play();
         new SlideInLeft(gt.getLetter()).play();
+        new FadeOut(tileBagIcon).play();
         tileBagIcon.setVisible(false);
         resetTilesButton.setVisible(false);
       }
@@ -193,7 +213,8 @@ public class GameScreenController extends Thread{
 
         }else{
         if (b.contains(e.getX(), e.getY())) {
-          tileBagIcon.setVisible(false);
+          new FadeOut(tileBagIcon).play();
+          //tileBagIcon.setVisible(false);
           for (int k = 0; k < 7; k++) {
             if (gtiles[k].isHighlighted()) {
               if(tilesOnBoard[i][j]){
@@ -226,6 +247,16 @@ public class GameScreenController extends Thread{
               int ite = 0;
               placeTilesList.add(newTile);
               tilesOnBoard[i][j]=true;
+              scrabbleBoard.placeTile(newTile,newTile.getX(),newTile.getY());
+              Tile[] tt = {newTile};
+              try{
+                System.out.println(GameInformation.getInstance().getClientmatch());
+                System.out.println(GameInformation.getInstance().getClientmatch().getProtocol());
+                GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
+              }catch(IOException ie){
+                ie.printStackTrace();
+              }
+
               //  while (placedTiles[ite] != null) {
               //  ite++;
               //  }
@@ -329,6 +360,27 @@ public class GameScreenController extends Thread{
       }
       }
   }
+  private void newHistoryMessage(String mess){
+    boolean full = false;
+    for (int i = 0;i<=10;i++){
+     if (history[i].getText().equals("")){
+        history[i].setText(mess);
+        new FadeIn(history[i]).play();
+        full = true;
+        break;
+      }
+
+    }
+    if (!full){
+      String help = history[10].getText();
+      for (int i = 0;i<=9;i++){
+        history[i].setText(history[i+1].getText());
+      }
+      history[10].setText(mess);
+      new FadeIn(history[10]).play();
+
+    }
+  }
   private boolean checkNextVisible(){
     if (keyIterator >= 7){
       keyIterator = 0;
@@ -341,17 +393,28 @@ public class GameScreenController extends Thread{
   }
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
+
       Thread taskThread = new Thread(new Runnable() {
         @Override
         public void run() {
           int progress = 100;
-          while (Main.lobby.getServer().isRunning()) { //for (int i = 0;i<100;i++){
+          while (!GameInformation.getInstance().getClientmatch().isOver()) { //for (int i = 0;i<100;i++){
             try{
               Thread.sleep(1000);
             }catch(InterruptedException ie){
               ie.printStackTrace();
             }
             progress -= 1;
+            GameInformation.getInstance().getClientmatch().getScrabbleBoard().printScrabbleBoard();
+            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            scrabbleBoard.printScrabbleBoard();
+            System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||||");
+            if(!scrabbleBoard.equals(GameInformation.getInstance().getClientmatch().getScrabbleBoard())){
+                  ArrayList<Tile> tiless = GameInformation.getInstance().getClientmatch().getScrabbleBoard().getTilesOnScrabbleBoard();
+                  for (Tile t:tiless){
+                    placeTile(t);
+              }
+            }
             if (progress <= 0){
               break;
             }
@@ -371,6 +434,18 @@ public class GameScreenController extends Thread{
         }
       });
       taskThread.start();
+      history[0] = history1;
+      history[1] = history2;
+      history[2] =  history3;
+      history[3] = history4;
+      history[4] =  history5;
+      history[5] =  history6;
+      history[6] = history7;
+      history[7] =  history8;
+      history[8] =  history9;
+      history[9] =  history10;
+      history[10] =  history11;
+
 
       gtiles[0] = new GraphicTile(tile1, text1);
       gtiles[1] = new GraphicTile(tile2, text2);
@@ -394,12 +469,12 @@ public class GameScreenController extends Thread{
         gtiles[i].setXY(402 + (i * 36), 644);
         gtiles[i].getLetter().setVisible(true);
       }
-      Player[] players = GameInformation.getInstance().getClientmatch().getPlayers();
+      //Player[] players = GameInformation.getInstance().getClientmatch().getPlayers();
 
 
 
-        currPlayerText.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
-        name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
+        currPlayerText.setText("Dadadad");//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
+        //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
         //name2.setText(players[1].getName() + ":");
         //name3.setText(players[2].getName() + ":");
         //name4.setText(players[3].getName() + ":");
@@ -423,6 +498,16 @@ public class GameScreenController extends Thread{
       board.add(rec, t.getX(), t.getY());
       board.add(tileChar, t.getX(), t.getY());
     }
+  }
+  public void placeTile(Tile tile){
+    Rectangle rec = new Rectangle(36, 36, Color.web("ffe5b4"));
+    rec.setId("tiles");
+    Text tileChar = new Text(" " + String.valueOf(tile.getLetter()).toUpperCase());
+    tileChar.setId("tiles");
+    tileChar.setFont(new Font("Times New Roman Bold", 20));
+    ;
+    board.add(rec, tile.getX(), tile.getY());
+    board.add(tileChar, tile.getX(), tile.getY());
   }
 
   private void resetColor() {

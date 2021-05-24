@@ -32,7 +32,7 @@ public class ScrabbleBoard {
    */
 
   public ScrabbleBoard(){
-    this.scrabbleBoard = getScrabbleBoard();
+    this.scrabbleBoard = setUpScrabbleBoard();
   }
 
   /*
@@ -190,7 +190,7 @@ public class ScrabbleBoard {
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
-    scrabbleBoard[x][y].setTile(newTile);
+    scrabbleBoard[x-1][y-1].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
     tilesOnScrabbleBoard.add(newTile);
   }

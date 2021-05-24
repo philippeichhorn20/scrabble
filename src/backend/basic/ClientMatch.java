@@ -218,8 +218,12 @@ public class ClientMatch {
     this.youWon = true;
   }
 
-  public void isOver() {
-    isOver = true;
+  public boolean isOver() {
+    return isOver;
+
+  }
+  public void setOver(boolean b){
+    this.isOver = b;
   }
 
   //getter and setter
