@@ -1,6 +1,7 @@
 package backend.network.client;
 
 import backend.basic.ClientMatch;
+import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
@@ -161,7 +162,7 @@ public class ClientProtocol extends Thread{
             case PLACE_TILES:
               PlaceTilesMessage message4 = (PlaceTilesMessage) message;
               System.out.println("babal");
-              match.placeTilesOfOtherPlayers(message4.getTiles());
+              GameInformation.getInstance().getClientmatch().placeTilesOfOtherPlayers(message4.getTiles());
               break;
 
             case RECEIVE_SHUFFLE_TILES:

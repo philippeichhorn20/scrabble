@@ -192,6 +192,7 @@ public class ScrabbleBoard {
     newTile.setXY(x, y);
     scrabbleBoard[x-1][y-1].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
+    System.out.println("PLACE TILE: " + newTile);
     tilesOnScrabbleBoard.add(newTile);
   }
 

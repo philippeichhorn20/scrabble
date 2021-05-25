@@ -80,7 +80,7 @@ public class ServerMatch {
   public void placeTiles(Tile[] tiles, String from) throws IOException {
     String[][] feedback = new String[0][0];
     System.out.println("PLACE TILES SERVER SIDE");
-    if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
+    //if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
       if(tiles.length != 0){
         for (int i = 0; i < tiles.length; i++) {
           scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
@@ -88,9 +88,9 @@ public class ServerMatch {
         feedback = scrabbleBoard.submitTiles();
         if (scrabbleBoard.inputValudation(feedback)) {
           System.out.println("input was valid");
-          server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
+          server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
               new PlayFeedbackMessage("server", feedback, true));
-          server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
+          server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
               new GetNewTilesMessage(Main.lobby.players[this.currentPlayer].name,
                   drawNewTiles(tiles.length)));
           int points = scrabbleBoard.getPoints();
@@ -107,9 +107,9 @@ public class ServerMatch {
         }
 
       }
-    } else {
-      System.out.println("wrong player requested game move: Place Tiles");
-    }
+   // } else {
+    //  System.out.println("wrong player requested game move: Place Tiles");
+   // }
 
   }
 

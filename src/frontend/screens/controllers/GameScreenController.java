@@ -393,7 +393,7 @@ public class GameScreenController extends Thread{
   }
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
-
+      ScrabbleBoard sb = new ScrabbleBoard();
       Thread taskThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -405,16 +405,6 @@ public class GameScreenController extends Thread{
               ie.printStackTrace();
             }
             progress -= 1;
-            GameInformation.getInstance().getClientmatch().getScrabbleBoard().printScrabbleBoard();
-            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            scrabbleBoard.printScrabbleBoard();
-            System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||||");
-            if(!scrabbleBoard.equals(GameInformation.getInstance().getClientmatch().getScrabbleBoard())){
-                  ArrayList<Tile> tiless = GameInformation.getInstance().getClientmatch().getScrabbleBoard().getTilesOnScrabbleBoard();
-                  for (Tile t:tiless){
-                    placeTile(t);
-              }
-            }
             if (progress <= 0){
               break;
             }
@@ -422,6 +412,12 @@ public class GameScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
+                if(!scrabbleBoard.equals(GameInformation.getInstance().getClientmatch().getScrabbleBoard())){
+                  ArrayList<Tile> tiless = GameInformation.getInstance().getClientmatch().getScrabbleBoard().getTilesOnScrabbleBoard();
+                  for (Tile t:tiless){
+                    placeTile(t);
+                  }
+                }
                 if(reportedProgress==1){
                   sendLostBox();
                   endTurnB();
