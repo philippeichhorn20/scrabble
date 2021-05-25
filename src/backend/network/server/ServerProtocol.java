@@ -130,6 +130,8 @@ public class ServerProtocol extends Thread {
               PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
               server.serverMatch.placeTiles(
                   placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
+
+
               break;
 
             case SHUFFLE_TILES:

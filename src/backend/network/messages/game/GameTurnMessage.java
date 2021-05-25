@@ -14,4 +14,8 @@ public class GameTurnMessage extends Message {
     super(MessageType.GAME_TURN, from);
     this.nowTurn = nowTurn;
   }
+
+  public int getNowTurn() {
+    return nowTurn;
+  }
 }

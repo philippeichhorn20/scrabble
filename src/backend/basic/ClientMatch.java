@@ -90,6 +90,7 @@ public class ClientMatch {
 
   public void turnTaken(int nowTurn){
     currentPlayer = nowTurn;
+    System.out.println("Player with turn: " + players[currentPlayer].getName() + " | " + nowTurn);
     if(nowTurn == this.yourTurnNum){
       yourTurn();
     }else{
@@ -282,5 +283,7 @@ public class ClientMatch {
     this.gameEvents += "";
     this.gameEvents += "\n";
   }
+
+  public String getCurrentPlayerName() {return this.players[this.currentPlayer].getName();}
 
 }

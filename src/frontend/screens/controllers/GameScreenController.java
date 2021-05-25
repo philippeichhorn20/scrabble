@@ -469,7 +469,7 @@ public class GameScreenController extends Thread{
 
 
 
-        currPlayerText.setText("Dadadad");//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
+        currPlayerText.setText(match.getCurrentPlayerName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
         //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
         //name2.setText(players[1].getName() + ":");
         //name3.setText(players[2].getName() + ":");

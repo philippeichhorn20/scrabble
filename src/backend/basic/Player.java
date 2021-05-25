@@ -149,4 +149,13 @@ public class Player implements Serializable {
     WAIT,
     TURN
   }
+
+  public String toString() {
+    if(this.name == null) {
+      return "null";
+    } else {
+      return this.name;
+    }
+
+  }
 }

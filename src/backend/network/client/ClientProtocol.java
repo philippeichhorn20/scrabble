@@ -10,6 +10,7 @@ import backend.network.messages.connection.ConnectMessage;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.DisconnectMessage;
 import backend.network.messages.game.GameStartMessage;
+import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
@@ -84,18 +85,16 @@ public class ClientProtocol extends Thread{
               break;
 
             case GAME_TURN:
+              GameTurnMessage turnMessage = (GameTurnMessage) message;
+
+              GameInformation.getInstance().getClientmatch().turnTaken(turnMessage.getNowTurn());
               System.out.println("game turn message received");
               break;
+
             case PLAY_FEEDBACK:
               System.out.println("play feedback message received");
               PlayFeedbackMessage message6 = (PlayFeedbackMessage) message;
               this.match.playFeedBackIntegration(message6.isSuccessfulMove());
-              break;
-            case GAME_WAIT:
-              // At game controller there must be a methode which show
-              // that the player have to wait because of another players turn
-              this.match.nextPlayer();
-              System.out.println("you have to wait, its someboody elses turn");
               break;
 
             case GAME_OVER:
@@ -127,13 +126,12 @@ public class ClientProtocol extends Thread{
             case GAME_INFO:
               System.out.println("Game info message received");
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
-              this.match =
-                  new ClientMatch(
-                      this,
-                      message1.getPlayers(),
-                      "server",
-                      new Player(this.username, "#000000'", Playerstatus.WAIT));
-              Main.clientMatch = this.match;
+              this.match = new ClientMatch(this, message1.getPlayers(), "server", new Player(this.username, "#000000'", Playerstatus.WAIT));
+              GameInformation.getInstance().setClientmatch(this.match);
+              for(Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
+                System.out.println(p.toString());
+              }
+
               break;
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add

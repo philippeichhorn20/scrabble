@@ -95,10 +95,11 @@ public class ServerMatch {
                   drawNewTiles(tiles.length)));
           int points = scrabbleBoard.getPoints();
           Main.lobby.players[this.currentPlayer].addPoints(points);
-          server
-              .sendToAll(new SendPointsMessage(Main.lobby.players[currentPlayer].getName(), points));
+          server.sendToAll(new SendPointsMessage(Main.lobby.players[currentPlayer].getName(), points));
+
           server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
               new PlaceTilesMessage(Main.lobby.players[this.currentPlayer].name, tiles));
+
           nextPlayer();
       }else {
           System.out.println("input was invalid");
