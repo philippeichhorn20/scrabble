@@ -38,6 +38,7 @@ public class ClientMatch {
   private final boolean yourTurn = false;
   private int yourTurnNum;
   private String gameEvents = "";
+  private Tile[] newTilesToBeAdded;
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
@@ -99,12 +100,14 @@ public class ClientMatch {
   }
 
   public void sendPlacedTilesToServer(){
+    System.out.println("sending "+this.scrabbleBoard.newTilesOfCurrentMove.size()+" tiles to server");
     Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
     for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
       tiles[x] = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
     }
     try{
-      protocol.sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
+      GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
+      System.out.println("sent");
     }catch(IOException e){
       System.out.println("couldnt send your tiles to server");
     }
@@ -145,7 +148,7 @@ public class ClientMatch {
       resultString += "they were worth a whopping" + scrabbleBoard.getPoints()
           + " ! You are now up to " + this.points + " points.";
       this.protocol.sendToServer(
-          new PlaceTilesMessage(player.name, tileArrayToList(scrabbleBoard.newTilesOfCurrentMove)));
+          new PlaceTilesMessage(player.name, tileArrayToList(this.scrabbleBoard.newTilesOfCurrentMove)));
       scrabbleBoard.nextTurn();
     } else {
       resultString += "what the heck do you mean by ";
@@ -157,6 +160,8 @@ public class ClientMatch {
     }
     return resultString;
   }
+
+
 
   public void thirtySecondsAlert() {
 //TODO
@@ -184,9 +189,10 @@ public class ClientMatch {
   }
 
   public void placeTilesOfOtherPlayers(Tile[] tiles) {
+    this.newTilesToBeAdded = tiles;
     for (int x = 0; x < tiles.length; x++) {
       this.scrabbleBoard.placeTile(tiles[x], tiles[x].getX(), tiles[x].getY());
-      //nextTurn only clears the edited lists
+      System.out.print("- " + tiles[x].getLetter());
       this.scrabbleBoard.nextTurn();
     }
   }
@@ -286,4 +292,15 @@ public class ClientMatch {
 
   public String getCurrentPlayerName() {return this.players[this.currentPlayer].getName();}
 
+  public Tile[] getNewTilesToBeAdded() {
+    return newTilesToBeAdded;
+  }
+  public boolean hasNewTiles(){
+    if(newTilesToBeAdded == null){
+      return false;
+    }else{
+      return true;
+    }
+
+  }
 }

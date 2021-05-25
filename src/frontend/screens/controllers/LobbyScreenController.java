@@ -107,7 +107,8 @@ public class LobbyScreenController {
       }
     };
     new Thread(r).start();
-    server.setServerMatch(new ServerMatch(server));
+    server.setServerMatch(new ServerMatch(server, GameInformation.getInstance().getPlayers()));
+    GameInformation.getInstance().setServermatch(server.getServerMatch());
     Main.lobby.setServer(server);
     hostIP.setText(Main.lobby.getIp());
 

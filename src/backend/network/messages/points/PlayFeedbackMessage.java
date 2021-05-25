@@ -12,7 +12,7 @@ public class PlayFeedbackMessage extends Message {
   boolean successfulMove;
 
   public PlayFeedbackMessage(String from, String[][] feedback, boolean successfulMove) {
-    super(MessageType.GAME_TURN, from);
+    super(MessageType.PLAY_FEEDBACK, from);
     String feedBackString = "";
     if(feedback.length == 0){
       feedBackString = "no new Tiles detected";

@@ -3,7 +3,6 @@ package backend.network.client;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.Player;
-import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
@@ -126,12 +125,10 @@ public class ClientProtocol extends Thread{
             case GAME_INFO:
               System.out.println("Game info message received");
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
-              this.match = new ClientMatch(this, message1.getPlayers(), "server", new Player(this.username, "#000000'", Playerstatus.WAIT));
-              GameInformation.getInstance().setClientmatch(this.match);
+              GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
               for(Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
-                System.out.println(p.toString());
+                System.out.println(p);
               }
-
               break;
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add
@@ -158,8 +155,8 @@ public class ClientProtocol extends Thread{
               break;
 
             case PLACE_TILES:
+              System.out.println("received tiles");
               PlaceTilesMessage message4 = (PlaceTilesMessage) message;
-              System.out.println("babal");
               GameInformation.getInstance().getClientmatch().placeTilesOfOtherPlayers(message4.getTiles());
               break;
 

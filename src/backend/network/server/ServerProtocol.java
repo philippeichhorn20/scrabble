@@ -1,5 +1,6 @@
 package backend.network.server;
 
+import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
@@ -12,6 +13,7 @@ import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
 import frontend.Main;
+import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -127,11 +129,10 @@ public class ServerProtocol extends Thread {
               break;
 
             case PLACE_TILES:
+              System.out.println("receiving tiles");
               PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
-              server.serverMatch.placeTiles(
+              GameInformation.getInstance().getServermatch().placeTiles(
                   placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
-
-
               break;
 
             case SHUFFLE_TILES:
@@ -183,6 +184,7 @@ public class ServerProtocol extends Thread {
       running = false;
       if (socket.isClosed()) {
         System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
+        GameScreenController.AlertBox.display("Could not connect", "please chose a different name and reconnect");
       } else {
         try {
           socket.close();

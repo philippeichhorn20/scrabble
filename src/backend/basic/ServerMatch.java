@@ -34,22 +34,30 @@ public class ServerMatch {
   private final Timer timer;
   private Server server;
   private ServerProtocol protocol;
-
+  private Player[] players;
   /*
   @method
   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
    */
-  public ServerMatch(Server s) {
+  public ServerMatch(Server s, Player[] players) {
     super();
+    this.players = players;
     this.server = s;
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
     timer = new Timer();
-
   }
 
-
+  public ServerMatch(Server s, Player player) {
+    super();
+    this.players = new Player[4];
+    this.players[0] = player;
+    this.server = s;
+    scrabbleBoard = new ScrabbleBoard();
+    scrabbleBoard.setUpScrabbleBoard();
+    timer = new Timer();
+  }
   /*
   this constructor creates a game with a default scrabbleboard, tilebag and adds all the
    players to the game. Players cannot be added with addPlayer() afterwords
@@ -79,11 +87,11 @@ public class ServerMatch {
 
   public void placeTiles(Tile[] tiles, String from) throws IOException {
     String[][] feedback = new String[0][0];
-    System.out.println("PLACE TILES SERVER SIDE");
+    System.out.println("PLACE "+tiles.length+" TILES SERVER SIDE");
     //if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
       if(tiles.length != 0){
         for (int i = 0; i < tiles.length; i++) {
-          scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
+          this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
         }
         feedback = scrabbleBoard.submitTiles();
         if (scrabbleBoard.inputValudation(feedback)) {
@@ -96,8 +104,8 @@ public class ServerMatch {
           int points = scrabbleBoard.getPoints();
           Main.lobby.players[this.currentPlayer].addPoints(points);
           server.sendToAll(new SendPointsMessage(Main.lobby.players[currentPlayer].getName(), points));
-
-          server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
+          //TODO: send to all but
+          server.sendToAll(
               new PlaceTilesMessage(Main.lobby.players[this.currentPlayer].name, tiles));
 
           nextPlayer();
@@ -107,6 +115,8 @@ public class ServerMatch {
               new PlayFeedbackMessage("server", feedback, false));
         }
 
+      }else{
+        System.out.println("no tiles were found");
       }
    // } else {
     //  System.out.println("wrong player requested game move: Place Tiles");

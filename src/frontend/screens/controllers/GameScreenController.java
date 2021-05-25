@@ -15,7 +15,6 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
-import backend.network.messages.tiles.PlaceTilesMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,11 +81,11 @@ public class GameScreenController extends Thread{
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
   @FXML private Label currPlayerText;
-  private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   Player thisPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
-  ClientMatch match = new ClientMatch(Main.profile.getName(),thisPlayer);
+  ClientMatch match = GameInformation.getInstance().getClientmatch();
   private GameInformation gameInformation = GameInformation.getInstance();
   private ServerMatch servMatch = gameInformation.getServermatch();
+  private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   private Tile[] placedTiles;
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
   private static char jokerChar;
@@ -154,6 +153,7 @@ public class GameScreenController extends Thread{
     drawTiles();
     tileBagIcon.setVisible(true);
     resetTilesButton.setVisible(true);
+    GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
     new FadeIn(tileBagIcon).play();
   }
 
@@ -247,15 +247,15 @@ public class GameScreenController extends Thread{
               int ite = 0;
               placeTilesList.add(newTile);
               tilesOnBoard[i][j]=true;
-              scrabbleBoard.placeTile(newTile,newTile.getX(),newTile.getY());
+              GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
               Tile[] tt = {newTile};
-              try{
+           //   try{
                 System.out.println(GameInformation.getInstance().getClientmatch());
                 System.out.println(GameInformation.getInstance().getClientmatch().getProtocol());
-                GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
-              }catch(IOException ie){
-                ie.printStackTrace();
-              }
+            //    GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
+             // }catch(IOException ie){
+            //    ie.printStackTrace();
+           //   }
 
               //  while (placedTiles[ite] != null) {
               //  ite++;
@@ -393,7 +393,6 @@ public class GameScreenController extends Thread{
   }
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
-      ScrabbleBoard sb = new ScrabbleBoard();
       Thread taskThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -412,11 +411,13 @@ public class GameScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                if(!scrabbleBoard.equals(GameInformation.getInstance().getClientmatch().getScrabbleBoard())){
-                  ArrayList<Tile> tiless = GameInformation.getInstance().getClientmatch().getScrabbleBoard().getTilesOnScrabbleBoard();
-                  for (Tile t:tiless){
-                    placeTile(t);
+                if(GameInformation.getInstance().getClientmatch().hasNewTiles()){
+                  Tile[] newTiles = GameInformation.getInstance().getClientmatch().getNewTilesToBeAdded();
+                  for(int x = 0; x < newTiles.length; x++){
+                    placeTile(newTiles[x]);
                   }
+                  newTiles = null;
+
                 }
                 if(reportedProgress==1){
                 //  sendLostBox();

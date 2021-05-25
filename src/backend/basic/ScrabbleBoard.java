@@ -297,7 +297,7 @@ public class ScrabbleBoard {
    */
   public void nextTurn() {
     editedWords.clear();
-    newTilesOfCurrentMove.clear();
+   // newTilesOfCurrentMove.clear();
   }
 
   public String[] getEditedWordsAsString(boolean printIt) {
