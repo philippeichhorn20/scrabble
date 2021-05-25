@@ -76,8 +76,8 @@ public class ChatWindowController {
 	        }
 	    }
 	 
-	 @Override
-	    public void run() {
+	@Override
+	 public void run() {
 	        try {
 	            while (true) {
 	                String msg = reader.readLine();
@@ -112,6 +112,7 @@ public class ChatWindowController {
 		//client = new Client(name, "localhost", 52864);
 	}
 	
+	@Override
 	 public void initialize(URL location, ResourceBundle resources) {
 		 connectSocket();
 	 }
