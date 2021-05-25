@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ClientMatch {
 
   private static final int round = 0;
-  private final Player[] players;
+  private Player[] players;
   private final Player player;
   private ClientProtocol protocol;
   private final String from;
@@ -227,6 +227,10 @@ public class ClientMatch {
   }
 
   //getter and setter
+
+  public void setPlayers(Player[] players){
+    this.players = players;
+  }
 
   public int getMyNumber() {
     return myNumber;

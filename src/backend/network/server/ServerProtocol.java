@@ -19,13 +19,14 @@ import java.net.Socket;
 
 
 /*A server protocol which tells the server how to transfer messages to the client
-* @author nilschae
-* @version 1.0 */
-public class ServerProtocol extends Thread{
+ * @author nilschae
+ * @version 1.0 */
+public class ServerProtocol extends Thread {
+
   private final Socket socket;
+  private final Server server;
   private ObjectInputStream in;
   private ObjectOutputStream out;
-  private final Server server;
   private String clientName;
   private boolean running = true;
   private Player[] players;
@@ -33,8 +34,8 @@ public class ServerProtocol extends Thread{
 
 
   /*A Constructor which connects a client with the server
-  * @param client the client that is being communicated with
-  * @param server the server which manages the communication*/
+   * @param client the client that is being communicated with
+   * @param server the server which manages the communication*/
   ServerProtocol(Socket client, Server server) {
     this.socket = client;
     this.server = server;
@@ -47,12 +48,12 @@ public class ServerProtocol extends Thread{
     }
   }
 
-  private void sendInitialObjects() throws IOException{
+  private void sendInitialObjects() throws IOException {
 
   }
 
   /* Send a message to the client of this server protocol
-  * @param message the message which is sent*/
+   * @param message the message which is sent*/
   public void sendToClient(Message message) throws IOException {
     this.out.writeObject(message);
     out.flush();
@@ -77,7 +78,7 @@ public class ServerProtocol extends Thread{
       if (message.getMessageType() == MessageType.CONNECT) {
         System.out.println("new User attempts to connect...");
         String from = message.getFrom();
-     /*   if (server.userExistsP(from)) {
+        if (server.userExistsP(from)) {
           System.out.println("unsuccessful since already in lobby...");
           Message connectionRefused = new ConnectionRefusedMessage("host",
               "Username already connected to the server!");
@@ -86,16 +87,16 @@ public class ServerProtocol extends Thread{
           out.reset();
           disconnect();
         } else {
-          */
-        System.out.println("successful");
-        this.clientName = from;
-        server.addClient(from, this);
-        Player clientPlayer = new Player(from, "#000000", Playerstatus.WAIT);
-        if (Main.lobby.addPlayer(clientPlayer)) {
-          Main.lobby.addPlayer(clientPlayer);
-        } else {
-          Message connectionRefused = new ConnectionRefusedMessage("server",
-              "Lobby is full!");
+
+          System.out.println("successful");
+          this.clientName = from;
+          server.addClient(from, this);
+          Player clientPlayer = new Player(from, "#000000", Playerstatus.WAIT);
+          if (Main.lobby.addPlayer(clientPlayer)) {
+          } else {
+            Message connectionRefused = new ConnectionRefusedMessage("server",
+                "Lobby is full!");
+          }
         }
 
         //    }
@@ -151,15 +152,15 @@ public class ServerProtocol extends Thread{
               // does it automatically after game move
               break;
 
-              // Pass leads to the server telling next player it's his turn.
+            // Pass leads to the server telling next player it's his turn.
             case PASS:
               if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
                 server.serverMatch.nextPlayer();
               }
               break;
 
-              /** @author vivanova */
-              // Server receives a Relay message from Client
+            /** @author vivanova */
+            // Server receives a Relay message from Client
             case RELAY:
               // Server sends the message to everyone
               TextMessage textMessage = (TextMessage) message;
@@ -172,25 +173,25 @@ public class ServerProtocol extends Thread{
 
             default:
               break;
-            }
-            lastMessage = message;
           }
+          lastMessage = message;
         }
-      } catch (IOException e) {
-        running = false;
-        if (socket.isClosed()){
-          System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
-        } else {
-          try {
-            socket.close();
-          } catch (IOException e1) {
-            e1.printStackTrace();
-          }
-        }
-      } catch (ClassNotFoundException e2) {
-        System.out.println(e2.getMessage());
-        e2.printStackTrace();
       }
+    } catch (IOException e) {
+      running = false;
+      if (socket.isClosed()) {
+        System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
+      } else {
+        try {
+          socket.close();
+        } catch (IOException e1) {
+          e1.printStackTrace();
+        }
+      }
+    } catch (ClassNotFoundException e2) {
+      System.out.println(e2.getMessage());
+      e2.printStackTrace();
+    }
   }
 
 

@@ -146,8 +146,8 @@ public class ServerMatch {
         System.out.println("send GameStartMessage to" + Main.lobby.players[i].name);
         count++;
       }
-      System.out.println("player count:" + count);
     }
+    System.out.println("player count:" + count);
     nextPlayer();
     // server message, find out turn, send turn message && send wait message, send out initial tiles,
     // start game thread programmieren. Diese ruft das auf

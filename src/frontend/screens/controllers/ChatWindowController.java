@@ -1,5 +1,6 @@
 package frontend.screens.controllers;
 
+/*
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
@@ -150,3 +151,4 @@ public class ChatWindowController {
 	        }
 	    }
 }
+*/

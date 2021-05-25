@@ -29,8 +29,8 @@ public class Main extends Application {
 
   public static Lobby lobby;
 
-
   public static ClientMatch clientMatch;
+
   /**
    * Starts the application, creates an empty database if not already created.
    *

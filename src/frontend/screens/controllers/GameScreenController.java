@@ -419,8 +419,8 @@ public class GameScreenController extends Thread{
                   }
                 }
                 if(reportedProgress==1){
-                  sendLostBox();
-                  endTurnB();
+                //  sendLostBox();
+                //  endTurnB();
                 }
 
                 time.setText(String.valueOf(reportedProgress));
@@ -490,7 +490,7 @@ public class GameScreenController extends Thread{
       Text tileChar = new Text(" " + String.valueOf(t.getLetter()).toUpperCase());
       tileChar.setId("tiles");
       tileChar.setFont(new Font("Times New Roman Bold", 20));
-      ;
+
       board.add(rec, t.getX(), t.getY());
       board.add(tileChar, t.getX(), t.getY());
     }
