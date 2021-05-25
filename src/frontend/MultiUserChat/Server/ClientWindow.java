@@ -3,7 +3,10 @@ package frontend.MultiUserChat.Server;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+<<<<<<< Upstream, based on origin/master
 import java.awt.FlowLayout;
+=======
+>>>>>>> 2be3e88 #27 fixed some errors. More to go
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
