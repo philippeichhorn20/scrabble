@@ -297,10 +297,13 @@ public class ScrabbleBoard {
   @author jawinter
   method returns points of string
    */
-  /*public int getPointsOfWord(WordPossibility word){
+  public int getPointsOfWord(ArrayList<Tile> tiles){
+    int pointsOfWord = 0;
     int wordMultiplikant = 1;
-    for (int letterNum = 0; letterNum < word.length(); letterNum++) {
-      Tile letter = word.get;
+    ArrayList<Matchfield> wordAsMatchfields = new ArrayList<Matchfield>();
+    for (int letterNum = 0; letterNum < tiles.size(); letterNum++) {
+      Tile letter = tiles.get(letterNum);
+      scrabbleBoard[letter.getX()][letter.getY()].setTile(letter);
       wordAsMatchfields.add(scrabbleBoard[letter.getX()][letter.getY()]);
     }
     for (int length = 0; length < wordAsMatchfields.size(); length++) {
@@ -327,8 +330,9 @@ public class ScrabbleBoard {
       pointsOfWord += letterValue;
     }
     pointsOfWord *= wordMultiplikant;
+    return pointsOfWord;
   }
-   */
+
   /*
   this method clears the fields that are only tracking the information of the current move
    */

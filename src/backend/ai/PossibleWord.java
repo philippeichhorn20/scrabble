@@ -5,14 +5,19 @@ package backend.ai;
 Class represents a word which can ba put on board. It stores the word and points
  */
 
+import backend.basic.Tile;
+import java.util.ArrayList;
+
 public class PossibleWord implements Comparable<PossibleWord> {
 
   private String word;
   private int points;
+  private ArrayList<Tile> tiles = new ArrayList<Tile>();
 
-  public PossibleWord(String s,int p){
+  public PossibleWord(String s,int p,ArrayList<Tile> tiles){
     this.word = s;
     this.points = p;
+    this.tiles = tiles;
   }
 
   public int getPoints() {

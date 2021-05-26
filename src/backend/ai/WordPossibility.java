@@ -3,6 +3,8 @@ package backend.ai;
 
 import backend.basic.Matchfield;
 import backend.basic.ScrabbleBoard;
+import backend.basic.Tile;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 /*
@@ -21,7 +23,6 @@ public class WordPossibility {
   private int rightSpace;
   private int belowSpace;
   private int leftSpace;
-  private TreeSet<PossibleWord> possibleWordList;
   private ScrabbleBoard board;
 
   //Instructor for initialization
@@ -70,11 +71,6 @@ public class WordPossibility {
     }
   }
 
-  //Method which adds word to possibleWordList of this Slot
-  public void addWord(String word,int points){
-    possibleWordList.add(new PossibleWord(word,points));
-  }
-
   public char getLetter() {
     return baseLetter;
   }
@@ -101,10 +97,6 @@ public class WordPossibility {
 
   public int getRightSpace() {
     return rightSpace;
-  }
-
-  public TreeSet<PossibleWord> getPossibleWordList() {
-    return possibleWordList;
   }
 
   public ScrabbleBoard getBoard() {
