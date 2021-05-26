@@ -1,5 +1,6 @@
 package backend.basic;
 
+import backend.ai.WordPossibility;
 import backend.basic.Matchfield.Premiumstatus;
 import backend.basic.Tile.Tilestatus;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ScrabbleBoard {
 
   public ScrabbleBoard(){
     this.scrabbleBoard = setUpScrabbleBoard();
+
   }
 
   /*
@@ -190,9 +192,8 @@ public class ScrabbleBoard {
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
-    scrabbleBoard[x-1][y-1].setTile(newTile);
+    scrabbleBoard[x][y].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
-    System.out.println("PLACE TILE: " + newTile);
     tilesOnScrabbleBoard.add(newTile);
   }
 
@@ -292,6 +293,42 @@ public class ScrabbleBoard {
     return points;
   }
 
+  /*
+  @author jawinter
+  method returns points of string
+   */
+  /*public int getPointsOfWord(WordPossibility word){
+    int wordMultiplikant = 1;
+    for (int letterNum = 0; letterNum < word.length(); letterNum++) {
+      Tile letter = word.get;
+      wordAsMatchfields.add(scrabbleBoard[letter.getX()][letter.getY()]);
+    }
+    for (int length = 0; length < wordAsMatchfields.size(); length++) {
+      int letterValue = 0;
+      Matchfield currentField = wordAsMatchfields.get(length);
+      letterValue = currentField.getTile().getValue();
+      switch (currentField.getPremiumstatus()) {
+        case DOUBLELETTER:
+          letterValue *= 2;
+          break;
+        case TRIPLELETTER:
+          letterValue *= 3;
+          break;
+        case DOUBLEWORD:
+          wordMultiplikant *= 2;
+          break;
+        case TRIPLEWORD:
+          wordMultiplikant *= 3;
+          break;
+        default:
+          break;
+
+      }
+      pointsOfWord += letterValue;
+    }
+    pointsOfWord *= wordMultiplikant;
+  }
+   */
   /*
   this method clears the fields that are only tracking the information of the current move
    */

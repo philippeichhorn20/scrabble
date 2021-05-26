@@ -6,7 +6,14 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 import backend.basic.WordCheckDB;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -19,28 +26,60 @@ combinations for words, which can be laid. The brain needs a scrabbleBoard, whic
 public class Brain {
 
   private ScrabbleBoard scrabbleBoard; //ScrabbleBoard, which is analysed by Brain
+  private HashSet<String> words = new HashSet<String>(); //set of words from dictionary
 
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
+    readDictionary("test");
   }
 
   /*
   Method should return all possible Words that could be played
   @TODO
    */
-  public TreeSet<String> getPlayableWords(Tile[] tilesOnHand,
+  public TreeSet<WordPossibility> getPlayableWords(Tile[] tilesOnHand,
       ArrayList<WordPossibility> wordPossibilities) {
-    TreeSet<String> playableWords = new TreeSet<String>();
+    TreeSet<WordPossibility> playableWords = new TreeSet<WordPossibility>();
     for (int i = 0; i < wordPossibilities.size(); i++) {
       WordPossibility wordPossibility = wordPossibilities.get(i);
-      int x = wordPossibility.getxPos();
-      int y = wordPossibility.getyPos();
-      Matchfield[] neighbors = getNeighbors(scrabbleBoard, x, y);
-      playableWords.addAll(findCorrectWords(wordPossibility.getLetter(), tilesOnHand));
+      int xPosBaseLetter = wordPossibility.getxPos();
+      int yPosBaseLetter = wordPossibility.getyPos();
+      Matchfield[] neighbors = getNeighbors(scrabbleBoard, xPosBaseLetter, yPosBaseLetter);
+      TreeSet<String> allWords = findCorrectWords(wordPossibility.getLetter(), tilesOnHand);
+      Iterator<String> it = allWords.iterator();
+      int verticalSpace = wordPossibility.getAboveSpace() + wordPossibility.getBelowSpace() - 2;
+      int horizontalSpace = wordPossibility.getLeftSpace() + wordPossibility.getRightSpace() - 2;
+
+      while (it.hasNext()) {
+        String currentWord = it.next();
+        //vertical
+        if(currentWord.length()<=verticalSpace && !neighbors[0].hasTile() && !neighbors[2].hasTile()) {
+        int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter());
+        int aboveSpaceNeeded = positionBaseLetter+1;
+        int belowSpaceNeeded = currentWord.length() - positionBaseLetter+1;
+        if(aboveSpaceNeeded<= wordPossibility.getAboveSpace() && belowSpaceNeeded<= wordPossibility
+            .getBelowSpace()) {
+            //for()
+        }
+        }
+        //horizontal
+        if(currentWord.length()<=horizontalSpace && !neighbors[1].hasTile() && !neighbors[3].hasTile()) {
+
+        }
+      }
     }
     return playableWords;
   }
 
+  public static int getPositionBaseLetter(String word,char baseLetter){
+    int position = 0;
+    for(int i = 0;i<word.length();i++) {
+      if(word.charAt(i)==baseLetter) {
+        position = i;
+      }
+    }
+    return position;
+  }
   /*
   Tries creating words by mixing letter with wordlength amount of tiles from tilesOnHand
   @TODO
@@ -60,7 +99,7 @@ public class Brain {
     //trying all comb with two tiles
     for (int i = 0; i < lettersOnHand.length(); i++) {
       for (int j = 0; j < lettersOnHand.length(); j++) {
-        if (i != j) {
+        if (j > i) {
           String permute = "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j);
           words.addAll(validPermutations(permute));
         }
@@ -70,7 +109,7 @@ public class Brain {
     for (int i = 0; i < lettersOnHand.length(); i++) {
       for (int j = 0; j < lettersOnHand.length(); j++) {
         for (int k = 0; k < lettersOnHand.length(); k++) {
-          if (i != j && j != k && i != k) {
+          if (i < j && j < k) {
             String permute =
                 "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j) + lettersOnHand
                     .charAt(k);
@@ -84,7 +123,7 @@ public class Brain {
       for (int j = 0; j < lettersOnHand.length(); j++) {
         for (int k = 0; k < lettersOnHand.length(); k++) {
           for (int l = 0; l < lettersOnHand.length(); l++) {
-            if (i != j && j != k && i != k && i != l && j != l && k != l) {
+            if (i < j && j < k && k < l) {
               String permute =
                   "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j) + lettersOnHand
                       .charAt(k) + lettersOnHand.charAt(l);
@@ -100,8 +139,7 @@ public class Brain {
         for (int k = 0; k < lettersOnHand.length(); k++) {
           for (int l = 0; l < lettersOnHand.length(); l++) {
             for (int m = 0; m < lettersOnHand.length(); m++) {
-              if (i != j && j != k && i != k && i != l && j != l && k != l && i != m && j != m
-                  && k != m && l != m) {
+              if (i < j && j < k && k < l && l < m) {
                 String permute =
                     "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j)
                         + lettersOnHand
@@ -113,7 +151,50 @@ public class Brain {
         }
       }
     }
-
+    //with 6 tiles
+    for (int i = 0; i < lettersOnHand.length(); i++) {
+      for (int j = 0; j < lettersOnHand.length(); j++) {
+        for (int k = 0; k < lettersOnHand.length(); k++) {
+          for (int l = 0; l < lettersOnHand.length(); l++) {
+            for (int m = 0; m < lettersOnHand.length(); m++) {
+              for (int n = 0; n < lettersOnHand.length(); n++) {
+                if (i < j && j < k && k < l && l < m && m < n) {
+                  String permute =
+                      "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j)
+                          + lettersOnHand
+                          .charAt(k) + lettersOnHand.charAt(l) + lettersOnHand.charAt(m)
+                          + lettersOnHand.charAt(n);
+                  words.addAll(validPermutations(permute));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    //with 7 tiles
+    for (int i = 0; i < lettersOnHand.length(); i++) {
+      for (int j = 0; j < lettersOnHand.length(); j++) {
+        for (int k = 0; k < lettersOnHand.length(); k++) {
+          for (int l = 0; l < lettersOnHand.length(); l++) {
+            for (int m = 0; m < lettersOnHand.length(); m++) {
+              for (int n = 0; n < lettersOnHand.length(); n++) {
+                for (int o = 0; o < lettersOnHand.length(); o++) {
+                  if (i < j && j < k && k < l && l < m && m < n) {
+                    String permute =
+                        "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j)
+                            + lettersOnHand
+                            .charAt(k) + lettersOnHand.charAt(l) + lettersOnHand.charAt(m)
+                            + lettersOnHand.charAt(n);
+                    words.addAll(validPermutations(permute));
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     return words;
   }
 
@@ -123,8 +204,9 @@ public class Brain {
     a[j] = ch;
   }
 
-  // Iterative function to find permutations of a string in Java
-  public static List<String> validPermutations(String s) {
+  // Iterative function to find permutations of a string
+  public List<String> validPermutations(String s) {
+    int counter = 0;
     ArrayList<String> valid = new ArrayList<String>();
     // convert the string to a character array (Since the string is immutable)
     char[] chars = s.toCharArray();
@@ -137,11 +219,14 @@ public class Brain {
     int i = 1, j = 0;
 
     // print the given string, as only its permutations will be printed later
-    if(WordCheckDB.checkWord(s)){
+    if (this.checkWord(s)) {
+
       valid.add(String.valueOf(chars));
     }
+    counter++;
 
     while (i < s.length()) {
+      counter++;
       if (p[i] < i) {
         // if `i` is odd then `j = p[i]`; otherwise, `j = 0`
         j = (i % 2) * p[i];
@@ -150,7 +235,7 @@ public class Brain {
         swap(chars, i, j);
 
         // print the current permutation
-        if(WordCheckDB.checkWord(String.valueOf(chars))) {
+        if (this.checkWord(String.valueOf(chars))) {
           valid.add(String.valueOf(chars));
         }
 
@@ -184,6 +269,38 @@ public class Brain {
       }
     }
     return wordPossibilities;
+  }
+
+  /*
+  Method checks whether word is valid
+   */
+  public boolean checkWord(String word) {
+    boolean exists = false;
+    if (this.words.contains(word.toUpperCase())) {
+      exists = true;
+    }
+    return exists;
+  }
+
+  /*
+  Method reads textfile containing dictionary and assigns it to dictionary brain will use to check words
+  @TODO textFile should be used to dynamically read dictionary
+   */
+  public void readDictionary(String textFile) {
+    try {
+      File dic = new File("src/resources/dictionary.txt");
+      FileReader fr = new FileReader(dic);
+      BufferedReader br = new BufferedReader(fr);
+      String z;
+      while ((z = br.readLine()) != null) {
+        String[] array = z.split("\\t");
+        if (array.length > 1) {
+          this.words.add(array[0]);
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /*
