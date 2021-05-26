@@ -19,6 +19,7 @@ public class WordPossibility {
   private int xPos;
   private int yPos;
   private char baseLetter; //letter which will be laid next to
+  private int baseLetterValue;
   private int aboveSpace;
   private int rightSpace;
   private int belowSpace;
@@ -26,8 +27,9 @@ public class WordPossibility {
   private ScrabbleBoard board;
 
   //Instructor for initialization
-  public WordPossibility(char givenLetter,int xPosition, int yPosition, ScrabbleBoard scrabbleBoard) {
+  public WordPossibility(char givenLetter,int xPosition, int yPosition,int value, ScrabbleBoard scrabbleBoard) {
     this.baseLetter = givenLetter;
+    this.baseLetterValue = value;
     if (xPosition < 15 && xPosition >= 0) {
       this.xPos = xPosition;
     } else {
@@ -73,6 +75,10 @@ public class WordPossibility {
 
   public char getLetter() {
     return baseLetter;
+  }
+
+  public int getBaseLetterValue() {
+    return baseLetterValue;
   }
 
   public int getxPos() {

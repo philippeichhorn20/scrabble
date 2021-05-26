@@ -14,7 +14,7 @@ public class PossibleWord implements Comparable<PossibleWord> {
   private int points;
   private ArrayList<Tile> tiles = new ArrayList<Tile>();
 
-  public PossibleWord(String s,int p,ArrayList<Tile> tiles){
+  public PossibleWord(String s, int p, ArrayList<Tile> tiles) {
     this.word = s;
     this.points = p;
     this.tiles = tiles;
@@ -30,17 +30,23 @@ public class PossibleWord implements Comparable<PossibleWord> {
 
   @Override
   public String toString() {
+    String tileText = " Tiles: ";
+    for (int i = 0; i < this.tiles.size(); i++) {
+      tileText += tiles.get(i).getX();
+      tileText += "" + tiles.get(i).getY() + " ";
+      tileText += tiles.get(i).getValue() + "; ";
+    }
     return "PossibleWord{" +
         "word='" + word + '\'' +
-        ", points=" + points +
+        ", points=" + points + tileText +
         '}';
   }
 
   @Override
   public int compareTo(PossibleWord otherPossibleWord) {
-    if(otherPossibleWord.getPoints()>this.points) {
+    if (otherPossibleWord.getPoints() > this.points) {
       return 1;
-    } else if(otherPossibleWord.getPoints()==this.points) {
+    } else if (otherPossibleWord.getPoints() == this.points) {
       return 0;
     } else {
       return -1;
