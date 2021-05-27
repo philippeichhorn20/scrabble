@@ -19,7 +19,13 @@ public class PossibleWord implements Comparable<PossibleWord> {
     this.points = p;
     this.tiles = tiles;
   }
-
+  /*
+   * @author vivanova
+   */
+  public ArrayList<Tile> getTile(){
+	  return this.tiles;
+  }
+  
   public int getPoints() {
     return points;
   }
