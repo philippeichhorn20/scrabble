@@ -1,8 +1,7 @@
 package frontend.screens.controllers;
 
+
 /*
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,16 +9,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import com.sun.javafx.event.EventQueue;
 import  javafx.scene.text.Text;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
 import animatefx.animation.FadeIn;
 import frontend.Main;
 import frontend.MultiUserChat.Server.Client;
