@@ -74,9 +74,11 @@ public class ServerMatch {
 
   public void removePlayer(String player) {
     for (int x = 0; x < this.players.length; x++) {
-      if (this.players[x].name.equals(player)) {
-        this.players[x] = null;
-        break;
+      if(this.players[x] == null){
+        if (this.players[x].name.equals(player)) {
+          this.players[x] = null;
+          break;
+        }
       }
     }
   }
@@ -152,16 +154,6 @@ public class ServerMatch {
   public Timer getTimer() {
     return timer;
   }
-
-  public void removePlayer(String player) {
-    for (int x = 0; x < this.players.length; x++) {
-      if (this.players[x].name.equals(player)) {
-        this.players[x] = null;
-        break;
-      }
-    }
-  }
-
 
   /*
     @method stars the match. It triggers the start of the thread, as well as different methods

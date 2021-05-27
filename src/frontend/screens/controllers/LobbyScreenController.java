@@ -4,7 +4,6 @@ import animatefx.animation.Flash;
 import animatefx.animation.Pulse;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
-import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
@@ -100,9 +99,6 @@ public class LobbyScreenController {
     Player host = new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT);
     player1Name.setText(host.getName());
 
-
-    Main.lobby = new Lobby(host);
-
     Server server = new Server();
 
     Runnable r =
@@ -184,8 +180,8 @@ public class LobbyScreenController {
     lob.start();
     server.setServerMatch(new ServerMatch(server, GameInformation.getInstance().getPlayers()));
     GameInformation.getInstance().setServermatch(server.getServerMatch());
-    Main.lobby.setServer(server);
-    hostIP.setText(Main.lobby.getIp());
+    //Main.lobby.setServer(server);
+    hostIP.setText(ServerSettings.getLocalHostIp4Address());
 
     ClientProtocol clientProtocol =
         new ClientProtocol(
@@ -207,7 +203,7 @@ public class LobbyScreenController {
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
     System.out.println("Start match triggered");
-    Main.lobby.newMatch();
+    GameInformation.getInstance().getServermatch().startMatch();
   }
 
   // Method connects joining player to lobby or server of hosting player.
