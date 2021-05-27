@@ -151,8 +151,9 @@ public class GameScreenController extends Thread{
   private void endTurnB(){
     turn++;
     drawTiles();
-    tileBagIcon.setVisible(true);
-    resetTilesButton.setVisible(true);
+    //tileBagIcon.setVisible(true);
+    //resetTilesButton.setVisible(true);
+    GameInformation.getInstance().getClientmatch().nextPlayer();
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
     new FadeIn(tileBagIcon).play();
   }
@@ -250,8 +251,7 @@ public class GameScreenController extends Thread{
               GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
               Tile[] tt = {newTile};
            //   try{
-                System.out.println(GameInformation.getInstance().getClientmatch());
-                System.out.println(GameInformation.getInstance().getClientmatch().getProtocol());
+
             //    GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
              // }catch(IOException ie){
             //    ie.printStackTrace();
@@ -411,6 +411,7 @@ public class GameScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
+                currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
                 if(GameInformation.getInstance().getClientmatch().hasNewTiles()){
                   Tile[] newTiles = GameInformation.getInstance().getClientmatch().getNewTilesToBeAdded();
                   for(int x = 0; x < newTiles.length; x++){

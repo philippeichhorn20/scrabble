@@ -99,7 +99,7 @@
       </VBox>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false">
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
                <image>
                   <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
                </image>
@@ -124,7 +124,7 @@
                            <children>
                               <BorderPane prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player1Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -136,7 +136,7 @@
                                  <center>
                                     <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
-                                          <Image url="@resources/outline_sports_esports_white_24dp.png" />
+                                          <Image url="@resources/playerIcon.png" />
                                        </image>
                                        <BorderPane.margin>
                                           <Insets left="5.0" />
@@ -149,7 +149,7 @@
                               </BorderPane>
                               <BorderPane layoutX="310.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player2Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -159,9 +159,9 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player2Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
-                                          <Image url="@resources/outline_sports_esports_white_24dp.png" />
+                                          <Image url="@resources/waiting.png" />
                                        </image>
                                        <BorderPane.margin>
                                           <Insets left="5.0" />
@@ -174,7 +174,7 @@
                               </BorderPane>
                               <BorderPane layoutX="330.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Easy AI" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player3Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Easy AI" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -184,9 +184,9 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player3Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
-                                          <Image url="@resources/aiPlayer.png" />
+                                          <Image url="@resources/waiting.png" />
                                        </image>
                                        <BorderPane.margin>
                                           <Insets left="5.0" />
@@ -199,7 +199,7 @@
                               </BorderPane>
                               <BorderPane layoutX="390.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player4Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -209,7 +209,7 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player4Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
                                           <Image url="@resources/waiting.png" />
                                        </image>
@@ -252,7 +252,7 @@
                               <Insets top="30.0" />
                            </VBox.margin>
                            <top>
-                              <Label text="AI Oppnonents" textFill="WHITE" BorderPane.alignment="CENTER">
+                              <Label text="AI Opponents" textFill="WHITE" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font name="Consolas Bold" size="20.0" />
                                  </font>
@@ -391,7 +391,7 @@
                   <Insets left="50.0" right="50.0" top="50.0" />
                </padding>
             </VBox>
-            <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;">
+            <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;" visible="false">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="700.0" style="-fx-border-color: #000000;" text="To join a server enter adress...">
                      <VBox.margin>

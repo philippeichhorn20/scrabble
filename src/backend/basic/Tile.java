@@ -127,6 +127,9 @@ public class Tile implements Serializable {
     }
     return false;
   }
+  public String toString(){
+    return "Tile " + this.letter + " of value " + this.value + " and status " + this.status;
+  }
 
   /*Enum to set a status for a tile*/
   public enum Tilestatus {

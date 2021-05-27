@@ -11,6 +11,7 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -33,6 +34,7 @@ public class ExistingProfileController {
   @FXML private ImageView nextButton;
   @FXML private ImageView lastPageButton;
   @FXML private Text scrabbleText;
+  @FXML private Label wrongProfileText;
 
   public String profile;
   private boolean first = true;
@@ -151,9 +153,14 @@ public class ExistingProfileController {
    */
   public void goMainMenu(ActionEvent e) throws IOException {
     Button button = (Button) e.getSource();
-    Main m = new Main();
-    m.changeProfile(button.getText().toLowerCase());
-    m.changeScene("screens/mainMenu.fxml");
+    if (button.getText().equals("")){
+      wrongProfileText.setVisible(true);
+    }else{
+      Main m = new Main();
+      m.changeProfile(button.getText().toLowerCase());
+      m.changeScene("screens/mainMenu.fxml");
+    }
+
   }
 
   /**
@@ -202,7 +209,7 @@ public class ExistingProfileController {
       button00, button01, button02, button03, button10, button11, button12, button13
     };
     for (int i = 0; i < 8; i++) {
-      buttonNames[i].setText(" ");
+      buttonNames[i].setText("");
     }
   }
 

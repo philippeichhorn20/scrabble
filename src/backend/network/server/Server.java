@@ -1,6 +1,9 @@
 package backend.network.server;
 
 import backend.basic.ClientMatch;
+import backend.basic.GameInformation;
+import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.connection.ShutDownMessage;
@@ -31,6 +34,7 @@ public class Server {
   private boolean running;
   private boolean nextMessageOnlyForHost = false;
   private boolean nextMessageAdditionalForHost = false;
+  private boolean newPlayerAdded = false;
   private final HashMap<String, ServerProtocol> clients = new HashMap<>(); // map with serverprotocols of clients
   private final HashMap<Integer, String> objecIDMap = new HashMap<>(); // map with owners of object ids
   ServerMatch serverMatch;
@@ -56,7 +60,15 @@ public class Server {
   * @param protocol the server protocol which gets added with the name */
   public synchronized void addClient(String name, ServerProtocol protocol) {
     this.clients.put(name, protocol);
+    GameInformation.getInstance().addPlayer(new Player(name,"red", Playerstatus.WAIT));
+    newPlayerAdded=true;
     System.out.println(name + " : new client has been added");
+  }
+  public void playerAdded(){
+    newPlayerAdded=false;
+  }
+  public boolean newPlayer(){
+    return newPlayerAdded;
   }
 
   /*@return give back a set of clients which are connected to the server*/

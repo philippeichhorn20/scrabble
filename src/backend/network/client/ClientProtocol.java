@@ -126,6 +126,7 @@ public class ClientProtocol extends Thread{
               System.out.println("Game info message received");
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
               GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
+              GameInformation.getInstance().setPlayers(message1.getPlayers());
               for(Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
                 System.out.println(p);
               }
