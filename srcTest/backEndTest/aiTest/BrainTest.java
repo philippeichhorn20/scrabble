@@ -1,64 +1,126 @@
 package backEndTest.aiTest;
 
-import backend.ai.Brain;
 import backend.ai.EasyAI;
 import backend.ai.PossibleWord;
-import backend.ai.WordPossibility;
-import backend.basic.Matchfield;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
-import backend.basic.WordCheckDB;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.TreeSet;
+import junit.framework.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BrainTest {
+  ScrabbleBoard board = new ScrabbleBoard();
+  EasyAI easyAI = new EasyAI("AiPlayer", "#666666", Playerstatus.WAIT, board);
+  Tile[] testHand1 = new Tile[7];
+  Tile[] testHand2 = new Tile[7];
+  Tile[] testHand3 = new Tile[7];
+
+  @BeforeEach
+      void prepare() {
+    board.placeTile(new Tile('H', 4, Tilestatus.ONBOARD), 9, 1);
+    board.placeTile(new Tile('D', 2, Tilestatus.ONBOARD), 12, 1);
+    board.placeTile(new Tile('E', 1, Tilestatus.ONBOARD), 9, 2);
+    board.placeTile(new Tile('R', 1, Tilestatus.ONBOARD), 12, 2);
+    board.placeTile(new Tile('O', 1, Tilestatus.ONBOARD), 13, 2);
+    board.placeTile(new Tile('E', 1, Tilestatus.ONBOARD), 14, 2);
+    board.placeTile(new Tile('D', 2, Tilestatus.ONBOARD), 9, 3);
+    board.placeTile(new Tile('A', 1, Tilestatus.ONBOARD), 12, 3);
+    board.placeTile(new Tile('G', 2, Tilestatus.ONBOARD), 9, 4);
+    board.placeTile(new Tile('R', 1, Tilestatus.ONBOARD), 10, 4);
+    board.placeTile(new Tile('A', 1, Tilestatus.ONBOARD), 11, 4);
+    board.placeTile(new Tile('Y', 4, Tilestatus.ONBOARD), 12, 4);
+    board.placeTile(new Tile('P', 3, Tilestatus.ONBOARD), 6, 5);
+    board.placeTile(new Tile('U', 1, Tilestatus.ONBOARD), 7, 5);
+    board.placeTile(new Tile('C', 3, Tilestatus.ONBOARD), 8, 5);
+    board.placeTile(new Tile('E', 1, Tilestatus.ONBOARD), 9, 5);
+    board.placeTile(new Tile('E', 1, Tilestatus.ONBOARD), 6, 6);
+    board.placeTile(new Tile('P', 3, Tilestatus.ONBOARD), 6, 7);
+    board.placeTile(new Tile('O', 1, Tilestatus.ONBOARD), 7, 7);
+    board.placeTile(new Tile('O', 1, Tilestatus.ONBOARD), 8, 7);
+    board.placeTile(new Tile('R', 1, Tilestatus.ONBOARD), 9, 7);
+    board.placeTile(new Tile('H', 4, Tilestatus.ONBOARD), 8, 8);
+    board.placeTile(new Tile('A', 1, Tilestatus.ONBOARD), 9, 8);
+    board.placeTile(new Tile('R', 1, Tilestatus.ONBOARD), 10, 8);
+    board.placeTile(new Tile('D', 2, Tilestatus.ONBOARD), 11, 8);
+    board.placeTile(new Tile('I', 1, Tilestatus.ONBOARD), 9, 9);
+    board.placeTile(new Tile('O', 1, Tilestatus.ONBOARD), 11, 9);
+    board.placeTile(new Tile('A', 1, Tilestatus.ONBOARD), 7, 10);
+    board.placeTile(new Tile('S', 1, Tilestatus.ONBOARD), 8, 10);
+    board.placeTile(new Tile('S', 1, Tilestatus.ONBOARD), 9, 10);
+    board.placeTile(new Tile('U', 1, Tilestatus.ONBOARD), 10, 10);
+    board.placeTile(new Tile('R', 1, Tilestatus.ONBOARD), 11, 10);
+    board.placeTile(new Tile('E', 1, Tilestatus.ONBOARD), 12, 10);
+    board.placeTile(new Tile('V', 4, Tilestatus.ONBOARD), 7, 11);
+    board.placeTile(new Tile('I', 1, Tilestatus.ONBOARD), 9, 11);
+    board.placeTile(new Tile('A', 1, Tilestatus.ONBOARD), 3, 12);
+    board.placeTile(new Tile('L', 1, Tilestatus.ONBOARD), 4, 12);
+    board.placeTile(new Tile('I', 1, Tilestatus.ONBOARD), 5, 12);
+    board.placeTile(new Tile('B', 3, Tilestatus.ONBOARD), 6, 12);
+    board.placeTile(new Tile('I', 1, Tilestatus.ONBOARD), 7, 12);
+    board.placeTile(new Tile('N', 1, Tilestatus.ONBOARD), 9, 12);
+    board.placeTile(new Tile('I', 1, Tilestatus.ONBOARD), 10, 12);
+    board.placeTile(new Tile('L', 1, Tilestatus.ONBOARD), 11, 12);
+    board.placeTile(new Tile('D', 2, Tilestatus.ONBOARD), 7, 13);
+
+    Tile n = new Tile('N', 1);
+    Tile g = new Tile('G', 2);
+    Tile v = new Tile('V', 4);
+    Tile m = new Tile('M', 3);
+    Tile k = new Tile('K', 5);
+    Tile i = new Tile('I', 1);
+    Tile c = new Tile('C', 3);
+    Tile a = new Tile('A', 1);
+    Tile b = new Tile('B', 3);
+    Tile d = new Tile('D', 2);
+    Tile e = new Tile('E', 1);
+    Tile f = new Tile('F', 4);
+    Tile s = new Tile('S', 1);
+    Tile[] fff = new Tile[]{n,g,v,m,k,i,c};
+    testHand1 = new Tile[]{a,b,c,d,e,f,g};
+    testHand2 = new Tile[]{i,m,k,a,e,c,s};
+    testHand3 = new Tile[]{n,a,f,g,g,a,s};
+    easyAI.tilesOnHand = fff;
+  }
+  @Test
+  void testPointsCalculation(){
+    TreeSet<PossibleWord> wordsTest = easyAI.easyBrain.getPlayableWords(easyAI.tilesOnHand);
+    Iterator<PossibleWord> it = wordsTest.iterator();
+    PossibleWord ginch = new PossibleWord("",0,new ArrayList<Tile>());
+    int ginchPoints = 0;
+    while(it.hasNext()) {
+      if((ginch = it.next()).getWord().equals("GINCH")) {
+        ginchPoints = ginch.getPoints();
+      }
+    }
+    Assert.assertEquals(33,ginchPoints);
+  }
 
   @Test
-  void test() {
-    ScrabbleBoard testBoard = new ScrabbleBoard();
-    testBoard.setUpScrabbleBoard();
-    testBoard.placeTile(new Tile('A', 3, Tilestatus.ONBOARD), 3, 3);
-    /*testBoard.placeTile(new Tile('B', 4, Tilestatus.ONBOARD), 3, 1);
-    testBoard.placeTile(new Tile('C', 4, Tilestatus.ONBOARD), 0, 1);
-    testBoard.placeTile(new Tile('A', 3, Tilestatus.ONBOARD), 7, 8);
-    testBoard.placeTile(new Tile('P', 3, Tilestatus.ONBOARD), 8, 8);
-    testBoard.placeTile(new Tile('F', 3, Tilestatus.ONBOARD), 9, 8);
-    testBoard.placeTile(new Tile('E', 3, Tilestatus.ONBOARD), 10, 8);
-    testBoard.placeTile(new Tile('L', 3, Tilestatus.ONBOARD), 11, 8);*/
-
-    Matchfield[] result = Brain.getNeighbors(testBoard, 3, 2);
-    Matchfield[] result2 = Brain.getNeighbors(testBoard, 13, 13);
-
-    for (int i = 0; i < 4; i++) {
-      if (result[i] != null && result[i].hasTile()) {
-        System.out.print(result[i].getTile().getLetter() + " " + result[i].getTile().getX() + " ");
+  void testIfFirstMove(){
+    ScrabbleBoard newBoard = new ScrabbleBoard();
+    easyAI.easyBrain.updateScrabbleboard(newBoard);
+    Tile[][] tileHands = new Tile[][]{testHand1,testHand2,testHand3};
+    for(int i=0;i< tileHands.length;i++){
+      System.out.println("Try with testHand number" + (i+1) + " ");
+      easyAI.tilesOnHand = tileHands[i];
+      TreeSet<PossibleWord> firstMove = easyAI.easyBrain.getPlayableWords(easyAI.tilesOnHand);
+      Assert.assertTrue(firstMove.size()>0);
+      Iterator<PossibleWord> it = firstMove.iterator();
+      while(it.hasNext()) {
+        System.out.println(it.next());
       }
     }
-    System.out.println(" Neighbors of second Try");
-    for (int i = 0; i < 4; i++) {
-      if (result2[i] != null && result2[i].hasTile()) {
-        System.out.print(result2[i].getTile().getLetter() + " " + result2[i].getTile().getX());
-      }
-    }
-    Matchfield[] emptyList = new Matchfield[4];
-    EasyAI firstAI = new EasyAI("computer1", "#000000", Playerstatus.WAIT,testBoard);
-    ArrayList<WordPossibility> list = firstAI.easyBrain.getWordPossibilities();
-    testBoard.printScrabbleBoard();
 
-    Tile a = new Tile('A',3);
-    Tile p = new Tile('P',5);
-    Tile p2 = new Tile('P',5);
-    Tile l = new Tile('L',4);
-    Tile e = new Tile('E',3);
-    Tile[] testHand = {a,p,p2,l,e};
-    System.out.println(WordCheckDB.checkWord("apple"));
-    TreeSet<PossibleWord> wordsTest = firstAI.easyBrain.getPlayableWords(testHand,list);
-    System.out.println("Moegliche Worte" + wordsTest.size());
-    for(int i = 0;i< wordsTest.size();i++) {
-      System.out.println(wordsTest.first());
+    TreeSet<PossibleWord> firstMove = easyAI.easyBrain.getPlayableWords(easyAI.tilesOnHand);
+    Assert.assertTrue(firstMove.size()>0);
+    Iterator<PossibleWord> it = firstMove.iterator();
+    while(it.hasNext()) {
+      System.out.println(it.next());
     }
   }
 }

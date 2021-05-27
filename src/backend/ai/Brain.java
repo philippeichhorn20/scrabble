@@ -5,6 +5,7 @@ import backend.basic.Matchfield.Premiumstatus;
 import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
+import backend.basic.Timer;
 import backend.basic.WordCheckDB;
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,64 +43,99 @@ public class Brain {
 
   /*
   Method should return all possible Words that could be played
-  @TODO
    */
-  public TreeSet<PossibleWord> getPlayableWords(Tile[] tilesOnHand,
-      ArrayList<WordPossibility> wordPossibilities) {
+  public TreeSet<PossibleWord> getPlayableWords(Tile[] tilesOnHand) {
+    ArrayList<WordPossibility> wordPossibilities = getWordPossibilities();
     TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
+    if(wordPossibilities.size()==0) {
+      playableWords = getPlayableWordsFirstMove(tilesOnHand);
+    }
+    Timer timer = new Timer();
+    //for each possible Slot to append tiles to find suitable words
     for (int i = 0; i < wordPossibilities.size(); i++) {
       WordPossibility wordPossibility = wordPossibilities.get(i);
-      int xPosBaseLetter = wordPossibility.getxPos();
-      int yPosBaseLetter = wordPossibility.getyPos();
-      Matchfield[] neighbors = getNeighbors(scrabbleBoard, xPosBaseLetter, yPosBaseLetter);
-      TreeSet<String> allWords = findCorrectWords(wordPossibility.getLetter(), tilesOnHand);
+      TreeSet<String> allWords = findCorrectWords(wordPossibility, tilesOnHand);
       Iterator<String> it = allWords.iterator();
-      int verticalSpace = wordPossibility.getAboveSpace() + wordPossibility.getBelowSpace() - 2;
-      int horizontalSpace = wordPossibility.getLeftSpace() + wordPossibility.getRightSpace() - 2;
 
       while (it.hasNext()) {
         String currentWord = it.next();
-        int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter());
-        int verticalPoints = 0;
-        int horizontalPoints = 0;
-        //vertical
-        if (currentWord.length() <= verticalSpace) {
-          int aboveSpaceNeeded = positionBaseLetter + 1;
-          int belowSpaceNeeded = currentWord.length() - positionBaseLetter;
-          if (aboveSpaceNeeded <= wordPossibility.getAboveSpace()
-              && belowSpaceNeeded <= wordPossibility
-              .getBelowSpace()) {
-            ArrayList<Tile> calculatePoints = new ArrayList<Tile>();
-            for (int j = 0; j < currentWord.length(); j++) {
-              Tile newTile = new Tile(currentWord.charAt(j),
-                  getPointsOfLetter(currentWord.charAt(j), tilesOnHand, wordPossibility),
-                  Tilestatus.ONPLAYERRACK);
-              newTile.setXY(xPosBaseLetter, yPosBaseLetter - positionBaseLetter + j);
-              calculatePoints.add(newTile);
-            }
-            verticalPoints = this.scrabbleBoard.getPointsOfWord(calculatePoints);
-            playableWords.add(new PossibleWord(currentWord, verticalPoints, calculatePoints));
-          }
+        playableWords.addAll(checkIfSpaceSufficient(currentWord,wordPossibility,tilesOnHand));
+        if(timer.getTimerOverall()>20000) {
+          return playableWords;
         }
-        //horizontal
-        if (currentWord.length() <= horizontalSpace) {
-          int leftSpaceNeeded = positionBaseLetter + 1;
-          int rightSpaceNeeded = currentWord.length() - positionBaseLetter + 1;
-          if (leftSpaceNeeded <= wordPossibility.getLeftSpace()
-              && rightSpaceNeeded <= wordPossibility
-              .getRightSpace()) {
-            ArrayList<Tile> calculatePoints = new ArrayList<Tile>();
-            for (int j = 0; j < currentWord.length(); j++) {
-              Tile newTile = new Tile(currentWord.charAt(j),
-                  getPointsOfLetter(currentWord.charAt(j), tilesOnHand, wordPossibility),
-                  Tilestatus.ONPLAYERRACK);
-              newTile.setXY(xPosBaseLetter - positionBaseLetter + j, yPosBaseLetter);
-              calculatePoints.add(newTile);
-            }
-            horizontalPoints = this.scrabbleBoard.getPointsOfWord(calculatePoints);
-            playableWords.add(new PossibleWord(currentWord, horizontalPoints, calculatePoints));
-          }
+      }
+    }
+    return playableWords;
+  }
+
+  public TreeSet<PossibleWord> checkIfSpaceSufficient(String currentWord,WordPossibility wordPossibility,Tile[] tilesOnHand) {
+    TreeSet<PossibleWord> list = new TreeSet<PossibleWord>();
+    int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter());
+    int verticalPoints = 0;
+    int horizontalPoints = 0;
+    int xPosBaseLetter = wordPossibility.getxPos();
+    int yPosBaseLetter = wordPossibility.getyPos();
+    int verticalSpace = wordPossibility.getAboveSpace() + wordPossibility.getBelowSpace() - 2;
+    int horizontalSpace = wordPossibility.getLeftSpace() + wordPossibility.getRightSpace() - 2;
+    //vertical
+    if (currentWord.length() <= verticalSpace) {
+      int aboveSpaceNeeded = positionBaseLetter + 1;
+      int belowSpaceNeeded = currentWord.length() - positionBaseLetter;
+      if (aboveSpaceNeeded <= wordPossibility.getAboveSpace()
+          && belowSpaceNeeded <= wordPossibility
+          .getBelowSpace()) {
+        ArrayList<Tile> calculatePoints = new ArrayList<Tile>();
+        for (int j = 0; j < currentWord.length(); j++) {
+          Tile newTile = new Tile(currentWord.charAt(j),
+              getPointsOfLetter(currentWord.charAt(j), tilesOnHand, wordPossibility),
+              Tilestatus.ONPLAYERRACK);
+          newTile.setXY(xPosBaseLetter, yPosBaseLetter - positionBaseLetter + j);
+          calculatePoints.add(newTile);
         }
+        verticalPoints = this.scrabbleBoard.getPointsOfWord(calculatePoints);
+        list.add(new PossibleWord(currentWord, verticalPoints, calculatePoints));
+      }
+    }
+    //horizontal
+    if (currentWord.length() <= horizontalSpace) {
+      int leftSpaceNeeded = positionBaseLetter + 1;
+      int rightSpaceNeeded = currentWord.length() - positionBaseLetter + 1;
+      if (leftSpaceNeeded <= wordPossibility.getLeftSpace()
+          && rightSpaceNeeded <= wordPossibility
+          .getRightSpace()) {
+        ArrayList<Tile> calculatePoints = new ArrayList<Tile>();
+        for (int j = 0; j < currentWord.length(); j++) {
+          Tile newTile = new Tile(currentWord.charAt(j),
+              getPointsOfLetter(currentWord.charAt(j), tilesOnHand, wordPossibility),
+              Tilestatus.ONPLAYERRACK);
+          newTile.setXY(xPosBaseLetter - positionBaseLetter + j, yPosBaseLetter);
+          calculatePoints.add(newTile);
+        }
+        horizontalPoints = this.scrabbleBoard.getPointsOfWord(calculatePoints);
+        list.add(new PossibleWord(currentWord, horizontalPoints, calculatePoints));
+      }
+    }
+    return list;
+  }
+
+  public TreeSet<PossibleWord> getPlayableWordsFirstMove(Tile[] tilesOnHand) {
+    TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
+    TreeSet<String> allWords = new TreeSet<String>();
+    for(int i = 0;i< tilesOnHand.length;i++) {
+      Tile[] without = new Tile[6];
+      int skip = 0;
+      for(int j = 0;j< without.length;j++) {
+        if(skip == i) {
+          skip++;
+        }
+        without[j] = tilesOnHand[skip++];
+      }
+      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i].getLetter(),7,7,tilesOnHand[i].getValue(),this.scrabbleBoard);
+      allWords = findCorrectWords(wordPossibility,without);
+      Iterator<String> it = allWords.iterator();
+      while(it.hasNext()) {
+        String currentWord = it.next();
+        playableWords.addAll(checkIfSpaceSufficient(currentWord,wordPossibility,without));
       }
     }
     return playableWords;
@@ -127,10 +163,10 @@ public class Brain {
 
   /*
   Tries creating words by mixing letter with wordlength amount of tiles from tilesOnHand
-  @TODO
    */
-  TreeSet<String> findCorrectWords(char givenChar, Tile[] tilesOnHand) {
+  TreeSet<String> findCorrectWords(WordPossibility wordPossibility, Tile[] tilesOnHand) {
     TreeSet<String> words = new TreeSet<String>();
+    char givenChar = wordPossibility.getLetter();
     String lettersOnHand = "";
     //get letters from tiles on hand
     for (int i = 0; i < tilesOnHand.length; i++) {
@@ -218,20 +254,22 @@ public class Brain {
       }
     }
     //with 7 tiles
-    for (int i = 0; i < lettersOnHand.length(); i++) {
-      for (int j = 0; j < lettersOnHand.length(); j++) {
-        for (int k = 0; k < lettersOnHand.length(); k++) {
-          for (int l = 0; l < lettersOnHand.length(); l++) {
-            for (int m = 0; m < lettersOnHand.length(); m++) {
-              for (int n = 0; n < lettersOnHand.length(); n++) {
-                for (int o = 0; o < lettersOnHand.length(); o++) {
-                  if (i < j && j < k && k < l && l < m && m < n) {
-                    String permute =
-                        "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j)
-                            + lettersOnHand
-                            .charAt(k) + lettersOnHand.charAt(l) + lettersOnHand.charAt(m)
-                            + lettersOnHand.charAt(n);
-                    words.addAll(validPermutations(permute));
+    if(tilesOnHand.length>6) {
+      for (int i = 0; i < lettersOnHand.length(); i++) {
+        for (int j = 0; j < lettersOnHand.length(); j++) {
+          for (int k = 0; k < lettersOnHand.length(); k++) {
+            for (int l = 0; l < lettersOnHand.length(); l++) {
+              for (int m = 0; m < lettersOnHand.length(); m++) {
+                for (int n = 0; n < lettersOnHand.length(); n++) {
+                  for (int o = 0; o < lettersOnHand.length(); o++) {
+                    if (i < j && j < k && k < l && l < m && m < n) {
+                      String permute =
+                          "" + givenChar + lettersOnHand.charAt(i) + lettersOnHand.charAt(j)
+                              + lettersOnHand
+                              .charAt(k) + lettersOnHand.charAt(l) + lettersOnHand.charAt(m)
+                              + lettersOnHand.charAt(n);
+                      words.addAll(validPermutations(permute));
+                    }
                   }
                 }
               }
@@ -271,7 +309,6 @@ public class Brain {
     counter++;
 
     while (i < s.length()) {
-      counter++;
       if (p[i] < i) {
         // if `i` is odd then `j = p[i]`; otherwise, `j = 0`
         j = (i % 2) * p[i];
@@ -280,6 +317,7 @@ public class Brain {
         swap(chars, i, j);
 
         // print the current permutation
+        counter++;
         if (this.checkWord(String.valueOf(chars))) {
           valid.add(String.valueOf(chars));
         }
@@ -305,8 +343,8 @@ public class Brain {
    */
   public ArrayList<WordPossibility> getWordPossibilities() {
     ArrayList<WordPossibility> wordPossibilities = new ArrayList<WordPossibility>();
-    for (int x = 0; x < 15; x++) {
-      for (int y = 0; y < 15; y++) {
+    for (int x = 0; x < scrabbleBoard.getScrabbleBoard().length; x++) {
+      for (int y = 0; y < scrabbleBoard.getScrabbleBoard()[x].length; y++) {
         if (scrabbleBoard.getScrabbleBoard()[x][y].hasTile()) {
           char letter = scrabbleBoard.getScrabbleBoard()[x][y].getTile().getLetter();
           int value = scrabbleBoard.getScrabbleBoard()[x][y].getTile().getValue();
