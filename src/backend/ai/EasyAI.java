@@ -18,7 +18,7 @@ public class EasyAI extends Player {
     super(name, color, status);
     this.easyBrain = new Brain(board);
   }
-  
+  /*
   public void play() throws Exception {
 	  var moves = easyBrain.getPlayableWords(getRack(), easyBrain.getWordPossibilities());
 	  // Introduce randomness
@@ -43,4 +43,6 @@ public class EasyAI extends Player {
 	  
 	  
   }
+
+   */
 }

@@ -142,7 +142,6 @@ public class ScrabbleBoard {
       tile = scrabbleBoard[tile.getX()][tile.getY() + 1].getTile();
       word.add(tile);
     }
-    System.out.println(word.size()+" is the length vertical");
     return word;
 
   }
@@ -153,9 +152,8 @@ public class ScrabbleBoard {
     while (tile.getX() < 15 && tile.getY() < 15 && scrabbleBoard[tile.getX() + 1][tile.getY()]
         .hasTile()) {
       tile = scrabbleBoard[tile.getX() + 1][tile.getY()].getTile();
-      word.add(scrabbleBoard[tile.getX() + 1][tile.getY()].getTile());
+      word.add(tile);
     }
-    System.out.println(word.size()+" is the length horizontal");
     return word;
 
 
@@ -166,13 +164,11 @@ public class ScrabbleBoard {
   checks all the current words and returns the word+descriptipn of the word
    */
   public PlayFeedbackMessage wordCheck(String from) {
-    System.out.println(editedWords.size()+ " words were edited");
     boolean inputValid = true;
     String result = "";
-    String[] words = getEditedWordsAsString(false);
+    String[] words = getEditedWordsAsString(true);
     for (int i = 0; i < words.length; i++) {
       String resultString = WordCheckDB.findWord(words[i]);
-      System.out.println(resultString+ " was the word check answer");
       if(resultString == ""){
         result += words[i] + " is invalid\n";
         inputValid = false;
@@ -180,7 +176,6 @@ public class ScrabbleBoard {
         result += resultString +"\n";
       }
     }
-    System.out.println(result);
     return new PlayFeedbackMessage(from, result ,inputValid);
   }
 
@@ -197,22 +192,17 @@ public class ScrabbleBoard {
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
-    scrabbleBoard[x-1][y-1].setTile(newTile);
+    this.scrabbleBoard[x-1][y-1].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
-    tilesOnScrabbleBoard.add(newTile);
+    this.tilesOnScrabbleBoard.add(newTile);
   }
 
   /*
   this function removes the Tile from the Board. It is only possible to remove it,
   if it was placed in the current turn. It removes true if that is the case and false if it was not
    */
-  public boolean removeTile(final backend.basic.Tile tile) {
-    if (newTilesOfCurrentMove.contains(tile)) {
-      newTilesOfCurrentMove.remove(tile);
-      return true;
-    } else {
-      return false;
-    }
+  public void removeTile(final backend.basic.Tile tile) {
+      this.scrabbleBoard[tile.getX()][tile.getY()].setTile(null);
   }
 
   public boolean isInEditedTiles(Tile tile) {
@@ -232,7 +222,6 @@ public class ScrabbleBoard {
 
       }
     }
-    System.out.println();
     return false;
   }
 
@@ -349,11 +338,12 @@ public class ScrabbleBoard {
 
   public void dropChangedTiles(){
     this.editedWords.clear();
-    Iterator iterator = newTilesOfCurrentMove.iterator();
+    Iterator<Tile> iterator = newTilesOfCurrentMove.iterator();
     while(iterator.hasNext()){
-      this.removeTile((Tile) iterator.next());
+      Tile tile = iterator.next();
+      this.removeTile(tile);
     }
-
+    newTilesOfCurrentMove.clear();
   }
 
   public String[] getEditedWordsAsString(boolean printIt) {

@@ -171,7 +171,7 @@ public class AIProtocol extends Thread{
                   match.nextPlayer();
                   break;
                 case TIMER_STARTED:
-                  match.getPlayer().setTimerPersonalTimerToZero();
+                  match.setTimerPersonalTimerToZero();
                   break;
                 case ONE_MINUTE_LEFT:
                   match.oneMinuteAlert();
@@ -184,7 +184,7 @@ public class AIProtocol extends Thread{
 
             case TIME_SYNC:
               // it nulls the timer
-              this.match.getPlayer().setTimerToZero();
+              this.match.setTimerToZero();
               break;
 
             default:

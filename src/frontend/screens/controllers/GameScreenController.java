@@ -152,7 +152,6 @@ public class GameScreenController extends Thread{
     drawTiles();
     //tileBagIcon.setVisible(true);
     //resetTilesButton.setVisible(true);
-    GameInformation.getInstance().getClientmatch().nextPlayer();
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
     new FadeIn(tileBagIcon).play();
   }

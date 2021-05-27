@@ -105,11 +105,11 @@ public class Tile implements Serializable {
   }
 
   public int getX() {
-    return this.x;
+    return this.x-1;
   }
 
   public int getY() {
-    return this.y;
+    return this.y-1;
   }
 
   public void setXY(int x, int y) {

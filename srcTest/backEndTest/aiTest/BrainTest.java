@@ -2,6 +2,7 @@ package backEndTest.aiTest;
 
 import backend.ai.Brain;
 import backend.ai.EasyAI;
+import backend.ai.PossibleWord;
 import backend.ai.WordPossibility;
 import backend.basic.Matchfield;
 import backend.basic.Player.Playerstatus;
@@ -10,7 +11,6 @@ import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 import backend.basic.WordCheckDB;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +55,7 @@ public class BrainTest {
     Tile e = new Tile('E',3);
     Tile[] testHand = {a,p,p2,l,e};
     System.out.println(WordCheckDB.checkWord("apple"));
-    TreeSet<String> wordsTest = firstAI.easyBrain.getPlayableWords(testHand,list);
+    TreeSet<PossibleWord> wordsTest = firstAI.easyBrain.getPlayableWords(testHand,list);
     System.out.println("Moegliche Worte" + wordsTest.size());
     for(int i = 0;i< wordsTest.size();i++) {
       System.out.println(wordsTest.first());
