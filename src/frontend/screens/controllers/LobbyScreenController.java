@@ -321,6 +321,7 @@ public class LobbyScreenController {
     isHost = false;
     openStartGameView(e);
     startGameButton.setVisible(false);
+    loadLibraryButton.setVisible(false);
   }
 
   // Method responsible for animations

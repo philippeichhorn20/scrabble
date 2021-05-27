@@ -9,28 +9,20 @@ import backend.network.messages.MessageType;
  * @version 1.0*/
 public class ShuffleTilesMessage extends Message {
 
-  Tile[] oldTiles;
-  Tile[] saveTiles;
+  Tile[] toShuffleTiles;
 
-  public ShuffleTilesMessage(String from, Tile[] oldTiles, Tile[] saveTiles) {
+
+  public ShuffleTilesMessage(String from, Tile[] toShuffleTiles) {
     super(MessageType.SHUFFLE_TILES, from);
-    this.oldTiles = oldTiles;
-    this.saveTiles = saveTiles;
+    this.toShuffleTiles = toShuffleTiles;
+
   }
 
-  public Tile[] getOldTiles() {
-    return oldTiles;
+  public Tile[] getToShuffleTiles() {
+    return toShuffleTiles;
   }
 
-  public void setOldTiles(Tile[] oldTiles) {
-    this.oldTiles = oldTiles;
-  }
-
-  public Tile[] getSaveTiles() {
-    return saveTiles;
-  }
-
-  public void setSaveTiles(Tile[] saveTiles) {
-    this.saveTiles = saveTiles;
+  public void setToShuffleTiles(Tile[] saveTiles) {
+    this.toShuffleTiles = saveTiles;
   }
 }

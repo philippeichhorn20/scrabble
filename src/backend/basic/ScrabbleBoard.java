@@ -402,7 +402,7 @@ public class ScrabbleBoard {
 
   public static boolean hasTileOnCenterMatchfield(Tile[] tiles){
     for(int x = 0; x < tiles.length; x++){
-      if(tiles[x].getY() == 7 && tiles[x].getY() == 7){
+      if(tiles[x].getY() == 8 && tiles[x].getY() == 8){
         return true;
       }
     }

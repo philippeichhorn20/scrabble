@@ -2,7 +2,6 @@ package backend.basic;
 
 import backend.basic.Tile.Tilestatus;
 import backend.network.client.ClientProtocol;
-import backend.network.messages.MessageType;
 import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
@@ -201,7 +200,7 @@ public class ClientMatch {
 
   public void shuffleTiles(Tile[] oldTiles, Tile[] saveTiles) throws IOException {
     waitingForShuffledTiles = true;
-    protocol.sendToServer(new ShuffleTilesMessage(from, oldTiles, saveTiles));
+    protocol.sendToServer(new ShuffleTilesMessage(from, oldTiles));
   }
 
   public void addPointsToPlayer(int points) {

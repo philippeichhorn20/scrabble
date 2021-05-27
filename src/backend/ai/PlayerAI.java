@@ -1,7 +1,6 @@
 package backend.ai;
 
 import backend.basic.Player;
-import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.network.client.AIProtocol;
 import backend.network.messages.Message;
@@ -73,7 +72,7 @@ public class PlayerAI {
   When AI wants to shuffle
    */
   public void requestNewTiles() throws IOException {
-    Message shuffle = new ShuffleTilesMessage(name,this.tilesOnHand,new Tile[0]);
+    Message shuffle = new ShuffleTilesMessage(name,this.tilesOnHand);
     aiProtocol.sendToServer(shuffle);
   }
 

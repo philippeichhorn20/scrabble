@@ -485,6 +485,14 @@ public class GameScreenController extends Thread {
                 nameScore4.setText(
                     (match.getPlayers()[3] != null) ? "" + match.getPlayers()[3].getScore() : "");
 
+                name1.setText(
+                    (match.getPlayers()[0] != null) ? "" + match.getPlayers()[0].getName() : "");
+                name2.setText(
+                    (match.getPlayers()[1] != null) ? "" + match.getPlayers()[1].getName() : "");
+                name3.setText(
+                    (match.getPlayers()[2] != null) ? "" + match.getPlayers()[2].getName() : "");
+                name4.setText(
+                    (match.getPlayers()[3] != null) ? "" + match.getPlayers()[3].getName() : "");
                 if (match.isInvalidMove()) {
                   System.out.println("removing tiles");
                   resetTiles();
@@ -538,11 +546,6 @@ public class GameScreenController extends Thread {
       //name2.setText(players[1].getName() + ":");
       //name3.setText(players[2].getName() + ":");
       //name4.setText(players[3].getName() + ":");
-      nameScore1.setText("0");
-      nameScore2.setText("0");
-      nameScore3.setText("0");
-      nameScore4.setText("0");
-
       setUpDone = true;
     }
   }
@@ -583,6 +586,9 @@ public class GameScreenController extends Thread {
     for (int i = 0; i < 7; i++) {
       gtiles[i].getRec().setFill(Color.web("#ffe5b4"));
     }
+
+
+
   }
 
   public static class AlertBox {

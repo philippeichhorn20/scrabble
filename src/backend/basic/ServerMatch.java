@@ -114,9 +114,12 @@ public class ServerMatch {
         for (int i = 0; i < tiles.length; i++) {
           this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
         }
-        if(isFirstMove && ScrabbleBoard.hasTileOnCenterMatchfield(tiles)){
+        System.out.println(isFirstMove+" : "+ ScrabbleBoard.hasTileOnCenterMatchfield(tiles));
+        if(isFirstMove && !ScrabbleBoard.hasTileOnCenterMatchfield(tiles)){
+          System.out.println("wrong first move detected");
           server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server", "Start the Game by placing a word over the center matchfield", false));
         }else{
+          System.out.println("everything alrighty");
           PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
           if (message.isSuccessfulMove()) {
             System.out.println("input was valid");
