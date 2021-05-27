@@ -2,6 +2,7 @@ package backend.network.client;
 
 import backend.ai.EasyAI;
 import backend.ai.HardAI;
+import backend.ai.PlayerAI;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.Player;
@@ -15,6 +16,7 @@ import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.time.TimeAlertMessage;
@@ -30,7 +32,7 @@ public class AIProtocol extends Thread {
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
-  private Player ai;
+  private PlayerAI ai;
 
   private boolean running = true;
   private Message lastMessage = new Message(MessageType.GAME_LOOSE, "");
@@ -66,6 +68,18 @@ public class AIProtocol extends Thread {
 
         if (message != null && lastMessage != null && !lastMessage.equals(message)) {
           switch (message.getMessageType()) {
+            case GAME_TURN:
+              ai.handleGameTurnMessage(((GameTurnMessage)message).getNowTurn());
+              break;
+
+            case GET_NEW_TILES:
+              ai.acceptNewTiles(((GetNewTilesMessage)message).getTiles());
+              break;
+
+            case PLACE_TILES:
+              ai.placeTiles(((PlaceTilesMessage)message).getTiles());
+              break;
+
             default:
               break;
           }
