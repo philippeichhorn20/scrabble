@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk-11.0.10/lib/jrt-fs.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-16.0.1">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/src.zip"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/AnimateFX-1.2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx-swt.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.base.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.media.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="src/lib/javafx-sdk-11.0.2/lib/javafx.web.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-12"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx-swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.base.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.graphics.jar" sourcepath="src/lib/javafx-sdk-15.0.1/lib/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.media.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/Downloads/scrabble14-master/scrabble14-master/src/lib/javafx-sdk-15.0.1/lib/javafx.web.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vickt/code/scrabble14/src/lib/sqlite-jdbc-3.32.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
