@@ -34,6 +34,7 @@ public class ServerMatch {
   private Server server;
   private ServerProtocol protocol;
   private Player[] players = new Player[4];
+  private boolean isFirstMove = true;
   /*
   @method
   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
@@ -113,25 +114,31 @@ public class ServerMatch {
         for (int i = 0; i < tiles.length; i++) {
           this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
         }
-        PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
-        if (message.isSuccessfulMove()) {
-          System.out.println("input was valid");
-          server.sendToAllBut(this.players[this.currentPlayer].name, message);
-          server.sendOnlyTo(this.players[this.currentPlayer].name,
-              new GetNewTilesMessage(this.players[this.currentPlayer].name,
-                  this.drawNewTiles(tiles.length)));
-          int points = scrabbleBoard.getPoints();
-          this.players[this.currentPlayer].addPoints(points);
-          System.out.println("points received"+ points);
-          server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
-          //TODO: send to all but
-          server.sendToAll(
-              new PlaceTilesMessage(this.players[this.currentPlayer].name, tiles));
-          nextPlayer();
-      }else{
-          System.out.println("input was invalid");
-          this.scrabbleBoard.dropChangedTiles();
+        if(isFirstMove && ScrabbleBoard.hasTileOnCenterMatchfield(tiles)){
+          server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server", "Start the Game by placing a word over the center matchfield", false));
+        }else{
+          PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
+          if (message.isSuccessfulMove()) {
+            System.out.println("input was valid");
+            server.sendToAll(message);
+            server.sendOnlyTo(this.players[this.currentPlayer].name,
+                new GetNewTilesMessage(this.players[this.currentPlayer].name,
+                    this.drawNewTiles(tiles.length)));
+            int points = scrabbleBoard.getPoints();
+            this.players[this.currentPlayer].addPoints(points);
+            System.out.println("points received"+ points);
+            server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
+            //TODO: send to all but
+            server.sendToAll(
+                new PlaceTilesMessage(this.players[this.currentPlayer].name, tiles));
+            nextPlayer();
+          }else{
+            server.sendOnlyTo(this.players[this.currentPlayer].name, message);
+            System.out.println("input was invalid");
+            this.scrabbleBoard.dropChangedTiles();
+          }
         }
+
 
       }else{
         System.out.println("no tiles were found");
@@ -224,6 +231,7 @@ public class ServerMatch {
    @method runs constantly and manages the timer of the player of the current turn
     */
   public void nextPlayer() {
+    isFirstMove = false;
     int notActivePlayers = 0;
     currentPlayer = (currentPlayer + 1) % 4;
     boolean foundNextPlayer = false;

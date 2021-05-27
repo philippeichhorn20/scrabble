@@ -374,9 +374,9 @@
                         </BorderPane>
                        <BorderPane>
                          <center>
-                           <Button fx:id="loadLibraryButton" mnemonicParsing="false" onAction="#startGame" style="-fx-background-color: #11cb30;" text="Load New Dictionary" textFill="WHITE">
+                           <Button fx:id="loadLibraryButton" mnemonicParsing="false" onAction="#loadLibrary" style="-fx-background-color: #A0522D;" text="Load New Dictionary" textFill="WHITE">
                              <font>
-                               <Font name="Consolas Bold" size="10.0" />
+                               <Font name="Consolas Bold" size="15.0" />
                              </font>
                            </Button>
                          </center>

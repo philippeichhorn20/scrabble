@@ -400,29 +400,13 @@ public class ScrabbleBoard {
     return tiles;
   }
 
-  public boolean allTilesAreConjoint(){
-    for(int x = 0; x < scrabbleBoard.length; x++){
-      for(int y = 0; y < scrabbleBoard.length; y++){
-        if(scrabbleBoard[x][y].hasTile()){
-          if(!tileHasNeighbour(scrabbleBoard[x][y].getTile())){
-            return false;
-          }
-        }
+  public static boolean hasTileOnCenterMatchfield(Tile[] tiles){
+    for(int x = 0; x < tiles.length; x++){
+      if(tiles[x].getY() == 7 && tiles[x].getY() == 7){
+        return true;
       }
     }
-    return true;
-  }
-
-  public boolean tileHasNeighbour(Tile tile){
-    boolean b = false;
-    try {
-      b = scrabbleBoard[tile.getX()][tile.getY()].hasTile()
-          || scrabbleBoard[tile.getX()][tile.getY()].hasTile()
-          || scrabbleBoard[tile.getX()][tile.getY()].hasTile()
-          || scrabbleBoard[tile.getX()][tile.getY()].hasTile();
-    }catch(ArrayIndexOutOfBoundsException aiobe){
-    }
-    return b;
+    return false;
   }
 
 }

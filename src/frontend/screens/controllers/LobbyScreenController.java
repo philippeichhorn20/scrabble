@@ -15,6 +15,7 @@ import backend.network.server.ServerSettings;
 import frontend.Main;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,9 +59,6 @@ public class LobbyScreenController {
     Button trigger = (Button) e.getSource();
     String scene = "screens/";
     switch (trigger.getId()) {
-      case "loadLibraryButton":
-        loadLibrary(e);
-        break;
       case "startGameButton":
         startLobby(e);
         break;
@@ -208,14 +206,26 @@ public class LobbyScreenController {
   }
 
   public void loadLibrary(ActionEvent e) {
-    loadLibraryButton.setVisible(false);
-  //  startGameButton.setVisible(false);
+    startGameButton.setVisible(false);
+    loadLibraryButton.setDisable(true);
+    loadLibraryButton.setText("Loading File");
     FileChooser fileChooser = new FileChooser();
     File selectedFile = fileChooser.showOpenDialog(Main.getStg());
-    WordCheckDB.loadNewLibrary(selectedFile.getPath());
-   // startGameButton.setVisible(true);
-    loadLibraryButton.setVisible(true);
-//load library
+    try{
+      System.out.println(Files.probeContentType(selectedFile.toPath()));
+      if(selectedFile != null && Files.probeContentType(selectedFile.toPath()).equals("text/plain")){
+        WordCheckDB.loadNewLibrary(selectedFile.getPath());
+        loadLibraryButton.setText("Sucecss");
+      }else{
+        GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
+      }
+    }catch(IOException ioe){
+      GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
+
+    }
+
+    startGameButton.setVisible(true);
+    loadLibraryButton.setDisable(false);
   }
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
