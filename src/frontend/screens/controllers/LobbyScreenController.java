@@ -1,8 +1,10 @@
 package frontend.screens.controllers;
 
+import animatefx.animation.Flash;
 import animatefx.animation.Pulse;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
+import backend.basic.Lobby;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
@@ -39,6 +41,7 @@ public class LobbyScreenController {
   @FXML private Text player2Name;
   @FXML private Text player3Name;
   @FXML private Text player4Name;
+  @FXML private ImageView player1Icon;
   @FXML private ImageView player2Icon;
   @FXML private ImageView player3Icon;
   @FXML private ImageView player4Icon;
@@ -97,6 +100,9 @@ public class LobbyScreenController {
     Player host = new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT);
     player1Name.setText(host.getName());
 
+
+    Main.lobby = new Lobby(host);
+
     Server server = new Server();
 
     Runnable r =
@@ -134,31 +140,41 @@ public class LobbyScreenController {
 
                           Player[] players = GameInformation.getInstance().getPlayers();
 
-                          if (players[0] != null) {
+                          if (players[0] != null && !player1Name.getText().toLowerCase().equals(players[0].getName())) {
                             player1Name.setText(
                                 players[0].getName().substring(0, 1).toUpperCase()
                                     + players[0].getName().substring(1).toLowerCase());
+                            new Flash(player1Name).play();
+                            new Flash(player1Icon).play();
                           }
-                          if (players[1] != null) {
+                          if (players[1] != null && !player2Name.getText().toLowerCase().equals(players[1].getName())) {
                             player2Name.setText(
                                 players[1].getName().substring(0, 1).toUpperCase()
                                     + players[1].getName().substring(1).toLowerCase());
+                            new Flash(player4Name).play();
                             player2Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
+                            new Flash(player2Icon).play();
                           }
-                          if (players[2] != null) {
+                          if (players[2] != null && !player3Name.getText().toLowerCase().equals(players[2].getName())) {
                             player3Name.setText(
                                 players[2].getName().substring(0, 1).toUpperCase()
                                     + players[2].getName().substring(1).toLowerCase());
+                            new Flash(player4Name).play();
                             player3Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
+                            new Flash(player3Icon).play();
+
                           }
-                          if (players[3] != null) {
+                          if (players[3] != null && !player4Name.getText().toLowerCase().equals(players[3].getName())) {
                             player4Name.setText(
                                 players[3].getName().substring(0, 1).toUpperCase()
                                     + players[3].getName().substring(1).toLowerCase());
+                            new Flash(player4Name).play();
                             player4Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
+                            new Flash(player4Icon).play();
+
                           }
                         }
                       });
@@ -168,8 +184,8 @@ public class LobbyScreenController {
     lob.start();
     server.setServerMatch(new ServerMatch(server, GameInformation.getInstance().getPlayers()));
     GameInformation.getInstance().setServermatch(server.getServerMatch());
-
-    hostIP.setText(ServerSettings.getLocalHostIp4Address());
+    Main.lobby.setServer(server);
+    hostIP.setText(Main.lobby.getIp());
 
     ClientProtocol clientProtocol =
         new ClientProtocol(
@@ -191,6 +207,7 @@ public class LobbyScreenController {
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
     System.out.println("Start match triggered");
+    Main.lobby.newMatch();
   }
 
   // Method connects joining player to lobby or server of hosting player.
@@ -228,31 +245,41 @@ public class LobbyScreenController {
 
                             Player[] players = GameInformation.getInstance().getPlayers();
 
-                            if (players[0] != null) {
+                            if (players[0] != null && !player1Name.getText().toLowerCase().equals(players[0].getName())) {
                               player1Name.setText(
                                   players[0].getName().substring(0, 1).toUpperCase()
                                       + players[0].getName().substring(1).toLowerCase());
+                              new Flash(player1Name).play();
+                              new Flash(player1Icon).play();
                             }
-                            if (players[1] != null) {
+                            if (players[1] != null && !player2Name.getText().toLowerCase().equals(players[1].getName())) {
                               player2Name.setText(
                                   players[1].getName().substring(0, 1).toUpperCase()
                                       + players[1].getName().substring(1).toLowerCase());
+                              new Flash(player4Name).play();
                               player2Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
+                              new Flash(player2Icon).play();
                             }
-                            if (players[2] != null) {
+                            if (players[2] != null && !player3Name.getText().toLowerCase().equals(players[2].getName())) {
                               player3Name.setText(
                                   players[2].getName().substring(0, 1).toUpperCase()
                                       + players[2].getName().substring(1).toLowerCase());
+                              new Flash(player4Name).play();
                               player3Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
+                              new Flash(player3Icon).play();
+
                             }
-                            if (players[3] != null) {
+                            if (players[3] != null && !player4Name.getText().toLowerCase().equals(players[3].getName())) {
                               player4Name.setText(
                                   players[3].getName().substring(0, 1).toUpperCase()
                                       + players[3].getName().substring(1).toLowerCase());
+                              new Flash(player4Name).play();
                               player4Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
+                              new Flash(player4Icon).play();
+
                             }
                           }
                         });

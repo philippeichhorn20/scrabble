@@ -153,6 +153,14 @@ public class ServerMatch {
     return timer;
   }
 
+  public void removePlayer(String player) {
+    for (int x = 0; x < this.players.length; x++) {
+      if (this.players[x].name.equals(player)) {
+        this.players[x] = null;
+        break;
+      }
+    }
+  }
 
 
   /*
