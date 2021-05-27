@@ -29,7 +29,7 @@ public class WordCheckDB {
   */
   static String url = "jdbc:sqlite:src/resources/wordsList.db";
   static String urlTxt = "src/resources/ScrablleWordsFile.txt";
-
+  static String newUrl;
   /*
   looks up the given word in the database. If it exists it returns the decsription of the word,
   if not it returns null
@@ -100,7 +100,8 @@ public class WordCheckDB {
     }
   }
 
-  static void importTextToDB() {
+  public static void importTextToDB() {
+    newUrl = urlTxt;
     try {
       Class.forName("org.sqlite.JDBC");
     } catch (final ClassNotFoundException e) {
@@ -114,7 +115,7 @@ public class WordCheckDB {
       PreparedStatement ps = conn.prepareStatement("INSERT INTO words (word) values (?);");
       System.out.println("loading started..");
 
-      File file = new File(urlTxt);    //creates a new file instance
+      File file = new File(newUrl);    //creates a new file instance
       FileReader fr = new FileReader(file);
       BufferedReader reader = new BufferedReader(fr);
       String line;
@@ -152,6 +153,16 @@ public class WordCheckDB {
       fnfe.printStackTrace();
     } catch (IOException ioe) {
       ioe.printStackTrace();
+    }
+  }
+
+  public static void loadNewLibrary(String path){
+    newUrl = path;
+    try{
+      importTextToDB();
+    }catch (Exception e){
+      newUrl = urlTxt;
+      importTextToDB();
     }
   }
 
