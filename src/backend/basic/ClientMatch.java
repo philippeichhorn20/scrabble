@@ -128,7 +128,7 @@ public class ClientMatch {
 
   // Method is called, when player decides to not do anything this turn
   public void pass() throws IOException {
-    protocol.sendToServer(new PassMessage(MessageType.PASS,"server"));
+    protocol.sendToServer(new PassMessage("server"));
   }
 
   /*

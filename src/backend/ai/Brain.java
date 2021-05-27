@@ -31,14 +31,16 @@ public class Brain {
 
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
-    readDictionary("test");
+    readDictionary("src/resources/dictionary.txt");
   }
 
   /*
   Method to update board brain uses to play
    */
-  public void updateScrabbleboard(ScrabbleBoard board) {
-    this.scrabbleBoard = board;
+  public void updateScrabbleboard(Tile[] tiles) {
+    for(int i = 0;i<tiles.length;i++) {
+      scrabbleBoard.placeTile(tiles[i],tiles[i].getX(),tiles[i].getY());
+    }
   }
 
   /*
@@ -118,6 +120,9 @@ public class Brain {
     return list;
   }
 
+  /*
+  This method is executed, when the ScrabbleBoard is empty
+   */
   public TreeSet<PossibleWord> getPlayableWordsFirstMove(Tile[] tilesOnHand) {
     TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
     TreeSet<String> allWords = new TreeSet<String>();
@@ -141,6 +146,9 @@ public class Brain {
     return playableWords;
   }
 
+  /*
+  Method returns Points of a tile letter
+   */
   public int getPointsOfLetter(char c, Tile[] tiles, WordPossibility wordPossibility) {
     for (int i = 0; i < tiles.length; i++) {
       if (tiles[i].getLetter() == c) {
@@ -151,6 +159,9 @@ public class Brain {
 
   }
 
+  /*
+  Of the given word
+   */
   public static int getPositionBaseLetter(String word, char baseLetter) {
     int position = 0;
     for (int i = 0; i < word.length(); i++) {
@@ -372,7 +383,7 @@ public class Brain {
    */
   public void readDictionary(String textFile) {
     try {
-      File dic = new File("src/resources/dictionary.txt");
+      File dic = new File(textFile);
       FileReader fr = new FileReader(dic);
       BufferedReader br = new BufferedReader(fr);
       String z;

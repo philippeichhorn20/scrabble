@@ -88,7 +88,7 @@ public class BrainTest {
   }
   @Test
   void testPointsCalculation(){
-    TreeSet<PossibleWord> wordsTest = easyAI.easyBrain.getPlayableWords(easyAI.tilesOnHand);
+    TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.tilesOnHand);
     Iterator<PossibleWord> it = wordsTest.iterator();
     PossibleWord ginch = new PossibleWord("",0,new ArrayList<Tile>());
     int ginchPoints = 0;
@@ -103,12 +103,15 @@ public class BrainTest {
   @Test
   void testIfFirstMove(){
     ScrabbleBoard newBoard = new ScrabbleBoard();
-    easyAI.easyBrain.updateScrabbleboard(newBoard);
+    /*
+    @TODO
+    easyAI.getEasyBrain().updateScrabbleboard(newBoard);
+     */
     Tile[][] tileHands = new Tile[][]{testHand1,testHand2,testHand3};
     for(int i=0;i< tileHands.length;i++){
       System.out.println("Try with testHand number" + (i+1) + " ");
       easyAI.tilesOnHand = tileHands[i];
-      TreeSet<PossibleWord> firstMove = easyAI.easyBrain.getPlayableWords(easyAI.tilesOnHand);
+      TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.tilesOnHand);
       Assert.assertTrue(firstMove.size()>0);
       Iterator<PossibleWord> it = firstMove.iterator();
       while(it.hasNext()) {
@@ -116,7 +119,7 @@ public class BrainTest {
       }
     }
 
-    TreeSet<PossibleWord> firstMove = easyAI.easyBrain.getPlayableWords(easyAI.tilesOnHand);
+    TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.tilesOnHand);
     Assert.assertTrue(firstMove.size()>0);
     Iterator<PossibleWord> it = firstMove.iterator();
     while(it.hasNext()) {

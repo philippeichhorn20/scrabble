@@ -129,6 +129,12 @@ public class Player implements Serializable {
     }
   }
 
+  public void setTimerPersonalTimerToZero() {
+  }
+
+  public void setTimerToZero() {
+  }
+
   public enum Playerstatus {
     OUTOFGAME,
     WAIT,

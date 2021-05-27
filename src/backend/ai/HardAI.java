@@ -2,20 +2,29 @@ package backend.ai;
 
 import backend.basic.Player;
 import backend.basic.ScrabbleBoard;
+import backend.basic.Tile;
+import java.util.ArrayList;
+import java.util.TreeSet;
 
 /*
- * @author vivanova
+ * @author jawinter
+ * @description Class represents AI with hard difficulty
  */
-public class HardAI extends Player {
+public class HardAI extends PlayerAI {
 
-  Brain hardBrain;
 
-  public HardAI(String name, String color, Playerstatus status, ScrabbleBoard board) {
-    super(name, color, status);
-    this.hardBrain = new Brain(board);
+  public HardAI(String name) {
+    super(name);
 }
-  
-  //TODO Play only on my turn Method
+  //choose best Tiles to place
+  public void handleTurn(){
+
+  }
+
+  public Brain getHardBrain() {
+    return this.brain;
+  }
+//TODO Play only on my turn Method
   
   /*
   public void play() throws Exception {
