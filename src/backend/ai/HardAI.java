@@ -19,6 +19,8 @@ public class HardAI extends PlayerAI {
   //choose best Tiles to place
   public void handleTurn(){
 
+    //If placetiles or shuffleTiles dont forget to set them null
+
   }
 
   public Brain getHardBrain() {

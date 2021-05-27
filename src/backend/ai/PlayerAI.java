@@ -25,20 +25,41 @@ public class PlayerAI {
     this.name = name;
   }
 
+  /*
+  Initalize playerList when game starts
+   */
+  public void handleStartGame(Player[] players){
+    this.playerList = players;
+  }
+
+  /*
+  If it is the turn of this ai this will trigger handleTurn
+   */
   public void handleGameTurnMessage(int nowTurn){
     if(playerList[nowTurn].equals(name)) {
       handleTurn();
     }
   }
 
+  /*
+  Handles turn. Different ai handle this one differently.
+   */
   public void handleTurn(){
 
+    //If placetiles or shuffleTiles dont forget to set them null
   }
 
+  /*
+  Method is called and given new Tiles which were put on board. Brain needs ne tiles to know
+  how to play
+   */
   public void updateScrabbleboard(Tile[] tiles){
     brain.updateScrabbleboard(tiles);
   }
 
+  /*
+  When AI receives new tiles this will add it to tilesOnHand
+   */
   public void acceptNewTiles(Tile[] tiles){
     int count = 0;
     for(Tile t : this.tilesOnHand) {
@@ -48,16 +69,25 @@ public class PlayerAI {
     }
   }
 
+  /*
+  When AI wants to shuffle
+   */
   public void requestNewTiles() throws IOException {
     Message shuffle = new ShuffleTilesMessage(name,this.tilesOnHand,new Tile[0]);
     aiProtocol.sendToServer(shuffle);
   }
 
+  /*
+  When AI places word
+   */
   public void placeTiles(Tile[] tilesToPlay) throws IOException {
     Message place = new PlaceTilesMessage(name,tilesToPlay);
     aiProtocol.sendToServer(place);
   }
 
+  /*
+  When AI doesnt want is lazy
+   */
   public void pass() throws IOException {
     Message pass = new PassMessage(name);
     aiProtocol.sendToServer(pass);
