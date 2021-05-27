@@ -8,7 +8,6 @@ import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /*
   @peichhor
@@ -40,6 +39,7 @@ public class ClientMatch {
   private int yourTurnNum;
   private String gameEvents = "";
   private Tile[] newTilesToBeAdded;
+  private boolean invalidMove;
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
@@ -101,6 +101,7 @@ public class ClientMatch {
     Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
     for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
       tiles[x] = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
+     System.out.println("value at client" + tiles[x].getValue());
     }
     try{
       GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
@@ -172,6 +173,7 @@ public class ClientMatch {
     if (successfulMove) {
       scrabbleBoard.nextTurn();
     } else {
+      //scrabbleBoard.nextTurn();
       removeChangedTiles();
     }
   }
@@ -182,6 +184,7 @@ public class ClientMatch {
       tile.setStatus(Tilestatus.ONPLAYERRACK);
       tile.setXY(0, 0);
       this.player.putBackOnRack(tile);
+      this.invalidMove = true;
     }
   }
 
@@ -321,5 +324,13 @@ public class ClientMatch {
 
   public Timer getTimer() {
     return this.timer;
+  }
+
+  public void setInvalidMove(boolean invalidMove) {
+    this.invalidMove = invalidMove;
+  }
+
+  public boolean isInvalidMove() {
+    return invalidMove;
   }
 }

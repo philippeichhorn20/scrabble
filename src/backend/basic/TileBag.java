@@ -11,7 +11,7 @@ import backend.basic.Tile.Tilestatus;
 public class TileBag  implements Serializable {
   private Tile[] bag = new Tile[100]; // stores the tiles in the tilebag
 
-  /*A constructor which creates a tilebag and directly assign a standart letter set */
+  /*A constructor which creates a tilebag and directly assigns a standart letter set */
   public TileBag() {
     createStandartSet();
   }

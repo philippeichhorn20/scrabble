@@ -128,13 +128,14 @@ public class ClientProtocol extends Thread{
               GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
               GameInformation.getInstance().setPlayers(message1.getPlayers());
               for(Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
-                System.out.println(p);
+                System.out.print(p+" ");
               }
               break;
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
+              System.out.println("this guy got points: "+ message2.getPoints());
               this.match.addPointsToPlayer(message2.getPoints());
               break;
 

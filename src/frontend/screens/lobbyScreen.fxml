@@ -372,6 +372,18 @@
                               </MenuButton>
                            </center>
                         </BorderPane>
+                       <BorderPane>
+                         <center>
+                           <Button fx:id="loadLibraryButton" mnemonicParsing="false" onAction="#startGame" style="-fx-background-color: #11cb30;" text="Load New Dictionary" textFill="WHITE">
+                             <font>
+                               <Font name="Consolas Bold" size="10.0" />
+                             </font>
+                           </Button>
+                         </center>
+                         <VBox.margin>
+                           <Insets top="50.0" />
+                         </VBox.margin>
+                       </BorderPane>
                         <BorderPane>
                            <center>
                               <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#startGame" style="-fx-background-color: #22cb30;" text="Start Game" textFill="WHITE">

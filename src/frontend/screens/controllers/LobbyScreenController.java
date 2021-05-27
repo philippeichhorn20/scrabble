@@ -7,11 +7,13 @@ import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
+import backend.basic.WordCheckDB;
 import backend.network.client.ClientProtocol;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.server.Server;
 import backend.network.server.ServerSettings;
 import frontend.Main;
+import java.io.File;
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
 /*
 @author jawinter
@@ -36,6 +39,7 @@ public class LobbyScreenController {
   @FXML private TextField hostIP;
   @FXML private TextField adressIP;
   @FXML private Button startGameButton;
+  @FXML private Button loadLibraryButton;
   @FXML private Text player1Name;
   @FXML private Text player2Name;
   @FXML private Text player3Name;
@@ -54,6 +58,9 @@ public class LobbyScreenController {
     Button trigger = (Button) e.getSource();
     String scene = "screens/";
     switch (trigger.getId()) {
+      case "loadLibraryButton":
+        loadLibrary(e);
+        break;
       case "startGameButton":
         startLobby(e);
         break;
@@ -200,6 +207,16 @@ public class LobbyScreenController {
     gameInformation.setClientmatch(clientProtocol.getMatch());
   }
 
+  public void loadLibrary(ActionEvent e) {
+    loadLibraryButton.setVisible(false);
+  //  startGameButton.setVisible(false);
+    FileChooser fileChooser = new FileChooser();
+    File selectedFile = fileChooser.showOpenDialog(Main.getStg());
+    WordCheckDB.loadNewLibrary(selectedFile.getPath());
+   // startGameButton.setVisible(true);
+    loadLibraryButton.setVisible(true);
+//load library
+  }
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
     System.out.println("Start match triggered");

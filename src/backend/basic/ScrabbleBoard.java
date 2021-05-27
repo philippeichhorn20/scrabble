@@ -50,9 +50,9 @@ public class ScrabbleBoard {
   }
 
   public static Matchfield[][] setUpScrabbleBoard() {
-    Matchfield[][] scrabbleBoard = new Matchfield[15][15];
-    for (int x = 0; x < 15; x++) {
-      for (int y = 0; y < 15; y++) {
+    Matchfield[][] scrabbleBoard = new Matchfield[16][16];
+    for (int x = 0; x < 16; x++) {
+      for (int y = 0; y < 16; y++) {
         scrabbleBoard[x][y] = new Matchfield(x, y, Premiumstatus.NOPREMIUM);
         if (x == y || x == 14 - y) {
           if (((x == 0 || x == 14) && (y == 0 || y == 14))) {
@@ -192,7 +192,7 @@ public class ScrabbleBoard {
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
-    this.scrabbleBoard[x-1][y-1].setTile(newTile);
+    this.scrabbleBoard[x][y].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
     this.tilesOnScrabbleBoard.add(newTile);
   }
@@ -229,6 +229,7 @@ public class ScrabbleBoard {
   finishes its turn and submits all the words
    */
   public PlayFeedbackMessage submitTiles(String from) {
+    System.out.println(newTilesOfCurrentMove.size());
     for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
       if (getWordFromLeadingTileHorizontal(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))
           .size() > 1 && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
@@ -256,6 +257,7 @@ public class ScrabbleBoard {
       int wordMultiplikant = 1;
       for (int letterNum = 0; letterNum < word.size(); letterNum++) {
         Tile letter = word.get(letterNum);
+        System.out.println(letter.getValue());
         wordAsMatchfields.add(scrabbleBoard[letter.getX()][letter.getY()]);
       }
       for (int length = 0; length < wordAsMatchfields.size(); length++) {
@@ -284,6 +286,7 @@ public class ScrabbleBoard {
       pointsOfWord *= wordMultiplikant;
       points += pointsOfWord;
     }
+    System.out.println("worth: "+points);
     return points;
   }
 
@@ -322,6 +325,7 @@ public class ScrabbleBoard {
 
       }
       pointsOfWord += letterValue;
+
     }
     pointsOfWord *= wordMultiplikant;
     return pointsOfWord;
@@ -333,6 +337,8 @@ public class ScrabbleBoard {
   public void nextTurn() {
     editedWords.clear();
     newTilesOfCurrentMove.clear();
+    System.out.println("cleared "+ newTilesOfCurrentMove.size());
+
    // newTilesOfCurrentMove.clear();
   }
 
@@ -392,6 +398,31 @@ public class ScrabbleBoard {
       tiles[x] = this.newTilesOfCurrentMove.get(x);
     }
     return tiles;
+  }
+
+  public boolean allTilesAreConjoint(){
+    for(int x = 0; x < scrabbleBoard.length; x++){
+      for(int y = 0; y < scrabbleBoard.length; y++){
+        if(scrabbleBoard[x][y].hasTile()){
+          if(!tileHasNeighbour(scrabbleBoard[x][y].getTile())){
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  public boolean tileHasNeighbour(Tile tile){
+    boolean b = false;
+    try {
+      b = scrabbleBoard[tile.getX()][tile.getY()].hasTile()
+          || scrabbleBoard[tile.getX()][tile.getY()].hasTile()
+          || scrabbleBoard[tile.getX()][tile.getY()].hasTile()
+          || scrabbleBoard[tile.getX()][tile.getY()].hasTile();
+    }catch(ArrayIndexOutOfBoundsException aiobe){
+    }
+    return b;
   }
 
 }

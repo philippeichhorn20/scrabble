@@ -73,7 +73,43 @@ public class Tile implements Serializable {
   /*@return the value of the letter
    * */
   public int getValue() {
-    return this.value;
+    switch(Character.toLowerCase(this.letter)){
+      case 'e':
+      case 'a':
+      case 'i':
+      case 'o':
+      case 'n':
+      case 'r':
+      case 't':
+      case 'l':
+      case 's':
+      case 'u':
+        return 1;
+      case 'd':
+      case 'g':
+        return 2;
+      case 'b':
+        case 'c':
+      case 'm':
+      case 'p':
+        return 3;
+      case 'f':
+      case 'h':
+      case 'v':
+      case 'w':
+      case 'y':
+        return 4;
+      case 'k':
+return 5;
+      case 'j':
+      case 'x':
+return 8;
+      case 'q':
+      case 'z':
+return 10;
+      default:
+        return 0;
+    }
   }
 
   /*@param value set the value of a tile
@@ -105,12 +141,22 @@ public class Tile implements Serializable {
   }
 
   public int getX() {
+    return this.x;
+  }
+
+
+  public int getY() {
+    return this.y;
+  }
+
+  public int getYOnBoard() {
+    return this.y-1;
+  }
+
+  public int getXOnBoard() {
     return this.x-1;
   }
 
-  public int getY() {
-    return this.y-1;
-  }
 
   public void setXY(int x, int y) {
     this.x = x;

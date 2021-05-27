@@ -11,7 +11,6 @@ Message (used when player demands new tiles or placed tiles) provides player nee
 public class GetNewTilesMessage extends Message {
 
   private Tile[] tiles;
-
   /*
   @param newTiles will be filled with the tiles given to player
    */
