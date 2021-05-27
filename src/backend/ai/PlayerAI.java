@@ -1,6 +1,7 @@
 package backend.ai;
 
 import backend.basic.Player;
+import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.network.client.AIProtocol;
 import backend.network.messages.Message;
@@ -22,6 +23,7 @@ public class PlayerAI {
 
   public PlayerAI(String name){
     this.name = name;
+    this.brain = new Brain(new ScrabbleBoard());
   }
 
   public Tile[] getTiles(){
@@ -31,9 +33,17 @@ public class PlayerAI {
   public void setTiles(Tile[] tiles) {
     this.tilesOnHand = tiles;
   }
+
+  public Brain getBrain() {
+    return brain;
+  }
+
+  public void setBrainBoard(ScrabbleBoard board){
+    this.brain.setScrabbleboard(board);
+  }
   /*
-  Initalize playerList when game starts
-   */
+    Initalize playerList when game starts
+     */
   public void handleStartGame(Player[] players){
     this.playerList = players;
   }

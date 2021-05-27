@@ -1,10 +1,7 @@
 package backend.ai;
 
-import backend.basic.Player;
-import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
-import java.util.ArrayList;
-import java.util.TreeSet;
+import java.io.IOException;
 
 /*
  * @author jawinter
@@ -16,51 +13,35 @@ public class HardAI extends PlayerAI {
   public HardAI(String name) {
     super(name);
 }
-  //choose best Tiles to place
+  //choose best Tiles to place and if not found shuffles tiles
   public void handleTurn(){
-
+    PossibleWord bestWord = brain.getPlayableWords(this.tilesOnHand).first();
+   System.out.println(bestWord);
+   try {
+    if(bestWord!=null) {
+      Tile[] toPlace = bestWord.getTile().toArray(new Tile[0]);
+      removeUsedTilesFromHand(toPlace);
+      placeTiles(toPlace);
+    } else {
+      this.setTiles(new Tile[]{null,null,null,null,null,null,null});
+      requestNewTiles();
+    }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     //If placetiles or shuffleTiles dont forget to set them null
 
-  }
-
-  public Brain getHardBrain() {
-    return this.brain;
-  }
-//TODO Play only on my turn Method
-  
   /*
-  public void play() throws Exception {
-	  //TODO add a time before we skip turn
-
-	  // Possible moves to make
-	  TreeSet<PossibleWord> moves = hardBrain.getPlayableWords(getRack(), hardBrain.getWordPossibilities());
-	  int points = 0;
-	  PossibleWord pick = null;
-	  // Create an iterator to move thru the TreeSet
-	  Iterator it = moves.iterator();
-	  // We loop until the Tree set has a next member. 
-	  while(it.hasNext()) {
-		  // Save current word in Temporary Storage
-      PossibleWord temp = (PossibleWord) it.next();
-		  // If we haven't picked a word or if we find a word with more points
-		  if(pick == null || points < temp.getPoints()) {
-			  // We save it.
-			  pick = temp;
-		  }
-		  
-	  }
-	  // If our word has been picked we retrieve the tiles
-	  if(pick  != null ) {
-		  ArrayList<Tile> word = pick.getTile();
-		  // TODO send words to Server
-	  }
-	  else {
-		  throw new Exception("Word null Exception");
-	  }
-	  // add tiles 
-	  
-	  
-  }
-
+  Method removes tiles from hand after being placed on board. Tiles to remove are given in parameter
    */
+  public void removeUsedTilesFromHand(Tile[] tilesRemove){
+    for(Tile t : tilesRemove) {
+      for(Tile tileOnHand : this.tilesOnHand) {
+        if(t.getLetter()==tileOnHand.getLetter()) {
+          tileOnHand = null;
+        }
+      }
+    }
+  }
 }
