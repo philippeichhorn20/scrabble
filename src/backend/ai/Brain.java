@@ -43,6 +43,10 @@ public class Brain {
     }
   }
 
+  public void setScrabbleboard(ScrabbleBoard board){
+    this.scrabbleBoard = board;
+  }
+
   /*
   Method should return all possible Words that could be played
    */

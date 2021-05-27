@@ -24,6 +24,13 @@ public class PlayerAI {
     this.name = name;
   }
 
+  public Tile[] getTiles(){
+    return this.tilesOnHand;
+  }
+
+  public void setTiles(Tile[] tiles) {
+    this.tilesOnHand = tiles;
+  }
   /*
   Initalize playerList when game starts
    */

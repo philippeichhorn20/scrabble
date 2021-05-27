@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 public class BrainTest {
   ScrabbleBoard board = new ScrabbleBoard();
-  EasyAI easyAI = new EasyAI("AiPlayer", "#666666", Playerstatus.WAIT, board);
+  EasyAI easyAI = new EasyAI("AiPlayer");
   Tile[] testHand1 = new Tile[7];
   Tile[] testHand2 = new Tile[7];
   Tile[] testHand3 = new Tile[7];
@@ -84,11 +84,11 @@ public class BrainTest {
     testHand1 = new Tile[]{a,b,c,d,e,f,g};
     testHand2 = new Tile[]{i,m,k,a,e,c,s};
     testHand3 = new Tile[]{n,a,f,g,g,a,s};
-    easyAI.tilesOnHand = fff;
+    easyAI.setTiles(fff);
   }
   @Test
   void testPointsCalculation(){
-    TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.tilesOnHand);
+    TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
     Iterator<PossibleWord> it = wordsTest.iterator();
     PossibleWord ginch = new PossibleWord("",0,new ArrayList<Tile>());
     int ginchPoints = 0;
@@ -103,15 +103,12 @@ public class BrainTest {
   @Test
   void testIfFirstMove(){
     ScrabbleBoard newBoard = new ScrabbleBoard();
-    /*
-    @TODO
-    easyAI.getEasyBrain().updateScrabbleboard(newBoard);
-     */
+    easyAI.getEasyBrain().setScrabbleboard(newBoard);
     Tile[][] tileHands = new Tile[][]{testHand1,testHand2,testHand3};
     for(int i=0;i< tileHands.length;i++){
       System.out.println("Try with testHand number" + (i+1) + " ");
-      easyAI.tilesOnHand = tileHands[i];
-      TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.tilesOnHand);
+      easyAI.setTiles(tileHands[i]);
+      TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
       Assert.assertTrue(firstMove.size()>0);
       Iterator<PossibleWord> it = firstMove.iterator();
       while(it.hasNext()) {
@@ -119,7 +116,7 @@ public class BrainTest {
       }
     }
 
-    TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.tilesOnHand);
+    TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
     Assert.assertTrue(firstMove.size()>0);
     Iterator<PossibleWord> it = firstMove.iterator();
     while(it.hasNext()) {

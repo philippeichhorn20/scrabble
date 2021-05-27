@@ -10,20 +10,18 @@ import backend.basic.ScrabbleBoard;
 EasyAI uses Brain to find simple possible moves.
  */
 
-public class EasyAI extends Player {
+public class EasyAI extends PlayerAI {
 
   private Brain easyBrain;
   private Random r = new Random(System.currentTimeMillis());
-  public Tile[] tilesOnHand = new Tile[7];
-
-  public EasyAI(String name, String color, Playerstatus status, ScrabbleBoard board) {
-    super(name, color, status);
-    this.easyBrain = new Brain(board);
+  public EasyAI(String name) {
+    super(name);
   }
 
   public Brain getEasyBrain() {
     return easyBrain;
   }
+
   /*
   public void play() throws Exception {
 	  var moves = easyBrain.getPlayableWords(getRack());
