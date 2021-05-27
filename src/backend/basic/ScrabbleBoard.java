@@ -1,9 +1,10 @@
 package backend.basic;
 
-import backend.ai.WordPossibility;
 import backend.basic.Matchfield.Premiumstatus;
 import backend.basic.Tile.Tilestatus;
+import backend.network.messages.points.PlayFeedbackMessage;
 import java.util.ArrayList;
+import java.util.Iterator;
 /* @author peichhor
  * @version 1.0
  * @description this class is the representation of the physical scrabble board
@@ -129,7 +130,6 @@ public class ScrabbleBoard {
     while (tile.getX() > 0 && scrabbleBoard[tile.getX() - 1][tile.getY()].hasTile()) {
       tile = scrabbleBoard[tile.getX() - 1][tile.getY()].getTile();
     }
-
     return tile;
   }
 
@@ -142,6 +142,7 @@ public class ScrabbleBoard {
       tile = scrabbleBoard[tile.getX()][tile.getY() + 1].getTile();
       word.add(tile);
     }
+    System.out.println(word.size()+" is the length vertical");
     return word;
 
   }
@@ -154,7 +155,7 @@ public class ScrabbleBoard {
       tile = scrabbleBoard[tile.getX() + 1][tile.getY()].getTile();
       word.add(scrabbleBoard[tile.getX() + 1][tile.getY()].getTile());
     }
-
+    System.out.println(word.size()+" is the length horizontal");
     return word;
 
 
@@ -164,19 +165,23 @@ public class ScrabbleBoard {
   /*
   checks all the current words and returns the word+descriptipn of the word
    */
-  public String[][] wordCheck() {
-    String[][] result = new String[2][];
+  public PlayFeedbackMessage wordCheck(String from) {
+    System.out.println(editedWords.size()+ " words were edited");
+    boolean inputValid = true;
+    String result = "";
     String[] words = getEditedWordsAsString(false);
-    String[] explanations = new String[words.length];
     for (int i = 0; i < words.length; i++) {
-      explanations[i] = String.valueOf(WordCheckDB.findWord(words[i]));
-      if (explanations[i] != "") {
-        System.out.println(explanations[i]);
+      String resultString = WordCheckDB.findWord(words[i]);
+      System.out.println(resultString+ " was the word check answer");
+      if(resultString == ""){
+        result += words[i] + " is invalid\n";
+        inputValid = false;
+      }else{
+        result += resultString +"\n";
       }
     }
-    result[0] = words;
-    result[1] = explanations;
-    return result;
+    System.out.println(result);
+    return new PlayFeedbackMessage(from, result ,inputValid);
   }
 
   public boolean inputValudation(String[][] result) {
@@ -192,7 +197,7 @@ public class ScrabbleBoard {
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
     newTile.setXY(x, y);
-    scrabbleBoard[x][y].setTile(newTile);
+    scrabbleBoard[x-1][y-1].setTile(newTile);
     newTile.setStatus(Tilestatus.ONBOARD);
     tilesOnScrabbleBoard.add(newTile);
   }
@@ -234,7 +239,7 @@ public class ScrabbleBoard {
   /*
   finishes its turn and submits all the words
    */
-  public String[][] submitTiles() {
+  public PlayFeedbackMessage submitTiles(String from) {
     for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
       if (getWordFromLeadingTileHorizontal(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))
           .size() > 1 && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
@@ -247,7 +252,7 @@ public class ScrabbleBoard {
             getWordFromLeadingTileVertical(getLeadingTileVertical(newTilesOfCurrentMove.get(i))));
       }
     }
-    return wordCheck();
+    return wordCheck(from);
   }
 
   /*
@@ -338,7 +343,17 @@ public class ScrabbleBoard {
    */
   public void nextTurn() {
     editedWords.clear();
+    newTilesOfCurrentMove.clear();
    // newTilesOfCurrentMove.clear();
+  }
+
+  public void dropChangedTiles(){
+    this.editedWords.clear();
+    Iterator iterator = newTilesOfCurrentMove.iterator();
+    while(iterator.hasNext()){
+      this.removeTile((Tile) iterator.next());
+    }
+
   }
 
   public String[] getEditedWordsAsString(boolean printIt) {

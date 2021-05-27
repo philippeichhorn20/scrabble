@@ -87,7 +87,7 @@ public class ClientProtocol extends Thread{
               GameTurnMessage turnMessage = (GameTurnMessage) message;
 
               GameInformation.getInstance().getClientmatch().turnTaken(turnMessage.getNowTurn());
-              System.out.println("game turn message received");
+              System.out.println("game turn message received, new turn: "+ turnMessage.getNowTurn());
               break;
 
             case PLAY_FEEDBACK:
@@ -144,6 +144,7 @@ public class ClientProtocol extends Thread{
               // points to the player statistics
               GameStartMessage message3 = (GameStartMessage) message;
               this.match.getPlayer().updateRack(message3.getTiles());
+              this.match.getTimer().start();
               Main m = new Main();
               m.changeScene("screens/gameScreen.fxml");
               break;
@@ -172,7 +173,7 @@ public class ClientProtocol extends Thread{
                   match.nextPlayer();
                   break;
                 case TIMER_STARTED:
-                  match.getPlayer().setTimerPersonalTimerToZero();
+                  match.setTimerPersonalTimerToZero();
                   break;
                 case ONE_MINUTE_LEFT:
                   match.oneMinuteAlert();
@@ -185,7 +186,7 @@ public class ClientProtocol extends Thread{
 
             case TIME_SYNC:
               // it nulls the timer
-              this.match.getPlayer().setTimerToZero();
+              this.match.setTimerToZero();
               break;
 
             default:

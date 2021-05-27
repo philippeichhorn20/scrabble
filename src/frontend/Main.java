@@ -2,6 +2,7 @@ package frontend;
 
 import animatefx.animation.FadeIn;
 import backend.basic.ClientMatch;
+import backend.basic.GameInformation;
 import backend.basic.Lobby;
 import backend.basic.Profile;
 import java.io.IOException;
@@ -74,8 +75,8 @@ public class Main extends Application {
 
   @Override
   public void stop() {
-    if(lobby.getServer()!=null) {
-      lobby.getServer().stopServer();
+    if(GameInformation.getInstance().getServermatch().getServer()!=null) {
+      GameInformation.getInstance().getServermatch().getServer().stopServer();
     }
   }
 

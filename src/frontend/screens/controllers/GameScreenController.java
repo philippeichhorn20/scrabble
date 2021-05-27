@@ -10,7 +10,6 @@ import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.GraphicTile;
 import backend.basic.Player;
-import backend.basic.Player.Playerstatus;
 import backend.basic.ScrabbleBoard;
 import backend.basic.ServerMatch;
 import backend.basic.Tile;
@@ -81,8 +80,8 @@ public class GameScreenController extends Thread{
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
   @FXML private Label currPlayerText;
-  Player thisPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
   ClientMatch match = GameInformation.getInstance().getClientmatch();
+  Player thisPlayer = match.getPlayer();
   private GameInformation gameInformation = GameInformation.getInstance();
   private ServerMatch servMatch = gameInformation.getServermatch();
   private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
@@ -296,40 +295,43 @@ public class GameScreenController extends Thread{
   }
 
   public void highlightTile(MouseEvent e) {
-    Rectangle tile = (Rectangle) e.getSource();
-    if (e.isControlDown()) {
-      tile.setFill(Color.BLUE);
-      for (int i = 0; i < 7; i++) {
-        if (gtiles[i].getRec().getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
-          gtiles[i].setToDraw(true);
-        }
-      }
-    } else {
-      for (GraphicTile gt : gtiles) {
-        gt.highlight(false);
-        gt.setToDraw(false);
-      }
-      if (tile.getFill() == Color.RED) {
-        tile.setFill(Color.web("#ffe5b4"));
-      } else {
-        resetColor();
-        tile.setFill(Color.RED);
-
-        new Pulse(tile).play();
+    if(Main.profile.getName().equals(match.getCurrentPlayerName())){
+      Rectangle tile = (Rectangle) e.getSource();
+      if (e.isControlDown()) {
+        tile.setFill(Color.BLUE);
         for (int i = 0; i < 7; i++) {
           if (gtiles[i].getRec().getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
-            gtiles[i].highlight(true);
-            new Pulse(gtiles[i].getLetter()).play();
-            if (gtiles[i].getTile().isJoker()) {
-              AlertBox.display("Choose Joker", "Enter the letter the Joker should assume:");
-              gtiles[i].setLetter(jokerChar);
-              gtiles[i].getTile().setJoker(false);
-              gtiles[i].getLetter().setFill(Color.PURPLE);
+            gtiles[i].setToDraw(true);
+          }
+        }
+      } else {
+        for (GraphicTile gt : gtiles) {
+          gt.highlight(false);
+          gt.setToDraw(false);
+        }
+        if (tile.getFill() == Color.RED) {
+          tile.setFill(Color.web("#ffe5b4"));
+        } else {
+          resetColor();
+          tile.setFill(Color.RED);
+
+          new Pulse(tile).play();
+          for (int i = 0; i < 7; i++) {
+            if (gtiles[i].getRec().getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
+              gtiles[i].highlight(true);
+              new Pulse(gtiles[i].getLetter()).play();
+              if (gtiles[i].getTile().isJoker()) {
+                AlertBox.display("Choose Joker", "Enter the letter the Joker should assume:");
+                gtiles[i].setLetter(jokerChar);
+                gtiles[i].getTile().setJoker(false);
+                gtiles[i].getLetter().setFill(Color.PURPLE);
+              }
             }
           }
         }
       }
     }
+
   }
   private int keyIterator = 0;
   public void highlightTileKey(KeyEvent e){
@@ -396,19 +398,14 @@ public class GameScreenController extends Thread{
       Thread taskThread = new Thread(new Runnable() {
         @Override
         public void run() {
-          int progress = 100;
           while (!GameInformation.getInstance().getClientmatch().isOver()) { //for (int i = 0;i<100;i++){
             try{
               Thread.sleep(1000);
             }catch(InterruptedException ie){
               ie.printStackTrace();
             }
-            progress -= 1;
-            if (progress <= 0){
-              break;
-            }
-            final double reportedProgress = progress;
-            Platform.runLater(new Runnable() {
+
+            Platform.runLater(new Runnable(){
               @Override
               public void run() {
                 currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
@@ -417,15 +414,17 @@ public class GameScreenController extends Thread{
                   for(int x = 0; x < newTiles.length; x++){
                     placeTile(newTiles[x]);
                   }
-                  newTiles = null;
-
+                  match.dropNewTiles();
                 }
-                if(reportedProgress==1){
-                //  sendLostBox();
-                //  endTurnB();
+                if(!match.checkTimer() && Main.profile.getName().equals(match.getCurrentPlayerName())){
+                  endTurnB();
                 }
-
-                time.setText(String.valueOf(reportedProgress));
+                if(match.isOver()){
+                  sendLostBox();
+                  //or send win box
+                }
+                currPlayerText.setText(match.getCurrentPlayerName());
+                time.setText(String.valueOf(match.getTimer().getTimerCurrentPlayer()));
               }
             });
           }
@@ -471,7 +470,7 @@ public class GameScreenController extends Thread{
 
 
 
-        currPlayerText.setText(match.getCurrentPlayerName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
+        //currPlayerText.setText(match.getCurrentPlayerName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
         //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
         //name2.setText(players[1].getName() + ":");
         //name3.setText(players[2].getName() + ":");

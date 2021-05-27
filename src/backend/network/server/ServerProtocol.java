@@ -3,6 +3,7 @@ package backend.network.server;
 import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
+import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
@@ -12,7 +13,6 @@ import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
-import frontend.Main;
 import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -89,12 +89,12 @@ public class ServerProtocol extends Thread {
           out.reset();
           disconnect();
         } else {
-
+          GameInformation.getInstance().setServermatch(new ServerMatch(server, GameInformation.getInstance().getHost()));
           System.out.println("successful");
           this.clientName = from;
           server.addClient(from, this);
           Player clientPlayer = new Player(from, "#000000", Playerstatus.WAIT);
-          if (Main.lobby.addPlayer(clientPlayer)) {
+          if (GameInformation.getInstance().getServermatch().addPlayer(clientPlayer)) {
           } else {
             Message connectionRefused = new ConnectionRefusedMessage("server",
                 "Lobby is full!");
@@ -124,7 +124,7 @@ public class ServerProtocol extends Thread {
             case DISCONNECT:
               server.removeClient(message.getFrom());
               running = false;
-              Main.lobby.removePlayer(message.getFrom());
+              GameInformation.getInstance().getServermatch().removePlayer(message.getFrom());
               disconnect();
               break;
 

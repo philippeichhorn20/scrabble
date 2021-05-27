@@ -6,6 +6,7 @@ package backend.basic;
  * */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Tile implements Serializable {
 
@@ -129,6 +130,14 @@ public class Tile implements Serializable {
   }
   public String toString(){
     return "Tile " + this.letter + " of value " + this.value + " and status " + this.status;
+  }
+
+  public static Tile[] tileArrayToList(ArrayList<Tile> tiles) {
+    Tile[] tiles1 = new Tile[tiles.size()];
+    for (int x = 0; x < tiles1.length; x++) {
+      tiles1[x] = tiles.get(x);
+    }
+    return tiles1;
   }
 
   /*Enum to set a status for a tile*/

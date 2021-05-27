@@ -24,6 +24,7 @@ public class ClientMatch {
 
   private static final int round = 0;
   private Player[] players;
+  Timer timer = new Timer();
   private final Player player;
   private ClientProtocol protocol;
   private final String from;
@@ -48,6 +49,7 @@ public class ClientMatch {
     this.players = players;
     this.from = from;
     this.scrabbleBoard = new ScrabbleBoard();
+    //this.timer.start();
   }
 
   public ClientMatch(String from, Player player) {
@@ -57,6 +59,7 @@ public class ClientMatch {
     this.players = new Player[4];
     this.players[0] = player;
     this.scrabbleBoard = new ScrabbleBoard();
+    //this.timer.start();
   }
 
   /*
@@ -73,18 +76,12 @@ public class ClientMatch {
     return round;
   }
 
-  public static Tile[] tileArrayToList(ArrayList<Tile> tiles) {
-    Tile[] tiles1 = new Tile[tiles.size()];
-    for (int x = 0; x < tiles1.length; x++) {
-      tiles1[x] = tiles.get(x);
-    }
-    return tiles1;
-  }
+
 
   public void yourTurn() {
     yourTurnNum = currentPlayer;
     scrabbleBoard.nextTurn();
-    this.player.getTimer().nextPlayer();
+    this.getTimer().nextPlayer();
     //TODO send out info to player interface
     newGameEvent("It is now your turn");
   }
@@ -111,7 +108,6 @@ public class ClientMatch {
     }catch(IOException e){
       System.out.println("couldnt send your tiles to server");
     }
-
   }
 
   public void nextPlayer() {
@@ -122,10 +118,10 @@ public class ClientMatch {
       nextPlayer = 4 % (nextPlayer + 1);
     } while (notActivePlayers < 4 && players[nextPlayer] != null);
 
-    if (players[nextPlayer].checkTimer()) {
+    if (this.checkTimer()) {
       currentPlayer = nextPlayer;
     }
-    this.player.getTimer().nextPlayer();
+    this.getTimer().nextPlayer();
     scrabbleBoard.nextTurn();
     newGameEvent("It is now " + players[currentPlayer].getName() + "'s turn");
   }
@@ -135,8 +131,9 @@ public class ClientMatch {
     protocol.sendToServer(new PassMessage(MessageType.PASS,"server"));
   }
 
-  public String submitTilesOfClient() throws IOException {
-    String[][] result = scrabbleBoard.submitTiles();
+  /*
+  public String submitTilesOfClient(String from) throws IOException {
+    String[][] result = scrabbleBoard.submitTiles(from);
     boolean isValid = scrabbleBoard.inputValudation(result);
     String resultString = "";
     if (isValid) {
@@ -161,7 +158,7 @@ public class ClientMatch {
     return resultString;
   }
 
-
+*/
 
   public void thirtySecondsAlert() {
 //TODO
@@ -295,6 +292,10 @@ public class ClientMatch {
   public Tile[] getNewTilesToBeAdded() {
     return newTilesToBeAdded;
   }
+
+  public void dropNewTiles(){
+    newTilesToBeAdded = null;
+  }
   public boolean hasNewTiles(){
     if(newTilesToBeAdded == null){
       return false;
@@ -302,5 +303,23 @@ public class ClientMatch {
       return true;
     }
 
+  }
+
+  public void setTimerToZero() {
+    this.timer.setTimerOverall(0);
+  }
+
+  public boolean checkTimer() {
+    return this.timer.getTimerCurrentPlayer() > 0;
+  }
+
+  public void setTimerPersonalTimerToZero() {
+    this.timer.setTimerCurrentPlayer(0);
+  }
+
+
+
+  public Timer getTimer() {
+    return this.timer;
   }
 }

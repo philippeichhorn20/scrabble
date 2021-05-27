@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @version 1.0
  * @description a class which represents a player in the game scrabble*/
 public class Player implements Serializable {
-  Timer timer;
+
   String name;
   long score;
   String color;
@@ -16,7 +16,6 @@ public class Player implements Serializable {
   public Player(String name, String color, Playerstatus status) {
     this.name = name;
     this.color = color;
-    this.timer = new Timer();
     this.score = 0;
     this.status = status;
   }
@@ -49,9 +48,7 @@ public class Player implements Serializable {
   }
 
   /*check if the timer of the current turn is out of time. When timer out of time it return false, when time is left it returns true*/
-  public boolean checkTimer() {
-    return this.timer.getTimerCurrentPlayer() > 0;
-  }
+
 
   /*A methode which fills the rack bag to 7 tiles*/
   public Tile[] fillRack(TileBag bag) {
@@ -99,22 +96,10 @@ public class Player implements Serializable {
     this.status = status;
   }
 
-  public void setTimerToZero() {
-    this.timer.setTimerOverall(0);
-  }
-
-  public void setTimerPersonalTimerToZero() {
-    this.timer.setTimerCurrentPlayer(0);
-  }
 
   public void setColor(String color) {
     this.color = color;
   }
-
-  public Timer getTimer() {
-    return this.timer;
-  }
-
   public String getName() {
     return this.name;
   }

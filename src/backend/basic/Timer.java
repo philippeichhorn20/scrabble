@@ -11,9 +11,9 @@ This class represents a clock
  */
 public class Timer extends Thread implements Serializable {
 
-  long timerOverall = 0; //in seconds
-  long timerCurrentPlayer = 0; //in seconds
-  boolean isRunning = false;
+  private long timerOverall = 0; //in seconds
+  private long timerCurrentPlayer = 0; //in seconds
+  private boolean isRunning = false;
 
   /*
  this function runs the Thread that updates the timers

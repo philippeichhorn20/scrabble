@@ -19,13 +19,14 @@ import java.util.HashSet;
  * */
 public class WordCheckDB {
 
-  public HashSet<String> words = new HashSet<String>();
+  public static HashSet<String> words = new HashSet<String>();
 
 
+  /*
   public static void main(String[] args) {
-    System.out.println(findWord("apple"));
+    System.out.println(findWord("ANORTHITE"));
   }
-
+  */
   static String url = "jdbc:sqlite:src/resources/wordsList.db";
   static String urlTxt = "src/resources/ScrablleWordsFile.txt";
 
@@ -43,14 +44,26 @@ public class WordCheckDB {
     try (Connection conn = DriverManager.getConnection(WordCheckDB.url)) {
       java.sql.Statement stm = conn.createStatement();
       word = word.toUpperCase();
+      stm.execute("PRAGMA  case_sensitive_like = true;");
       ResultSet rs = stm
-          .executeQuery("SELECT * FROM words WHERE (word = '" + word + "');");
-      if (rs.getString(1) == "") {
-        System.out.println(word + " not found");
+          .executeQuery("SELECT * FROM words WHERE "
+              + "word LIKE '" + word + "\t%'"
+              + " OR word LIKE '%\t" + word + "\t%' "
+              + " OR word LIKE '% " + word + "' ;");
+      rs.next();
+      if(rs.isClosed()){
+        System.out.println(word+" not found");
         return "";
-      } else {
-        return rs.getString(0);
       }
+      String result = rs.getString(1);
+      conn.close();
+      stm.close();
+      if(result == ""){
+        System.out.println("not found");
+      }
+      return result;
+
+
     } catch (SQLException e) {
       e.printStackTrace();
       System.out.println(e.getMessage());
@@ -62,9 +75,9 @@ public class WordCheckDB {
   @author jawinter
   This function returns true if the string is in database consisting of dictionary
    */
-  public boolean checkWord(String word) {
+  static public boolean checkWord(String word) {
     boolean exists = false;
-    if(this.words.contains(word.toUpperCase())) {
+    if(words.contains(word.toUpperCase())) {
       exists = true;
     }
     return exists;
@@ -93,6 +106,7 @@ public class WordCheckDB {
     } catch (final ClassNotFoundException e) {
       System.out.println(e);
     }
+    int count = 0;
     try (Connection conn = DriverManager.getConnection(WordCheckDB.url)) {
       java.sql.Statement stm = conn.createStatement();
       stm.execute("DROP TABLE IF EXISTS words;");
@@ -106,6 +120,7 @@ public class WordCheckDB {
       String line;
       conn.setAutoCommit(false);
       while ((line = reader.readLine()) != null) {
+        count++;
         System.out.println(line);
         ps.setString(1, line);
         ps.execute();
@@ -113,6 +128,7 @@ public class WordCheckDB {
       conn.commit();
       conn.setAutoCommit(true);
 
+      System.out.println("job done");
       System.out.println("database intialized..");
 
       /*
@@ -124,7 +140,10 @@ public class WordCheckDB {
           + "  ");
        */
 
-      System.out.println("database was written");
+      System.out.println("database was written, "+ count+ " lines importet");
+      fr.close();
+      reader.close();
+      ps.close();
     } catch (SQLException e) {
       System.out.println("struggle with sql");
       System.out.println(e.getMessage());

@@ -1,19 +1,19 @@
 package backend.basic;
 
-import backend.network.server.Server;
-import backend.network.server.ServerSettings;
 
 public class Lobby {
+/*
+
 
   ServerMatch match;
   ClientMatch clientMatch;
   Server server;
-  Player[] players = new Player[4];
-  Player hostPlayer;
+  //Player[] players = new Player[4];
+  //Player hostPlayer;
   String ip = "";
 
   public Lobby(Player hostPlayer) {
-    this.addPlayer(hostPlayer);
+    //this.addPlayer(hostPlayer);
     this.hostPlayer = hostPlayer;
     ip = ServerSettings.getLocalHostIp4Address();
   }
@@ -29,15 +29,7 @@ public class Lobby {
 
 
 
-  public boolean addPlayer(Player player) {
-    for (int i = 0; i < players.length; i++) {
-      if (players[i] == null) {
-        players[i] = player;
-        return true;
-      }
-    }
-    return false;
-  }
+
 
   public void removePlayer(String player) {
     for (int x = 0; x < this.players.length; x++) {
@@ -58,4 +50,6 @@ public class Lobby {
   public void setServer(Server server) {
     this.server = server;
   }
+
+ */
 }

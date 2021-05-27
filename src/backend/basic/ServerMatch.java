@@ -10,7 +10,6 @@ import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.server.Server;
 import backend.network.server.ServerProtocol;
-import frontend.Main;
 import java.io.IOException;
 
 /*
@@ -34,7 +33,7 @@ public class ServerMatch {
   private final Timer timer;
   private Server server;
   private ServerProtocol protocol;
-  private Player[] players;
+  private Player[] players = new Player[4];
   /*
   @method
   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
@@ -63,7 +62,24 @@ public class ServerMatch {
    players to the game. Players cannot be added with addPlayer() afterwords
    */
 
+  public boolean addPlayer(Player player) {
+    for (int i = 0; i < players.length; i++) {
+      if (players[i] == null) {
+        players[i] = player;
+        return true;
+      }
+    }
+    return false;
+  }
 
+  public void removePlayer(String player) {
+    for (int x = 0; x < this.players.length; x++) {
+      if (this.players[x].name.equals(player)) {
+        this.players[x] = null;
+        break;
+      }
+    }
+  }
 
 
   /*
@@ -81,38 +97,38 @@ public class ServerMatch {
     return tileBag;
   }
 
+  public void startTimer(){
+    this.timer.start();
+  }
+
   public String getPlayerName() {
-    return Main.lobby.players[currentPlayer].getName();
+    return this.players[currentPlayer].getName();
   }
 
   public void placeTiles(Tile[] tiles, String from) throws IOException {
-    String[][] feedback = new String[0][0];
-    System.out.println("PLACE "+tiles.length+" TILES SERVER SIDE");
     //if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
       if(tiles.length != 0){
         for (int i = 0; i < tiles.length; i++) {
           this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
         }
-        feedback = scrabbleBoard.submitTiles();
-        if (scrabbleBoard.inputValudation(feedback)) {
+        PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
+        if (message.isSuccessfulMove()) {
           System.out.println("input was valid");
-          server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
-              new PlayFeedbackMessage("server", feedback, true));
-          server.sendToAllBut(Main.lobby.players[this.currentPlayer].name,
-              new GetNewTilesMessage(Main.lobby.players[this.currentPlayer].name,
-                  drawNewTiles(tiles.length)));
+          server.sendToAllBut(this.players[this.currentPlayer].name, message);
+          server.sendOnlyTo(this.players[this.currentPlayer].name,
+              new GetNewTilesMessage(this.players[this.currentPlayer].name,
+                  this.drawNewTiles(tiles.length)));
           int points = scrabbleBoard.getPoints();
-          Main.lobby.players[this.currentPlayer].addPoints(points);
-          server.sendToAll(new SendPointsMessage(Main.lobby.players[currentPlayer].getName(), points));
+          this.players[this.currentPlayer].addPoints(points);
+          System.out.println("points received"+ points);
+          server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
           //TODO: send to all but
           server.sendToAll(
-              new PlaceTilesMessage(Main.lobby.players[this.currentPlayer].name, tiles));
-
+              new PlaceTilesMessage(this.players[this.currentPlayer].name, tiles));
           nextPlayer();
-      }else {
+      }else{
           System.out.println("input was invalid");
-          server.sendOnlyTo(Main.lobby.players[this.currentPlayer].name,
-              new PlayFeedbackMessage("server", feedback, false));
+          this.scrabbleBoard.dropChangedTiles();
         }
 
       }else{
@@ -143,23 +159,19 @@ public class ServerMatch {
     @method stars the match. It triggers the start of the thread, as well as different methods
     */
   public void startMatch() {
-    timer.start();
-    server.sendToAll(new LobbyInformationMessage("server", Main.lobby.players));
-   System.out.println("Players in Lobby: "+ Main.lobby.players.length);
+    server.sendToAll(new LobbyInformationMessage("server", this.players));
     int count = 0;
-    for (int i = 0; i < Main.lobby.players.length; i++) {
+    for (int i = 0; i < this.players.length; i++) {
       Tile[] tiles = new Tile[8];
       for (int x = 0; x < tiles.length; x++) {
         tiles[x] = tileBag.drawTile();
       }
-      if (Main.lobby.players[i] != null) {
-        server.sendOnlyTo(Main.lobby.players[i].name, new GameStartMessage("server", tiles));
-        System.out.println("send GameStartMessage to" + Main.lobby.players[i].name);
+      if (this.players[i] != null) {
+        server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
         count++;
       }
     }
-    System.out.println("player count:" + count);
-    nextPlayer();
+    startTimer();
     // server message, find out turn, send turn message && send wait message, send out initial tiles,
     // start game thread programmieren. Diese ruft das auf
     //server.sendToAll(new);
@@ -172,13 +184,13 @@ public class ServerMatch {
     } else if (playerNum != currentPlayer) {
       System.out.println("Wrong plasyer, at shuffel request");
     } else {
-      if (Main.lobby.players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
+      if (this.players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
         server.sendOnlyTo(from,
-            new ReceiveShuffleTilesMessage("server", Main.lobby.players[playerNum].getRack()));
+            new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
       } else {
         System.out.println("couldn't shuffle since bag was empty");
         server.sendOnlyTo(from,
-            new ReceiveShuffleTilesMessage("server", Main.lobby.players[playerNum].getRack()));
+            new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
       }
     }
   }
@@ -187,8 +199,8 @@ public class ServerMatch {
   @method finds the player with the inputted name. Returns the number of him in the array. If not found, returns -1
    */
   public int getPlayersNumber(String name) {
-    for (int x = 0; x < Main.lobby.players.length; x++) {
-      if (Main.lobby.players[x].name.equals(name)) {
+    for (int x = 0; x < this.players.length; x++) {
+      if (this.players[x].name.equals(name)) {
         return x;
       }
     }
@@ -213,22 +225,30 @@ public class ServerMatch {
     */
   public void nextPlayer() {
     int notActivePlayers = 0;
-    int nextPlayer = 4 % (currentPlayer + 1);
-    do {
-      notActivePlayers++;
-      nextPlayer = 4 % (nextPlayer + 1);
-    } while (notActivePlayers < 4 && Main.lobby.players[nextPlayer] != null);
+    currentPlayer = (currentPlayer + 1) % 4;
+    boolean foundNextPlayer = false;
+    System.out.println("die spieler: "+this.players);
+    for(int x = 0; x < 3 && !foundNextPlayer; x++){
+      if(this.players[currentPlayer] == null){
+        currentPlayer = (currentPlayer + 1) % 4;
+      }else{
+        scrabbleBoard.nextTurn();
+        timer.nextPlayer();
+        server.sendToAll(new GameTurnMessage("server", currentPlayer));
+        foundNextPlayer = !foundNextPlayer;
+        break;
+      }
 
-    if (Main.lobby.players[nextPlayer].checkTimer()) {
-      currentPlayer = nextPlayer;
     }
-    scrabbleBoard.nextTurn();
-    server.sendToAll(new GameTurnMessage("server", currentPlayer));
+    if(!foundNextPlayer){
+      System.out.println("no player in game found");
+      //TODO: end game
+    }
   }
 
 
   public void sendPlacedTilesToClients(Tile[] tiles) {
-    server.sendToAllBut(Main.lobby.players[this.currentPlayer].name, new PlaceTilesMessage("server",
+    server.sendToAllBut(this.players[this.currentPlayer].name, new PlaceTilesMessage("server",
         scrabbleBoard.lastPlacedTiles()));
   }
 

@@ -11,22 +11,11 @@ public class PlayFeedbackMessage extends Message {
   String feedback;
   boolean successfulMove;
 
-  public PlayFeedbackMessage(String from, String[][] feedback, boolean successfulMove) {
+  public PlayFeedbackMessage(String from, String feedback, boolean successfulMove) {
     super(MessageType.PLAY_FEEDBACK, from);
-    String feedBackString = "";
-    if(feedback.length == 0){
-      feedBackString = "no new Tiles detected";
-    }else{
-      for(int x = 0; x < feedback.length; x++){
-        for(int i = 0; i < feedback[x].length; x++){
-          feedBackString += feedback[x][i];
-          feedBackString+= "\t";
-        }
-        feedBackString+= "\n";
-      }
-      this.feedback = feedBackString;
+      this.feedback = feedback;
       this.successfulMove = successfulMove;
-    }
+
 
   }
 
