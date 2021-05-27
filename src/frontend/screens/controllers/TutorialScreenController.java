@@ -91,6 +91,8 @@ public class TutorialScreenController extends Thread{
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
   private static char jokerChar;
   private boolean[][] tilesOnBoard = new boolean[17][16];
+  private Tile[] turnTiles = new Tile[5];
+  private int setTiles = 0;
 
 
 
@@ -142,12 +144,15 @@ public class TutorialScreenController extends Thread{
   }
   int fdg = 1;
   public void endTurn(ActionEvent e) throws IOException {
-    // servMatch.placeTileMessage(placedTiles);
-    // servMatch.endTurnMessage();
-    endTurnB();
+    if(turnTiles[0].getLetter() == 'H' && turnTiles[1].getLetter() == 'A' &&
+    turnTiles[2].getLetter() == 'L' && turnTiles[3].getLetter() == 'L' &&
+    turnTiles[4].getLetter() == 'O')
+    {
+      tutorialInformation.getTutorialMatch().endFlag();
+    } else {
+      resetTiles(e);
 
-    newHistoryMessage(String.valueOf(fdg) + "is the number of times you entered this ");
-    fdg++;
+    }
   }
   private void endTurnB(){
     turn++;
@@ -247,6 +252,9 @@ public class TutorialScreenController extends Thread{
               newTile.setXY(i, j);
               int ite = 0;
               placeTilesList.add(newTile);
+              if(setTiles < 5) {
+                turnTiles[setTiles++] = newTile;
+              }
               tilesOnBoard[i][j]=true;
               GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
               Tile[] tt = {newTile};
@@ -422,11 +430,42 @@ public class TutorialScreenController extends Thread{
                   Optional<ButtonType> result = welcomeAlert.showAndWait();
                   if (result.get() == ButtonType.OK){
                     tutorialInformation.getTutorialMatch().highligthTiles();
+
+                    for(int i = 0; i < 5; i++){
+                      gtiles[i].highlight(true);
+                    }
                   }
 
                 } else if(tutorialInformation.getTutorialMatch().getHighligthTilesFlag()) {
+                  Alert higlitedTilesAlert = new Alert(AlertType.INFORMATION);
+
+                  higlitedTilesAlert.setTitle(tutorialInformation.getTutorialMatch().highlightedTilesTitle);
+                  higlitedTilesAlert.setHeaderText(null);
+                  higlitedTilesAlert.setContentText(tutorialInformation.getTutorialMatch().higlightedTilesContentText);
+
+                  Optional<ButtonType> result = higlitedTilesAlert.showAndWait();
+                  if (result.get() == ButtonType.OK){
+                    tutorialInformation.getTutorialMatch().highlightScrabbleboardPosition();
+                    Rectangle highligth = new Rectangle(36,36,Color.RED);
+
+                    for(int i = 0; i < 5; i++) {
+                      board.add(highligth,6 + i, 8);
+                    }
+
+                  }
 
                 } else if(tutorialInformation.getTutorialMatch().getHighlightScrabbleboardPositionFlag()) {
+                  Alert highligthScrabbleboardPositionAlert = new Alert(AlertType.INFORMATION);
+
+                  highligthScrabbleboardPositionAlert.setTitle(tutorialInformation.getTutorialMatch().highligthScrabbleboardPositionTitle);
+                  highligthScrabbleboardPositionAlert.setHeaderText(null);
+                  highligthScrabbleboardPositionAlert.setContentText(tutorialInformation.getTutorialMatch().highligthScrabbleboardPositionContentText);
+
+                  Optional<ButtonType> result = highligthScrabbleboardPositionAlert.showAndWait();
+                  if (result.get() == ButtonType.OK){
+
+                  }
+
 
                 } else if(tutorialInformation.getTutorialMatch().getEndFlag()) {
 

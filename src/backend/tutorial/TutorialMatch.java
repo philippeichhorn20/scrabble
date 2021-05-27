@@ -13,6 +13,8 @@ public class TutorialMatch {
   private Tile[] tutorialRackTiles = new Tile[7];
   private boolean startFlag, highligthTilesFlag, highlightScrabbleboardPositionFlag, endFlag;
   public String welcomeContentTitel = "", welcomeContentText = "" ;
+  public String highlightedTilesTitle = "", higlightedTilesContentText = "";
+  public String highligthScrabbleboardPositionTitle = "", highligthScrabbleboardPositionContentText = "";
 
   public TutorialMatch() {
     tutorialBag = new TileBag();
@@ -35,6 +37,15 @@ public class TutorialMatch {
     welcomeContentText = "Welcome to the tutorial of Scrabble Online! \n"
         + "In this tutorial you will learn how to use the UI."
         + "First of all you will learn how to place a tile from your rack.";
+
+    highlightedTilesTitle = "Your tiles are highligted now";
+    higlightedTilesContentText = "First of all you have to draw tiles from the tilebag.\n"
+        + "This is done automatically by the tilebag. \n"
+        + "Your tiles are in your rack at the bottom of the screen.\n"
+        + "";
+
+    highligthScrabbleboardPositionTitle = "Place a word with your tiles!";
+    highligthScrabbleboardPositionContentText = "";
   }
 
   public void startTutorial() {
