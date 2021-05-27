@@ -8,10 +8,11 @@ import backend.basic.TileBag;
 * @version 1.0
 * @description a Class which controlls the flow of the tutorial*/
 public class TutorialMatch {
-  TileBag tutorialBag;
-  ScrabbleBoard tutorialBoard;
-  Tile[] tutorialRackTiles = new Tile[7];
-  boolean startFlag, highligthTilesFlag, highlightScrabbleboardPositionFlag, endFlag;
+  private TileBag tutorialBag;
+  private ScrabbleBoard tutorialBoard;
+  private Tile[] tutorialRackTiles = new Tile[7];
+  private boolean startFlag, highligthTilesFlag, highlightScrabbleboardPositionFlag, endFlag;
+  public String welcomeContentTitel = "", welcomeContentText = "" ;
 
   public TutorialMatch() {
     tutorialBag = new TileBag();
@@ -29,6 +30,11 @@ public class TutorialMatch {
     highligthTilesFlag = false;
     highlightScrabbleboardPositionFlag = false;
     endFlag = false;
+
+    welcomeContentTitel = "Welcome!";
+    welcomeContentText = "Welcome to the tutorial of Scrabble Online! \n"
+        + "In this tutorial you will learn how to use the UI."
+        + "First of all you will learn how to place a tile from your rack.";
   }
 
   public void startTutorial() {

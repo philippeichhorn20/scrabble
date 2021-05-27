@@ -25,16 +25,6 @@ public final class TutorialInformation {
     this.match = tutorialmatch;
   }
 
-  public ServerMatch getServermatch() {
-    return servermatch;
-  }
-
-  public void setServermatch(ServerMatch servermatch) {
-    this.servermatch = servermatch;
-  }
-
-  private ServerMatch servermatch;
-
 
   public void setProfile(Profile p){
     this.profile = p;

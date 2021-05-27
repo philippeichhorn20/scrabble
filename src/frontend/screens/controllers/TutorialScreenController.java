@@ -15,9 +15,11 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
+import backend.tutorial.TutorialInformation;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +29,10 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -79,10 +84,8 @@ public class TutorialScreenController extends Thread{
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
   @FXML private Label currPlayerText;
-  Player thisPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
-  ClientMatch match = GameInformation.getInstance().getClientmatch();
-  private GameInformation gameInformation = GameInformation.getInstance();
-  private ServerMatch servMatch = gameInformation.getServermatch();
+  Player currentPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
+  private TutorialInformation tutorialInformation = TutorialInformation.getInstance();
   private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   private Tile[] placedTiles;
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
@@ -409,20 +412,25 @@ public class TutorialScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                if(GameInformation.getInstance().getClientmatch().hasNewTiles()){
-                  Tile[] newTiles = GameInformation.getInstance().getClientmatch().getNewTilesToBeAdded();
-                  for(int x = 0; x < newTiles.length; x++){
-                    placeTile(newTiles[x]);
+                if(tutorialInformation.getTutorialMatch().getStartFlag()) {
+                  Alert welcomeAlert = new Alert(AlertType.INFORMATION);
+
+                  welcomeAlert.setTitle(tutorialInformation.getTutorialMatch().welcomeContentTitel);
+                  welcomeAlert.setHeaderText(null);
+                  welcomeAlert.setContentText(tutorialInformation.getTutorialMatch().welcomeContentText);
+
+                  Optional<ButtonType> result = welcomeAlert.showAndWait();
+                  if (result.get() == ButtonType.OK){
+                    tutorialInformation.getTutorialMatch().highligthTiles();
                   }
-                  newTiles = null;
+
+                } else if(tutorialInformation.getTutorialMatch().getHighligthTilesFlag()) {
+
+                } else if(tutorialInformation.getTutorialMatch().getHighlightScrabbleboardPositionFlag()) {
+
+                } else if(tutorialInformation.getTutorialMatch().getEndFlag()) {
 
                 }
-                if(reportedProgress==1){
-                //  sendLostBox();
-                //  endTurnB();
-                }
-
-                time.setText(String.valueOf(reportedProgress));
               }
             });
           }
@@ -468,7 +476,7 @@ public class TutorialScreenController extends Thread{
 
 
 
-        currPlayerText.setText(match.getCurrentPlayerName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
+        currPlayerText.setText(this.currentPlayer.getName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
         //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
         //name2.setText(players[1].getName() + ":");
         //name3.setText(players[2].getName() + ":");
