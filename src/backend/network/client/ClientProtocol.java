@@ -13,6 +13,7 @@ import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.time.TimeAlertMessage;
@@ -190,6 +191,17 @@ public class ClientProtocol extends Thread{
               this.match.setTimerToZero();
               break;
 
+            case TEXT: 
+            	TextMessage textMessage = (TextMessage)message;
+            	String sender = textMessage.getFrom();
+            	String text = textMessage.getText();
+            	/**
+            	 * Call Text Box to add new Text
+            	 */
+            	
+            	
+            	break;
+            
             default:
               break;
           }
