@@ -31,7 +31,11 @@ public class Brain {
 
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
-    readDictionary("src/resources/dictionary.txt");
+    if(WordCheckDB.newUrl==null) {
+      readDictionary(WordCheckDB.urlTxt);
+    } else {
+      readDictionary(WordCheckDB.newUrl);
+    }
   }
 
   /*

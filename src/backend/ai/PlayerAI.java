@@ -49,7 +49,14 @@ public class PlayerAI {
   }
 
   /*
-  If it is the turn of this ai this will trigger handleTurn
+  Receive first tiles
+   */
+  public void handleGameStartMessage(Tile[] tiles){
+    this.tilesOnHand = tiles;
+  }
+
+  /*
+  Recognizes whether it is AI's turn. Triggers handleTurn.
    */
   public void handleGameTurnMessage(int nowTurn){
     if(playerList[nowTurn].equals(name)) {

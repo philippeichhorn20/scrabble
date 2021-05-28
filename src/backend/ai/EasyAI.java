@@ -15,9 +15,8 @@ public class EasyAI extends PlayerAI {
 
 	private Brain easyBrain;
 	private Random r = new Random(System.currentTimeMillis());
-	public EasyAI(String name, String color, ScrabbleBoard board) {
+	public EasyAI(String name) {
 		super(name);
-		this.easyBrain = new Brain(board);
 	}
 
 	public Brain getEasyBrain() {

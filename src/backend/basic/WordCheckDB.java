@@ -28,8 +28,8 @@ public class WordCheckDB {
   }
   */
   static String url = "jdbc:sqlite:src/resources/wordsList.db";
-  static String urlTxt = "src/resources/ScrablleWordsFile.txt";
-  static String newUrl;
+  public static String urlTxt = "src/resources/ScrablleWordsFile.txt";
+  public static String newUrl;
   /*
   looks up the given word in the database. If it exists it returns the decsription of the word,
   if not it returns null
