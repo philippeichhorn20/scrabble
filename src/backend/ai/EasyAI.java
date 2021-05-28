@@ -61,7 +61,6 @@ public class EasyAI extends PlayerAI {
 					placeTiles(tilesToUse);
 				} catch (IOException e) {
 					System.err.println("Easy Ai could not play tiles");
-					e.printStackTrace();
 				}
 			}
 
