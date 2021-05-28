@@ -29,7 +29,7 @@ public class WordCheckDB {
   */
   public static String url = "jdbc:sqlite:src/resources/wordsList.db";
   public static String urlTxt = "src/resources/ScrabbleWordsFile.txt";
-
+  public static String newUrl;
   /*
   looks up the given word in the database. If it exists it returns the decsription of the word,
   if not it returns null
@@ -100,6 +100,7 @@ public class WordCheckDB {
     }
   }
 
+
   public static void importTextToDB() {
     try {
       Class.forName("org.sqlite.JDBC");
@@ -152,6 +153,16 @@ public class WordCheckDB {
       fnfe.printStackTrace();
     } catch (IOException ioe) {
       ioe.printStackTrace();
+    }
+  }
+
+  public static void loadNewLibrary(String path){
+    newUrl = path;
+    try{
+      importTextToDB();
+    }catch (Exception e){
+      newUrl = urlTxt;
+      importTextToDB();
     }
   }
 

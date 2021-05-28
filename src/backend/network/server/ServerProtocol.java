@@ -3,7 +3,6 @@ package backend.network.server;
 import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
-import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
@@ -90,13 +89,19 @@ public class ServerProtocol extends Thread {
           out.reset();
           disconnect();
         } else {
-          GameInformation.getInstance().setServermatch(new ServerMatch(server, GameInformation.getInstance().getHost()));
           System.out.println("successful");
           this.clientName = from;
           server.addClient(from, this);
           Player clientPlayer = new Player(from, "#000000", Playerstatus.WAIT);
           if (GameInformation.getInstance().getServermatch().addPlayer(clientPlayer)) {
+            System.out.print("player in game lol: ");
+            for(Player p: GameInformation.getInstance().getServermatch().getPlayers()){
+              if(p!= null){
+                System.out.print(p.getName()+" ");
+              }
+            }
           } else {
+            System.out.println("Lobby be full");
             Message connectionRefused = new ConnectionRefusedMessage("server",
                 "Lobby is full!");
           }
@@ -123,6 +128,7 @@ public class ServerProtocol extends Thread {
               break;
 
             case DISCONNECT:
+              System.out.println("removing player");
               server.removeClient(message.getFrom());
               running = false;
               GameInformation.getInstance().getServermatch().removePlayer(message.getFrom());

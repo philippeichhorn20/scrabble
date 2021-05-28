@@ -13,4 +13,8 @@ public class ConnectionRefusedMessage extends Message {
     super(MessageType.CONNECTION_REFUSED, from);
     errorMessage = error;
   }
+
+  public String getErrorMessage() {
+    return errorMessage;
+  }
 }

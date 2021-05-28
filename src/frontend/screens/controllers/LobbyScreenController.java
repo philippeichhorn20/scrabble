@@ -15,8 +15,6 @@ import backend.network.server.ServerSettings;
 import backend.tutorial.TutorialInformation;
 import backend.tutorial.TutorialMatch;
 import frontend.Main;
-import frontend.MultiUserChat.Server.Chat;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -190,7 +188,7 @@ public class LobbyScreenController {
               }
             });
     lob.start();
-    server.setServerMatch(new ServerMatch(server, GameInformation.getInstance().getPlayers()));
+    server.setServerMatch(new ServerMatch(server));
     GameInformation.getInstance().setServermatch(server.getServerMatch());
     //Main.lobby.setServer(server);
     hostIP.setText(ServerSettings.getLocalHostIp4Address());
@@ -217,28 +215,49 @@ public class LobbyScreenController {
     loadLibraryButton.setDisable(true);
     loadLibraryButton.setText("Loading File");
     FileChooser fileChooser = new FileChooser();
-    File selectedFile = fileChooser.showOpenDialog(Main.getStg());
-    try{
-      System.out.println(Files.probeContentType(selectedFile.toPath()));
-      if(selectedFile != null && Files.probeContentType(selectedFile.toPath()).equals("text/plain")){
-        //WordCheckDB.loadNewLibrary(selectedFile.getPath());
-        loadLibraryButton.setText("Sucecss");
-      }else{
-        GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
+    try {
+      File selectedFile = fileChooser.showOpenDialog(Main.getStg());
+      try {
+        System.out.println(Files.probeContentType(selectedFile.toPath()));
+        if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
+            .equals("text/plain")) {
+          WordCheckDB.loadNewLibrary(selectedFile.getPath());
+          loadLibraryButton.setText("Sucecss");
+        } else {
+          GameScreenController.AlertBox
+              .display("Could not load Library", "Be sure to choose a .txt file");
+        }
+      } catch (IOException ioe) {
+        GameScreenController.AlertBox
+            .display("Could not load Library", "Be sure to choose a .txt file");
       }
-    }catch(IOException ioe){
-      GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
+    } catch (Exception exception) {
+      File selectedFile = fileChooser.showOpenDialog(Main.getStg());
+      try {
+        System.out.println(Files.probeContentType(selectedFile.toPath()));
+        if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
+            .equals("text/plain")) {
+          //WordCheckDB.loadNewLibrary(selectedFile.getPath());
+          loadLibraryButton.setText("Sucecss");
+        } else {
+          GameScreenController.AlertBox
+              .display("Could not load Library", "Be sure to choose a .txt file");
+        }
+      } catch (IOException ioe) {
+        GameScreenController.AlertBox
+            .display("Could not load Library", "Be sure to choose a .txt file");
 
+      }
     }
-
-    startGameButton.setVisible(true);
-    loadLibraryButton.setDisable(false);
+      startGameButton.setVisible(true);
+      loadLibraryButton.setDisable(false);
   }
+
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
     System.out.println("Start match triggered");
     GameInformation.getInstance().getServermatch().startMatch();
-    WordCheckDB.importTextToDB();
+    //WordCheckDB.importTextToDB();
     GameInformation.getInstance().getChat().display();
   }
 

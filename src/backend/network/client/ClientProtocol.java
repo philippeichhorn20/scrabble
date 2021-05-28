@@ -74,6 +74,7 @@ public class ClientProtocol extends Thread{
               System.out.println("Connection closed, since connection refused");
               ConnectionRefusedMessage connectionRefusedMessage =
                   (ConnectionRefusedMessage) message;
+              System.out.println(connectionRefusedMessage.getErrorMessage());
               disconnect();
               break;
 

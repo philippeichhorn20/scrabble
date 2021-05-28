@@ -50,10 +50,9 @@ public class ServerMatch {
     timer = new Timer();
   }
 
-  public ServerMatch(Server s, Player player) {
+  public ServerMatch(Server s) {
     super();
     this.players = new Player[4];
-    this.players[0] = player;
     this.server = s;
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
@@ -64,14 +63,25 @@ public class ServerMatch {
    players to the game. Players cannot be added with addPlayer() afterwords
    */
 
-  public boolean addPlayer(Player player) {
-    for (int i = 0; i < players.length; i++) {
-      if (players[i] == null) {
-        players[i] = player;
-        return true;
+  public boolean addPlayer(Player p) {
+    System.out.println("adding a player: "+ p.getName());
+      if (players[0] == null) {
+        System.out.println("!");
+        players[0] = p;
+      }else if(players[1]==null){
+        System.out.println("!");
+        players[1]=p;
+      }else if(players[2]==null){
+        System.out.println("!");
+        players[2]=p;
+      }else if(players[3]==null){
+        System.out.println("!");
+        players[3]=p;
+      }else{
+        return false;
       }
-    }
-    return false;
+    return true;
+
   }
 
   public void removePlayer(String player) {
@@ -316,4 +326,8 @@ public class ServerMatch {
     this.currentPlayer = currentPlayer;
   }
 
+
+  public Player[] getPlayers() {
+    return players;
+  }
 }
