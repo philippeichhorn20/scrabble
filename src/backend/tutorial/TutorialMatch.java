@@ -22,7 +22,7 @@ public class TutorialMatch {
     tutorialBoard = new ScrabbleBoard();
 
     tutorialRackTiles[0] = new Tile('H', 4);
-    tutorialRackTiles[1] = new Tile('A', 1);
+    tutorialRackTiles[1] = new Tile('E', 1);
     tutorialRackTiles[2] = new Tile('L', 1);
     tutorialRackTiles[3] = new Tile('L', 1);
     tutorialRackTiles[4] = new Tile('O', 1);
@@ -36,20 +36,25 @@ public class TutorialMatch {
 
     welcomeContentTitel = "Welcome!";
     welcomeContentText = "Welcome to the tutorial of Scrabble Online! \n"
-        + "In this tutorial you will learn how to use the UI."
+        + "In this tutorial you will learn how to use the UI. \n"
         + "First of all you will learn how to place a tile from your rack.";
 
     highlightedTilesTitle = "Your tiles are highligted now";
     higlightedTilesContentText = "First of all you have to draw tiles from the tilebag.\n"
         + "This is done automatically by the tilebag. \n"
-        + "Your tiles are in your rack at the bottom of the screen.\n"
-        + "";
+        + "Your tiles are in your rack at the bottom of the screen.\n";
 
     highligthScrabbleboardPositionTitle = "Place a word with your tiles!";
-    highligthScrabbleboardPositionContentText = "";
+    highligthScrabbleboardPositionContentText = "Now place HELLO at the highlighted area on the board. \n"
+        + "To select a Tile you first have to click on it \n"
+        + "or press D on your keyboard to highlight it.\n"
+        + "Then you can click on the board to place it.";
 
-    endGameTitle = "";
-    endGameContentText = "";
+    endGameTitle = "Congratulations!";
+    endGameContentText = "You mastered the tutorial for the \n"
+        + "UI of scrabble online. Now you can play a game with \n"
+        + "someone else or against an AI. \n"
+        + "Good bye and have a nice time with the game!";
   }
 
   public void startTutorial() {

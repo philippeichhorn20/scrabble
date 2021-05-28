@@ -149,7 +149,7 @@ public class TutorialScreenController extends Thread{
       if(turnTiles[i] != null) {
         if(turnTiles[i].getX() == 6 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'H') {
 
-        } else if(turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'A') {
+        } else if(turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'E') {
 
         } else if(turnTiles[i].getX() == 8 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'L') {
 
@@ -276,22 +276,11 @@ public class TutorialScreenController extends Thread{
                 turnTiles[setTiles++] = newTile;
               }
               tilesOnBoard[i][j]=true;
-              GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
-              Tile[] tt = {newTile};
-           //   try{
-                System.out.println(GameInformation.getInstance().getClientmatch());
-                System.out.println(GameInformation.getInstance().getClientmatch().getProtocol());
-            //    GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
-             // }catch(IOException ie){
-            //    ie.printStackTrace();
-           //   }
 
-              //  while (placedTiles[ite] != null) {
-              //  ite++;
-              //  }
-              //  placedTiles[ite] = newTile;
+              Tile[] tt = {newTile};
+
               resetColor();
-            }
+              }
             }
           }
         }
@@ -440,7 +429,7 @@ public class TutorialScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                //System.out.println("Test");
+
                 if(tutorialInformation.getTutorialMatch().getStartFlag()) {
                   for (int i = 0; i < 7; i++) {
                     gtiles[i].setTile(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]);
@@ -458,14 +447,7 @@ public class TutorialScreenController extends Thread{
 
                   TutorialInformation.getInstance().getTutorialMatch().setStartFlag(false);
 
-                  Optional<ButtonType> result = welcomeAlert.showAndWait();
-                  if (result.get() == ButtonType.OK){
-                    tutorialInformation.getTutorialMatch().highligthTiles();
-
-                    for(int i = 0; i < 5; i++){
-                      gtiles[i].highlight(true);
-                    }
-                  }
+                  tutorialInformation.getTutorialMatch().highligthTiles();
 
                 } else if(tutorialInformation.getTutorialMatch().getHighligthTilesFlag()) {
                   Alert higlitedTilesAlert = new Alert(AlertType.INFORMATION);
@@ -477,14 +459,16 @@ public class TutorialScreenController extends Thread{
                   TutorialInformation.getInstance().getTutorialMatch().setHighligthTilesFlag(false);
 
                   Optional<ButtonType> result = higlitedTilesAlert.showAndWait();
-                  if (result.get() == ButtonType.OK){
-                    tutorialInformation.getTutorialMatch().highlightScrabbleboardPosition();
-                    Rectangle highligth = new Rectangle(36,36,Color.RED);
 
-                    for(int i = 0; i < 5; i++) {
-                      board.add(highligth,6 + i, 8);
-                    }
+                  for(int i = 0; i < 5; i++){
+                    gtiles[i].getRec().setFill(Color.RED);
+                  }
 
+                  tutorialInformation.getTutorialMatch().highlightScrabbleboardPosition();
+
+                  for(int i = 0; i < 5; i++) {
+                    Rectangle highlight = new Rectangle(36,36,Color.RED);
+                    board.add(highlight,6 + i, 8);
                   }
 
                 } else if(tutorialInformation.getTutorialMatch().getHighlightScrabbleboardPositionFlag()) {
@@ -496,9 +480,7 @@ public class TutorialScreenController extends Thread{
 
                   TutorialInformation.getInstance().getTutorialMatch().setHighlightScrabbleboardPositionFlag(false);
                   Optional<ButtonType> result = highligthScrabbleboardPositionAlert.showAndWait();
-                  if (result.get() == ButtonType.OK){
 
-                  }
 
 
                 } else if(tutorialInformation.getTutorialMatch().getEndFlag()) {
@@ -512,10 +494,8 @@ public class TutorialScreenController extends Thread{
                     TutorialInformation.getInstance().getTutorialMatch().setEndFlag(false);
 
                     Optional<ButtonType> result = endGameAlert.showAndWait();
-                    if (result.get() == ButtonType.OK){
-                      goBack();
-                      TutorialInformation.getInstance().getTutorialMatch().setGameOver();
-                    }
+                    goBack();
+                    TutorialInformation.getInstance().getTutorialMatch().setGameOver();
 
                   } catch (IOException ioException) {
                     ioException.printStackTrace();
