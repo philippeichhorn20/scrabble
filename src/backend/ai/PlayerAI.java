@@ -15,18 +15,19 @@ import java.io.IOException;
 @description Superclass for AIs
  */
 public class PlayerAI {
+
   protected Brain brain;
   protected String name;
   protected Player[] playerList;
   protected Tile[] tilesOnHand;
   protected AIProtocol aiProtocol;
 
-  public PlayerAI(String name){
+  public PlayerAI(String name) {
     this.name = name;
     this.brain = new Brain(new ScrabbleBoard());
   }
 
-  public Tile[] getTiles(){
+  public Tile[] getTiles() {
     return this.tilesOnHand;
   }
 
@@ -38,28 +39,29 @@ public class PlayerAI {
     return brain;
   }
 
-  public void setBrainBoard(ScrabbleBoard board){
+  public void setBrainBoard(ScrabbleBoard board) {
     this.brain.setScrabbleboard(board);
   }
+
   /*
     Initalize playerList when game starts
      */
-  public void handleStartGame(Player[] players){
+  public void handleStartGame(Player[] players) {
     this.playerList = players;
   }
 
   /*
   Receive first tiles and put them on rack of AI
    */
-  public void handleGameStartMessage(Tile[] tiles){
+  public void handleGameStartMessage(Tile[] tiles) {
     this.tilesOnHand = tiles;
   }
 
   /*
   Recognizes whether it is AI's turn. Triggers handleTurn.
    */
-  public void handleGameTurnMessage(int nowTurn){
-    if(playerList[nowTurn].equals(name)) {
+  public void handleGameTurnMessage(int nowTurn) {
+    if (playerList[nowTurn].equals(name)) {
       handleTurn();
     }
   }
@@ -67,7 +69,7 @@ public class PlayerAI {
   /*
   Handles turn. Different ai handle this one differently.
    */
-  public void handleTurn(){
+  public void handleTurn() {
 
     //If placetiles or shuffleTiles dont forget to set them null
   }
@@ -76,17 +78,17 @@ public class PlayerAI {
   Method is called and given new Tiles which were put on board. Brain needs ne tiles to know
   how to play
    */
-  public void updateScrabbleboard(Tile[] tiles){
+  public void updateScrabbleboard(Tile[] tiles) {
     brain.updateScrabbleboard(tiles);
   }
 
   /*
   When AI receives new tiles this will add it to tilesOnHand
    */
-  public void acceptNewTiles(Tile[] tiles){
+  public void acceptNewTiles(Tile[] tiles) {
     int count = 0;
-    for(Tile t : this.tilesOnHand) {
-      if(t.equals(null)) {
+    for (Tile t : this.tilesOnHand) {
+      if (t.equals(null)) {
         t = tiles[count++];
       }
     }
@@ -96,7 +98,7 @@ public class PlayerAI {
   When AI wants to shuffle
    */
   public void requestNewTiles() throws IOException {
-    Message shuffle = new ShuffleTilesMessage(name,this.tilesOnHand);
+    Message shuffle = new ShuffleTilesMessage(name, this.tilesOnHand);
     aiProtocol.sendToServer(shuffle);
   }
 
@@ -104,7 +106,7 @@ public class PlayerAI {
   When AI places word
    */
   public void placeTiles(Tile[] tilesToPlay) throws IOException {
-    Message place = new PlaceTilesMessage(name,tilesToPlay);
+    Message place = new PlaceTilesMessage(name, tilesToPlay);
     aiProtocol.sendToServer(place);
   }
 

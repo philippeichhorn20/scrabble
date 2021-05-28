@@ -27,7 +27,8 @@ public class WordPossibility {
   private ScrabbleBoard board;
 
   //Instructor for initialization
-  public WordPossibility(char givenLetter,int xPosition, int yPosition,int value, ScrabbleBoard scrabbleBoard) {
+  public WordPossibility(char givenLetter, int xPosition, int yPosition, int value,
+      ScrabbleBoard scrabbleBoard) {
     this.baseLetter = givenLetter;
     this.baseLetterValue = value;
     if (xPosition < 15 && xPosition >= 0) {

@@ -31,7 +31,7 @@ public class Brain {
 
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
-    if(WordCheckDB.newUrl==null) {
+    if (WordCheckDB.newUrl == null) {
       readDictionary(WordCheckDB.urlTxt);
     } else {
       readDictionary(WordCheckDB.newUrl);
@@ -42,12 +42,12 @@ public class Brain {
   Method to update board brain uses to play
    */
   public void updateScrabbleboard(Tile[] tiles) {
-    for(int i = 0;i<tiles.length;i++) {
-      scrabbleBoard.placeTile(tiles[i],tiles[i].getX(),tiles[i].getY());
+    for (int i = 0; i < tiles.length; i++) {
+      scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
     }
   }
 
-  public void setScrabbleboard(ScrabbleBoard board){
+  public void setScrabbleboard(ScrabbleBoard board) {
     this.scrabbleBoard = board;
   }
 
@@ -57,7 +57,7 @@ public class Brain {
   public TreeSet<PossibleWord> getPlayableWords(Tile[] tilesOnHand) {
     ArrayList<WordPossibility> wordPossibilities = getWordPossibilities();
     TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
-    if(wordPossibilities.size()==0) {
+    if (wordPossibilities.size() == 0) {
       playableWords = getPlayableWordsFirstMove(tilesOnHand);
     }
     Timer timer = new Timer();
@@ -69,8 +69,8 @@ public class Brain {
 
       while (it.hasNext()) {
         String currentWord = it.next();
-        playableWords.addAll(checkIfSpaceSufficient(currentWord,wordPossibility,tilesOnHand));
-        if(timer.getTimerOverall()>20000) {
+        playableWords.addAll(checkIfSpaceSufficient(currentWord, wordPossibility, tilesOnHand));
+        if (timer.getTimerOverall() > 20000) {
           return playableWords;
         }
       }
@@ -78,7 +78,8 @@ public class Brain {
     return playableWords;
   }
 
-  public TreeSet<PossibleWord> checkIfSpaceSufficient(String currentWord,WordPossibility wordPossibility,Tile[] tilesOnHand) {
+  public TreeSet<PossibleWord> checkIfSpaceSufficient(String currentWord,
+      WordPossibility wordPossibility, Tile[] tilesOnHand) {
     TreeSet<PossibleWord> list = new TreeSet<PossibleWord>();
     int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter());
     int verticalPoints = 0;
@@ -134,21 +135,22 @@ public class Brain {
   public TreeSet<PossibleWord> getPlayableWordsFirstMove(Tile[] tilesOnHand) {
     TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
     TreeSet<String> allWords = new TreeSet<String>();
-    for(int i = 0;i< tilesOnHand.length;i++) {
+    for (int i = 0; i < tilesOnHand.length; i++) {
       Tile[] without = new Tile[6];
       int skip = 0;
-      for(int j = 0;j< without.length;j++) {
-        if(skip == i) {
+      for (int j = 0; j < without.length; j++) {
+        if (skip == i) {
           skip++;
         }
         without[j] = tilesOnHand[skip++];
       }
-      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i].getLetter(),7,7,tilesOnHand[i].getValue(),this.scrabbleBoard);
-      allWords = findCorrectWords(wordPossibility,without);
+      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i].getLetter(), 7, 7,
+          tilesOnHand[i].getValue(), this.scrabbleBoard);
+      allWords = findCorrectWords(wordPossibility, without);
       Iterator<String> it = allWords.iterator();
-      while(it.hasNext()) {
+      while (it.hasNext()) {
         String currentWord = it.next();
-        playableWords.addAll(checkIfSpaceSufficient(currentWord,wordPossibility,without));
+        playableWords.addAll(checkIfSpaceSufficient(currentWord, wordPossibility, without));
       }
     }
     return playableWords;
@@ -273,7 +275,7 @@ public class Brain {
       }
     }
     //with 7 tiles
-    if(tilesOnHand.length>6) {
+    if (tilesOnHand.length > 6) {
       for (int i = 0; i < lettersOnHand.length(); i++) {
         for (int j = 0; j < lettersOnHand.length(); j++) {
           for (int k = 0; k < lettersOnHand.length(); k++) {
