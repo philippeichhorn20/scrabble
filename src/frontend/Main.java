@@ -75,8 +75,10 @@ public class Main extends Application {
 
   @Override
   public void stop() {
-    if(GameInformation.getInstance().getServermatch().getServer()!=null) {
-      GameInformation.getInstance().getServermatch().getServer().stopServer();
+    if(GameInformation.getInstance().getServermatch()!=null) {
+      if (GameInformation.getInstance().getServermatch().getServer() != null) {
+        GameInformation.getInstance().getServermatch().getServer().stopServer();
+      }
     }
   }
 

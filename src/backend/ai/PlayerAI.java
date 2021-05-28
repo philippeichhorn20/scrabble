@@ -49,7 +49,7 @@ public class PlayerAI {
   }
 
   /*
-  Receive first tiles
+  Receive first tiles and put them on rack of AI
    */
   public void handleGameStartMessage(Tile[] tiles){
     this.tilesOnHand = tiles;

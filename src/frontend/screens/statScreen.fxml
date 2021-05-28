@@ -295,9 +295,9 @@
                         </HBox>
                      </center>
                   </BorderPane>
-                  <BorderPane>
-                     <center>
-                        <Button fx:id="resetStatsButton" mnemonicParsing="false" onAction="#resetStatistics" style="-fx-background-color: #990808; -fx-background-radius: 10px;" text="Reset Statistics" textFill="WHITE">
+                  <BorderPane maxWidth="600.0">
+                     <left>
+                        <Button fx:id="resetStatsButton" mnemonicParsing="false" onAction="#resetStatistics" style="-fx-background-color: #990808; -fx-background-radius: 10px;" text="Reset Statistics" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -305,7 +305,20 @@
                               <Insets top="20.0" />
                            </BorderPane.margin>
                         </Button>
-                     </center>
+                     </left>
+                     <right>
+                        <Button fx:id="deleteProfileButton" mnemonicParsing="false" onAction="#deleteProfile" style="-fx-background-color: #990808; -fx-background-radius: 10px;" text="Delete Profile" textFill="WHITE" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Consolas Bold" size="20.0" />
+                           </font>
+                           <BorderPane.margin>
+                              <Insets top="20.0" />
+                           </BorderPane.margin>
+                        </Button>
+                     </right>
+                     <VBox.margin>
+                        <Insets left="50.0" />
+                     </VBox.margin>
                   </BorderPane>
                </children>
             </VBox>

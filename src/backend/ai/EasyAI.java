@@ -39,6 +39,7 @@ public class EasyAI extends PlayerAI {
 				} catch (IOException e) {
 					// What is a good way to handle the Exception?
 					System.err.println("Easy Ai could not request new tiles.");
+					e.printStackTrace();
 				}
 
 			} else {

@@ -3,6 +3,11 @@ package frontend.screens.controllers;
 import backend.basic.Profile;
 import frontend.Main;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +27,8 @@ import javafx.scene.text.Text;
  * @version 1.1
  */
 public class StatScreenController {
+
+  String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
 
   @FXML
   private Text userTitle;
@@ -97,6 +104,15 @@ public class StatScreenController {
       player.setWins(0, player.getId());
       avgPoints.setText(String.valueOf(0));
     }
+  }
+
+  public void deleteProfile() throws SQLException, IOException {
+    Connection connection = DriverManager.getConnection(jdbcUrl);
+    String deleteSql = "DELETE FROM profiles WHERE ROWID=" + Main.profile.getId();
+    PreparedStatement pstm = connection.prepareStatement(deleteSql);
+    pstm.executeUpdate();
+    Main m = new Main();
+    m.changeScene("screens/startingMenu.fxml");
   }
 
   //Method to go back to main menu.
