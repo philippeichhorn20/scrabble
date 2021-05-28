@@ -5,22 +5,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SelectLetterSetController">
    <children>
       <AnchorPane fx:id="viewAP" prefHeight="300.0" prefWidth="600.0" style="-fx-background-color: &quot;#AE7F33&quot;;">
          <children>
-            <ScrollPane fx:id="ViewSP" prefHeight="300.0" prefWidth="600.0" style="-fx-background-color: &quot;#AE7F33&quot;;" />
+            <ScrollPane fx:id="viewSP" prefHeight="300.0" prefWidth="600.0" style="-fx-background-color: &quot;#AE7F33&quot;;" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="buttonAP" layoutY="300.0" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: &quot;#9E722B&quot;;">
          <children>
-            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="183.0" style="-fx-background-color: #CD9131;" text="Save">
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="72.0" prefWidth="183.0" style="-fx-background-color: #CD9131;" text="Save">
                <font>
                   <Font size="33.0" />
                </font>
             </Button>
-            <Button layoutX="402.0" layoutY="14.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="183.0" style="-fx-background-color: &quot;#CD9131&quot;;" text="Go Back">
+            <Button layoutX="402.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#goBack" prefHeight="72.0" prefWidth="183.0" style="-fx-background-color: &quot;#CD9131&quot;;" text="Go Back">
                <font>
                   <Font size="33.0" />
                </font>

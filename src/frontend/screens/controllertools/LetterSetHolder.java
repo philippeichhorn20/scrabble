@@ -3,16 +3,29 @@ package frontend.screens.controllertools;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 
+/*@autor nilschae
+* @version 1.0
+* @description a class to hold different variables for the letter set screen*/
 public final class LetterSetHolder {
   private final static LetterSetHolder INSTANCE = new LetterSetHolder();
   private Tile[] tileSet;
+  private char[] possibleLetters = {
+      'A','B','C','D','E','F','G',
+      'H','I','J','K','L','M','N',
+      'O','P','Q','R','S','T','U',
+      'V','W','X','Y','Z','Ä','Ö',
+      'Ü'
+  };
 
-  private LetterSetHolder() {setDefaultLetterSet();}
+  private LetterSetHolder() {
+    setDefaultLetterSet();
+  }
 
   public static LetterSetHolder getInstance(){
     return INSTANCE;
   }
 
+  /*@description create a default letter set with 100 tiles*/
   private void setDefaultLetterSet() {
     tileSet = new Tile[100];
     for (int i = 0; i < tileSet.length; i++) {
@@ -74,4 +87,15 @@ public final class LetterSetHolder {
     }
   }
 
+  public char[] getPossibleLetters() {
+    return possibleLetters;
+  }
+
+  public Tile[] getTileSet() {
+    return tileSet;
+  }
+
+  public void setTileSet(Tile[] tileSet) {
+    this.tileSet = tileSet;
+  }
 }
