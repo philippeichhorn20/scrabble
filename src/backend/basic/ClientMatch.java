@@ -3,6 +3,7 @@ package backend.basic;
 import backend.basic.Tile.Tilestatus;
 import backend.network.client.ClientProtocol;
 import backend.network.messages.MessageType;
+import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PassMessage;
@@ -44,6 +45,7 @@ public class ClientMatch {
   private Tile[] newTilesToBeAdded;
   private boolean invalidMove;
   private GameScreenController gameScreenController;
+  private boolean dropTiles = false;
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
@@ -86,34 +88,42 @@ public class ClientMatch {
     yourTurnNum = currentPlayer;
     scrabbleBoard.nextTurn();
     this.getTimer().nextPlayer();
-    //TODO send out info to player interface
-    newGameEvent("It is now your turn");
+    this.gameScreenController.showServerMessage("It is now your turn, you have 10 minutes to make your move", 3);
   }
 
   public void turnTaken(int nowTurn){
     currentPlayer = nowTurn;
     System.out.println("Player with turn: " + players[currentPlayer].getName() + " | " + nowTurn);
-    if(nowTurn == this.yourTurnNum){
+    if(players[currentPlayer].getName().equals(GameInformation.getInstance().getProfile().getName())){
       yourTurn();
     }else{
-      //TODO send out info to player interface
+      this.gameScreenController.showServerMessage("It is now " + players[currentPlayer].getName()+ "'s turn!", 5);
     }
   }
 
   public void sendPlacedTilesToServer(){
-    this.gameScreenController.newHistoryMessage("hello, works");
     System.out.println("sending "+this.scrabbleBoard.newTilesOfCurrentMove.size()+" tiles to server");
-    Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
-    for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
-      tiles[x] = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
-     System.out.println("value at client" + tiles[x].getValue());
+    if(this.scrabbleBoard.newTilesOfCurrentMove.size() != 0){
+      Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
+      for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
+        tiles[x] = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
+        System.out.println("value at client" + tiles[x].getValue());
+      }
+      try{
+        GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
+        System.out.println("sent");
+      }catch(IOException e){
+        this.gameScreenController.showServerMessage("Your message could not be send, please try again",3);
+        System.out.println("couldnt send your tiles to server");
+      }
+    }else{
+      try {
+        this.pass();
+      }catch (IOException ioe){
+        this.gameScreenController.showServerMessage("Your message could not be send, please try again", 3);
+      }
     }
-    try{
-      GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
-      System.out.println("sent");
-    }catch(IOException e){
-      System.out.println("couldnt send your tiles to server");
-    }
+
   }
   public void sendHistoryMessage(String from,String mess){
     System.out.println("ClientMatch History Message");
@@ -156,6 +166,7 @@ public class ClientMatch {
     protocol.sendToServer(new PassMessage("server"));
   }
 
+
   /*
   public String submitTilesOfClient(String from) throws IOException {
     String[][] result = scrabbleBoard.submitTiles(from);
@@ -186,24 +197,27 @@ public class ClientMatch {
 */
 
   public void thirtySecondsAlert() {
-newGameEvent(players[currentPlayer].getName()+ " has 30 seconds left");
+    newGameEvent(players[currentPlayer].getName()+ " has 30 seconds left");
   }
 
   public void oneMinuteAlert() {
     newGameEvent(players[currentPlayer].getName()+ " has 60 seconds left");
   }
 
-  public void playFeedBackIntegration(boolean successfulMove) {
-    if (successfulMove) {
+  public void playFeedBackIntegration(PlayFeedbackMessage message) {
+    if (message.isSuccessfulMove()) {
+      this.gameScreenController.showServerMessage(message.getFeedback(),7);
       scrabbleBoard.nextTurn();
       //GameInformation.getInstance().getGsc().endTurnB();
     } else {
+      this.gameScreenController.showServerMessage(message.getFeedback(),3);
       //scrabbleBoard.nextTurn();
       removeChangedTiles();
     }
   }
 
   private void removeChangedTiles() {
+    this.dropTiles();
     for (int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++) {
       Tile tile = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
       tile.setStatus(Tilestatus.ONPLAYERRACK);
@@ -358,6 +372,13 @@ newGameEvent(players[currentPlayer].getName()+ " has 30 seconds left");
     return invalidMove;
   }
 
+  public boolean dropTiles(){
+    return this.dropTiles;
+  }
+
+  public void setDropTiles(boolean dropTiles) {
+    this.dropTiles = dropTiles;
+  }
 
   public void setGameScreenController(
       GameScreenController gameScreenController) {

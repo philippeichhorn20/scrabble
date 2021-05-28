@@ -170,7 +170,7 @@ public class ScrabbleBoard {
     for (int i = 0; i < words.length; i++) {
       String resultString = WordCheckDB.findWord(words[i]);
       if(resultString == ""){
-        result += words[i] + " is invalid\n";
+        result += words[i] + ", that's not even a word *friends voice*\n";
         inputValid = false;
       }else{
         result += resultString +"\n";

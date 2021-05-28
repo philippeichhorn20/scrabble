@@ -9,6 +9,8 @@ import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
+import backend.network.messages.time.TimeAlertMessage;
+import backend.network.messages.time.TimeAlertType;
 import backend.network.server.Server;
 import backend.network.server.ServerProtocol;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class ServerMatch {
     this.server = s;
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
-    timer = new Timer();
+    timer = new Timer(this);
   }
 
   public ServerMatch(Server s) {
@@ -292,8 +294,9 @@ public class ServerMatch {
   /*
   @method runs constantly and manages the timer of the player of the current turn
    */
-  public void checkTimer() {
-
+  public void sendTimeIsUp() {
+    this.server.sendOnlyTo(players[currentPlayer].getName(), new TimeAlertMessage("server", TimeAlertType.TIME_OVER));
+    this.nextPlayer();
   }
 
   /*

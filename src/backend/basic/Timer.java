@@ -16,6 +16,14 @@ public class Timer extends Thread implements Serializable {
   private long timerCurrentPlayer = 0; //in seconds
   private boolean isRunning = false;
   private GameScreenController gameScreenController;
+  private ServerMatch serverMatch;
+
+  public Timer(ServerMatch serverMatch){
+    this.serverMatch = serverMatch;
+  }
+  public Timer(){
+
+  }
 
   /*
  this function runs the Thread that updates the timers
@@ -31,13 +39,13 @@ public class Timer extends Thread implements Serializable {
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
-      if (timerCurrentPlayer == 60 * 0.2) {
-        //gameScreenController.newHistoryMessage("you have 60 seconds left");
-      }else if (timerCurrentPlayer == 60 * 9.5){
-        //gameScreenController.newHistoryMessage("you have 30 seconds left");
+      if (gameScreenController!= null && timerCurrentPlayer == 60 * 0.2) {
+        gameScreenController.newHistoryMessage("you have 60 seconds left");
+      }else if (gameScreenController!= null && timerCurrentPlayer == 60 * 9.5){
+        gameScreenController.newHistoryMessage("you have 30 seconds left");
 
-      }else if(timerCurrentPlayer == 60 * 10){
-        //gameScreenController.endTurnB();
+      }else if(serverMatch!= null && timerCurrentPlayer == 60 * 0.3){
+        serverMatch.sendTimeIsUp();
       }
     }
   }

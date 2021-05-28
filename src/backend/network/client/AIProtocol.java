@@ -93,7 +93,7 @@ public class AIProtocol extends Thread{
             case PLAY_FEEDBACK:
               System.out.println("play feedback message received");
               PlayFeedbackMessage message6 = (PlayFeedbackMessage) message;
-              this.match.playFeedBackIntegration(message6.isSuccessfulMove());
+              this.match.playFeedBackIntegration(message6);
               break;
 
             case GAME_OVER:

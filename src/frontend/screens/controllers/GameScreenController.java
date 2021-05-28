@@ -144,9 +144,7 @@ public class GameScreenController extends Thread{
 
   }
   public void endTurn(ActionEvent e) throws IOException {
-    // servMatch.placeTileMessage(placedTiles);
-    // servMatch.endTurnMessage();
-    showServerMessage("LMAO THIS WORKS");
+    activateServerMessage("checking your words...");
     endTurnB();
   }
   public void endTurnB(){
@@ -217,8 +215,19 @@ public class GameScreenController extends Thread{
       }
     }
   }
-  public void showServerMessage(String mess){
 
+  public void activateServerMessage(String textString){
+    serverMessage.setVisible(true);
+    serverMessage.setText(textString);
+  }
+
+  public void deactivateServerMessage(){
+    new FadeOut(serverMessage).play();
+    serverMessage.setMouseTransparent(true);
+  }
+
+
+  public void showServerMessage(String mess, int duration){
     new Thread(new Runnable() {
       @Override
       public void run() {
@@ -238,7 +247,7 @@ public class GameScreenController extends Thread{
               serverMessage.setVisible(true);
               serverMessage.setText(mess);
               new FadeIn(serverMessage).play();
-            }else if (f == 7){
+            }else if (f == duration){
               new FadeOut(serverMessage).play();
               serverMessage.setMouseTransparent(true);
             }
@@ -323,6 +332,11 @@ public class GameScreenController extends Thread{
   }
 
   public void resetTiles(ActionEvent e) {
+   resetTilesAction();
+  }
+
+  public void resetTilesAction(){
+    this.match.getScrabbleBoard().nextTurn();
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
     nodesToRemove = new Node[14];
@@ -495,6 +509,7 @@ public class GameScreenController extends Thread{
 
   }
   public void setUp(MouseEvent e) {
+    this.match.setGameScreenController(this);
     if (!setUpDone) {
       Thread taskThread = new Thread(new Runnable() {
         @Override
@@ -510,6 +525,10 @@ public class GameScreenController extends Thread{
               @Override
               public void run() {
                 currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
+                nameScore1.setText( (match.getPlayers()[0] != null ) ? ""+match.getPlayers()[0].getScore(): "");
+                nameScore2.setText( (match.getPlayers()[1] != null ) ? ""+match.getPlayers()[1].getScore(): "");
+                nameScore3.setText( (match.getPlayers()[2] != null ) ? ""+match.getPlayers()[2].getScore(): "");
+                nameScore4.setText( (match.getPlayers()[3] != null ) ? ""+match.getPlayers()[3].getScore(): "");
                 if(GameInformation.getInstance().getClientmatch().hasNewTiles()){
                   Tile[] newTiles = GameInformation.getInstance().getClientmatch().getNewTilesToBeAdded();
                   for(int x = 0; x < newTiles.length; x++){
@@ -524,6 +543,10 @@ public class GameScreenController extends Thread{
                 }
                 if(!match.checkTimer() && Main.profile.getName().equals(match.getCurrentPlayerName())){
                   //endTurnB();
+                }
+                if(match.dropTiles()){
+                  resetTilesAction();
+                  match.setDropTiles(false);
                 }
                 if(match.isOver()){
                   sendLostBox();

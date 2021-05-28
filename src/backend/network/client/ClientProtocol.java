@@ -90,32 +90,33 @@ public class ClientProtocol extends Thread{
 
             case GAME_TURN:
               GameTurnMessage turnMessage = (GameTurnMessage) message;
-
               GameInformation.getInstance().getClientmatch().turnTaken(turnMessage.getNowTurn());
-              System.out.println("game turn message received, new turn: "+ turnMessage.getNowTurn());
               break;
 
             case PLAY_FEEDBACK:
               System.out.println("play feedback message received");
               PlayFeedbackMessage message6 = (PlayFeedbackMessage) message;
-              this.match.playFeedBackIntegration(message6.isSuccessfulMove());
+              this.match.playFeedBackIntegration(message6);
               break;
 
             case GAME_OVER:
               // TODO At game controller there must be a methode which show
               // the player that the game is over
+              this.match.getGameScreenController().showServerMessage("Game over",10);
               this.match.setOver(true);
               break;
 
             case GAME_WIN:
               // TODO At game controller there must be a methode which show
               // that the player won
+              this.match.getGameScreenController().showServerMessage("Congrats, you won with "+ this.match.getPlayer().getScore()+" points!", 10);
               this.match.youWon();
               break;
 
             case GAME_LOOSE:
               // TODO At game controller there must be a methode which show
               // that the player lost
+              this.match.getGameScreenController().showServerMessage("You Loose", 10);
               this.match.youLost();
               break;
 
@@ -140,6 +141,7 @@ public class ClientProtocol extends Thread{
               // TODO At game controller there must be a methode which add
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
+              this.match.newGameEvent(message2.getFrom()+" got "+ message2.getPoints()+ " points with his latest move");
               System.out.println("this guy got points: "+ message2.getPoints());
               this.match.addPointsToPlayer(message2.getPoints());
               break;
@@ -176,7 +178,7 @@ public class ClientProtocol extends Thread{
               TimeAlertMessage timeAlertMessage = (TimeAlertMessage) message;
               switch (timeAlertMessage.getAlertType()) {
                 case TIME_OVER:
-                  match.nextPlayer();
+                  match.getGameScreenController().showServerMessage("Your time is up, moving on.", 5);
                   break;
                 case TIMER_STARTED:
                   match.setTimerPersonalTimerToZero();
