@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BrainTest {
+
   ScrabbleBoard board = new ScrabbleBoard();
   EasyAI easyAI = new EasyAI("AiPlayer");
   Tile[] testHand1 = new Tile[7];
@@ -21,7 +22,7 @@ public class BrainTest {
   Tile[] testHand3 = new Tile[7];
 
   @BeforeEach
-      void prepare() {
+  void prepare() {
     board.placeTile(new Tile('H', 4, Tilestatus.ONBOARD), 9, 1);
     board.placeTile(new Tile('D', 2, Tilestatus.ONBOARD), 12, 1);
     board.placeTile(new Tile('E', 1, Tilestatus.ONBOARD), 9, 2);
@@ -80,46 +81,47 @@ public class BrainTest {
     Tile e = new Tile('E', 1);
     Tile f = new Tile('F', 4);
     Tile s = new Tile('S', 1);
-    Tile[] fff = new Tile[]{n,g,v,m,k,i,c};
-    testHand1 = new Tile[]{a,b,c,d,e,f,g};
-    testHand2 = new Tile[]{i,m,k,a,e,c,s};
-    testHand3 = new Tile[]{n,a,f,g,g,a,s};
+    Tile[] fff = new Tile[]{n, g, v, m, k, i, c};
+    testHand1 = new Tile[]{a, b, c, d, e, f, g};
+    testHand2 = new Tile[]{i, m, k, a, e, c, s};
+    testHand3 = new Tile[]{n, a, f, g, g, a, s};
     easyAI.setTiles(fff);
-  }
-  @Test
-  void testPointsCalculation(){
-    TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
-    Iterator<PossibleWord> it = wordsTest.iterator();
-    PossibleWord ginch = new PossibleWord("",0,new ArrayList<Tile>());
-    int ginchPoints = 0;
-    while(it.hasNext()) {
-      if((ginch = it.next()).getWord().equals("GINCH")) {
-        ginchPoints = ginch.getPoints();
-      }
-    }
-    Assert.assertEquals(33,ginchPoints);
   }
 
   @Test
-  void testIfFirstMove(){
+  void testPointsCalculation() {
+    TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
+    Iterator<PossibleWord> it = wordsTest.iterator();
+    PossibleWord ginch = new PossibleWord("", 0, new ArrayList<Tile>());
+    int ginchPoints = 0;
+    while (it.hasNext()) {
+      if ((ginch = it.next()).getWord().equals("GINCH")) {
+        ginchPoints = ginch.getPoints();
+      }
+    }
+    Assert.assertEquals(33, ginchPoints);
+  }
+
+  @Test
+  void testIfFirstMove() {
     ScrabbleBoard newBoard = new ScrabbleBoard();
     easyAI.getEasyBrain().setScrabbleboard(newBoard);
-    Tile[][] tileHands = new Tile[][]{testHand1,testHand2,testHand3};
-    for(int i=0;i< tileHands.length;i++){
-      System.out.println("Try with testHand number" + (i+1) + " ");
+    Tile[][] tileHands = new Tile[][]{testHand1, testHand2, testHand3};
+    for (int i = 0; i < tileHands.length; i++) {
+      System.out.println("Try with testHand number" + (i + 1) + " ");
       easyAI.setTiles(tileHands[i]);
       TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
-      Assert.assertTrue(firstMove.size()>0);
+      Assert.assertTrue(firstMove.size() > 0);
       Iterator<PossibleWord> it = firstMove.iterator();
-      while(it.hasNext()) {
+      while (it.hasNext()) {
         System.out.println(it.next());
       }
     }
 
     TreeSet<PossibleWord> firstMove = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
-    Assert.assertTrue(firstMove.size()>0);
+    Assert.assertTrue(firstMove.size() > 0);
     Iterator<PossibleWord> it = firstMove.iterator();
-    while(it.hasNext()) {
+    while (it.hasNext()) {
       System.out.println(it.next());
     }
   }

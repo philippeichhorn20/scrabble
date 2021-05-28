@@ -3,14 +3,21 @@ package frontend.screens.controllers;
 import backend.basic.Profile;
 import frontend.Main;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 /*
@@ -20,6 +27,8 @@ import javafx.scene.text.Text;
  * @version 1.1
  */
 public class StatScreenController {
+
+  String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
 
   @FXML
   private Text userTitle;
@@ -56,7 +65,7 @@ public class StatScreenController {
   // Changes name and color to typed value
   public void saveChanges(ActionEvent e) {
     String newColor = profileColor.getText();
-    String newName = profileNickname.getText().toLowerCase();
+    String newName = profileNickname.getText();
     if (Main.profile.checkName(newName)) {
       Main.profile.setColor(newColor);
       Main.profile.setName(newName, Main.profile.getId());
@@ -78,9 +87,7 @@ public class StatScreenController {
       Optional<ButtonType> proceed = nameExists.showAndWait();
     }
   }
-  public void deleteProfile(ActionEvent e){
 
-  }
   //Resets all statistics to zero.
   public void resetStatistics(ActionEvent e) {
     Alert areYouSure = new Alert(AlertType.CONFIRMATION);
@@ -97,6 +104,15 @@ public class StatScreenController {
       player.setWins(0, player.getId());
       avgPoints.setText(String.valueOf(0));
     }
+  }
+
+  public void deleteProfile(ActionEvent e) throws SQLException, IOException {
+    Connection connection = DriverManager.getConnection(jdbcUrl);
+    String deleteSql = "DELETE FROM profiles WHERE ROWID=" + Main.profile.getId();
+    PreparedStatement pstm = connection.prepareStatement(deleteSql);
+    pstm.executeUpdate();
+    Main m = new Main();
+    m.changeScene("screens/startingMenu.fxml");
   }
 
   //Method to go back to main menu.
