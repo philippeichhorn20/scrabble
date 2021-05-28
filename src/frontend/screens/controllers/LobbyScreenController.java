@@ -26,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,21 +41,60 @@ import javafx.stage.FileChooser;
  */
 public class LobbyScreenController {
 
-  @FXML private VBox joinGameView;
-  @FXML private ImageView lobbyView;
-  @FXML private VBox startGameView;
-  @FXML private TextField hostIP;
-  @FXML private TextField adressIP;
-  @FXML private Button startGameButton;
-  @FXML private Button loadLibraryButton;
-  @FXML private Text player1Name;
-  @FXML private Text player2Name;
-  @FXML private Text player3Name;
-  @FXML private Text player4Name;
-  @FXML private ImageView player1Icon;
-  @FXML private ImageView player2Icon;
-  @FXML private ImageView player3Icon;
-  @FXML private ImageView player4Icon;
+  @FXML
+  private VBox joinGameView;
+  @FXML
+  private ImageView lobbyView;
+  @FXML
+  private VBox startGameView;
+  @FXML
+  private TextField hostIP;
+  @FXML
+  private TextField adressIP;
+  @FXML
+  private Button startGameButton;
+  @FXML
+  private Button loadLibraryButton;
+  @FXML
+  private Text player1Name;
+  @FXML
+  private Text player2Name;
+  @FXML
+  private Text player3Name;
+  @FXML
+  private Text player4Name;
+  @FXML
+  private ImageView player1Icon;
+  @FXML
+  private ImageView player2Icon;
+  @FXML
+  private ImageView player3Icon;
+  @FXML
+  private ImageView player4Icon;
+  @FXML
+  private Label statPlayer1Name;
+  @FXML
+  private Label statPlayer1Games;
+  @FXML
+  private Label statPlayer1Wins;
+  @FXML
+  private Label statPlayer2Name;
+  @FXML
+  private Label statPlayer2Games;
+  @FXML
+  private Label statPlayer2Wins;
+  @FXML
+  private Label statPlayer3Name;
+  @FXML
+  private Label statPlayer3Games;
+  @FXML
+  private Label statPlayer3Wins;
+  @FXML
+  private Label statPlayer4Name;
+  @FXML
+  private Label statPlayer4Games;
+  @FXML
+  private Label statPlayer4Wins;
 
   boolean isHost = true;
 
@@ -130,14 +170,13 @@ public class LobbyScreenController {
                   } catch (InterruptedException ie) {
                     ie.printStackTrace();
                   }
-                  if (server.newPlayer()){
+                  if (server.newPlayer()) {
                     server.sendToAllBut(
                         Main.profile.getName(),
                         new LobbyInformationMessage(
                             Main.profile.getName(), GameInformation.getInstance().getPlayers()));
                     server.playerAdded();
                   }
-
 
                   Platform.runLater(
                       new Runnable() {
@@ -146,36 +185,55 @@ public class LobbyScreenController {
 
                           Player[] players = GameInformation.getInstance().getPlayers();
 
-                          if (players[0] != null && !player1Name.getText().toLowerCase().equals(players[0].getName())) {
-                            player1Name.setText(
-                                players[0].getName().substring(0, 1).toUpperCase()
-                                    + players[0].getName().substring(1).toLowerCase());
+                          if (players[0] != null && !player1Name.getText().toLowerCase()
+                              .equals(players[0].getName())) {
+                            String name = players[0].getName().substring(0, 1).toUpperCase()
+                                + players[0].getName().substring(1).toLowerCase();
+                            player1Name.setText(name);
+                            statPlayer1Name.setText(name);
+                            /*
+                            @TODO display stats
+                             */
+                            statPlayer1Games.setText("" + 0);
                             new Flash(player1Name).play();
                             new Flash(player1Icon).play();
                           }
-                          if (players[1] != null && !player2Name.getText().toLowerCase().equals(players[1].getName())) {
-                            player2Name.setText(
-                                players[1].getName().substring(0, 1).toUpperCase()
-                                    + players[1].getName().substring(1).toLowerCase());
+                          if (players[1] != null && !player2Name.getText().toLowerCase()
+                              .equals(players[1].getName())) {
+                            String name = players[1].getName().substring(0, 1).toUpperCase()
+                                + players[1].getName().substring(1).toLowerCase();
+                            player2Name.setText(name);
+                            statPlayer2Name.setText(name);
+                            /*
+                            @TODO same as for first player
+                             */
                             new Flash(player2Name).play();
                             player2Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
                             new Flash(player2Icon).play();
                           }
-                          if (players[2] != null && !player3Name.getText().toLowerCase().equals(players[2].getName())) {
-                            player3Name.setText(
-                                players[2].getName().substring(0, 1).toUpperCase()
-                                    + players[2].getName().substring(1).toLowerCase());
+                          if (players[2] != null && !player3Name.getText().toLowerCase()
+                              .equals(players[2].getName())) {
+                            String name = players[2].getName().substring(0, 1).toUpperCase()
+                                + players[2].getName().substring(1).toLowerCase();
+                            player3Name.setText(name);
+                            /*
+                            @TODO same as for first player
+                             */
                             new Flash(player4Name).play();
                             player3Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
                             new Flash(player3Icon).play();
 
                           }
-                          if (players[3] != null && !player4Name.getText().toLowerCase().equals(players[3].getName())) {
-                            player4Name.setText(
-                                players[3].getName().substring(0, 1).toUpperCase()
-                                    + players[3].getName().substring(1).toLowerCase());
+                          if (players[3] != null && !player4Name.getText().toLowerCase()
+                              .equals(players[3].getName())) {
+                            String name = players[3].getName().substring(0, 1).toUpperCase()
+                                + players[3].getName().substring(1).toLowerCase();
+                            player4Name.setText(name);
+                            /*
+                            @TODO same as for first player
+                             */
                             new Flash(player4Name).play();
                             player4Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
@@ -249,8 +307,8 @@ public class LobbyScreenController {
 
       }
     }
-      startGameButton.setVisible(true);
-      loadLibraryButton.setDisable(false);
+    startGameButton.setVisible(true);
+    loadLibraryButton.setDisable(false);
   }
 
   // Method switches to playboard and starts game.
@@ -296,14 +354,16 @@ public class LobbyScreenController {
 
                             Player[] players = GameInformation.getInstance().getPlayers();
 
-                            if (players[0] != null && !player1Name.getText().toLowerCase().equals(players[0].getName())) {
+                            if (players[0] != null && !player1Name.getText().toLowerCase()
+                                .equals(players[0].getName())) {
                               player1Name.setText(
                                   players[0].getName().substring(0, 1).toUpperCase()
                                       + players[0].getName().substring(1).toLowerCase());
                               new Flash(player1Name).play();
                               new Flash(player1Icon).play();
                             }
-                            if (players[1] != null && !player2Name.getText().toLowerCase().equals(players[1].getName())) {
+                            if (players[1] != null && !player2Name.getText().toLowerCase()
+                                .equals(players[1].getName())) {
                               player2Name.setText(
                                   players[1].getName().substring(0, 1).toUpperCase()
                                       + players[1].getName().substring(1).toLowerCase());
@@ -312,7 +372,8 @@ public class LobbyScreenController {
                                   new Image("frontend/screens/resources/playerIcon.png"));
                               new Flash(player2Icon).play();
                             }
-                            if (players[2] != null && !player3Name.getText().toLowerCase().equals(players[2].getName())) {
+                            if (players[2] != null && !player3Name.getText().toLowerCase()
+                                .equals(players[2].getName())) {
                               player3Name.setText(
                                   players[2].getName().substring(0, 1).toUpperCase()
                                       + players[2].getName().substring(1).toLowerCase());
@@ -322,7 +383,8 @@ public class LobbyScreenController {
                               new Flash(player3Icon).play();
 
                             }
-                            if (players[3] != null && !player4Name.getText().toLowerCase().equals(players[3].getName())) {
+                            if (players[3] != null && !player4Name.getText().toLowerCase()
+                                .equals(players[3].getName())) {
                               player4Name.setText(
                                   players[3].getName().substring(0, 1).toUpperCase()
                                       + players[3].getName().substring(1).toLowerCase());
@@ -365,7 +427,7 @@ public class LobbyScreenController {
     startTutorial.setContentText("Do you want to start the Tutorial?");
 
     Optional<ButtonType> result = startTutorial.showAndWait();
-    if (result.get() == ButtonType.OK){
+    if (result.get() == ButtonType.OK) {
       TutorialMatch match = new TutorialMatch();
       TutorialInformation.getInstance().setTutorialmatch(match);
       TutorialInformation.getInstance().getTutorialMatch().startTutorial();

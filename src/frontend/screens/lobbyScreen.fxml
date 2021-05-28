@@ -99,12 +99,12 @@
       </VBox>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false">
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
                <image>
                   <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
                </image>
             </ImageView>
-            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;">
+            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;" visible="false">
                <children>
                   <Label alignment="CENTER" prefWidth="700.0" style="-fx-border-color: #000000; -fx-border-style: none none solid none" text="Starting a server..." textAlignment="CENTER">
                      <VBox.margin>
@@ -437,39 +437,17 @@
                                           </HBox>
                                           <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
                                              <children>
-                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                <Label fx:id="statPlayer1Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                <Label fx:id="statPlayer1Games" prefWidth="70.0" text="Games" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Wins" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="Wins" textFill="WHITE">
+                                                <Label fx:id="statPlayer1Wins" text="Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
@@ -481,17 +459,17 @@
                                           </HBox>
                                           <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
                                              <children>
-                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                <Label fx:id="statPlayer2Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                <Label fx:id="statPlayer2Games" prefWidth="70.0" text="Games" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Wins" textFill="WHITE">
+                                                <Label fx:id="statPlayer2Wins" text="Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
@@ -503,17 +481,39 @@
                                           </HBox>
                                           <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
                                              <children>
-                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                <Label fx:id="statPlayer3Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                <Label fx:id="statPlayer3Games" prefWidth="70.0" text="Games" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label text="Wins" textFill="WHITE">
+                                                <Label fx:id="statPlayer3Wins" text="Wins" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
+                                             <children>
+                                                <Label fx:id="statPlayer4Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="statPlayer4Games" prefWidth="70.0" text="Games" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="statPlayer4Wins" text="Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
