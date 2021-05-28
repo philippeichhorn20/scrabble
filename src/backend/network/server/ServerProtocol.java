@@ -168,7 +168,8 @@ public class ServerProtocol extends Thread {
               // Server sends the message to everyone
               TextMessage textMessage = (TextMessage) message;
               if (textMessage.getText() != null) {
-                server.sendToAll(
+                System.out.println("Sending Text Message");
+            	  server.sendToAll(
                     // with a new Flag that means it has to be rendered in the chat area
                     new TextMessage(MessageType.TEXT,textMessage.getFrom(), textMessage.getText()));
               }

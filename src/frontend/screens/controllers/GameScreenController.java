@@ -123,8 +123,9 @@ public class GameScreenController extends Thread{
   }
 
   public void goSettings(MouseEvent e) throws IOException {
-    Main m = new Main();
-    m.changeScene("screens/settingsScreen.fxml");
+//    Main m = new Main();
+//    m.changeScene("screens/settingsScreen.fxml");
+	  gameInformation.getChat().display();
   }
 
   public void getBounds(ActionEvent e) {

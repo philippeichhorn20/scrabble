@@ -197,6 +197,7 @@ public class ClientProtocol extends Thread{
             	TextMessage textMessage = (TextMessage)message;
             	String sender = textMessage.getFrom();
             	String text = textMessage.getText();
+            	GameInformation.getInstance().getChat().fillTextArea(sender, text);
             	/**
             	 * Call Text Box to add new Text
             	 */

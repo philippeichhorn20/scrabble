@@ -1,10 +1,13 @@
 package backend.basic;
 
+import frontend.MultiUserChat.Server.Chat;
+
 public final class GameInformation {
   private Profile profile;
   private Player host;
   private Player[] players = new Player[4];
   private ClientMatch clientmatch;
+  private Chat chat = new Chat();
 
   public Player getHost() {
     return host;
@@ -66,4 +69,10 @@ public final class GameInformation {
   public Profile getProfile() {
     return this.profile;
   }
+  public Chat getChat() {
+	return this.chat;
+	  
+  }
+  
 }
+

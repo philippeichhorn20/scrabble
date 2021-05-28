@@ -15,6 +15,8 @@ import backend.network.server.ServerSettings;
 import backend.tutorial.TutorialInformation;
 import backend.tutorial.TutorialMatch;
 import frontend.Main;
+import frontend.MultiUserChat.Server.Chat;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -237,6 +239,7 @@ public class LobbyScreenController {
     System.out.println("Start match triggered");
     GameInformation.getInstance().getServermatch().startMatch();
     WordCheckDB.importTextToDB();
+    GameInformation.getInstance().getChat().display();
   }
 
   // Method connects joining player to lobby or server of hosting player.
