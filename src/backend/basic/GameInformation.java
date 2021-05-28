@@ -2,12 +2,24 @@ package backend.basic;
 
 import frontend.MultiUserChat.Server.Chat;
 
+import frontend.screens.controllers.GameScreenController;
+
 public final class GameInformation {
   private Profile profile;
   private Player host;
   private Player[] players = new Player[4];
   private ClientMatch clientmatch;
   private Chat chat = new Chat();
+
+  public GameScreenController getGsc() {
+    return gsc;
+  }
+
+  public void setGsc(GameScreenController gsc) {
+    this.gsc = gsc;
+  }
+
+  private GameScreenController gsc;
 
   public Player getHost() {
     return host;

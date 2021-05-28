@@ -14,6 +14,7 @@ import backend.basic.Player;
 import backend.basic.ScrabbleBoard;
 import backend.basic.ServerMatch;
 import backend.basic.Tile;
+import backend.basic.Tile.Tilestatus;
 import backend.basic.TileBag;
 import frontend.Main;
 import java.io.IOException;
@@ -140,22 +141,26 @@ public class GameScreenController extends Thread{
 
 
   }
-  int fdg = 1;
   public void endTurn(ActionEvent e) throws IOException {
     // servMatch.placeTileMessage(placedTiles);
     // servMatch.endTurnMessage();
     endTurnB();
-
-    newHistoryMessage(String.valueOf(fdg) + "is the number of times you entered this ");
-    fdg++;
   }
-  private void endTurnB(){
-    turn++;
-    drawTiles();
-    //tileBagIcon.setVisible(true);
-    //resetTilesButton.setVisible(true);
+  public void endTurnB(){
+    boolean valid =true;
+    if (valid){
+      GameInformation.getInstance().getClientmatch().nextPlayer();
+      GameInformation.getInstance().getClientmatch().playFeedBackIntegration(true);
+      drawTiles();
+      newHistoryMessage(Main.profile.getName().substring(0,1).toUpperCase()+Main.profile.getName().substring(1).toLowerCase() + "finished his turn");
+      resetTilesButton.setVisible(false);
+      turn++;
+    }else{
+      AlertBox.display("Not a valid word!","This word is not in our dictionary!");
+      newHistoryMessage("This is not a valid word!");
+    }
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
-    new FadeIn(tileBagIcon).play();
+
   }
 
   public void sendWinBox() {
@@ -178,14 +183,19 @@ public class GameScreenController extends Thread{
 
   public void getNewTiles(MouseEvent e) {
     drawTiles();
+
   }
 
   private void drawTiles() {
     resetColor();
+    int i = 0;
+    Tile[] tilesToDraw = new Tile[7];
     for (GraphicTile gt : gtiles) {
       if (!gt.isVisiblee() || gt.toDraw()) {
         // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
+        //GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new ShuffleTilesMessage());
         Tile newTile = new TileBag().drawTile();
+        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
         Text let = new Text(String.valueOf(newTile.getLetter()));
         let.setLayoutX((gt.getLetter().getLayoutX()));
         let.setLayoutY((gt.getLetter().getLayoutY()));
@@ -199,8 +209,8 @@ public class GameScreenController extends Thread{
         gt.setTile(newTile);
         new SlideInLeft(gt.getRec()).play();
         new SlideInLeft(gt.getLetter()).play();
-        new FadeOut(tileBagIcon).play();
-        tileBagIcon.setVisible(false);
+
+
         resetTilesButton.setVisible(false);
       }
     }
@@ -453,6 +463,7 @@ public class GameScreenController extends Thread{
         }
       });
       taskThread.start();
+      GameInformation.getInstance().setGsc(this);
       history[0] = history1;
       history[1] = history2;
       history[2] =  history3;
@@ -488,15 +499,19 @@ public class GameScreenController extends Thread{
         gtiles[i].setXY(402 + (i * 36), 644);
         gtiles[i].getLetter().setVisible(true);
       }
-      //Player[] players = GameInformation.getInstance().getClientmatch().getPlayers();
+      Player[] players = GameInformation.getInstance().getPlayers();
 
 
 
-        //currPlayerText.setText(match.getCurrentPlayerName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
-        //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
-        //name2.setText(players[1].getName() + ":");
-        //name3.setText(players[2].getName() + ":");
-        //name4.setText(players[3].getName() + ":");
+        name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
+        name2.setText(players[1].getName() + ":");
+        if (players[2]!=null){
+          name3.setText(players[2].getName() + ":");
+        }
+        if (players[3]!=null){
+          name4.setText(players[3].getName() + ":");
+        }
+
         nameScore1.setText("0");
         nameScore2.setText("0");
         nameScore3.setText("0");

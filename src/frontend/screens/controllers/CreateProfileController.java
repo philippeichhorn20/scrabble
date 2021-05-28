@@ -45,16 +45,17 @@ public class CreateProfileController {
       newName = newName.toLowerCase();
       try {
         Connection connection = DriverManager.getConnection(jdbcUrl);
-        String addSql = "INSERT INTO profiles VALUES(?,?,?,?)";
+        String addSql = "INSERT INTO profiles VALUES(?,?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(addSql);
         stmt.setString(1, newName);
         stmt.setInt(2, 0);
         stmt.setInt(3, 0);
         stmt.setInt(4, 0);
+        stmt.setString(5,"Color.BLACK");
         stmt.executeUpdate();
         Main m = new Main();
         m.changeProfile(newName);
-        m.changeScene("screens/statScreen.fxml");
+        m.changeScene("screens/mainMenu.fxml");
         System.out.println("entered " + newName + " into the system");
       } catch (SQLException | IOException sqlE) {
         sqlE.printStackTrace();

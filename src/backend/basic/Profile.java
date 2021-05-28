@@ -32,7 +32,7 @@ public class Profile {
   private void loadProfile() {
     try {
       Connection connection = DriverManager.getConnection(jdbcUrl);
-      String sql = "SELECT rowid, wins, games, points FROM profiles WHERE name = ?";
+      String sql = "SELECT rowid, wins, games, points, color FROM profiles WHERE name = ?";
       PreparedStatement stmt = connection.prepareStatement(sql);
       stmt.setString(1, name);
       ResultSet result = stmt.executeQuery();
@@ -41,6 +41,7 @@ public class Profile {
         wins = result.getInt("wins");
         games = result.getInt("games");
         points = result.getInt("points");
+        color = result.getString("color");
       }
 
     } catch (SQLException sqle) {
@@ -135,7 +136,21 @@ public class Profile {
     }
     this.games = games;
   }
+  public void setColor(String color,int id){
+    this.color = color;
+    try {
+      Connection connection = DriverManager.getConnection(jdbcUrl);
+      String sql = "UPDATE profiles SET color = ? WHERE rowid = ?";
+      PreparedStatement stmt = connection.prepareStatement(sql);
+      stmt.setString(1, color);
+      stmt.setInt(2, id);
+      stmt.executeUpdate();
 
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+    }
+    this.points = points;
+  }
   /**
    * Updates the points in the database.
    *

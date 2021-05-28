@@ -50,7 +50,8 @@ public class Main extends Application {
           + "              name text,\n"
           + "              games integer,\n"
           + "              wins integer,\n"
-          + "              points integer)");
+          + "              points integer,\n"
+          + "              color text)");
 
     }
     profile = new Profile("");
