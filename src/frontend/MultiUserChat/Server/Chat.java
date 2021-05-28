@@ -43,7 +43,8 @@ public class Chat{
 	        window.setScene(scene);
 	}
 	public  void fillTextArea(String from, String text) {
-		this.textArea.appendText(from+": " + text+ "/n");
+		this.textArea.appendText(from+": " + text +"\n" );
+		System.out.println();
 	}
 	
     public void display() {
