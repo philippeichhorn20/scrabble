@@ -32,6 +32,11 @@ public class PlayerAI {
   }
 
   public void setTiles(Tile[] tiles) {
+    for (Tile t : tiles) {
+      if (t.isJoker()) {
+        t.setLetter(getRandomLetter());
+      }
+    }
     this.tilesOnHand = tiles;
   }
 
@@ -54,6 +59,11 @@ public class PlayerAI {
   Receive first tiles and put them on rack of AI
    */
   public void handleGameStartMessage(Tile[] tiles) {
+    for (Tile t : tiles) {
+      if (t.isJoker()) {
+        t.setLetter(getRandomLetter());
+      }
+    }
     this.tilesOnHand = tiles;
   }
 
@@ -89,6 +99,9 @@ public class PlayerAI {
     int count = 0;
     for (Tile t : this.tilesOnHand) {
       if (t.equals(null)) {
+        if (tiles[count].isJoker()) {
+          tiles[count].setLetter(getRandomLetter());
+        }
         t = tiles[count++];
       }
     }
@@ -116,6 +129,15 @@ public class PlayerAI {
   public void pass() throws IOException {
     Message pass = new PassMessage(name);
     aiProtocol.sendToServer(pass);
+  }
+
+  /*
+  AI is not smart enough to deal with blanks. Therefore this method helps getting a random char and
+  returns it.
+   */
+  public static char getRandomLetter() {
+    int random = (int) (Math.random() * 25 + 65);
+    return (char) random;
   }
 
 }

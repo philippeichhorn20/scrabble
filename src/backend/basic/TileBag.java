@@ -8,7 +8,8 @@ import backend.basic.Tile.Tilestatus;
 /* @author Nils Sch�fer
  * @version 1.0
  * @description A class which represents the tilebag of the game scrabbel with 100 Tiles and the standart letter set for english scrabbel*/
-public class TileBag  implements Serializable {
+public class TileBag implements Serializable {
+
   private Tile[] bag = new Tile[100]; // stores the tiles in the tilebag
 
   /*A constructor which creates a tilebag and directly assigns a standart letter set */
