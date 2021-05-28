@@ -13,6 +13,7 @@ import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
@@ -29,6 +30,8 @@ public class ClientProtocol extends Thread{
   private ObjectOutputStream out;
   private ObjectInputStream in;
   private ClientMatch match;
+  private String historyMess;
+  private boolean messChange = false;
 
 
 
@@ -204,13 +207,17 @@ public class ClientProtocol extends Thread{
             	
             	
             	break;
-            
+            case HISTORY:
+              HistoryMessage hMessage = (HistoryMessage) message;
+              historyMess = hMessage.getMessage();
+              messChange = true;
+
             default:
               break;
           }
           lastMessage = message;
         } else {
-          System.out.println("Dublicate message catched");
+          System.out.println("Duplicate message caught");
         }
       } catch (ClassNotFoundException | IOException e) {
         break;
@@ -229,6 +236,15 @@ public class ClientProtocol extends Thread{
     } catch (IOException e){
       e.printStackTrace();
     }
+  }
+  public String getHistoryMessage(){
+    return historyMess;
+  }
+  public boolean messageChanged(){
+    return messChange;
+  }
+  public void messageRead(){
+    messChange = false;
   }
   public boolean isRunning() {
     return running;

@@ -16,6 +16,7 @@ import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 import backend.basic.TileBag;
+import backend.network.messages.text.HistoryMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class GameScreenController extends Thread{
   public void endTurnB(){
     boolean valid =true;
     if (valid){
-      GameInformation.getInstance().getClientmatch().nextPlayer();
+
 
       drawTiles();
       newHistoryMessage(Main.profile.getName().substring(0,1).toUpperCase()+Main.profile.getName().substring(1).toLowerCase() + " finished his turn");
@@ -425,10 +426,10 @@ public class GameScreenController extends Thread{
       }
       }
   }
-  public void newHistoryMessage(String mess){
+  public void newHistoryMessageOther(String mess){
     boolean full = false;
     for (int i = 0;i<=10;i++){
-     if (history[i].getText().equals("")){
+      if (history[i].getText().equals("")){
         history[i].setText(mess);
         new FadeIn(history[i]).play();
         full = true;
@@ -443,8 +444,38 @@ public class GameScreenController extends Thread{
       }
       history[10].setText(mess);
 
-        GameInformation.getInstance().getServermatch().sendHistoryMessage(Main.profile.getName(),mess);
+      new FadeIn(history[10]).play();
 
+    }
+
+  }
+  public void newHistoryMessage(String mess){
+    boolean full = false;
+    for (int i = 0;i<=10;i++){
+     if (history[i].getText().equals("")){
+        history[i].setText(mess);
+        new FadeIn(history[i]).play();
+        try{
+          GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new HistoryMessage(Main.profile.getName(),mess));
+        }catch(IOException ie){
+          ie.printStackTrace();
+        }
+        full = true;
+        break;
+      }
+
+    }
+    if (!full){
+      String help = history[10].getText();
+      for (int i = 0;i<=9;i++){
+        history[i].setText(history[i+1].getText());
+      }
+      history[10].setText(mess);
+      try{
+        GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new HistoryMessage(Main.profile.getName(),mess));
+      }catch(IOException ie){
+        ie.printStackTrace();
+      }
       new FadeIn(history[10]).play();
 
     }
@@ -486,6 +517,10 @@ public class GameScreenController extends Thread{
                     placeTile(newTiles[x]);
                   }
                   match.dropNewTiles();
+                }
+                if(GameInformation.getInstance().getClientmatch().getProtocol().messageChanged()){
+                  newHistoryMessageOther(GameInformation.getInstance().getClientmatch().getProtocol().getHistoryMessage());
+                  GameInformation.getInstance().getClientmatch().getProtocol().messageRead();
                 }
                 if(!match.checkTimer() && Main.profile.getName().equals(match.getCurrentPlayerName())){
                   //endTurnB();

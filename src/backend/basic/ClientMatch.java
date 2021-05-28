@@ -3,6 +3,7 @@ package backend.basic;
 import backend.basic.Tile.Tilestatus;
 import backend.network.client.ClientProtocol;
 import backend.network.messages.MessageType;
+import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
@@ -114,6 +115,14 @@ public class ClientMatch {
       System.out.println("couldnt send your tiles to server");
     }
   }
+  public void sendHistoryMessage(String from,String mess){
+    System.out.println("ClientMatch History Message");
+    try{
+      GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new HistoryMessage(from,mess));
+    }catch (IOException e){
+      System.out.println("whoops");
+    }
+  }
   /**
    * @author vivanova
    */
@@ -187,6 +196,7 @@ newGameEvent(players[currentPlayer].getName()+ " has 30 seconds left");
   public void playFeedBackIntegration(boolean successfulMove) {
     if (successfulMove) {
       scrabbleBoard.nextTurn();
+      //GameInformation.getInstance().getGsc().endTurnB();
     } else {
       //scrabbleBoard.nextTurn();
       removeChangedTiles();

@@ -5,6 +5,7 @@ import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
+import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
@@ -75,11 +76,9 @@ public class ServerMatch {
 
   public void removePlayer(String player) {
     for (int x = 0; x < this.players.length; x++) {
-      if(this.players[x] == null){
-        if (this.players[x].name.equals(player)) {
-          this.players[x] = null;
-          break;
-        }
+      if (this.players[x].name.equals(player)) {
+        this.players[x] = null;
+        break;
       }
     }
   }
@@ -164,6 +163,9 @@ public class ServerMatch {
     return timer;
   }
 
+
+
+
   /*
     @method stars the match. It triggers the start of the thread, as well as different methods
     */
@@ -185,13 +187,15 @@ public class ServerMatch {
     // start game thread programmieren. Diese ruft das auf
     //server.sendToAll(new);
   }
-
+  public void sendHistoryMessage(String from,String mess){
+    server.sendToAllBut(from,new HistoryMessage(from,mess));
+  }
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles, Tile[] saveTiles) {
     int playerNum = getPlayersNumber(from);
     if (playerNum == -1) {
-      System.out.println("Player not found, at shuffel request");
+      System.out.println("Player not found, at shuffle request");
     } else if (playerNum != currentPlayer) {
-      System.out.println("Wrong plasyer, at shuffel request");
+      System.out.println("Wrong player, at shuffle request");
     } else {
       if (this.players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
         server.sendOnlyTo(from,

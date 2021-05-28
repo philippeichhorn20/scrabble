@@ -177,7 +177,7 @@ public class ServerProtocol extends Thread {
               break;
             case HISTORY:
               HistoryMessage historyMessage = (HistoryMessage) message;
-              System.out.println("yery");
+              System.out.println("ServerProtocol HistoryMessage");
               server.sendToAllBut(historyMessage.getFrom(),historyMessage);
               break;
             default:
