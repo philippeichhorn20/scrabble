@@ -8,6 +8,7 @@ import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
+import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 
 /*
@@ -41,6 +42,7 @@ public class ClientMatch {
   private String gameEvents = "";
   private Tile[] newTilesToBeAdded;
   private boolean invalidMove;
+  private GameScreenController gameScreenController;
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
@@ -98,6 +100,7 @@ public class ClientMatch {
   }
 
   public void sendPlacedTilesToServer(){
+    this.gameScreenController.newHistoryMessage("hello, works");
     System.out.println("sending "+this.scrabbleBoard.newTilesOfCurrentMove.size()+" tiles to server");
     Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
     for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
@@ -136,7 +139,7 @@ public class ClientMatch {
     }
     this.getTimer().nextPlayer();
     scrabbleBoard.nextTurn();
-    newGameEvent("It is now " + players[currentPlayer].getName() + "'s turn");
+ //   newGameEvent("It is now " + players[currentPlayer].getName() + "'s turn");
   }
 
   // Method is called, when player decides to not do anything this turn
@@ -174,11 +177,11 @@ public class ClientMatch {
 */
 
   public void thirtySecondsAlert() {
-//TODO
+newGameEvent(players[currentPlayer].getName()+ " has 30 seconds left");
   }
 
   public void oneMinuteAlert() {
-//TODO
+    newGameEvent(players[currentPlayer].getName()+ " has 60 seconds left");
   }
 
   public void playFeedBackIntegration(boolean successfulMove) {
@@ -298,8 +301,7 @@ public class ClientMatch {
   }
 
   public void newGameEvent(String eventString) {
-    this.gameEvents += "";
-    this.gameEvents += "\n";
+    this.gameScreenController.newHistoryMessage(eventString);
   }
 
   public String getCurrentPlayerName() {return this.players[this.currentPlayer].getName();}
@@ -344,5 +346,16 @@ public class ClientMatch {
 
   public boolean isInvalidMove() {
     return invalidMove;
+  }
+
+
+  public void setGameScreenController(
+      GameScreenController gameScreenController) {
+    this.timer.setGameScreenController(gameScreenController);
+    this.gameScreenController = gameScreenController;
+  }
+
+  public GameScreenController getGameScreenController() {
+    return gameScreenController;
   }
 }

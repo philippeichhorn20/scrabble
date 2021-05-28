@@ -1,5 +1,6 @@
 package backend.basic;
 
+import frontend.screens.controllers.GameScreenController;
 import java.io.Serializable;
 
 /*
@@ -14,6 +15,7 @@ public class Timer extends Thread implements Serializable {
   private long timerOverall = 0; //in seconds
   private long timerCurrentPlayer = 0; //in seconds
   private boolean isRunning = false;
+  private GameScreenController gameScreenController;
 
   /*
  this function runs the Thread that updates the timers
@@ -29,8 +31,13 @@ public class Timer extends Thread implements Serializable {
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
-      if (timerCurrentPlayer == 60 * 2) {
+      if (timerCurrentPlayer == 60 * 0.2) {
+        //gameScreenController.newHistoryMessage("you have 60 seconds left");
+      }else if (timerCurrentPlayer == 60 * 9.5){
+        //gameScreenController.newHistoryMessage("you have 30 seconds left");
 
+      }else if(timerCurrentPlayer == 60 * 10){
+        //gameScreenController.endTurnB();
       }
     }
   }
@@ -43,6 +50,16 @@ public class Timer extends Thread implements Serializable {
     return timerCurrentPlayer;
   }
 
+  public String getTimerCurrentPlayerString() {
+    String timeString = "";
+    if(timerCurrentPlayer > 60){
+      timeString += timerCurrentPlayer / 60+" minutes and " + timerCurrentPlayer % 60 +" seconds left";
+    }else{
+      timeString += timerCurrentPlayer +" seconds left";
+    }
+    return timeString;
+  }
+
   /*
   is called when the next turn is triggered. It resets the timer of current turn
    */
@@ -52,6 +69,15 @@ public class Timer extends Thread implements Serializable {
 
   public void setTimerCurrentPlayer(long timerCurrentPlayer) {
     this.timerCurrentPlayer = timerCurrentPlayer;
+  }
+
+  public void setGameScreenController(
+      GameScreenController gameScreenController) {
+    this.gameScreenController = gameScreenController;
+  }
+
+  public GameScreenController getGameScreenController() {
+    return gameScreenController;
   }
 
   public void setTimerOverall(long timerOverall) {

@@ -408,8 +408,74 @@ public class ScrabbleBoard {
     }
     return false;
   }
+  public boolean wordIsConnectedToMiddle(Tile[] tiles){
+    System.out.println("DER SPASS STARTED");
+    Matchfield[][] temporaryScrabbleBoard = placeTiles(tiles,this.scrabbleBoard);
+    ArrayList<Tile> tilesOnBoard = getTilesOnBoard(temporaryScrabbleBoard);
+    if(temporaryScrabbleBoard[8][8].hasTile()){
+      ArrayList<Tile> discoveredTiles = new ArrayList<>();
+      discoveredTiles.add(temporaryScrabbleBoard[8][8].getTile());
+      discoverTile(temporaryScrabbleBoard[8][8].getTile(), temporaryScrabbleBoard, discoveredTiles);
+      if(discoveredTiles.size() == tilesOnBoard.size()){
+        return true;
+      }
+    }
+    return false;
+  }
 
+  public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered){
+    System.out.println("discover tiles instanz: "+ tile.getX()+"."+tile.getY()+"  has oben: "+ board[tile.getX()][tile.getY()+1].hasTile());
+    if(tile.getY()<15 && board[tile.getX()][tile.getY()+1].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX()][tile.getY()+1].getTile())){
+      alreadyDiscovered.add(board[tile.getX()][tile.getY()+1].getTile());
+      discoverTile(board[tile.getX()][tile.getY()+1].getTile(),board,alreadyDiscovered);
+    }
+    System.out.println("has rechts: "+ board[tile.getX()+1][tile.getY()].hasTile()+ "contains: "+alreadyDiscovered.contains(tile));
+    if(tile.getX()<15 && board[tile.getX()+1][tile.getY()].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX()+1][tile.getY()].getTile())){
+      alreadyDiscovered.add(board[tile.getX()+1][tile.getY()].getTile());
+      discoverTile(board[tile.getX()+1][tile.getY()].getTile(),board,alreadyDiscovered);
+    }
+    System.out.println("has unten: "+ board[tile.getX()][tile.getY()-1].hasTile());
+    if(tile.getY()>1 && board[tile.getX()][tile.getY()-1].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX()][tile.getY()-1].getTile())){
+      alreadyDiscovered.add(board[tile.getX()][tile.getY()-1].getTile());
+      discoverTile(board[tile.getX()][tile.getY()-1].getTile(),board,alreadyDiscovered);
+    }
+    System.out.println("has links: "+ board[tile.getX()-1][tile.getY()].hasTile());
+    if(tile.getX()>1 && board[tile.getX()-1][tile.getY()].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX()-1][tile.getY()].getTile())){
+      alreadyDiscovered.add(board[tile.getX()-1][tile.getY()].getTile());
+      discoverTile(board[tile.getX()-1][tile.getY()].getTile(),board,alreadyDiscovered);
+
+    }
+
+
+
+  }
+
+  public static ArrayList<Tile> getTilesOnBoard(Matchfield[][] board){
+    ArrayList<Tile> tilesOnBoard = new ArrayList<>();
+    for(int x = 1; x < board.length; x++){
+      for(int y = 1; y < board.length; y++){
+        if(board[x][y].hasTile()){
+          tilesOnBoard.add(board[x][y].getTile());
+        }
+      }
+    }
+
+    return tilesOnBoard;
+  }
+
+  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board){
+    Matchfield[][] temporaryScrabbleBoard = board.clone();
+    for(int x = 0; x < tiles.length; x++){
+      temporaryScrabbleBoard[tiles[x].getX()][tiles[x].getY()].setTile(tiles[x]);
+    }
+    return temporaryScrabbleBoard;
+  }
 }
+
 
 
 
