@@ -11,8 +11,8 @@ import backend.network.messages.MessageType;
 public class TextMessage extends Message {
 	private String text = "";
 
-	public TextMessage(String from, String text) {
-		super(MessageType.TEXT, from);
+	public TextMessage(MessageType type ,String from, String text) {
+		super(type, from);
 		this.text = new String(text);
 	}
 	

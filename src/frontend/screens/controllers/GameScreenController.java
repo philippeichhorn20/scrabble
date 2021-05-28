@@ -28,6 +28,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -619,5 +621,38 @@ public class GameScreenController extends Thread {
       window.setScene(scene);
       window.showAndWait();
     }
+  }
+  /**
+   * 
+   * @author vivanova
+   *
+   */
+  public static class TextBox{
+	  public static void display() {
+		  Stage window = new Stage();
+		  window.initModality(Modality.APPLICATION_MODAL);
+		  window.setTitle("Chat");
+		  window.setMinHeight(250);
+		  window.setMinWidth(400);
+		  TextArea textArea = new TextArea();
+		  textArea.setEditable(false);
+		  TextField inputField = new TextField();
+		  Button btnClose = new Button("Close");
+	      btnClose.setOnAction(e -> window.close());
+		  Button btnSend = new Button("Send");
+		  btnSend.setOnAction(e -> {
+			  String chatMessage = inputField.getText();
+			  GameInformation.getInstance().getClientmatch().sendChatMessage(chatMessage);
+			  inputField.setText("");
+		  });
+		  VBox layout = new VBox(10);
+		  layout.getChildren().addAll(textArea,inputField,btnSend,btnClose);
+		  layout.setAlignment(Pos.TOP_CENTER);
+		  Scene scene = new Scene(layout);
+		  window.setScene(scene);
+		  window.showAndWait();
+		  
+		  
+	  }
   }
 }

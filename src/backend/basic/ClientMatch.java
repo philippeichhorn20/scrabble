@@ -2,6 +2,8 @@ package backend.basic;
 
 import backend.basic.Tile.Tilestatus;
 import backend.network.client.ClientProtocol;
+import backend.network.messages.MessageType;
+import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
@@ -108,6 +110,17 @@ public class ClientMatch {
     }catch(IOException e){
       System.out.println("couldnt send your tiles to server");
     }
+  }
+  /**
+   * @author vivanova
+   */
+  public void sendChatMessage(String textMessage) {
+	  System.out.println("Sending Relay Message to Server"); 
+	  try {
+		GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new TextMessage(MessageType.RELAY,this.player.getName(),textMessage));
+	} catch (IOException e) {
+		System.err.println("Could not send Relay Message to Server");
+	}
   }
 
   public void nextPlayer() {

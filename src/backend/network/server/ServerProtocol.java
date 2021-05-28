@@ -170,7 +170,7 @@ public class ServerProtocol extends Thread {
               if (textMessage.getText() != null) {
                 server.sendToAll(
                     // with a new Flag that means it has to be rendered in the chat area
-                    new TextMessage(textMessage.getFrom(), textMessage.getText()));
+                    new TextMessage(MessageType.TEXT,textMessage.getFrom(), textMessage.getText()));
               }
               break;
 

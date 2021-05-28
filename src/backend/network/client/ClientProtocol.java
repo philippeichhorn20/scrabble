@@ -190,7 +190,9 @@ public class ClientProtocol extends Thread{
               // it nulls the timer
               this.match.setTimerToZero();
               break;
-
+              /**
+               *@author vivanova
+               */
             case TEXT: 
             	TextMessage textMessage = (TextMessage)message;
             	String sender = textMessage.getFrom();
