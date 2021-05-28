@@ -136,7 +136,11 @@ public class Profile {
     }
     this.games = games;
   }
-  public void setColor(String color,int id){
+
+  /*
+  @author jawinter Brings color to profile and updates db
+   */
+  public void setColor(String color, int id) {
     this.color = color;
     try {
       Connection connection = DriverManager.getConnection(jdbcUrl);
@@ -151,6 +155,7 @@ public class Profile {
     }
     this.points = points;
   }
+
   /**
    * Updates the points in the database.
    *
@@ -171,8 +176,6 @@ public class Profile {
     }
     this.points = points;
   }
-
-
 
 
   /*
