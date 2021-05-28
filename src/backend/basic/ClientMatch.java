@@ -8,6 +8,7 @@ import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
+import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 
 /*
@@ -41,6 +42,7 @@ public class ClientMatch {
   private String gameEvents = "";
   private Tile[] newTilesToBeAdded;
   private boolean invalidMove;
+  private GameScreenController gameScreenController;
 
 
   public ClientMatch(ClientProtocol protocol, Player[] players, String from, Player player) {
@@ -98,6 +100,7 @@ public class ClientMatch {
   }
 
   public void sendPlacedTilesToServer(){
+    this.gameScreenController.newHistoryMessage("hello, works");
     System.out.println("sending "+this.scrabbleBoard.newTilesOfCurrentMove.size()+" tiles to server");
     Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
     for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
@@ -344,5 +347,15 @@ public class ClientMatch {
 
   public boolean isInvalidMove() {
     return invalidMove;
+  }
+
+
+  public void setGameScreenController(
+      GameScreenController gameScreenController) {
+    this.gameScreenController = gameScreenController;
+  }
+
+  public GameScreenController getGameScreenController() {
+    return gameScreenController;
   }
 }

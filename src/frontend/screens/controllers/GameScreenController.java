@@ -408,7 +408,7 @@ public class GameScreenController extends Thread {
     }
   }
 
-  private void newHistoryMessage(String mess) {
+  public void newHistoryMessage(String mess) {
     boolean full = false;
     for (int i = 0; i <= 10; i++) {
       if (history[i].getText().equals("")) {
@@ -442,6 +442,7 @@ public class GameScreenController extends Thread {
   }
 
   public void setUp(MouseEvent e) {
+    this.match.setGameScreenController(this);
     if (!setUpDone) {
       Thread taskThread = new Thread(new Runnable() {
         @Override
