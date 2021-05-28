@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.LobbyScreenController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.LobbyScreenController">
    <children>
       <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
          <children>
@@ -99,16 +99,16 @@
       </VBox>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
                </image>
             </ImageView>
-            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;" visible="false">
+            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;">
                <children>
                   <Label alignment="CENTER" prefWidth="700.0" style="-fx-border-color: #000000; -fx-border-style: none none solid none" text="Starting a server..." textAlignment="CENTER">
                      <VBox.margin>
-                        <Insets />
+                        <Insets bottom="5.0" />
                      </VBox.margin></Label>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -117,7 +117,7 @@
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="20.0" />
+                              <Insets bottom="20.0" top="30.0" />
                            </VBox.margin>
                         </Label>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -134,7 +134,7 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fx:id="player1Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player1Icon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
                                           <Image url="@resources/playerIcon.png" />
                                        </image>
@@ -159,7 +159,7 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fx:id="player2Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player2Icon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
                                           <Image url="@resources/waiting.png" />
                                        </image>
@@ -184,7 +184,7 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fx:id="player3Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player3Icon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
                                           <Image url="@resources/waiting.png" />
                                        </image>
@@ -209,7 +209,7 @@
                                     </Text>
                                  </bottom>
                                  <center>
-                                    <ImageView fx:id="player4Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                    <ImageView fx:id="player4Icon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
                                           <Image url="@resources/waiting.png" />
                                        </image>
@@ -223,155 +223,312 @@
                                  </HBox.margin>
                               </BorderPane>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
                         </HBox>
-                        <BorderPane maxWidth="620.0" prefWidth="620.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
-                           <center>
-                              <HBox maxWidth="620.0" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label prefWidth="250.0" text="Host IP:" textFill="WHITE">
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane maxWidth="300.0" prefWidth="300.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                                 <center>
+                                    <HBox maxWidth="300.0" prefHeight="100.0" prefWidth="300.0">
+                                       <children>
+                                          <Label text="Host IP:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Consolas Bold" size="20.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Label>
+                                          <TextField fx:id="hostIP" editable="false" promptText="Something went wrong" style="-fx-background-color: #A0522D;">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                 </center>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </BorderPane>
+                              <BorderPane prefWidth="300.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                                 <left>
+                                    <Label text="Dictionary" textFill="WHITE" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas Bold" size="20.0" />
                                        </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="hostIP" editable="false" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
-                                 </children>
-                              </HBox>
-                           </center>
-                           <VBox.margin>
-                              <Insets top="50.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </BorderPane>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
-                           <VBox.margin>
-                              <Insets top="30.0" />
-                           </VBox.margin>
-                           <top>
-                              <Label text="AI Opponents" textFill="WHITE" BorderPane.alignment="CENTER">
-                                 <font>
-                                    <Font name="Consolas Bold" size="20.0" />
-                                 </font>
-                                 <BorderPane.margin>
-                                    <Insets bottom="20.0" />
-                                 </BorderPane.margin>
-                              </Label>
-                           </top>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <left>
-                              <BorderPane prefWidth="300.0" BorderPane.alignment="CENTER">
+                                 </left>
                                  <center>
-                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                    <MenuButton minWidth="100.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Choose" textFill="WHITE" BorderPane.alignment="CENTER">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" text="Dictionary 1" />
+                                        <MenuItem mnemonicParsing="false" text="Dictionary 2" />
+                                      </items>
+                                    </MenuButton>
+                                 </center>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </BorderPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                                 <top>
+                                    <Label alignment="CENTER" prefWidth="300.0" style="-fx-background-color: #8b4513; -fx-background-radius: 10 10 0 0;" text="AI Opponents" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+                                       <font>
+                                          <Font name="Consolas Bold" size="20.0" />
+                                       </font>
+                                       <BorderPane.margin>
+                                          <Insets bottom="10.0" left="-10.0" right="-10.0" top="-10.0" />
+                                       </BorderPane.margin>
+                                    </Label>
+                                 </top>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <center>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Label text="Quantity" textFill="WHITE">
-                                             <font>
-                                                <Font name="Consolas" size="20.0" />
-                                             </font>
+                                          <BorderPane prefWidth="300.0">
+                                             <center>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Label text="Quantity" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Consolas" size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="1" textFill="WHITE">
+                                                               <font>
+                                                                  <Font name="Consolas" size="20.0" />
+                                                               </font>
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                            </Button>
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="2" textFill="WHITE">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font name="Consolas" size="20.0" />
+                                                               </font>
+                                                            </Button>
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="3" textFill="WHITE">
+                                                               <font>
+                                                                  <Font name="Consolas" size="20.0" />
+                                                               </font>
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </center>
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets bottom="5.0" top="-5.0" />
                                              </VBox.margin>
-                                          </Label>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                          </BorderPane>
+                                          <BorderPane prefWidth="300.0">
+                                             <center>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Label text="Difficulty" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Consolas" size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Easy" textFill="WHITE">
+                                                               <font>
+                                                                  <Font name="Consolas" size="20.0" />
+                                                               </font>
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                            </Button>
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Hard" textFill="WHITE">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font name="Consolas" size="20.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </center>
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </BorderPane>
+                                       </children>
+                                    </VBox>
+                                 </center>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </BorderPane>
+                              <BorderPane maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                                 <top>
+                                    <Label alignment="CENTER" prefWidth="300.0" style="-fx-background-color: #8b4513; -fx-background-radius: 10 10 0 0;" text="Statistics" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+                                       <font>
+                                          <Font name="Consolas Bold" size="20.0" />
+                                       </font>
+                                       <BorderPane.margin>
+                                          <Insets bottom="10.0" left="-10.0" right="-10.0" top="-10.0" />
+                                       </BorderPane.margin>
+                                    </Label>
+                                 </top>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <center>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0" style="-fx-border-color: white; -fx-border-width: 0 0 1 0;">
                                              <children>
-                                                <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="1" textFill="WHITE">
+                                                <Label prefWidth="100.0" text="Name" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="20.0" />
                                                    </font>
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                </Button>
-                                                <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="2" textFill="WHITE">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
+                                                </Label>
+                                                <Label text="Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="20.0" />
                                                    </font>
-                                                </Button>
-                                                <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="3" textFill="WHITE">
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
                                                    <font>
-                                                      <Font name="Consolas" size="20.0" />
+                                                      <Font name="Consolas" size="16.0" />
                                                    </font>
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                </Button>
+                                                </Label>
+                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Wins" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Wins" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Wins" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label prefWidth="70.0" text="Games" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="Wins" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
                                  </center>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
                               </BorderPane>
-                           </left>
-                           <right>
-                              <BorderPane prefWidth="300.0" BorderPane.alignment="CENTER">
-                                 <center>
-                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <Label text="Difficulty" textFill="WHITE">
-                                             <font>
-                                                <Font name="Consolas" size="20.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets bottom="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Easy" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="20.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                </Button>
-                                                <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Hard" textFill="WHITE">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                   <font>
-                                                      <Font name="Consolas" size="20.0" />
-                                                   </font>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </center>
-                              </BorderPane>
-                           </right>
-                        </BorderPane>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
-                           <left>
-                              <Label text="Dictionary" textFill="WHITE" BorderPane.alignment="CENTER">
-                                 <font>
-                                    <Font name="Consolas Bold" size="20.0" />
-                                 </font>
-                              </Label>
-                           </left>
-                           <VBox.margin>
-                              <Insets top="30.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <center>
-                              <MenuButton minWidth="100.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Choose" textFill="WHITE" BorderPane.alignment="CENTER">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Dictionary 1" />
-                                  <MenuItem mnemonicParsing="false" text="Dictionary 2" />
-                                </items>
-                              </MenuButton>
-                           </center>
-                        </BorderPane>
+                           </children>
+                        </HBox>
                        <BorderPane>
                          <center>
                            <Button fx:id="loadLibraryButton" mnemonicParsing="false" onAction="#loadLibrary" style="-fx-background-color: #A0522D;" text="Load New Dictionary" textFill="WHITE">
@@ -400,7 +557,7 @@
                   </VBox>
                </children>
                <padding>
-                  <Insets left="50.0" right="50.0" top="50.0" />
+                  <Insets left="50.0" right="50.0" top="20.0" />
                </padding>
             </VBox>
             <VBox fx:id="joinGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;" visible="false">
