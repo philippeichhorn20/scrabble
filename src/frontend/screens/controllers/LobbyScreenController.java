@@ -210,27 +210,20 @@ public class LobbyScreenController {
     loadLibraryButton.setDisable(true);
     loadLibraryButton.setText("Loading File");
     FileChooser fileChooser = new FileChooser();
-    try {
-      File selectedFile = fileChooser.showOpenDialog(Main.getStg());
-
-      try {
-        System.out.println(Files.probeContentType(selectedFile.toPath()));
-        if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
-            .equals("text/plain")) {
-          WordCheckDB.loadNewLibrary(selectedFile.getPath());
-          loadLibraryButton.setText("Sucecss");
-        } else {
-          GameScreenController.AlertBox
-              .display("Could not load Library", "Be sure to choose a .txt file");
-        }
-      } catch (IOException ioe) {
-        GameScreenController.AlertBox
-            .display("Could not load Library", "Be sure to choose a .txt file");
-
+    File selectedFile = fileChooser.showOpenDialog(Main.getStg());
+    try{
+      System.out.println(Files.probeContentType(selectedFile.toPath()));
+      if(selectedFile != null && Files.probeContentType(selectedFile.toPath()).equals("text/plain")){
+        WordCheckDB.loadNewLibrary(selectedFile.getPath());
+        loadLibraryButton.setText("Sucecss");
+      }else{
+        GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
       }
-    } catch (Exception exe) {
+    }catch(IOException ioe){
+      GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
 
     }
+
     startGameButton.setVisible(true);
     loadLibraryButton.setDisable(false);
   }
@@ -239,7 +232,6 @@ public class LobbyScreenController {
     System.out.println("Start match triggered");
     GameInformation.getInstance().getServermatch().startMatch();
   }
-
 
   // Method connects joining player to lobby or server of hosting player.
   public void enterLobby(ActionEvent e) {

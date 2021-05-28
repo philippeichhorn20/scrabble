@@ -2,6 +2,7 @@ package backEndTest.aiTest;
 
 import backend.ai.EasyAI;
 import backend.ai.PossibleWord;
+import backend.basic.Player.Playerstatus;
 import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BrainTest {
-
   ScrabbleBoard board = new ScrabbleBoard();
   EasyAI easyAI = new EasyAI("AiPlayer");
   Tile[] testHand1 = new Tile[7];
