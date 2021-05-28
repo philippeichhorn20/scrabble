@@ -26,7 +26,6 @@ public class EasyAI extends PlayerAI {
 
 	@Override
 	public void handleTurn() {
-		updateScrabbleboard(tilesOnHand);
 		// Make a random choice;
 		int choice = r.nextInt(3);
 		switch (choice) {
@@ -36,11 +35,11 @@ public class EasyAI extends PlayerAI {
 			if (moves.isEmpty()) {
 				try {
 					// ?Does it automatically end the Turn?
+					this.setTiles(new Tile[7]);
 					requestNewTiles();
 				} catch (IOException e) {
 					// What is a good way to handle the Exception?
 					System.err.println("Easy Ai could not request new tiles.");
-					e.printStackTrace();
 				}
 
 			} else {
@@ -57,7 +56,9 @@ public class EasyAI extends PlayerAI {
 				// We take the tiles of our current word and place them
 				var word = pick.getTile();
 				try {
-					placeTiles((Tile[]) word.toArray());
+					Tile[] tilesToUse = (Tile[]) word.toArray();
+					removeUsedTilesFromHand(tilesToUse);
+					placeTiles(tilesToUse);
 				} catch (IOException e) {
 					System.err.println("Easy Ai could not play tiles");
 					e.printStackTrace();
@@ -68,10 +69,10 @@ public class EasyAI extends PlayerAI {
 		case 1: {
 			try {
 				// Request new Tiles and end turn.
+				this.setTiles(new Tile[7]);
 				requestNewTiles();
 			} catch (IOException e) {
 				System.err.println("Easy Ai could not request new tiles.");
-				e.printStackTrace();
 			}
 		}
 		case 2: {
@@ -80,7 +81,6 @@ public class EasyAI extends PlayerAI {
 				pass();
 			} catch (IOException e) {
 				System.err.println("Easy Ai could not pass turn");
-				e.printStackTrace();
 			}
 		}
 		default:
@@ -88,5 +88,14 @@ public class EasyAI extends PlayerAI {
 		}
 
 	}
+	 public void removeUsedTilesFromHand(Tile[] tilesRemove){
+		    for(Tile t : tilesRemove) {
+		      for(Tile tileOnHand : this.tilesOnHand) {
+		        if(t.getLetter()==tileOnHand.getLetter()) {
+		          tileOnHand = null;
+		        }
+		      }
+		    }
+		  }
 
 }
