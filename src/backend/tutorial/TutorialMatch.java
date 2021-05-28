@@ -15,6 +15,7 @@ public class TutorialMatch {
   public String welcomeContentTitel = "", welcomeContentText = "" ;
   public String highlightedTilesTitle = "", higlightedTilesContentText = "";
   public String highligthScrabbleboardPositionTitle = "", highligthScrabbleboardPositionContentText = "";
+  public String endGameTitle = "", endGameContentText = "";
 
   public TutorialMatch() {
     tutorialBag = new TileBag();
@@ -46,6 +47,9 @@ public class TutorialMatch {
 
     highligthScrabbleboardPositionTitle = "Place a word with your tiles!";
     highligthScrabbleboardPositionContentText = "";
+
+    endGameTitle = "";
+    endGameContentText = "";
   }
 
   public void startTutorial() {

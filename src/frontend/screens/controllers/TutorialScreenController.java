@@ -120,7 +120,7 @@ public class TutorialScreenController extends Thread{
   private GraphicTile[] gtiles = new GraphicTile[7];
   private int turn = 0;
 
-  public void goBack(ActionEvent e) throws IOException {
+  public void goBack() throws IOException {
     Main m = new Main();
     m.changeScene("screens/mainMenu.fxml");
   }
@@ -144,14 +144,34 @@ public class TutorialScreenController extends Thread{
   }
   int fdg = 1;
   public void endTurn(ActionEvent e) throws IOException {
-    if(turnTiles[0].getLetter() == 'H' && turnTiles[1].getLetter() == 'A' &&
-    turnTiles[2].getLetter() == 'L' && turnTiles[3].getLetter() == 'L' &&
-    turnTiles[4].getLetter() == 'O')
-    {
-      tutorialInformation.getTutorialMatch().endFlag();
+    boolean correctMove = true;
+    for(int i = 0; i < 5; i++) {
+      if(turnTiles[i] != null) {
+        if(turnTiles[i].getX() == 6 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'H') {
+
+        } else if(turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'A') {
+
+        } else if(turnTiles[i].getX() == 8 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'L') {
+
+        } else if(turnTiles[i].getX() == 9 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'L') {
+
+        } else if(turnTiles[i].getX() == 10 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'O') {
+
+        } else {
+          correctMove = false;
+        }
+      } else {
+        correctMove = false;
+      }
+    }
+
+    if(correctMove) {
+      TutorialInformation.getInstance().getTutorialMatch().endFlag();
     } else {
       resetTiles(e);
-
+      for(int i = 0; i < 5; i++) {
+        turnTiles[i] = null;
+      }
     }
   }
   private void endTurnB(){
@@ -468,7 +488,21 @@ public class TutorialScreenController extends Thread{
 
 
                 } else if(tutorialInformation.getTutorialMatch().getEndFlag()) {
+                  try {
+                    Alert endGameAlert =  new Alert(AlertType.INFORMATION);
 
+                    endGameAlert.setTitle(TutorialInformation.getInstance().getTutorialMatch().endGameTitle);
+                    endGameAlert.setHeaderText(null);
+                    endGameAlert.setContentText(TutorialInformation.getInstance().getTutorialMatch().endGameContentText);
+
+                    Optional<ButtonType> result = endGameAlert.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                      goBack();
+                    }
+
+                  } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                  }
                 }
               }
             });
@@ -547,7 +581,6 @@ public class TutorialScreenController extends Thread{
     Text tileChar = new Text(" " + String.valueOf(tile.getLetter()).toUpperCase());
     tileChar.setId("tiles");
     tileChar.setFont(new Font("Times New Roman Bold", 20));
-    ;
     board.add(rec, tile.getX(), tile.getY());
     board.add(tileChar, tile.getX(), tile.getY());
   }
