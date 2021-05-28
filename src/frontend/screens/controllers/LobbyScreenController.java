@@ -12,14 +12,20 @@ import backend.network.client.ClientProtocol;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.server.Server;
 import backend.network.server.ServerSettings;
+import backend.tutorial.TutorialInformation;
+import backend.tutorial.TutorialMatch;
 import frontend.Main;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -327,5 +333,25 @@ public class LobbyScreenController {
   // Method responsible for animations
   public void animate(MouseEvent e) {
     new Pulse((Button) e.getSource()).play();
+  }
+
+  public void startTutorial() throws IOException {
+    Alert startTutorial = new Alert(AlertType.CONFIRMATION);
+
+    startTutorial.setTitle("Start Tutorial");
+    startTutorial.setHeaderText(null);
+    startTutorial.setContentText("Do you want to start the Tutorial?");
+
+    Optional<ButtonType> result = startTutorial.showAndWait();
+    if (result.get() == ButtonType.OK){
+      TutorialMatch match = new TutorialMatch();
+      TutorialInformation.getInstance().setTutorialmatch(match);
+      TutorialInformation.getInstance().getTutorialMatch().startTutorial();
+      Main m = new Main();
+
+      m.changeScene("screens/tutorialScreen.fxml");
+    } else {
+      // ... user chose CANCEL or closed the dialog
+    }
   }
 }

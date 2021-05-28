@@ -426,7 +426,7 @@ public class TutorialScreenController extends Thread{
         @Override
         public void run() {
           int progress = 100;
-          while (!GameInformation.getInstance().getClientmatch().isOver()) { //for (int i = 0;i<100;i++){
+          while (!TutorialInformation.getInstance().getTutorialMatch().isOver()) {
             try{
               Thread.sleep(1000);
             }catch(InterruptedException ie){
@@ -440,12 +440,23 @@ public class TutorialScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
+                //System.out.println("Test");
                 if(tutorialInformation.getTutorialMatch().getStartFlag()) {
+                  for (int i = 0; i < 7; i++) {
+                    gtiles[i].setTile(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]);
+                    gtiles[i].getLetter().setText(String.valueOf(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i].getLetter()));
+                    gtiles[i].getLetter().setFont(new Font(20));
+                    gtiles[i].setXY(402 + (i * 36), 644);
+                    gtiles[i].getLetter().setVisible(true);
+                  }
+
                   Alert welcomeAlert = new Alert(AlertType.INFORMATION);
 
                   welcomeAlert.setTitle(tutorialInformation.getTutorialMatch().welcomeContentTitel);
                   welcomeAlert.setHeaderText(null);
                   welcomeAlert.setContentText(tutorialInformation.getTutorialMatch().welcomeContentText);
+
+                  TutorialInformation.getInstance().getTutorialMatch().setStartFlag(false);
 
                   Optional<ButtonType> result = welcomeAlert.showAndWait();
                   if (result.get() == ButtonType.OK){
@@ -462,6 +473,8 @@ public class TutorialScreenController extends Thread{
                   higlitedTilesAlert.setTitle(tutorialInformation.getTutorialMatch().highlightedTilesTitle);
                   higlitedTilesAlert.setHeaderText(null);
                   higlitedTilesAlert.setContentText(tutorialInformation.getTutorialMatch().higlightedTilesContentText);
+
+                  TutorialInformation.getInstance().getTutorialMatch().setHighligthTilesFlag(false);
 
                   Optional<ButtonType> result = higlitedTilesAlert.showAndWait();
                   if (result.get() == ButtonType.OK){
@@ -481,6 +494,7 @@ public class TutorialScreenController extends Thread{
                   highligthScrabbleboardPositionAlert.setHeaderText(null);
                   highligthScrabbleboardPositionAlert.setContentText(tutorialInformation.getTutorialMatch().highligthScrabbleboardPositionContentText);
 
+                  TutorialInformation.getInstance().getTutorialMatch().setHighlightScrabbleboardPositionFlag(false);
                   Optional<ButtonType> result = highligthScrabbleboardPositionAlert.showAndWait();
                   if (result.get() == ButtonType.OK){
 
@@ -495,9 +509,12 @@ public class TutorialScreenController extends Thread{
                     endGameAlert.setHeaderText(null);
                     endGameAlert.setContentText(TutorialInformation.getInstance().getTutorialMatch().endGameContentText);
 
+                    TutorialInformation.getInstance().getTutorialMatch().setEndFlag(false);
+
                     Optional<ButtonType> result = endGameAlert.showAndWait();
                     if (result.get() == ButtonType.OK){
                       goBack();
+                      TutorialInformation.getInstance().getTutorialMatch().setGameOver();
                     }
 
                   } catch (IOException ioException) {
@@ -535,16 +552,7 @@ public class TutorialScreenController extends Thread{
           tilesOnBoard[i][j] = false;
         }
       }
-      for (int i = 0; i < 7; i++) {
-        TileBag tb = new TileBag();
-        // gtiles[i].getLetter().setText(String.valueOf(servMatch.getTileBag().drawTile().getLetter()));
-        Tile drawnTile = tb.drawTile();
-        gtiles[i].setTile(drawnTile);
-        gtiles[i].getLetter().setText(String.valueOf(drawnTile.getLetter()));
-        gtiles[i].getLetter().setFont(new Font(20));
-        gtiles[i].setXY(402 + (i * 36), 644);
-        gtiles[i].getLetter().setVisible(true);
-      }
+
       //Player[] players = GameInformation.getInstance().getClientmatch().getPlayers();
 
 

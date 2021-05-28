@@ -10,8 +10,8 @@ import backend.basic.TileBag;
 public class TutorialMatch {
   private TileBag tutorialBag;
   private ScrabbleBoard tutorialBoard;
-  private Tile[] tutorialRackTiles = new Tile[7];
-  private boolean startFlag, highligthTilesFlag, highlightScrabbleboardPositionFlag, endFlag;
+  public Tile[] tutorialRackTiles = new Tile[7];
+  private boolean startFlag, highligthTilesFlag, highlightScrabbleboardPositionFlag, endFlag, gameOver;
   public String welcomeContentTitel = "", welcomeContentText = "" ;
   public String highlightedTilesTitle = "", higlightedTilesContentText = "";
   public String highligthScrabbleboardPositionTitle = "", highligthScrabbleboardPositionContentText = "";
@@ -26,7 +26,7 @@ public class TutorialMatch {
     tutorialRackTiles[2] = new Tile('L', 1);
     tutorialRackTiles[3] = new Tile('L', 1);
     tutorialRackTiles[4] = new Tile('O', 1);
-    tutorialRackTiles[5] = new Tile('P', 2);
+    tutorialRackTiles[5] = new Tile('W', 2);
     tutorialRackTiles[6] = new Tile('O', 1);
 
     startFlag = false;
@@ -57,6 +57,7 @@ public class TutorialMatch {
     highligthTilesFlag = false;
     highlightScrabbleboardPositionFlag = false;
     endFlag = false;
+    gameOver = false;
   }
 
   public void highligthTiles() {
@@ -64,6 +65,7 @@ public class TutorialMatch {
     highligthTilesFlag = true;
     highlightScrabbleboardPositionFlag = false;
     endFlag = false;
+    gameOver = false;
   }
 
   public void highlightScrabbleboardPosition() {
@@ -71,6 +73,7 @@ public class TutorialMatch {
     highligthTilesFlag = false;
     highlightScrabbleboardPositionFlag = true;
     endFlag = false;
+    gameOver = false;
   }
 
   public void endFlag() {
@@ -78,6 +81,15 @@ public class TutorialMatch {
     highligthTilesFlag = false;
     highlightScrabbleboardPositionFlag = false;
     endFlag = true;
+    gameOver = false;
+  }
+
+  public void setGameOver() {
+    startFlag = false;
+    highligthTilesFlag = false;
+    highlightScrabbleboardPositionFlag = false;
+    endFlag = false;
+    gameOver = true;
   }
 
   public TileBag getTutorialBag() {
@@ -90,6 +102,22 @@ public class TutorialMatch {
 
   public Tile[] getTutorialRackTiles() {
     return tutorialRackTiles;
+  }
+
+  public void setStartFlag(boolean startFlag) {
+    this.startFlag = startFlag;
+  }
+
+  public void setHighligthTilesFlag(boolean highligthTilesFlag) {
+    this.highligthTilesFlag = highligthTilesFlag;
+  }
+
+  public void setHighlightScrabbleboardPositionFlag(boolean highlightScrabbleboardPositionFlag) {
+    this.highlightScrabbleboardPositionFlag = highlightScrabbleboardPositionFlag;
+  }
+
+  public void setEndFlag(boolean endFlag) {
+    this.endFlag = endFlag;
   }
 
   public boolean getStartFlag() {
@@ -107,4 +135,7 @@ public class TutorialMatch {
   public boolean getEndFlag() {
     return endFlag;
   }
+
+  public boolean isOver() {return gameOver;}
+
 }
