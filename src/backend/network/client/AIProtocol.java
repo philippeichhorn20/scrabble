@@ -68,6 +68,14 @@ public class AIProtocol extends Thread {
 
         if (message != null && lastMessage != null && !lastMessage.equals(message)) {
           switch (message.getMessageType()) {
+            case GAME_INFO:
+              ai.handleStartGame(((LobbyInformationMessage)message).getPlayers());
+              break;
+
+            case GAME_START:
+              ai.handleGameStartMessage(((GameStartMessage)message).getTiles());
+              break;
+
             case GAME_TURN:
               ai.handleGameTurnMessage(((GameTurnMessage)message).getNowTurn());
               break;
