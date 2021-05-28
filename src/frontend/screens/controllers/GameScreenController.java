@@ -575,9 +575,13 @@ public class GameScreenController extends Thread{
       Player[] players = GameInformation.getInstance().getPlayers();
 
 
-
+      if (players[0]!=null){
         name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
+      }
+      if (players[1]!=null){
         name2.setText(players[1].getName() + ":");
+      }
+
         if (players[2]!=null){
           name3.setText(players[2].getName() + ":");
         }
