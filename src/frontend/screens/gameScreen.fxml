@@ -259,6 +259,12 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <Label fx:id="serverMessage" contentDisplay="CENTER" layoutX="224.0" layoutY="280.0" prefHeight="110.0" prefWidth="642.0" style="-fx-alignment: center; -fx-background-color: #F5F5DC; -fx-background-radius: 10;" text="WARNING" textFill="#404d2c" visible="false">
+               <font>
+                  <Font name="Georgia" size="57.0" />
+               </font>
+            </Label>
+            <Button layoutX="900.0" layoutY="500.0" mnemonicParsing="false" onAction="#openChat" text="Chat" />
          </children>
       </AnchorPane>
    </center>

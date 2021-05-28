@@ -172,22 +172,8 @@ public class Profile {
     this.points = points;
   }
 
-  /*@author nilschae*/
-  public void setColor(String hexColor,int id) {
-    try {
-      Connection connection = DriverManager.getConnection(jdbcUrl);
-      String sql = "UPDATE profiles SET color = ? WHERE rowid = ?";
-      PreparedStatement stmt = connection.prepareStatement(sql);
-      stmt.setString(1, hexColor);
-      stmt.setInt(2, id);
-      stmt.executeUpdate();
 
-    } catch (SQLException sqle) {
-      sqle.printStackTrace();
-    }
-    this.name = name;
-    this.color = hexColor;
-  }
+
 
   /*
   @author jawinter

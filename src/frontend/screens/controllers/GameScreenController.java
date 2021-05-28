@@ -82,6 +82,7 @@ public class GameScreenController extends Thread{
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
   @FXML private Label currPlayerText;
+  @FXML private Label serverMessage;
   ClientMatch match = GameInformation.getInstance().getClientmatch();
   Player thisPlayer = match.getPlayer();
   private GameInformation gameInformation = GameInformation.getInstance();
@@ -144,15 +145,16 @@ public class GameScreenController extends Thread{
   public void endTurn(ActionEvent e) throws IOException {
     // servMatch.placeTileMessage(placedTiles);
     // servMatch.endTurnMessage();
+    showServerMessage("LMAO THIS WORKS");
     endTurnB();
   }
   public void endTurnB(){
     boolean valid =true;
     if (valid){
       GameInformation.getInstance().getClientmatch().nextPlayer();
-      GameInformation.getInstance().getClientmatch().playFeedBackIntegration(true);
+
       drawTiles();
-      newHistoryMessage(Main.profile.getName().substring(0,1).toUpperCase()+Main.profile.getName().substring(1).toLowerCase() + "finished his turn");
+      newHistoryMessage(Main.profile.getName().substring(0,1).toUpperCase()+Main.profile.getName().substring(1).toLowerCase() + " finished his turn");
       resetTilesButton.setVisible(false);
       turn++;
     }else{
@@ -193,7 +195,6 @@ public class GameScreenController extends Thread{
     for (GraphicTile gt : gtiles) {
       if (!gt.isVisiblee() || gt.toDraw()) {
         // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
-        //GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new ShuffleTilesMessage());
         Tile newTile = new TileBag().drawTile();
         Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
         Text let = new Text(String.valueOf(newTile.getLetter()));
@@ -215,12 +216,42 @@ public class GameScreenController extends Thread{
       }
     }
   }
+  public void showServerMessage(String mess){
 
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        for (int i  = 0;i<8;i++){
+          try{
+            Thread.sleep(1000);
+          }catch(InterruptedException e){
+            e.printStackTrace();
+          }
+          final int f = i;
+
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+
+            if(f == 0){
+              serverMessage.setVisible(true);
+              serverMessage.setText(mess);
+              new FadeIn(serverMessage).play();
+            }else if (f == 7){
+              new FadeOut(serverMessage).play();
+              serverMessage.setMouseTransparent(true);
+            }
+
+          }
+        });}
+      }
+    }).start();
+  }
   public void setTileOnBoard(MouseEvent e) {
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
         Bounds b = board.getCellBounds(i, j);
-        if (i == 0 || j == 0 || i == 16 || i == 17 || j == 16){
+        if (i == 0 || j == 0 || i == 15 || i == 16 || j == 15){
 
         }else{
         if (b.contains(e.getX(), e.getY())) {
@@ -394,7 +425,7 @@ public class GameScreenController extends Thread{
       }
       }
   }
-  private void newHistoryMessage(String mess){
+  public void newHistoryMessage(String mess){
     boolean full = false;
     for (int i = 0;i<=10;i++){
      if (history[i].getText().equals("")){
@@ -411,6 +442,9 @@ public class GameScreenController extends Thread{
         history[i].setText(history[i+1].getText());
       }
       history[10].setText(mess);
+
+        GameInformation.getInstance().getServermatch().sendHistoryMessage(Main.profile.getName(),mess);
+
       new FadeIn(history[10]).play();
 
     }
@@ -424,6 +458,10 @@ public class GameScreenController extends Thread{
     }else{
       return false;
     }
+  }
+  public void openChat(ActionEvent e){
+    GameInformation.getInstance().getChat().display();
+
   }
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
@@ -450,7 +488,7 @@ public class GameScreenController extends Thread{
                   match.dropNewTiles();
                 }
                 if(!match.checkTimer() && Main.profile.getName().equals(match.getCurrentPlayerName())){
-                  endTurnB();
+                  //endTurnB();
                 }
                 if(match.isOver()){
                   sendLostBox();

@@ -9,6 +9,7 @@ import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.connection.SendIDMessage;
+import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
@@ -174,7 +175,11 @@ public class ServerProtocol extends Thread {
                     new TextMessage(MessageType.TEXT,textMessage.getFrom(), textMessage.getText()));
               }
               break;
-
+            case HISTORY:
+              HistoryMessage historyMessage = (HistoryMessage) message;
+              System.out.println("yery");
+              server.sendToAllBut(historyMessage.getFrom(),historyMessage);
+              break;
             default:
               break;
           }
