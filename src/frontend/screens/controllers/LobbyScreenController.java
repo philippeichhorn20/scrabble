@@ -108,7 +108,6 @@ public class LobbyScreenController {
     System.out.println("start Lobby called");
     isHost = true;
     Player host = new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT);
-    player1Name.setText(host.getName());
 
     Server server = new Server();
 
@@ -158,7 +157,7 @@ public class LobbyScreenController {
                             player2Name.setText(
                                 players[1].getName().substring(0, 1).toUpperCase()
                                     + players[1].getName().substring(1).toLowerCase());
-                            new Flash(player4Name).play();
+                            new Flash(player2Name).play();
                             player2Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
                             new Flash(player2Icon).play();
@@ -220,7 +219,7 @@ public class LobbyScreenController {
     try{
       System.out.println(Files.probeContentType(selectedFile.toPath()));
       if(selectedFile != null && Files.probeContentType(selectedFile.toPath()).equals("text/plain")){
-        WordCheckDB.loadNewLibrary(selectedFile.getPath());
+        //WordCheckDB.loadNewLibrary(selectedFile.getPath());
         loadLibraryButton.setText("Sucecss");
       }else{
         GameScreenController.AlertBox.display("Could not load Library", "Be sure to choose a .txt file");
@@ -237,6 +236,7 @@ public class LobbyScreenController {
   public void startGame(ActionEvent e) {
     System.out.println("Start match triggered");
     GameInformation.getInstance().getServermatch().startMatch();
+    WordCheckDB.importTextToDB();
   }
 
   // Method connects joining player to lobby or server of hosting player.
@@ -285,7 +285,7 @@ public class LobbyScreenController {
                               player2Name.setText(
                                   players[1].getName().substring(0, 1).toUpperCase()
                                       + players[1].getName().substring(1).toLowerCase());
-                              new Flash(player4Name).play();
+                              new Flash(player2Name).play();
                               player2Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
                               new Flash(player2Icon).play();
