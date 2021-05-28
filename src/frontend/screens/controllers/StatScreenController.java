@@ -67,7 +67,7 @@ public class StatScreenController {
     String newColor = profileColor.getText();
     String newName = profileNickname.getText();
     if (Main.profile.checkName(newName)) {
-      Main.profile.setColor(newColor);
+      Main.profile.setColor(newColor,Main.profile.getId());
       Main.profile.setName(newName, Main.profile.getId());
 
       Alert successfulSaved = new Alert(AlertType.INFORMATION);

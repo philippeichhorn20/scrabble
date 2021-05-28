@@ -59,7 +59,7 @@ public class ManageProfileController {
     String newColor = TF_ProfileColor.getText();
 
     currentProfile.setName(newName, currentProfile.getId());
-    currentProfile.setColor(newColor);
+    currentProfile.setColor(newColor, currentProfile.getId());
 
     Alert successfulSaved = new Alert(AlertType.INFORMATION);
     successfulSaved.setTitle("Successful saved!");
