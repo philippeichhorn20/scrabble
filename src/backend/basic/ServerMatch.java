@@ -173,11 +173,11 @@ public class ServerMatch {
     server.sendToAll(new LobbyInformationMessage("server", this.players));
     int count = 0;
     for (int i = 0; i < this.players.length; i++) {
+      if (this.players[i] != null) {
       Tile[] tiles = new Tile[8];
       for (int x = 0; x < tiles.length; x++) {
         tiles[x] = tileBag.drawTile();
       }
-      if (this.players[i] != null) {
         server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
         count++;
       }
