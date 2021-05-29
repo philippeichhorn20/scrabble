@@ -147,42 +147,42 @@
                <content>
                   <AnchorPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #ffe5b4;">
                      <children>
-                        <Label fx:id="name1" layoutX="17.0" layoutY="23.0" text="Label">
+                        <Label fx:id="name1" layoutX="20.0" layoutY="5.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="name2" layoutX="17.0" layoutY="70.0" text="Label">
+                        <Label fx:id="name2" layoutX="20.0" layoutY="55.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="name3" layoutX="20.0" layoutY="110.0" text="Label">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="name4" layoutX="20.0" layoutY="142.0" prefHeight="31.0" prefWidth="68.0" text="Label">
+                        <Label fx:id="name3" layoutX="20.0" layoutY="105.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore1" layoutX="121.0" layoutY="23.0" text="Label">
+                        <Label fx:id="name4" layoutX="20.0" layoutY="155.0" prefHeight="31.0" prefWidth="68.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore4" layoutX="121.0" layoutY="143.0" text="Label">
+                        <Label fx:id="nameScore1" layoutX="125.0" layoutY="5.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore3" layoutX="121.0" layoutY="108.0" text="Label">
+                        <Label fx:id="nameScore4" layoutX="121.0" layoutY="155.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore2" layoutX="121.0" layoutY="70.0" text="Label">
+                        <Label fx:id="nameScore3" layoutX="121.0" layoutY="105.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="nameScore2" layoutX="121.0" layoutY="55.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -208,19 +208,11 @@
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label fx:id="currPlayerText" layoutX="876.0" layoutY="420.0" prefHeight="40.0" prefWidth="145.0" text="Player" textFill="#751e1e">
+            <Label fx:id="currPlayerText" layoutX="820.0" layoutY="420.0" prefHeight="50.0" prefWidth="253.0" style="-fx-alignment: center;" text="Player" textFill="#751e1e">
                <font>
                   <Font name="Trebuchet MS" size="42.0" />
                </font>
             </Label>
-            <ImageView fx:id="settingsButton" fitHeight="51.0" fitWidth="74.0" layoutX="14.0" layoutY="15.0" onMouseClicked="#goSettings" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@resources/outline_settings_black_24dp.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
             <Button fx:id="endTurnButton" layoutX="780.0" layoutY="650.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="48.0" prefWidth="118.0" text="End Turn">
                <font>
                   <Font size="21.0" />
@@ -259,7 +251,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Label fx:id="serverMessage" contentDisplay="CENTER" layoutX="224.0" layoutY="280.0" maxWidth="1000.0" minHeight="110.0" minWidth="642.0" style="-fx-alignment: center; -fx-background-color: #F5F5DC; -fx-background-radius: 10;" text="WARNING" textFill="#404d2c">
+            <Label fx:id="serverMessage" contentDisplay="CENTER" layoutX="224.0" layoutY="280.0" maxWidth="1000.0" minHeight="110.0" minWidth="642.0" style="-fx-alignment: center; -fx-background-color: #F5F5DC; -fx-background-radius: 10;" text="WARNING" textFill="#404d2c" visible="false">
                <font>
                   <Font name="Georgia" size="30.0" />
                </font>
