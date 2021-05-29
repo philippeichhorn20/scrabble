@@ -179,10 +179,24 @@ public class LobbyScreenController {
                     ie.printStackTrace();
                   }
                   if (server.newPlayer()) {
-                    server.sendToAllBut(
-                        Main.profile.getName(),
-                        new LobbyInformationMessage(
-                            Main.profile.getName(), GameInformation.getInstance().getPlayers()));
+                    Player[] correctPlayer = new Player[4];
+
+                    for(int i = 0; i < 4; i++) {
+                      Player p = GameInformation.getInstance().getPlayers()[i];
+                      if(p != null && p.getStatus() == Playerstatus.AI) {
+                        Player aiPlayer = new Player(GameInformation.getInstance().getPlayers()[i].getName(),
+                            GameInformation.getInstance().getPlayers()[i].getColor(),
+                            GameInformation.getInstance().getPlayers()[i].getGames(),
+                            GameInformation.getInstance().getPlayers()[i].getWins(), Playerstatus.WAIT);
+
+                        correctPlayer[i] = aiPlayer;
+
+                      } else {
+                        correctPlayer[i] = GameInformation.getInstance().getPlayers()[i];
+                      }
+                    }
+
+                    server.sendToAllBut(Main.profile.getName(),new LobbyInformationMessage(Main.profile.getName(), correctPlayer));
                     server.playerAdded();
                   }
 
@@ -368,6 +382,8 @@ public class LobbyScreenController {
       }
     }
     HardAI newAI = new HardAI("hardAI" + (playerInLobby + 1));
+
+
     if (!GameInformation.getInstance().getServermatch()
         .addPlayer(newAI)) {
       GameScreenController.AlertBox

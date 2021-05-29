@@ -198,7 +198,24 @@ public class ServerMatch {
   public void startMatch() {
     int count = 0;
     this.startAiProtocols();
-    server.sendToAll(new LobbyInformationMessage("server", this.players));
+    Player[] correctPlayer = new Player[4];
+
+    for(int i = 0; i < 4; i++) {
+      Player p = GameInformation.getInstance().getPlayers()[i];
+      if(p != null && p.getStatus() == Playerstatus.AI) {
+        Player aiPlayer = new Player(GameInformation.getInstance().getPlayers()[i].getName(),
+            GameInformation.getInstance().getPlayers()[i].getColor(),
+            GameInformation.getInstance().getPlayers()[i].getGames(),
+            GameInformation.getInstance().getPlayers()[i].getWins(), Playerstatus.WAIT);
+
+        correctPlayer[i] = aiPlayer;
+
+      } else {
+        correctPlayer[i] = GameInformation.getInstance().getPlayers()[i];
+      }
+    }
+
+    server.sendToAll(new LobbyInformationMessage("server", correctPlayer));
     for (int i = 0; i < this.players.length; i++) {
       if (this.players[i] != null) {
         Tile[] tiles = new Tile[7];
