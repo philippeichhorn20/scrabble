@@ -1,5 +1,8 @@
 package backend.basic;
 
+import backend.ai.PlayerAI;
+import backend.basic.Player.Playerstatus;
+import backend.network.client.AIProtocol;
 import backend.network.messages.game.GameOverMessage;
 import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.GameTurnMessage;
@@ -14,6 +17,7 @@ import backend.network.messages.time.TimeAlertMessage;
 import backend.network.messages.time.TimeAlertType;
 import backend.network.server.Server;
 import backend.network.server.ServerProtocol;
+import backend.network.server.ServerSettings;
 import java.io.IOException;
 
 /*
@@ -40,6 +44,7 @@ public class ServerMatch {
   private Player[] players = new Player[4];
   private boolean isFirstMove = true;
   private int pointlessTurns = 0;
+
   /*
   @method
   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
@@ -68,29 +73,29 @@ public class ServerMatch {
    */
 
   public boolean addPlayer(Player p) {
-    System.out.println("adding a player: "+ p.getName());
-      if (players[0] == null) {
-        System.out.println("!");
-        players[0] = p;
-      }else if(players[1]==null){
-        System.out.println("!");
-        players[1]=p;
-      }else if(players[2]==null){
-        System.out.println("!");
-        players[2]=p;
-      }else if(players[3]==null){
-        System.out.println("!");
-        players[3]=p;
-      }else{
-        return false;
-      }
+    System.out.println("adding a player: " + p.getName());
+    if (players[0] == null) {
+      System.out.println("!");
+      players[0] = p;
+    } else if (players[1] == null) {
+      System.out.println("!");
+      players[1] = p;
+    } else if (players[2] == null) {
+      System.out.println("!");
+      players[2] = p;
+    } else if (players[3] == null) {
+      System.out.println("!");
+      players[3] = p;
+    } else {
+      return false;
+    }
     return true;
 
   }
 
   public void removePlayer(String player) {
     for (int x = 0; x < this.players.length; x++) {
-      if (this.players[x].name.equals(player)) {
+      if (this.players[x] != null && this.players[x].name.equals(player)) {
         this.players[x] = null;
         break;
       }
@@ -113,7 +118,7 @@ public class ServerMatch {
     return tileBag;
   }
 
-  public void startTimer(){
+  public void startTimer() {
     this.timer.start();
   }
 
@@ -123,51 +128,52 @@ public class ServerMatch {
 
   public void placeTiles(Tile[] tiles, String from) throws IOException {
     //if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
-      if(tiles.length != 0){
-        for (int i = 0; i < tiles.length; i++) {
-          this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
-        }
-        if(!this.scrabbleBoard.wordIsConnectedToMiddle(tiles)){
-          System.out.println("wrong first move detected");
-          server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server", "Start the Game by placing a word over the center matchfield", false));
-        }else{
-          System.out.println("everything alrighty");
-          PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
-          message.setSuccessfulMove(true);
-          if (message.isSuccessfulMove()) {
-            System.out.println("input was valid");
-            server.sendOnlyTo(this.players[this.currentPlayer].name, message);
-            System.out.println(this.players[this.currentPlayer].name+ " is receiving tiles");
-            server.sendOnlyTo(this.players[this.currentPlayer].name,
-                new GetNewTilesMessage(this.players[this.currentPlayer].name,
-                    this.drawNewTiles(tiles.length)));
-            int points = scrabbleBoard.getPoints();
-            if(points == 0){
-              pointlessTurns++;
-            }else{
-              pointlessTurns = 0;
-            }
-            this.players[this.currentPlayer].addPoints(points);
-            System.out.println("points received"+ points);
-            server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
-            //TODO: send to all but
-            server.sendToAll(
-                new PlaceTilesMessage(this.players[this.currentPlayer].name, tiles));
-            nextPlayer();
-          }else{
-            server.sendOnlyTo(this.players[this.currentPlayer].name, message);
-            System.out.println("input was invalid");
-            this.scrabbleBoard.dropChangedTiles();
-          }
-        }
-
-
-      }else{
-        System.out.println("no tiles were found");
+    if (tiles.length != 0) {
+      for (int i = 0; i < tiles.length; i++) {
+        this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
       }
-   // } else {
+      if (!this.scrabbleBoard.wordIsConnectedToMiddle(tiles)) {
+        System.out.println("wrong first move detected");
+        server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server",
+            "Start the Game by placing a word over the center matchfield", false));
+      } else {
+        System.out.println("everything alrighty");
+        PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
+        message.setSuccessfulMove(true);
+        if (message.isSuccessfulMove()) {
+          System.out.println("input was valid");
+          server.sendOnlyTo(this.players[this.currentPlayer].name, message);
+          System.out.println(this.players[this.currentPlayer].name + " is receiving tiles");
+          server.sendOnlyTo(this.players[this.currentPlayer].name,
+              new GetNewTilesMessage(this.players[this.currentPlayer].name,
+                  this.drawNewTiles(tiles.length)));
+          int points = scrabbleBoard.getPoints();
+          if (points == 0) {
+            pointlessTurns++;
+          } else {
+            pointlessTurns = 0;
+          }
+          this.players[this.currentPlayer].addPoints(points);
+          System.out.println("points received" + points);
+          server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
+          //TODO: send to all but
+          server.sendToAll(
+              new PlaceTilesMessage(this.players[this.currentPlayer].name, tiles));
+          nextPlayer();
+        } else {
+          server.sendOnlyTo(this.players[this.currentPlayer].name, message);
+          System.out.println("input was invalid");
+          this.scrabbleBoard.dropChangedTiles();
+        }
+      }
+
+
+    } else {
+      System.out.println("no tiles were found");
+    }
+    // } else {
     //  System.out.println("wrong player requested game move: Place Tiles");
-   // }
+    // }
 
   }
 
@@ -176,7 +182,7 @@ public class ServerMatch {
     Tile[] newTiles = new Tile[amountNeeded];
     for (int i = 0; i < amountNeeded; i++) {
       newTiles[i] = this.tileBag.drawTile();
-      System.out.print("..."+ newTiles[i].getLetter());
+      System.out.print("..." + newTiles[i].getLetter());
     }
     return newTiles;
   }
@@ -186,20 +192,19 @@ public class ServerMatch {
   }
 
 
-
-
   /*
     @method stars the match. It triggers the start of the thread, as well as different methods
     */
   public void startMatch() {
-    server.sendToAll(new LobbyInformationMessage("server", this.players));
     int count = 0;
+    this.startAiProtocols();
+    server.sendToAll(new LobbyInformationMessage("server", this.players));
     for (int i = 0; i < this.players.length; i++) {
       if (this.players[i] != null) {
-      Tile[] tiles = new Tile[8];
-      for (int x = 0; x < tiles.length; x++) {
-        tiles[x] = tileBag.drawTile();
-      }
+        Tile[] tiles = new Tile[7];
+        for (int x = 0; x < tiles.length; x++) {
+          tiles[x] = tileBag.drawTile();
+        }
         server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
         count++;
       }
@@ -209,12 +214,24 @@ public class ServerMatch {
     // start game thread programmieren. Diese ruft das auf
     //server.sendToAll(new);
   }
-  public void sendHistoryMessage(String from,String mess){
-    server.sendToAllBut(from,new HistoryMessage(from,mess));
+
+  public void startAiProtocols(){
+    for(Player p : this.players){
+      if(p!=null && p.getStatus()==Playerstatus.AI){
+        AIProtocol aiProtocol = new AIProtocol(ServerSettings.getLocalHostIp4Address(),ServerSettings.port,p.getName(),(PlayerAI) p);
+        aiProtocol.start();
+        ((PlayerAI) p).setAiProtocol(aiProtocol);
+      }
+    }
   }
+
+  public void sendHistoryMessage(String from, String mess) {
+    server.sendToAllBut(from, new HistoryMessage(from, mess));
+  }
+
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
-    if(!this.tileBag.isEmpty()){
+    if (!this.tileBag.isEmpty()) {
       if (playerNum == -1) {
         System.out.println("Player not found, at shuffle request");
       } else if (playerNum != currentPlayer) {
@@ -229,13 +246,11 @@ public class ServerMatch {
               new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
         }
       }
-    }else{
+    } else {
       server.sendOnlyTo(from,
           new ReceiveShuffleTilesMessage("", oldTiles));
     }
-    }
-
-
+  }
 
 
   /*
@@ -271,11 +286,11 @@ public class ServerMatch {
     int notActivePlayers = 0;
     currentPlayer = (currentPlayer + 1) % 4;
     boolean foundNextPlayer = false;
-    System.out.println("die spieler: "+this.players);
-    for(int x = 0; x < 3 && !foundNextPlayer; x++){
-      if(this.players[currentPlayer] == null){
+    System.out.println("die spieler: " + this.players);
+    for (int x = 0; x < 3 && !foundNextPlayer; x++) {
+      if (this.players[currentPlayer] == null) {
         currentPlayer = (currentPlayer + 1) % 4;
-      }else{
+      } else {
         scrabbleBoard.nextTurn();
         timer.nextPlayer();
         server.sendToAll(new GameTurnMessage("server", currentPlayer));
@@ -284,7 +299,7 @@ public class ServerMatch {
       }
 
     }
-    if(!foundNextPlayer){
+    if (!foundNextPlayer) {
       System.out.println("no player in game found");
       //TODO: end game
     }
@@ -313,7 +328,8 @@ public class ServerMatch {
   @method runs constantly and manages the timer of the player of the current turn
    */
   public void sendTimeIsUp() {
-    this.server.sendOnlyTo(players[currentPlayer].getName(), new TimeAlertMessage("server", TimeAlertType.TIME_OVER));
+    this.server.sendOnlyTo(players[currentPlayer].getName(),
+        new TimeAlertMessage("server", TimeAlertType.TIME_OVER));
     this.nextPlayer();
   }
 
@@ -349,11 +365,11 @@ public class ServerMatch {
   }
 
 
-  public void gameOver(){
+  public void gameOver() {
     this.server.sendToAll(new GameOverMessage("server"));
   }
 
-  public void incrementPointlessTurns(){
+  public void incrementPointlessTurns() {
     pointlessTurns++;
   }
 

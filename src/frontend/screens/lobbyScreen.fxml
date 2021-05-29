@@ -99,12 +99,12 @@
       </VBox>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false">
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
                <image>
                   <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
                </image>
             </ImageView>
-            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #9C6644;">
+            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #9C6644;" visible="false">
                <children>
                   <Label alignment="CENTER" prefWidth="700.0" style="-fx-border-color: #ffffff; -fx-border-style: none none solid none;" text="Starting a server..." textAlignment="CENTER" textFill="WHITE">
                      <VBox.margin>
@@ -315,7 +315,7 @@
                                  <center>
                                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button contentDisplay="CENTER" minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #7F5539;" text="Add Easy AI" textFill="WHITE">
+                                          <Button contentDisplay="CENTER" minWidth="50.0" mnemonicParsing="false" onAction="#addEasyAI" style="-fx-background-color: #7F5539;" text="Add Easy AI" textFill="WHITE">
                                              <font>
                                                 <Font name="Consolas" size="20.0" />
                                              </font>
@@ -323,7 +323,7 @@
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
                                           </Button>
-                                          <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #7F5539;" text="Add Hard AI" textFill="WHITE">
+                                          <Button minWidth="50.0" mnemonicParsing="false" onAction="#addHardAI" style="-fx-background-color: #7F5539;" text="Add Hard AI" textFill="WHITE">
                                              <font>
                                                 <Font name="Consolas" size="20.0" />
                                              </font>
@@ -331,7 +331,7 @@
                                                 <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #7F5539;" text="Remove all AIs" textFill="WHITE">
+                                          <Button contentDisplay="CENTER" minWidth="50.0" mnemonicParsing="false" onAction="#removeAI" style="-fx-background-color: #7F5539;" text="Remove all AIs" textFill="WHITE">
                                              <font>
                                                 <Font name="Consolas" size="20.0" />
                                              </font>

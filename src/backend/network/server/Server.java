@@ -59,12 +59,16 @@ public class Server {
   /*Add a client to the clients hashmap with a given serverprotocol
   * @param name the name of the client to add
   * @param protocol the server protocol which gets added with the name */
-  public synchronized void addClient(String name, ServerProtocol protocol) {
-    this.clients.put(name, protocol);
-    GameInformation.getInstance().addPlayer(new Player(name,Main.profile.getColor(),Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT));
-    newPlayerAdded=true;
-    System.out.println(name + " : new client has been added");
+  public synchronized void addClient(Player player, ServerProtocol protocol) {
+    this.clients.put(player.getName(), protocol);
+    //@TODO linecomment
+    if(player.getStatus()!=Playerstatus.AI) {
+      GameInformation.getInstance().addPlayer(player);
+      newPlayerAdded = true;
+      System.out.println(player.getName() + " : new client has been added");
+    }
   }
+
   public void playerAdded(){
     newPlayerAdded=false;
   }

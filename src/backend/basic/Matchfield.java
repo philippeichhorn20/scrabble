@@ -1,5 +1,6 @@
 package backend.basic;
 
+import java.io.Serializable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -7,7 +8,7 @@ import javafx.scene.control.Button;
 /*@author Nils Sch�fer
  * @version 1.0
  * @description a class which represents a field on a scrabbel board*/
-public class Matchfield {
+public class Matchfield implements Serializable {
 
   private Tile tileOnField;
   private Premiumstatus isPremium;
@@ -107,7 +108,7 @@ public class Matchfield {
 
   public void setPremiumstatus(Premiumstatus status) {
     this.isPremium = status;
-    this.assambleBackgroundColour();
+    //this.assambleBackgroundColour();
   }
 
   public void setButton(Button button) {

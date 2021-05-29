@@ -3,6 +3,7 @@ package backend.network.client;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.Player;
+import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
@@ -33,6 +34,7 @@ public class ClientProtocol extends Thread{
   private ClientMatch match;
   private String historyMess;
   private boolean messChange = false;
+  private Player clientPlayer;
 
 
 
@@ -45,8 +47,10 @@ public class ClientProtocol extends Thread{
       this.clientSocket = new Socket(ip, port);
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
+      this.clientPlayer = new Player(username,Main.profile.getColor(),Main.profile.getGames(), Main.profile
+          .getWins(), Playerstatus.WAIT);
 
-      this.out.writeObject(new ConnectMessage(this.username));
+      this.out.writeObject(new ConnectMessage(this.username,clientPlayer));
       out.flush();
       out.reset();
       System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());

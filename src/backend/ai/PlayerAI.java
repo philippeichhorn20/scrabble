@@ -9,21 +9,22 @@ import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import java.io.IOException;
+import java.io.Serializable;
 
 /*
 @author jawinter
 @description Superclass for AIs
  */
-public class PlayerAI extends Player{
+public class PlayerAI extends Player {
 
   protected Brain brain;
   protected String name;
-  protected Player[] playerList;
+  int myNumber = -1;
   protected Tile[] tilesOnHand;
   protected AIProtocol aiProtocol;
 
   public PlayerAI(String name) {
-    super(name,"#d3d3d3",0,0,Playerstatus.WAIT);
+    super(name,"#d3d3d3",0,0,Playerstatus.AI);
     this.name = name;
     this.brain = new Brain(new ScrabbleBoard());
   }
@@ -53,7 +54,11 @@ public class PlayerAI extends Player{
     Initalize playerList when game starts
      */
   public void handleStartGame(Player[] players) {
-    this.playerList = players;
+    for(int i = 0;i<players.length;i++) {
+      if(players[i].getName().equals(this.name)){
+        this.myNumber = i;
+      }
+    }
   }
 
   /*
@@ -72,7 +77,7 @@ public class PlayerAI extends Player{
   Recognizes whether it is AI's turn. Triggers handleTurn.
    */
   public void handleGameTurnMessage(int nowTurn) {
-    if (playerList[nowTurn].equals(name)) {
+    if (nowTurn==myNumber) {
       handleTurn();
     }
   }
@@ -141,4 +146,11 @@ public class PlayerAI extends Player{
     return (char) random;
   }
 
+  public AIProtocol getAiProtocol() {
+    return aiProtocol;
+  }
+
+  public void setAiProtocol(AIProtocol aiProtocol) {
+    this.aiProtocol = aiProtocol;
+  }
 }

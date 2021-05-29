@@ -1,5 +1,6 @@
 package backend.network.messages.connection;
 
+import backend.basic.Player;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
@@ -8,7 +9,17 @@ import backend.network.messages.MessageType;
  * @version 1.0*/
 public class ConnectMessage extends Message {
 
-  public ConnectMessage(String from) {
+  private Player player;
+  public ConnectMessage(String from, Player player) {
     super(MessageType.CONNECT, from);
+    this.player = player;
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 }

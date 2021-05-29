@@ -149,7 +149,8 @@ public class Player implements Serializable {
   public enum Playerstatus {
     OUTOFGAME,
     WAIT,
-    TURN
+    TURN,
+    AI
   }
 
   public String toString() {

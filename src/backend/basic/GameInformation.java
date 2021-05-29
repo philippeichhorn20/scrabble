@@ -24,6 +24,7 @@ public final class GameInformation {
   public Player getHost() {
     return host;
   }
+
   public void addPlayer(Player p){
     if (players[0] == null) {
       players[0] = p;
@@ -38,6 +39,19 @@ public final class GameInformation {
       System.out.println("4 Players already!");
     }
   }
+
+  /*
+  Removes player from playerList
+   */
+  public void removePlayer(String player){
+    for (int x = 0; x < this.players.length; x++) {
+      if (this.players[x] != null && this.players[x].name.equals(player)) {
+        this.players[x] = null;
+        break;
+      }
+    }
+  }
+
   public void setHost(Player host) {
     this.host = host;
   }

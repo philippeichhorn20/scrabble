@@ -2,6 +2,8 @@ package frontend.screens.controllers;
 
 import animatefx.animation.Flash;
 import animatefx.animation.Pulse;
+import backend.ai.EasyAI;
+import backend.ai.HardAI;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.Player;
@@ -152,7 +154,8 @@ public class LobbyScreenController {
   public void startLobby(ActionEvent e) {
     System.out.println("start Lobby called");
     isHost = true;
-    Player host = new Player(Main.profile.getName(), Main.profile.getColor(),Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT);
+    Player host = new Player(Main.profile.getName(), Main.profile.getColor(),
+        Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT);
     Server server = new Server();
     server.setServerMatch(new ServerMatch(server));
     GameInformation.getInstance().setServermatch(server.getServerMatch());
@@ -256,7 +259,7 @@ public class LobbyScreenController {
             ServerSettings.port,
             Main.profile.getName(),
             new ClientMatch(
-                Main.profile.getName(), new Player(Main.profile.getName(), "",Main.profile
+                Main.profile.getName(), new Player(Main.profile.getName(), "", Main.profile
                 .getGames(), Main.profile.getWins(), Playerstatus.WAIT)));
     clientProtocol.start();
 
@@ -296,12 +299,74 @@ public class LobbyScreenController {
     loadLibraryButton.setDisable(false);
   }
 
+  /*
+  Method adds an EasyAI PLayer to the lobby. If lobby is full, alert will be displayed
+   */
+  public void addEasyAI(ActionEvent e) {
+    Player[] player = GameInformation.getInstance().getServermatch().getPlayers();
+    int playerInLobby = 0;
+    for (Player p : player) {
+      if (p != null) {
+        playerInLobby++;
+      }
+    }
+    EasyAI newAI = new EasyAI("easyAI" + (playerInLobby + 1));
+    if (!GameInformation.getInstance().getServermatch()
+        .addPlayer(newAI)) {
+      GameScreenController.AlertBox
+          .display("ERROR", "Lobby is already full. It is not possible to add further players.");
+    } else {
+      GameInformation.getInstance().addPlayer(newAI);
+    }
+  }
+
+  /*
+  Method adds an HardAI PLayer to the lobby. If lobby is full, alert will be displayed
+   */
+  public void addHardAI(ActionEvent e) {
+    Player[] player = GameInformation.getInstance().getServermatch().getPlayers();
+    int playerInLobby = 0;
+    for (Player p : player) {
+      if (p != null) {
+        playerInLobby++;
+      }
+    }
+    HardAI newAI = new HardAI("hardAI" + (playerInLobby + 1));
+    if (!GameInformation.getInstance().getServermatch()
+        .addPlayer(newAI)) {
+      GameScreenController.AlertBox
+          .display("ERROR", "Lobby is already full. It is not possible to add further players.");
+    } else {
+      GameInformation.getInstance().addPlayer(newAI);
+    }
+  }
+
+  /*
+  Remove all player from lobby with Playerstatus AI.
+   */
+  public void removeAI(){
+    for(Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
+      if (p != null) {
+        if (p.getStatus() == Playerstatus.AI) {
+          GameInformation.getInstance().getServermatch().removePlayer(p.getName());
+          GameInformation.getInstance().removePlayer(p.getName());
+        }
+      }
+    }
+  }
+
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) {
     System.out.println("Start match triggered");
     GameInformation.getInstance().getServermatch().startMatch();
     //WordCheckDB.importTextToDB();
     GameInformation.getInstance().getChat().display();
+    Main m = new Main();
+    try {
+      m.changeScene("screens/gameScreen.fxml");
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    }
   }
 
   // Method connects joining player to lobby or server of hosting player.
@@ -317,7 +382,7 @@ public class LobbyScreenController {
               Main.profile.getName(),
               new ClientMatch(
                   Main.profile.getName(),
-                  new Player(Main.profile.getName(), "",Main.profile.getGames(), Main.profile
+                  new Player(Main.profile.getName(), "", Main.profile.getGames(), Main.profile
                       .getWins(), Playerstatus.WAIT)));
       cp.start();
       Thread lob =
@@ -400,8 +465,9 @@ public class LobbyScreenController {
       lob.start();
       cp.getMatch().addProtocol(cp);
       Player player =
-          new Player(Main.profile.getName(), Main.profile.getColor(),Main.profile.getGames(), Main.profile
-              .getWins(), Playerstatus.WAIT);
+          new Player(Main.profile.getName(), Main.profile.getColor(), Main.profile.getGames(),
+              Main.profile
+                  .getWins(), Playerstatus.WAIT);
       GameInformation gameInformation = GameInformation.getInstance();
       gameInformation.setProfile(Main.profile);
       gameInformation.setHost(player);
@@ -437,8 +503,9 @@ public class LobbyScreenController {
       // ... user chose CANCEL or closed the dialog
     }
   }
+
   /*creates a pop up screen from selectLetterSetScreen.fxml*/
-  public void changeLetterSet(ActionEvent e){
+  public void changeLetterSet(ActionEvent e) {
     try {
       Window window = new Window();
     } catch (IOException ioException) {
@@ -447,13 +514,16 @@ public class LobbyScreenController {
 
 
   }
-  public class Window{
+
+  public class Window {
+
     public Window() throws IOException {
       display();
     }
 
     public void display() throws IOException {
-      Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("frontend/screens/selectLetterSetScreen.fxml"));
+      Parent root = FXMLLoader.load(
+          getClass().getClassLoader().getResource("frontend/screens/selectLetterSetScreen.fxml"));
       Scene scene = new Scene(root);
       Stage window = new Stage();
 

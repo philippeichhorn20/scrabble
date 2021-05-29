@@ -28,7 +28,7 @@ public class WordCheckDB {
   }
   */
   public static String url = "jdbc:sqlite:src/resources/wordsList.db";
-  public static String urlTxt = "src/resources/ScrabbleWordsFile.txt";
+  public static String urlTxt = "src/resources/dictionary.txt";
   public static String newUrl;
   /*
   looks up the given word in the database. If it exists it returns the decsription of the word,

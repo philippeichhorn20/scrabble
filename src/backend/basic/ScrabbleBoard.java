@@ -3,6 +3,7 @@ package backend.basic;
 import backend.basic.Matchfield.Premiumstatus;
 import backend.basic.Tile.Tilestatus;
 import backend.network.messages.points.PlayFeedbackMessage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 /* @author peichhor
@@ -21,7 +22,7 @@ import java.util.Iterator;
  * @param editedWords Those are then saved in the editedWords variable
  * */
 
-public class ScrabbleBoard {
+public class ScrabbleBoard implements Serializable {
 
   private final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
   Matchfield[][] scrabbleBoard = new Matchfield[15][15];

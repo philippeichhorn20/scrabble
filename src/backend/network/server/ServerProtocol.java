@@ -1,10 +1,12 @@
 package backend.network.server;
 
+import backend.ai.PlayerAI;
 import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
+import backend.network.messages.connection.ConnectMessage;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.connection.GetIDMessage;
 import backend.network.messages.connection.SendIDMessage;
@@ -58,6 +60,7 @@ public class ServerProtocol extends Thread {
   /* Send a message to the client of this server protocol
    * @param message the message which is sent*/
   public void sendToClient(Message message) throws IOException {
+    System.out.println(message.getMessageType());
     this.out.writeObject(message);
     out.flush();
     out.reset();
@@ -92,14 +95,13 @@ public class ServerProtocol extends Thread {
         } else {
           System.out.println("successful");
           this.clientName = from;
-          server.addClient(from, this);
-          Player clientPlayer = new Player(from,Main.profile.getColor(),Main.profile.getGames(), Main.profile
-              .getWins(), Playerstatus.WAIT);
-          if (GameInformation.getInstance().getServermatch().addPlayer(clientPlayer)) {
+          Player player = ((ConnectMessage) message).getPlayer();
+          server.addClient(player, this);
+          if (GameInformation.getInstance().getServermatch().addPlayer(player)) {
             System.out.print("player in game lol: ");
-            for(Player p: GameInformation.getInstance().getServermatch().getPlayers()){
-              if(p!= null){
-                System.out.print(p.getName()+" ");
+            for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
+              if (p != null) {
+                System.out.print(p.getName() + " ");
               }
             }
           } else {
@@ -111,6 +113,23 @@ public class ServerProtocol extends Thread {
 
         //    }
 
+      } else if (message.getMessageType() == MessageType.CONNECT_AI) {
+        System.out.println("new AI attempts to connect...");
+        String from = message.getFrom();
+        if (server.userExistsP(from)) {
+          System.out.println("unsuccessful since already in lobby...");
+          Message connectionRefused = new ConnectionRefusedMessage("host",
+              "Username already connected to the server!");
+          out.writeObject(connectionRefused);
+          out.flush();
+          out.reset();
+          disconnect();
+        } else {
+          System.out.println("successful");
+          this.clientName = from;
+          PlayerAI aiPlayer = (PlayerAI) ((ConnectMessage)message).getPlayer();
+          server.addClient(aiPlayer, this);
+        }
       } else { // first message of client have to be connection message
         System.out.println("server disconnected");
         disconnect();
@@ -183,15 +202,16 @@ public class ServerProtocol extends Thread {
               TextMessage textMessage = (TextMessage) message;
               if (textMessage.getText() != null) {
                 System.out.println("Sending Text Message");
-            	  server.sendToAll(
+                server.sendToAll(
                     // with a new Flag that means it has to be rendered in the chat area
-                    new TextMessage(MessageType.TEXT,textMessage.getFrom(), textMessage.getText()));
+                    new TextMessage(MessageType.TEXT, textMessage.getFrom(),
+                        textMessage.getText()));
               }
               break;
             case HISTORY:
               HistoryMessage historyMessage = (HistoryMessage) message;
               System.out.println("ServerProtocol HistoryMessage");
-              server.sendToAllBut(historyMessage.getFrom(),historyMessage);
+              server.sendToAllBut(historyMessage.getFrom(), historyMessage);
               break;
             default:
               break;
@@ -203,7 +223,8 @@ public class ServerProtocol extends Thread {
       running = false;
       if (socket.isClosed()) {
         System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
-        GameScreenController.AlertBox.display("Could not connect", "please chose a different name and reconnect");
+        GameScreenController.AlertBox
+            .display("Could not connect", "please chose a different name and reconnect");
       } else {
         try {
           socket.close();
