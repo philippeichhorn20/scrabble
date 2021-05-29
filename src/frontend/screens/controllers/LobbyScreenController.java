@@ -22,6 +22,9 @@ import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -34,6 +37,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /*
 @author jawinter
@@ -451,8 +456,33 @@ public class LobbyScreenController {
       // ... user chose CANCEL or closed the dialog
     }
   }
-
+  /*creates a pop up screen from selectLetterSetScreen.fxml*/
   public void changeLetterSet(ActionEvent e){
+    try {
+      Window window = new Window();
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    }
 
+
+  }
+  public class Window{
+    public Window() throws IOException {
+      display();
+    }
+
+    public void display() throws IOException {
+      Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("frontend/screens/selectLetterSetScreen.fxml"));
+      Scene scene = new Scene(root);
+      Stage window = new Stage();
+
+      window.initModality(Modality.APPLICATION_MODAL);
+      window.setTitle("Letter Set Selector");
+      window.setMinWidth(300);
+      window.setMinHeight(400);
+
+      window.setScene(scene);
+      window.show();
+    }
   }
 }

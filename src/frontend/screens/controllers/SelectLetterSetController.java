@@ -32,23 +32,34 @@ public class SelectLetterSetController extends Thread {
       int countLetter[] = new int[LetterSetHolder.getInstance().getPossibleLetters().length];
 
       for(int i = 0; i < LetterSetHolder.getInstance().getTileSet().length; i++) {
-        countLetter[getPositionOfLetterInSet(LetterSetHolder.getInstance().getTileSet()[i].getLetter())] += 1;
+        if(getPositionOfLetterInSet(LetterSetHolder.getInstance().getTileSet()[i].getLetter()) >= 0) {
+          countLetter[getPositionOfLetterInSet(LetterSetHolder.getInstance().getTileSet()[i].getLetter())] += 1;
+        }
       }
+
+      Label letterLB = new Label("Letter");
+      Label numberLB = new Label("Number");
+      Label valueLB =  new Label("Value");
+
+      gridPane.add(letterLB, 0, 0);
+      gridPane.add(numberLB, 1, 0);
+      gridPane.add(valueLB, 2, 0);
 
       for (int row = 0; row < LetterSetHolder.getInstance().getPossibleLetters().length; row++) {
 
         lettersLB[row] = new Label();
-        lettersLB[row].setText(String.valueOf(LetterSetHolder.getInstance().getPossibleLetters()[row]));
+        lettersLB[row].setText("   " + String.valueOf(LetterSetHolder.getInstance().getPossibleLetters()[row]) + "   ");
 
         numberOfLettersTF[row] = new TextField();
         numberOfLettersTF[row].setText(countLetter[row] + "");
+        numberOfLettersTF[row].setPrefWidth(100);
 
         valueOfLettersTF[row] = new TextField();
         valueOfLettersTF[row].setText(getValueOfLetter(LetterSetHolder.getInstance().getPossibleLetters()[row]) + "");
 
-        gridPane.add(lettersLB[row], row, 0 );
-        gridPane.add(numberOfLettersTF[row], row, 1 );
-        gridPane.add(valueOfLettersTF[row], row, 2 );
+        gridPane.add(lettersLB[row], 0, row + 1);
+        gridPane.add(numberOfLettersTF[row], 1, row + 1 );
+        gridPane.add(valueOfLettersTF[row], 2, row + 1);
 
       }
       viewSP.setContent(gridPane);
