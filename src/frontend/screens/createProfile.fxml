@@ -15,11 +15,11 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.CreateProfileController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #9C6644;">
          <children>
             <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
                <top>
-                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #606C38;" BorderPane.alignment="CENTER">
                      <children>
                         <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
                            <font>
@@ -30,7 +30,7 @@
                   </Pane>
                </top>
                <bottom>
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #B08968;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Consolas Bold" size="20.0" />
                      </font>
@@ -56,12 +56,12 @@
                               <Font name="Consolas" size="14.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="username" prefHeight="50.0" promptText="Nickname" style="-fx-background-color: #A0522D;">
+                        <TextField fx:id="username" prefHeight="50.0" promptText="Nickname" style="-fx-background-color: #B08968;">
                            <font>
-                              <Font name="Consolas" size="12.0" />
+                              <Font name="Consolas Bold" size="14.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="enterButton" minWidth="380.0" mnemonicParsing="false" onAction="#checkName" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Enter" textFill="WHITE">
+                        <Button fx:id="enterButton" minWidth="380.0" mnemonicParsing="false" onAction="#checkName" prefHeight="50.0" style="-fx-background-color: #B08968;" text="Enter" textFill="WHITE">
                            <VBox.margin>
                               <Insets top="50.0" />
                            </VBox.margin>

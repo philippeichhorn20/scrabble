@@ -16,11 +16,11 @@
 
 <HBox onMouseEntered="#setStage" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.StatScreenController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #9C6644;">
          <children>
             <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
                <top>
-                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #606C38;" BorderPane.alignment="CENTER">
                      <children>
                         <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
                            <font>
@@ -31,7 +31,7 @@
                   </Pane>
                </top>
                <bottom>
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #B08968;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Consolas Bold" size="20.0" />
                      </font>
@@ -64,7 +64,7 @@
       </VBox>
       <BorderPane fx:id="manageProfile" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;">
          <center>
-            <VBox prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: #805500;" BorderPane.alignment="CENTER">
+            <VBox prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: #9C6644;" BorderPane.alignment="CENTER">
                <children>
                   <BorderPane prefHeight="100.0" prefWidth="200.0">
                      <VBox.margin>
@@ -95,7 +95,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="profileNickname" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
+                                          <TextField fx:id="profileNickname" promptText="Something went wrong" style="-fx-background-color: #B08968;" />
                                        </children>
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="10.0" />
@@ -111,7 +111,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="profileColor" promptText="Something went wrong" style="-fx-background-color: #A0522D;" />
+                                          <TextField fx:id="profileColor" promptText="Something went wrong" style="-fx-background-color: #B08968;" />
                                        </children>
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="10.0" />

@@ -16,11 +16,11 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.ExistingProfileController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #9C6644;">
          <children>
             <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
                <top>
-                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #606C38;" BorderPane.alignment="CENTER">
                      <children>
                         <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
                            <font>
@@ -34,7 +34,7 @@
                   <Insets left="-50.0" right="-50.0" />
                </VBox.margin>
                <bottom>
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefWidth="380.0" style="-fx-background-color: #B08968;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Consolas Bold" size="20.0" />
                      </font>
@@ -49,7 +49,7 @@
                <center>
                   <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="button00" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button00" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -60,7 +60,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button01" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button01" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -71,7 +71,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button02" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button02" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -82,7 +82,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button03" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button03" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -93,7 +93,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button10" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button10" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -104,7 +104,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button11" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button11" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -115,7 +115,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button12" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button12" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -126,7 +126,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="button13" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #A0522D; -fx-text-alignment: left;" textFill="WHITE">
+                        <Button fx:id="button13" mnemonicParsing="false" onAction="#goMainMenu" prefHeight="32.0" prefWidth="380.0" style="-fx-background-color: #B08968; -fx-text-alignment: left;" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
