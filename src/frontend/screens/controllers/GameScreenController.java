@@ -131,18 +131,9 @@ public class GameScreenController extends Thread{
 	  gameInformation.getChat().display();
   }
 
-  public void getBounds(ActionEvent e) {
-    Tile tile = new Tile('c', 5);
-    setTile(tile, 5, 7);
-  }
+
   int timInt = 0;
-  public void update(MouseEvent e) {
-    // Player[] players = match.getPlayers();
-    // currPlayer.setText(players[match.getCurrentPlayer()].getName());
 
-
-
-  }
   public void endTurn(ActionEvent e) throws IOException {
     activateServerMessage("checking your words...");
     endTurnB();
@@ -154,7 +145,7 @@ public class GameScreenController extends Thread{
 
       drawTiles();
       newHistoryMessage(Main.profile.getName().substring(0,1).toUpperCase()+Main.profile.getName().substring(1).toLowerCase() + " finished his turn");
-      resetTilesButton.setVisible(false);
+      //resetTilesButton.setVisible(false);
       turn++;
     }else{
       AlertBox.display("Not a valid word!","This word is not in our dictionary!");
@@ -196,6 +187,8 @@ public class GameScreenController extends Thread{
         // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
         Tile newTile = new TileBag().drawTile();
         Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
+        tilesToDraw[i]=exchangeTile;
+        i++;
         Text let = new Text(String.valueOf(newTile.getLetter()));
         let.setLayoutX((gt.getLetter().getLayoutX()));
         let.setLayoutY((gt.getLetter().getLayoutY()));
@@ -211,7 +204,31 @@ public class GameScreenController extends Thread{
         new SlideInLeft(gt.getLetter()).play();
 
 
-        resetTilesButton.setVisible(false);
+        //resetTilesButton.setVisible(false);
+      }
+    }
+  }
+  public Tile[] tilesToSwitch() {
+    //resetColor();
+    int i = 0;
+    Tile[] tilesToDraw = new Tile[7];
+    for (GraphicTile gt : gtiles) {
+      if (gt.toDraw()) {
+        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
+        tilesToDraw[i]=exchangeTile;
+        i++;
+      }
+    }
+    return tilesToDraw;
+  }
+  public void newTilesFromBag(Tile[] tiles){
+    resetColor();
+    int i = 0;
+    for (GraphicTile gt: gtiles){
+      if(!gt.isVisiblee() || gt.toDraw()){
+        gt.getLetter().setText(String.valueOf(tiles[i].getLetter()));
+        gt.setVisiblee(true);
+        i++;
       }
     }
   }
@@ -310,18 +327,6 @@ public class GameScreenController extends Thread{
                         + " on "
                         + newTile.getX() + "  "+ newTile.getY());
               GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
-              Tile[] tt = {newTile};
-           //   try{
-
-            //    GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
-             // }catch(IOException ie){
-            //    ie.printStackTrace();
-           //   }
-
-              //  while (placedTiles[ite] != null) {
-              //  ite++;
-              //  }
-              //  placedTiles[ite] = newTile;
               resetColor();
             }
             }
