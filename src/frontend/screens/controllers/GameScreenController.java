@@ -5,6 +5,7 @@ import animatefx.animation.FadeOut;
 import animatefx.animation.Flash;
 import animatefx.animation.Pulse;
 import animatefx.animation.SlideInLeft;
+import animatefx.animation.Wobble;
 import animatefx.animation.ZoomIn;
 import animatefx.animation.ZoomInDown;
 import backend.basic.ClientMatch;
@@ -180,7 +181,7 @@ public class GameScreenController extends Thread{
       if (!gt.isVisiblee() || gt.toDraw()) {
         // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
         Tile newTile = new TileBag().drawTile();
-        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
+        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),gt.getTile().getValue(), Tilestatus.INBAG);
         tilesToDraw[i]=exchangeTile;
         i++;
         Text let = new Text(String.valueOf(newTile.getLetter()));
@@ -209,7 +210,7 @@ public class GameScreenController extends Thread{
     Tile[] tilesToDraw = new Tile[7];
     for (GraphicTile gt : gtiles) {
       if (gt.toDraw()) {
-        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
+        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),gt.getTile().getValue(), Tilestatus.INBAG);
         tilesToDraw[i]=exchangeTile;
         i++;
       }
@@ -329,7 +330,9 @@ public class GameScreenController extends Thread{
               gtiles[k].highlight(false);
               gtiles[k].setToDraw(false);
               gtiles[k].setVisiblee(false);
-              Tile newTile = new Tile(gtiles[k].getLetter().getText().charAt(0), 0);
+                Tile newTile =
+                    new Tile(
+                        gtiles[k].getLetter().getText().charAt(0), gtiles[k].getTile().getValue());
               newTile.setXY(i, j);
               int ite = 0;
               placeTilesList.add(newTile);
@@ -413,7 +416,7 @@ public class GameScreenController extends Thread{
           resetColor();
           tile.setFill(Color.RED);
 
-          new Pulse(tile).play();
+          new Wobble(tile).play();
           for (int i = 0; i < 7; i++) {
             if (gtiles[i].getRec().getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
               gtiles[i].highlight(true);
