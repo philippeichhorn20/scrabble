@@ -141,14 +141,13 @@ public class GameScreenController extends Thread{
   public void endTurnB(){
     boolean valid =true;
     if (valid){
-
-
       drawTiles();
       newHistoryMessage(Main.profile.getName().substring(0,1).toUpperCase()+Main.profile.getName().substring(1).toLowerCase() + " finished his turn");
       //resetTilesButton.setVisible(false);
       turn++;
     }else{
-      AlertBox.display("Not a valid word!","This word is not in our dictionary!");
+      TutorialScreenController.AlertBox
+          .display("Not a valid word!","This word is not in our dictionary!");
       newHistoryMessage("This is not a valid word!");
     }
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
@@ -156,11 +155,11 @@ public class GameScreenController extends Thread{
   }
 
   public void sendWinBox() {
-    AlertBox.display("You win!", "Congratulations,you have won!");
+    TutorialScreenController.AlertBox.display("You win!", "Congratulations,you have won!");
   }
 
   public void sendLostBox() {
-    AlertBox.display("Game over", "The game is over, you have lost");
+    TutorialScreenController.AlertBox.display("Game over", "The game is over, you have lost");
   }
 
   public void setTile(Tile tile, int x, int y) {
@@ -174,11 +173,11 @@ public class GameScreenController extends Thread{
   }
 
   public void getNewTiles(MouseEvent e) {
-    drawTiles();
-
+    shuffleTiles();
   }
 
   private void drawTiles() {
+    this.activateServerMessage("exchanging your tiles");
     resetColor();
     int i = 0;
     Tile[] tilesToDraw = new Tile[7];
@@ -210,6 +209,7 @@ public class GameScreenController extends Thread{
   }
   public Tile[] tilesToSwitch() {
     //resetColor();
+    activateServerMessage("new tiles are loading");
     int i = 0;
     Tile[] tilesToDraw = new Tile[7];
     for (GraphicTile gt : gtiles) {
@@ -221,6 +221,22 @@ public class GameScreenController extends Thread{
     }
     return tilesToDraw;
   }
+
+  public void shuffleTiles(){
+    Tile[] oldTiles = tilesToSwitch();
+    if(oldTiles.length == 0){
+      showServerMessage("Please chose Tiles!", 2);
+    }else{
+      try {
+        this.match.shuffleTiles(oldTiles);
+      }catch(IOException ioe){
+        showServerMessage("Could not perform action, try again", 2);
+      }
+    }
+    }
+
+
+
   public void newTilesFromBag(Tile[] tiles){
     resetColor();
     int i = 0;
@@ -231,6 +247,7 @@ public class GameScreenController extends Thread{
         i++;
       }
     }
+    deactivateServerMessage();
   }
 
   public void activateServerMessage(String textString){
@@ -511,8 +528,8 @@ public class GameScreenController extends Thread{
   }
   public void openChat(ActionEvent e){
     GameInformation.getInstance().getChat().display();
-
   }
+
   public void setUp(MouseEvent e) {
     this.match.setGameScreenController(this);
     if (!setUpDone) {
@@ -554,10 +571,16 @@ public class GameScreenController extends Thread{
                   resetTilesAction();
                   match.setDropTiles(false);
                 }
+                if(match.getNewTilesOnRack() != null){
+                  System.out.println("new racks are being4ttruehj");
+                  newTilesFromBag(match.getNewTilesOnRack());
+                  match.clearNewTilesOnRack();
+                }
                 if(match.isOver()){
                   sendLostBox();
                   //or send win box
                 }
+
                 time.setText(String.valueOf(match.getTimer().getTimerCurrentPlayer()));
               }
             });

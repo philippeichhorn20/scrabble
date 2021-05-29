@@ -51,22 +51,54 @@ public class ScrabbleBoard {
 
   public static Matchfield[][] setUpScrabbleBoard() {
     Matchfield[][] scrabbleBoard = new Matchfield[16][16];
-    for (int x = 0; x < 16; x++) {
-      for (int y = 0; y < 16; y++) {
+    for (int x = 1; x < 16; x++) {
+      for (int y = 1; y < 16; y++) {
         scrabbleBoard[x][y] = new Matchfield(x, y, Premiumstatus.NOPREMIUM);
-        if (x == y || x == 14 - y) {
-          if (((x == 0 || x == 14) && (y == 0 || y == 14))) {
+        if (x == y || x == 15 - y) {
+          if (((x == 1 || x == 15) && (y == 1 || y == 15))) {
             scrabbleBoard[x][y].setPremiumstatus(Premiumstatus.TRIPLEWORD);
-          } else if ((x < 5 && x > 0) || (x > 9 && x < 14)) {
+          } else if ((x < 6 && x > 1) || (x > 10 && x < 15)) {
             scrabbleBoard[x][y].setPremiumstatus(Premiumstatus.DOUBLEWORD);
           }
         }
       }
     }
-    scrabbleBoard[0][7].setPremiumstatus(Premiumstatus.TRIPLEWORD);
-    scrabbleBoard[14][7].setPremiumstatus(Premiumstatus.TRIPLEWORD);
-    scrabbleBoard[7][0].setPremiumstatus(Premiumstatus.TRIPLEWORD);
-    scrabbleBoard[7][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+
+    scrabbleBoard[2][6].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[6][2].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[2][10].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[10][2].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[6][6].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[10][10].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[6][10].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+    scrabbleBoard[10][6].setPremiumstatus(Premiumstatus.TRIPLELETTER);
+
+    scrabbleBoard[4][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[1][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[11][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[1][11].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[7][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+
+    scrabbleBoard[1][12].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[12][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[15][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[4][11].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[7][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+    scrabbleBoard[4][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[1][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[11][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[1][11].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[7][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+
 
 
     return scrabbleBoard;
@@ -287,6 +319,9 @@ public class ScrabbleBoard {
       points += pointsOfWord;
     }
     System.out.println("worth: "+points);
+    if(this.newTilesOfCurrentMove.size()==7){
+      points += 50;
+    }
     return points;
   }
 

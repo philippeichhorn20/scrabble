@@ -133,7 +133,8 @@ public class ServerMatch {
           PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
           if (message.isSuccessfulMove()) {
             System.out.println("input was valid");
-            server.sendToAll(message);
+            server.sendOnlyTo(this.players[this.currentPlayer].name, message);
+            System.out.println(this.players[this.currentPlayer].name+ " is receiving tiles");
             server.sendOnlyTo(this.players[this.currentPlayer].name,
                 new GetNewTilesMessage(this.players[this.currentPlayer].name,
                     this.drawNewTiles(tiles.length)));
@@ -167,6 +168,7 @@ public class ServerMatch {
     Tile[] newTiles = new Tile[amountNeeded];
     for (int i = 0; i < amountNeeded; i++) {
       newTiles[i] = this.tileBag.drawTile();
+      System.out.print("..."+ newTiles[i].getLetter());
     }
     return newTiles;
   }
@@ -202,23 +204,31 @@ public class ServerMatch {
   public void sendHistoryMessage(String from,String mess){
     server.sendToAllBut(from,new HistoryMessage(from,mess));
   }
-  public void shuffleTilesOfPlayer(String from, Tile[] oldTiles, Tile[] saveTiles) {
+  public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
-    if (playerNum == -1) {
-      System.out.println("Player not found, at shuffle request");
-    } else if (playerNum != currentPlayer) {
-      System.out.println("Wrong player, at shuffle request");
-    } else {
-      if (this.players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
-        server.sendOnlyTo(from,
-            new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
+    if(!this.tileBag.isEmpty()){
+      if (playerNum == -1) {
+        System.out.println("Player not found, at shuffle request");
+      } else if (playerNum != currentPlayer) {
+        System.out.println("Wrong player, at shuffle request");
       } else {
-        System.out.println("couldn't shuffle since bag was empty");
-        server.sendOnlyTo(from,
-            new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
+        if (this.players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
+          server.sendOnlyTo(from,
+              new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
+        } else {
+          System.out.println("couldn't shuffle since bag was empty");
+          server.sendOnlyTo(from,
+              new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
+        }
       }
+    }else{
+      server.sendOnlyTo(from,
+          new ReceiveShuffleTilesMessage("", oldTiles));
     }
-  }
+    }
+
+
+
 
   /*
   @method finds the player with the inputted name. Returns the number of him in the array. If not found, returns -1
@@ -298,6 +308,7 @@ public class ServerMatch {
     this.server.sendOnlyTo(players[currentPlayer].getName(), new TimeAlertMessage("server", TimeAlertType.TIME_OVER));
     this.nextPlayer();
   }
+
 
   /*
   this function adds a player to the game. If all places are already occupied, the
