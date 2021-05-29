@@ -13,6 +13,7 @@ import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
+import frontend.Main;
 import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -92,7 +93,8 @@ public class ServerProtocol extends Thread {
           System.out.println("successful");
           this.clientName = from;
           server.addClient(from, this);
-          Player clientPlayer = new Player(from, "#000000", Playerstatus.WAIT);
+          Player clientPlayer = new Player(from,Main.profile.getColor(),Main.profile.getGames(), Main.profile
+              .getWins(), Playerstatus.WAIT);
           if (GameInformation.getInstance().getServermatch().addPlayer(clientPlayer)) {
             System.out.print("player in game lol: ");
             for(Player p: GameInformation.getInstance().getServermatch().getPlayers()){

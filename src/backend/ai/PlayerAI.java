@@ -14,7 +14,7 @@ import java.io.IOException;
 @author jawinter
 @description Superclass for AIs
  */
-public class PlayerAI {
+public class PlayerAI extends Player{
 
   protected Brain brain;
   protected String name;
@@ -23,6 +23,7 @@ public class PlayerAI {
   protected AIProtocol aiProtocol;
 
   public PlayerAI(String name) {
+    super(name,"#d3d3d3",0,0,Playerstatus.WAIT);
     this.name = name;
     this.brain = new Brain(new ScrabbleBoard());
   }

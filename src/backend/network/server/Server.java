@@ -7,6 +7,7 @@ import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.connection.ShutDownMessage;
+import frontend.Main;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
@@ -60,7 +61,7 @@ public class Server {
   * @param protocol the server protocol which gets added with the name */
   public synchronized void addClient(String name, ServerProtocol protocol) {
     this.clients.put(name, protocol);
-    GameInformation.getInstance().addPlayer(new Player(name,"red", Playerstatus.WAIT));
+    GameInformation.getInstance().addPlayer(new Player(name,Main.profile.getColor(),Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT));
     newPlayerAdded=true;
     System.out.println(name + " : new client has been added");
   }

@@ -84,7 +84,8 @@ public class TutorialScreenController extends Thread{
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
   @FXML private Label currPlayerText;
-  Player currentPlayer = new Player(Main.profile.getName(),"Red", Playerstatus.WAIT);
+  Player currentPlayer = new Player(Main.profile.getName(),"Red",Main.profile.getGames(), Main.profile
+      .getWins(), Playerstatus.WAIT);
   private TutorialInformation tutorialInformation = TutorialInformation.getInstance();
   private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   private Tile[] placedTiles;

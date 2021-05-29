@@ -12,12 +12,16 @@ public class Player implements Serializable {
   String color;
   Tile[] rack = new Tile[7];
   Playerstatus status;
+  int games;
+  int wins;
 
-  public Player(String name, String color, Playerstatus status) {
+  public Player(String name, String color, int games,int wins,  Playerstatus status) {
     this.name = name;
     this.color = color;
     this.score = 0;
     this.status = status;
+    this.games = games;
+    this.wins = wins;
   }
 
   /*A methode to shuffle chosen tiles from the players rack and drawing new random tile instead*/
@@ -96,6 +100,13 @@ public class Player implements Serializable {
     this.status = status;
   }
 
+  public int getWins() {
+    return wins;
+  }
+
+  public int getGames() {
+    return games;
+  }
 
   public void setColor(String color) {
     this.color = color;
