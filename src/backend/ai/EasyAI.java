@@ -13,7 +13,6 @@ EasyAI uses Brain to find simple possible moves.
 
 public class EasyAI extends PlayerAI {
 
-  private Brain easyBrain;
   private Random r = new Random(System.currentTimeMillis());
 
   public EasyAI(String name) {
@@ -21,7 +20,7 @@ public class EasyAI extends PlayerAI {
   }
 
   public Brain getEasyBrain() {
-    return easyBrain;
+    return brain;
   }
 
   @Override
@@ -30,7 +29,7 @@ public class EasyAI extends PlayerAI {
     int choice = r.nextInt(3);
     switch (choice) {
       case 0: {
-        var moves = easyBrain.getPlayableWords(tilesOnHand);
+        var moves = brain.getPlayableWords(tilesOnHand);
         // If we can not make a move we request new Tiles
         if (moves.isEmpty()) {
           try {

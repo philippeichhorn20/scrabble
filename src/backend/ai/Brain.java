@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,17 +24,17 @@ import java.util.TreeSet;
 @description This class is responsible for finding possible placements of tiles to identify possible
 combinations for words, which can be laid. The brain needs a scrabbleBoard, which it tries to analyse.
  */
-public class Brain {
+public class Brain implements Serializable {
 
   private ScrabbleBoard scrabbleBoard; //ScrabbleBoard, which is analysed by Brain
   private HashSet<String> words = new HashSet<String>(); //set of words from dictionary
 
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
-    if (WordCheckDB.url == null) {
+    if (WordCheckDB.newUrl == null) {
       readDictionary(WordCheckDB.urlTxt);
     } else {
-      readDictionary(WordCheckDB.url);
+      readDictionary(WordCheckDB.newUrl);
     }
   }
 
