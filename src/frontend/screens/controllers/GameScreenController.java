@@ -573,11 +573,11 @@ public class GameScreenController extends Thread{
                   turn++;
                   match.setInvalidMove(true);
                 }
-                //if(match.getNewTilesOnRack() != null){
-                 // System.out.println("new racks are being4ttruehj");
-                  //newTilesFromBag(match.getNewTilesOnRack());
-                  //match.clearNewTilesOnRack();
-               // }
+                if(match.getNewTilesOnRack() != null){
+                  System.out.println("new racks are being4ttruehj");
+                  newTilesFromBag(match.getNewTilesOnRack());
+                  match.clearNewTilesOnRack();
+                }
                 if(match.isOver()){
                   sendLostBox();
                   //or send win box
