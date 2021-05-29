@@ -260,7 +260,7 @@ public class ServerMatch {
           System.out.print(tile.getLetter()+"--");
         }
           server.sendOnlyTo(from,
-              new ReceiveShuffleTilesMessage("server", this.players[playerNum].shuffleRack(oldTiles, this.tileBag)));
+              new ReceiveShuffleTilesMessage("server", newTiles));
 
       }
     } else {
