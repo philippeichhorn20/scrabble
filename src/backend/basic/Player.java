@@ -161,6 +161,15 @@ public class Player implements Serializable {
 
   }
 
+  public static boolean isEmptyRack(GraphicTile[] gts){
+    for(int x = 0; x < gts.length; x++){
+      if(gts[x].isVisible()){
+        return false;
+      }
+    }
+    return true;
+  }
+
   public static int getPlayerCount(Player[] players){
     int count = 0;
     for(int x = 0; x < players.length; x++){

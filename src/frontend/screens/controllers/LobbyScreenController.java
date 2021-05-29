@@ -152,11 +152,10 @@ public class LobbyScreenController {
   public void startLobby(ActionEvent e) {
     System.out.println("start Lobby called");
     isHost = true;
-    Player host = new Player(Main.profile.getName(), Main.profile.getColor(),Main.profile.getGames(), Main.profile
-        .getWins(), Playerstatus.WAIT);
-
+    Player host = new Player(Main.profile.getName(), Main.profile.getColor(),Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT);
     Server server = new Server();
-
+    server.setServerMatch(new ServerMatch(server));
+    GameInformation.getInstance().setServermatch(server.getServerMatch());
     Runnable r =
         new Runnable() {
           public void run() {
@@ -249,9 +248,6 @@ public class LobbyScreenController {
               }
             });
     lob.start();
-    server.setServerMatch(new ServerMatch(server));
-    GameInformation.getInstance().setServermatch(server.getServerMatch());
-    //Main.lobby.setServer(server);
     hostIP.setText(ServerSettings.getLocalHostIp4Address());
 
     ClientProtocol clientProtocol =
@@ -294,22 +290,7 @@ public class LobbyScreenController {
             .display("Could not load Library", "Be sure to choose a .txt file");
       }
     } catch (Exception exception) {
-      File selectedFile = fileChooser.showOpenDialog(Main.getStg());
-      try {
-        System.out.println(Files.probeContentType(selectedFile.toPath()));
-        if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
-            .equals("text/plain")) {
-          //WordCheckDB.loadNewLibrary(selectedFile.getPath());
-          loadLibraryButton.setText("Sucecss");
-        } else {
-          GameScreenController.AlertBox
-              .display("Could not load Library", "Be sure to choose a .txt file");
-        }
-      } catch (IOException ioe) {
-        GameScreenController.AlertBox
-            .display("Could not load Library", "Be sure to choose a .txt file");
-
-      }
+      //File selectedFile = fileChooser.showOpenDialog(Main.getStg());
     }
     startGameButton.setVisible(true);
     loadLibraryButton.setDisable(false);

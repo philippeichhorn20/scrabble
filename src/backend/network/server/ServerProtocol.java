@@ -156,6 +156,10 @@ public class ServerProtocol extends Thread {
               }
               break;
 
+            case GAME_OVER:
+              server.serverMatch.gameOver();
+              break;
+
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add the points received from
               // the racks
@@ -166,6 +170,7 @@ public class ServerProtocol extends Thread {
 
             // Pass leads to the server telling next player it's his turn.
             case PASS:
+              server.serverMatch.incrementPointlessTurns();
               if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
                 server.serverMatch.nextPlayer();
               }

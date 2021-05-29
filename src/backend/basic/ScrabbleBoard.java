@@ -204,7 +204,7 @@ public class ScrabbleBoard {
       if(resultString == ""){
         result += words[i] + ", that's not even a word *friends voice*\n";
         inputValid = false;
-      }else{
+      }else if(inputValid){
         result += resultString +"\n";
       }
     }

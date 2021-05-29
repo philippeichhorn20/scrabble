@@ -39,12 +39,13 @@ public class Timer extends Thread implements Serializable {
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
-      if (gameScreenController!= null && timerCurrentPlayer == 60 * 0.2) {
+      if (gameScreenController!= null && timerCurrentPlayer == 60 * 9) {
         gameScreenController.newHistoryMessage("you have 60 seconds left");
       }else if (gameScreenController!= null && timerCurrentPlayer == 60 * 9.5){
         gameScreenController.newHistoryMessage("you have 30 seconds left");
-
-      }else if(serverMatch!= null && timerCurrentPlayer == 60 * 0.3){
+      }else if(serverMatch!= null && timerCurrentPlayer == 60 * 10){
+        serverMatch.gameOver();
+      }else if(serverMatch!= null && timerCurrentPlayer == 60 * 10){
         serverMatch.sendTimeIsUp();
       }
     }

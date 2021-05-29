@@ -154,8 +154,10 @@ public class ClientProtocol extends Thread{
               GameStartMessage message3 = (GameStartMessage) message;
               this.match.getPlayer().updateRack(message3.getTiles());
               this.match.getTimer().start();
+              System.out.println("showing the screen now...");
               Main m = new Main();
               m.changeScene("screens/gameScreen.fxml");
+              System.out.println("showing the screen now");
               break;
 
             case SEND_RACK_POINTS:

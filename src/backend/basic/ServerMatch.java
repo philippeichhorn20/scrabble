@@ -1,5 +1,6 @@
 package backend.basic;
 
+import backend.network.messages.game.GameOverMessage;
 import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
@@ -38,6 +39,7 @@ public class ServerMatch {
   private ServerProtocol protocol;
   private Player[] players = new Player[4];
   private boolean isFirstMove = true;
+  private int pointlessTurns = 0;
   /*
   @method
   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
@@ -140,6 +142,11 @@ public class ServerMatch {
                 new GetNewTilesMessage(this.players[this.currentPlayer].name,
                     this.drawNewTiles(tiles.length)));
             int points = scrabbleBoard.getPoints();
+            if(points == 0){
+              pointlessTurns++;
+            }else{
+              pointlessTurns = 0;
+            }
             this.players[this.currentPlayer].addPoints(points);
             System.out.println("points received"+ points);
             server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
@@ -341,6 +348,14 @@ public class ServerMatch {
     this.currentPlayer = currentPlayer;
   }
 
+
+  public void gameOver(){
+    this.server.sendToAll(new GameOverMessage("server"));
+  }
+
+  public void incrementPointlessTurns(){
+    pointlessTurns++;
+  }
 
   public Player[] getPlayers() {
     return players;
