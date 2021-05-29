@@ -24,6 +24,7 @@ public class SelectLetterSetController extends Thread {
 
   /*Set up the view for the player to select the whiched tileset*/
   public void setUp(MouseEvent e) {
+    System.out.println("Test");
     if(!setUpDone) {
       lettersLB = new Label[LetterSetHolder.getInstance().getPossibleLetters().length];
       numberOfLettersTF = new TextField[LetterSetHolder.getInstance().getPossibleLetters().length];
