@@ -15,6 +15,7 @@ import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
 import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
+import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
 import backend.network.messages.time.TimeAlertMessage;
@@ -171,7 +172,20 @@ public class ClientProtocol extends Thread{
               break;
 
             case RECEIVE_SHUFFLE_TILES:
-              match.receiveShuffleTiles((ReceiveShuffleTilesMessage) message);
+              System.out.println("received tiles");
+              ReceiveShuffleTilesMessage receiveShuffleTilesMessage = (ReceiveShuffleTilesMessage) message;
+              if(receiveShuffleTilesMessage.getFrom().equals("")){
+                System.out.println("not enough tiles to shuffle");
+                match.newGameEvent("not enough tiles in bag to shuffle");
+              }
+              match.receiveShuffleTiles(receiveShuffleTilesMessage.getRack());
+              break;
+
+            case GET_NEW_TILES:
+              System.out.println("Get new Tiles");
+              GetNewTilesMessage getNewTilesMessage = (GetNewTilesMessage) message;
+              System.out.println("new tiles first: "+ getNewTilesMessage.getTiles()[0].getLetter());
+              match.receiveShuffleTiles(getNewTilesMessage.getTiles());
               break;
 
             case TIME_ALERT:

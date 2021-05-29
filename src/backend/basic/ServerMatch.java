@@ -131,6 +131,7 @@ public class ServerMatch {
         }else{
           System.out.println("everything alrighty");
           PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
+          message.setSuccessfulMove(true);
           if (message.isSuccessfulMove()) {
             System.out.println("input was valid");
             server.sendOnlyTo(this.players[this.currentPlayer].name, message);

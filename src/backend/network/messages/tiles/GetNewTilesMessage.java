@@ -16,6 +16,7 @@ public class GetNewTilesMessage extends Message {
    */
   public GetNewTilesMessage(String from,Tile[] newTiles) {
     super(MessageType.GET_NEW_TILES, from);
+    tiles = newTiles;
   }
 
   public Tile[] getTiles() {
