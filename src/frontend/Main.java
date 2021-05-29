@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -57,6 +58,7 @@ public class Main extends Application {
     profile = new Profile("");
     primaryStage.setResizable(false);
     Parent root = FXMLLoader.load(getClass().getResource("screens/startingMenu.fxml"));
+    primaryStage.getIcons().add(new Image("frontend/screens/resources/gameIcon.png"));
     primaryStage.setTitle("Scrabble Application");
     primaryStage.setScene(new Scene(root, 1080, 720));
     primaryStage.show();
