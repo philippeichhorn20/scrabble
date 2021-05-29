@@ -19,11 +19,11 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.LobbyScreenController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #8b4513;">
+      <VBox prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #7F5539;">
          <children>
             <BorderPane prefHeight="720.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
                <top>
-                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #996600;" BorderPane.alignment="CENTER">
+                  <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #B08968;" BorderPane.alignment="CENTER">
                      <children>
                         <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
                            <font>
@@ -39,7 +39,7 @@
                <center>
                   <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="startLobby" minWidth="380.0" mnemonicParsing="false" onAction="#openStartGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Start Game" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <Button fx:id="startLobby" minWidth="380.0" mnemonicParsing="false" onAction="#openStartGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #9C6644;" text="Start Game" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -50,7 +50,7 @@
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="joinGame" minWidth="380.0" mnemonicParsing="false" onAction="#openJoinGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Join Game" textFill="WHITE">
+                        <Button fx:id="joinGame" minWidth="380.0" mnemonicParsing="false" onAction="#openJoinGameView" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #9C6644;" text="Join Game" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -61,7 +61,7 @@
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="playTutorial" minWidth="380.0" mnemonicParsing="false" onAction="#startTutorial" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Tutorial" textFill="WHITE">
+                        <Button fx:id="playTutorial" minWidth="380.0" mnemonicParsing="false" onAction="#startTutorial" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #9C6644;" text="Tutorial" textFill="WHITE">
                            <font>
                               <Font name="Consolas Bold" size="20.0" />
                            </font>
@@ -76,7 +76,7 @@
                   </VBox>
                </center>
                <bottom>
-                  <Button fx:id="backButton" minWidth="380.0" mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #A0522D;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+                  <Button fx:id="backButton" minWidth="380.0" mnemonicParsing="false" onAction="#changeScene" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #9C6644;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Consolas Bold" size="20.0" />
                      </font>
@@ -99,14 +99,14 @@
       </VBox>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0">
          <children>
-            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true">
+            <ImageView fx:id="lobbyView" fitHeight="720.0" fitWidth="700.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@resources/brett-jordan-xrLGt8vF5Go-unsplash.jpg" />
                </image>
             </ImageView>
-            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #805500;" visible="false">
+            <VBox fx:id="startGameView" prefHeight="720.0" prefWidth="700.0" style="-fx-background-color: #7F5539;">
                <children>
-                  <Label alignment="CENTER" prefWidth="700.0" style="-fx-border-color: #000000; -fx-border-style: none none solid none" text="Starting a server..." textAlignment="CENTER">
+                  <Label alignment="CENTER" prefWidth="700.0" style="-fx-border-color: #ffffff; -fx-border-style: none none solid none;" text="Starting a server..." textAlignment="CENTER" textFill="WHITE">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin></Label>
@@ -124,7 +124,7 @@
                            <children>
                               <BorderPane prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fx:id="player1Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player1Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -136,7 +136,7 @@
                                  <center>
                                     <ImageView fx:id="player1Icon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                        <image>
-                                          <Image url="@resources/playerIcon.png" />
+                                          <Image url="@resources/waiting.png" />
                                        </image>
                                        <BorderPane.margin>
                                           <Insets left="5.0" />
@@ -149,7 +149,7 @@
                               </BorderPane>
                               <BorderPane layoutX="310.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fx:id="player2Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player2Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -174,7 +174,7 @@
                               </BorderPane>
                               <BorderPane layoutX="330.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
                                  <bottom>
-                                    <Text fx:id="player3Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Easy AI" BorderPane.alignment="CENTER">
+                                    <Text fx:id="player3Name" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas" size="16.0" />
                                        </font>
@@ -241,7 +241,7 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Label>
-                                          <TextField fx:id="hostIP" editable="false" promptText="Something went wrong" style="-fx-background-color: #A0522D;">
+                                          <TextField fx:id="hostIP" editable="false" promptText="Something went wrong" style="-fx-background-color: #B08968;">
                                              <HBox.margin>
                                                 <Insets left="10.0" />
                                              </HBox.margin>
@@ -265,7 +265,7 @@
                                     </Label>
                                  </left>
                                  <center>
-                                    <MenuButton minWidth="100.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Choose" textFill="WHITE" BorderPane.alignment="CENTER">
+                                    <MenuButton minWidth="100.0" mnemonicParsing="false" style="-fx-background-color: #B08968;" text="Choose" textFill="WHITE" BorderPane.alignment="CENTER">
                                       <items>
                                         <MenuItem mnemonicParsing="false" text="Dictionary 1" />
                                         <MenuItem mnemonicParsing="false" text="Dictionary 2" />
@@ -286,9 +286,9 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <BorderPane maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                              <BorderPane maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #B08968; -fx-background-radius: 10px;">
                                  <top>
-                                    <Label alignment="CENTER" prefWidth="300.0" style="-fx-background-color: #8b4513; -fx-background-radius: 10 10 0 0;" text="AI Opponents" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+                                    <Label alignment="CENTER" prefWidth="300.0" style="-fx-background-color: #9C6644; -fx-background-radius: 10 10 0 0;" text="AI Opponents" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas Bold" size="20.0" />
                                        </font>
@@ -317,7 +317,7 @@
                                                       </Label>
                                                       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                                          <children>
-                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="1" textFill="WHITE">
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #9C6644;" text="1" textFill="WHITE">
                                                                <font>
                                                                   <Font name="Consolas" size="20.0" />
                                                                </font>
@@ -325,7 +325,7 @@
                                                                   <Insets left="5.0" right="5.0" />
                                                                </HBox.margin>
                                                             </Button>
-                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="2" textFill="WHITE">
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #9C6644;" text="2" textFill="WHITE">
                                                                <HBox.margin>
                                                                   <Insets left="5.0" right="5.0" />
                                                                </HBox.margin>
@@ -333,7 +333,7 @@
                                                                   <Font name="Consolas" size="20.0" />
                                                                </font>
                                                             </Button>
-                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="3" textFill="WHITE">
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #9C6644;" text="3" textFill="WHITE">
                                                                <font>
                                                                   <Font name="Consolas" size="20.0" />
                                                                </font>
@@ -364,7 +364,7 @@
                                                       </Label>
                                                       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                                          <children>
-                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Easy" textFill="WHITE">
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #9C6644;" text="Easy" textFill="WHITE">
                                                                <font>
                                                                   <Font name="Consolas" size="20.0" />
                                                                </font>
@@ -372,7 +372,7 @@
                                                                   <Insets left="5.0" right="5.0" />
                                                                </HBox.margin>
                                                             </Button>
-                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #A0522D;" text="Hard" textFill="WHITE">
+                                                            <Button minWidth="50.0" mnemonicParsing="false" style="-fx-background-color: #9C6644;" text="Hard" textFill="WHITE">
                                                                <HBox.margin>
                                                                   <Insets left="5.0" right="5.0" />
                                                                </HBox.margin>
@@ -396,9 +396,9 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </BorderPane>
-                              <BorderPane maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #4d3300; -fx-background-radius: 10px;">
+                              <BorderPane maxWidth="300.0" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #B08968; -fx-background-radius: 10px;">
                                  <top>
-                                    <Label alignment="CENTER" prefWidth="300.0" style="-fx-background-color: #8b4513; -fx-background-radius: 10 10 0 0;" text="Statistics" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+                                    <Label alignment="CENTER" prefWidth="300.0" style="-fx-background-color: #9C6644; -fx-background-radius: 10 10 0 0;" text="Statistics" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
                                        <font>
                                           <Font name="Consolas Bold" size="20.0" />
                                        </font>
@@ -437,39 +437,17 @@
                                           </HBox>
                                           <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
                                              <children>
-                                                <Label fx:id="statPlayer1Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                <Label fx:id="statPlayer1Name" prefWidth="100.0" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="statPlayer1Games" prefWidth="70.0" text="Games" textFill="WHITE">
+                                                <Label fx:id="statPlayer1Games" prefWidth="70.0" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="statPlayer1Wins" text="Wins" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
-                                             <children>
-                                                <Label fx:id="statPlayer2Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="statPlayer2Games" prefWidth="70.0" text="Games" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Consolas" size="16.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="statPlayer2Wins" text="Wins" textFill="WHITE">
+                                                <Label fx:id="statPlayer1Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
@@ -481,17 +459,17 @@
                                           </HBox>
                                           <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
                                              <children>
-                                                <Label fx:id="statPlayer3Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                <Label fx:id="statPlayer2Name" prefWidth="100.0" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="statPlayer3Games" prefWidth="70.0" text="Games" textFill="WHITE">
+                                                <Label fx:id="statPlayer2Games" prefWidth="70.0" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="statPlayer3Wins" text="Wins" textFill="WHITE">
+                                                <Label fx:id="statPlayer2Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
@@ -503,17 +481,39 @@
                                           </HBox>
                                           <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
                                              <children>
-                                                <Label fx:id="statPlayer4Name" prefWidth="100.0" text="Player 1" textFill="WHITE">
+                                                <Label fx:id="statPlayer3Name" prefWidth="100.0" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="statPlayer4Games" prefWidth="70.0" text="Games" textFill="WHITE">
+                                                <Label fx:id="statPlayer3Games" prefWidth="70.0" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="statPlayer4Wins" text="Wins" textFill="WHITE">
+                                                <Label fx:id="statPlayer3Wins" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox maxHeight="40.0" prefHeight="20.0" prefWidth="200.0">
+                                             <children>
+                                                <Label fx:id="statPlayer4Name" prefWidth="100.0" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="statPlayer4Games" prefWidth="70.0" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Consolas" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="statPlayer4Wins" textFill="WHITE">
                                                    <font>
                                                       <Font name="Consolas" size="16.0" />
                                                    </font>
@@ -529,18 +529,37 @@
                               </BorderPane>
                            </children>
                         </HBox>
-                       <BorderPane>
-                         <center>
-                           <Button fx:id="loadLibraryButton" mnemonicParsing="false" onAction="#loadLibrary" style="-fx-background-color: #A0522D;" text="Load New Dictionary" textFill="WHITE">
-                             <font>
-                               <Font name="Consolas Bold" size="15.0" />
-                             </font>
-                           </Button>
-                         </center>
-                         <VBox.margin>
-                           <Insets top="50.0" />
-                         </VBox.margin>
-                       </BorderPane>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane prefWidth="300.0">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                                 <center>
+                                 <Button fx:id="loadLibraryButton" mnemonicParsing="false" onAction="#loadLibrary" style="-fx-background-color: #9C6644;" text="Load New Dictionary" textFill="WHITE" BorderPane.alignment="CENTER">
+                                   <font>
+                                     <Font name="Consolas Bold" size="15.0" />
+                                   </font>
+                                 </Button>
+                                 </center>
+                              </BorderPane>
+                              <BorderPane prefWidth="300.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <center>
+                                    <Button mnemonicParsing="false" onAction="#changeLetterSet" style="-fx-background-color: #9C6644;" text="Change Letter Set" textFill="WHITE" BorderPane.alignment="CENTER">
+                                       <font>
+                                          <Font name="Consolas Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                 </center>
+                              </BorderPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
                         <BorderPane>
                            <center>
                               <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#startGame" style="-fx-background-color: #22cb30;" text="Start Game" textFill="WHITE">

@@ -147,7 +147,8 @@ public class LobbyScreenController {
   public void startLobby(ActionEvent e) {
     System.out.println("start Lobby called");
     isHost = true;
-    Player host = new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT);
+    Player host = new Player(Main.profile.getName(), Main.profile.getColor(),Main.profile.getGames(), Main.profile
+        .getWins(), Playerstatus.WAIT);
 
     Server server = new Server();
 
@@ -191,10 +192,8 @@ public class LobbyScreenController {
                                 + players[0].getName().substring(1).toLowerCase();
                             player1Name.setText(name);
                             statPlayer1Name.setText(name);
-                            /*
-                            @TODO display stats
-                             */
-                            statPlayer1Games.setText("" + 0);
+                            statPlayer1Games.setText("" + players[0].getGames());
+                            statPlayer1Wins.setText("" + players[0].getWins());
                             new Flash(player1Name).play();
                             new Flash(player1Icon).play();
                           }
@@ -204,9 +203,8 @@ public class LobbyScreenController {
                                 + players[1].getName().substring(1).toLowerCase();
                             player2Name.setText(name);
                             statPlayer2Name.setText(name);
-                            /*
-                            @TODO same as for first player
-                             */
+                            statPlayer2Games.setText("" + players[1].getGames());
+                            statPlayer2Wins.setText("" + players[1].getWins());
                             new Flash(player2Name).play();
                             player2Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
@@ -217,9 +215,9 @@ public class LobbyScreenController {
                             String name = players[2].getName().substring(0, 1).toUpperCase()
                                 + players[2].getName().substring(1).toLowerCase();
                             player3Name.setText(name);
-                            /*
-                            @TODO same as for first player
-                             */
+                            statPlayer3Name.setText(name);
+                            statPlayer3Games.setText("" + players[2].getGames());
+                            statPlayer3Wins.setText("" + players[2].getWins());
                             new Flash(player4Name).play();
                             player3Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
@@ -231,9 +229,9 @@ public class LobbyScreenController {
                             String name = players[3].getName().substring(0, 1).toUpperCase()
                                 + players[3].getName().substring(1).toLowerCase();
                             player4Name.setText(name);
-                            /*
-                            @TODO same as for first player
-                             */
+                            statPlayer4Name.setText(name);
+                            statPlayer4Games.setText("" + players[3].getGames());
+                            statPlayer4Wins.setText("" + players[3].getWins());
                             new Flash(player4Name).play();
                             player4Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
@@ -257,7 +255,8 @@ public class LobbyScreenController {
             ServerSettings.port,
             Main.profile.getName(),
             new ClientMatch(
-                Main.profile.getName(), new Player(Main.profile.getName(), "", Playerstatus.WAIT)));
+                Main.profile.getName(), new Player(Main.profile.getName(), "",Main.profile
+                .getGames(), Main.profile.getWins(), Playerstatus.WAIT)));
     clientProtocol.start();
 
     clientProtocol.getMatch().addProtocol(clientProtocol);
@@ -332,7 +331,8 @@ public class LobbyScreenController {
               Main.profile.getName(),
               new ClientMatch(
                   Main.profile.getName(),
-                  new Player(Main.profile.getName(), "", Playerstatus.WAIT)));
+                  new Player(Main.profile.getName(), "",Main.profile.getGames(), Main.profile
+                      .getWins(), Playerstatus.WAIT)));
       cp.start();
       Thread lob =
           new Thread(
@@ -356,17 +356,23 @@ public class LobbyScreenController {
 
                             if (players[0] != null && !player1Name.getText().toLowerCase()
                                 .equals(players[0].getName())) {
-                              player1Name.setText(
-                                  players[0].getName().substring(0, 1).toUpperCase()
-                                      + players[0].getName().substring(1).toLowerCase());
+                              String name = players[0].getName().substring(0, 1).toUpperCase()
+                                  + players[0].getName().substring(1).toLowerCase();
+                              player1Name.setText(name);
+                              statPlayer1Name.setText(name);
+                              statPlayer1Games.setText("" + players[0].getGames());
+                              statPlayer1Wins.setText("" + players[0].getWins());
                               new Flash(player1Name).play();
                               new Flash(player1Icon).play();
                             }
                             if (players[1] != null && !player2Name.getText().toLowerCase()
                                 .equals(players[1].getName())) {
-                              player2Name.setText(
-                                  players[1].getName().substring(0, 1).toUpperCase()
-                                      + players[1].getName().substring(1).toLowerCase());
+                              String name = players[1].getName().substring(0, 1).toUpperCase()
+                                  + players[1].getName().substring(1).toLowerCase();
+                              player2Name.setText(name);
+                              statPlayer2Name.setText(name);
+                              statPlayer2Games.setText("" + players[1].getGames());
+                              statPlayer2Wins.setText("" + players[1].getWins());
                               new Flash(player2Name).play();
                               player2Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
@@ -374,9 +380,12 @@ public class LobbyScreenController {
                             }
                             if (players[2] != null && !player3Name.getText().toLowerCase()
                                 .equals(players[2].getName())) {
-                              player3Name.setText(
-                                  players[2].getName().substring(0, 1).toUpperCase()
-                                      + players[2].getName().substring(1).toLowerCase());
+                              String name = players[2].getName().substring(0, 1).toUpperCase()
+                                  + players[2].getName().substring(1).toLowerCase();
+                              player3Name.setText(name);
+                              statPlayer3Name.setText(name);
+                              statPlayer3Games.setText("" + players[2].getGames());
+                              statPlayer3Wins.setText("" + players[2].getWins());
                               new Flash(player4Name).play();
                               player3Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
@@ -385,9 +394,12 @@ public class LobbyScreenController {
                             }
                             if (players[3] != null && !player4Name.getText().toLowerCase()
                                 .equals(players[3].getName())) {
-                              player4Name.setText(
-                                  players[3].getName().substring(0, 1).toUpperCase()
-                                      + players[3].getName().substring(1).toLowerCase());
+                              String name = players[3].getName().substring(0, 1).toUpperCase()
+                                  + players[3].getName().substring(1).toLowerCase();
+                              player4Name.setText(name);
+                              statPlayer4Name.setText(name);
+                              statPlayer4Games.setText("" + players[3].getGames());
+                              statPlayer4Wins.setText("" + players[3].getWins());
                               new Flash(player4Name).play();
                               player4Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
@@ -402,7 +414,8 @@ public class LobbyScreenController {
       lob.start();
       cp.getMatch().addProtocol(cp);
       Player player =
-          new Player(Main.profile.getName(), Main.profile.getColor(), Playerstatus.WAIT);
+          new Player(Main.profile.getName(), Main.profile.getColor(),Main.profile.getGames(), Main.profile
+              .getWins(), Playerstatus.WAIT);
       GameInformation gameInformation = GameInformation.getInstance();
       gameInformation.setProfile(Main.profile);
       gameInformation.setHost(player);
@@ -437,5 +450,9 @@ public class LobbyScreenController {
     } else {
       // ... user chose CANCEL or closed the dialog
     }
+  }
+
+  public void changeLetterSet(ActionEvent e){
+
   }
 }
