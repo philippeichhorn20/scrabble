@@ -294,8 +294,10 @@ public class GameScreenController extends Thread{
 
         }else{
         if (b.contains(e.getX(), e.getY())) {
-          new FadeOut(tileBagIcon).play();
-          //tileBagIcon.setVisible(false);
+          if(!tileBagIcon.isMouseTransparent()){
+            new FadeOut(tileBagIcon).play();
+            tileBagIcon.setMouseTransparent(true);
+          }
           for (int k = 0; k < 7; k++) {
             if (gtiles[k].isHighlighted()) {
               if(tilesOnBoard[i][j]){
@@ -358,7 +360,8 @@ public class GameScreenController extends Thread{
     Node[] nodesToRemove;
     nodesToRemove = new Node[14];
     int i = 0;
-    tileBagIcon.setVisible(true);
+    tileBagIcon.setMouseTransparent(false);
+    new FadeIn(tileBagIcon).play();
     newHistoryMessage(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase() + " returned his tiles to the rack");
     for (Node node : boardChildren) {
       int x = 0;
@@ -571,11 +574,11 @@ public class GameScreenController extends Thread{
                   turn++;
                   match.setInvalidMove(true);
                 }
-                if(match.getNewTilesOnRack() != null){
-                  System.out.println("new racks are being4ttruehj");
-                  newTilesFromBag(match.getNewTilesOnRack());
-                  match.clearNewTilesOnRack();
-                }
+                //if(match.getNewTilesOnRack() != null){
+                 // System.out.println("new racks are being4ttruehj");
+                  //newTilesFromBag(match.getNewTilesOnRack());
+                  //match.clearNewTilesOnRack();
+               // }
                 if(match.isOver()){
                   sendLostBox();
                   //or send win box
