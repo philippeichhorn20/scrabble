@@ -203,6 +203,8 @@ public class LobbyScreenController {
                             statPlayer1Wins.setText("" + players[0].getWins());
                             new Flash(player1Name).play();
                             new Flash(player1Icon).play();
+                          } else if (players[0] == null) {
+                            setPlayer1NotExist();
                           }
                           if (players[1] != null && !player2Name.getText().toLowerCase()
                               .equals(players[1].getName())) {
@@ -216,6 +218,8 @@ public class LobbyScreenController {
                             player2Icon.setImage(
                                 new Image("frontend/screens/resources/playerIcon.png"));
                             new Flash(player2Icon).play();
+                          } else if (players[1] == null) {
+                            setPlayer2NotExist();
                           }
                           if (players[2] != null && !player3Name.getText().toLowerCase()
                               .equals(players[2].getName())) {
@@ -230,6 +234,8 @@ public class LobbyScreenController {
                                 new Image("frontend/screens/resources/playerIcon.png"));
                             new Flash(player3Icon).play();
 
+                          } else if (players[2] == null) {
+                            setPlayer3NotExist();
                           }
                           if (players[3] != null && !player4Name.getText().toLowerCase()
                               .equals(players[3].getName())) {
@@ -244,6 +250,8 @@ public class LobbyScreenController {
                                 new Image("frontend/screens/resources/playerIcon.png"));
                             new Flash(player4Icon).play();
 
+                          } else if (players[3] == null) {
+                            setPlayer4NotExist();
                           }
                         }
                       });
@@ -269,6 +277,34 @@ public class LobbyScreenController {
     gameInformation.setHost(host);
 
     gameInformation.setClientmatch(clientProtocol.getMatch());
+  }
+
+  public void setPlayer1NotExist() {
+    player1Name.setText("Waiting");
+    statPlayer1Name.setText("");
+    statPlayer1Games.setText("");
+    statPlayer1Wins.setText("");
+  }
+
+  public void setPlayer2NotExist() {
+    player2Name.setText("Waiting");
+    statPlayer2Name.setText("");
+    statPlayer2Games.setText("");
+    statPlayer2Wins.setText("");
+  }
+
+  public void setPlayer3NotExist() {
+    player3Name.setText("Waiting");
+    statPlayer3Name.setText("");
+    statPlayer3Games.setText("");
+    statPlayer3Wins.setText("");
+  }
+
+  public void setPlayer4NotExist() {
+    player4Name.setText("Waiting");
+    statPlayer4Name.setText("");
+    statPlayer4Games.setText("");
+    statPlayer4Wins.setText("");
   }
 
   public void loadLibrary(ActionEvent e) {
@@ -344,8 +380,8 @@ public class LobbyScreenController {
   /*
   Remove all player from lobby with Playerstatus AI.
    */
-  public void removeAI(){
-    for(Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
+  public void removeAI() {
+    for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
       if (p != null) {
         if (p.getStatus() == Playerstatus.AI) {
           GameInformation.getInstance().getServermatch().removePlayer(p.getName());
