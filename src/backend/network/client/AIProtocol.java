@@ -22,6 +22,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+
+/**
+ * 
+ * @author vivanova
+ *
+ */
 public class AIProtocol extends Thread{
   private String username;
   private Socket clientSocket;
@@ -79,7 +85,7 @@ public class AIProtocol extends Thread{
 
             case SEND_ID:
               System.out.println("send id received");
-              // TODO At game controller there must be a methode which receive ID's
+              // TODO At game controller there must be a method which receive ID's
               // for example for a tile
               break;
 
@@ -97,25 +103,25 @@ public class AIProtocol extends Thread{
               break;
 
             case GAME_OVER:
-              // TODO At game controller there must be a methode which show
+              // TODO At game controller there must be a method which shows
               // the player that the game is over
               this.match.setOver(true);
               break;
 
             case GAME_WIN:
-              // TODO At game controller there must be a methode which show
+              // TODO At game controller there must be a method which shows
               // that the player won
               this.match.youWon();
               break;
 
             case GAME_LOOSE:
-              // TODO At game controller there must be a methode which show
+              // TODO At game controller there must be a method which shows
               // that the player lost
               this.match.youLost();
               break;
 
             case GAME_PLACEMENT:
-              // TODO At game controller there must be a methode which show
+              // TODO At game controller there must be a method which shows
               // the player the placement
 
               // redundant, by sending out the Player info, this info can be taken from Game Lobby
@@ -131,7 +137,7 @@ public class AIProtocol extends Thread{
               }
               break;
             case SEND_POINTS:
-              // TODO At game controller there must be a methode which add
+              // TODO At game controller there must be a method which adds
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
               this.match.addPointsToPlayer(message2.getPoints());
@@ -139,7 +145,7 @@ public class AIProtocol extends Thread{
 
             case GAME_START:
               System.out.println("game start message received");
-              // TODO At game controller there must be a methode which add
+              // TODO At game controller there must be a method which add
               // points to the player statistics
               GameStartMessage message3 = (GameStartMessage) message;
               this.match.getPlayer().updateRack(message3.getTiles());
@@ -148,7 +154,7 @@ public class AIProtocol extends Thread{
               break;
 
             case SEND_RACK_POINTS:
-              // TODO At game controller there must be a methode which
+              // TODO At game controller there must be a method which
               // calculate the points left on the rack
 
               // Why and also when?
@@ -161,7 +167,13 @@ public class AIProtocol extends Thread{
               break;
 
             case RECEIVE_SHUFFLE_TILES:
-              match.receiveShuffleTiles((ReceiveShuffleTilesMessage) message);
+            System.out.println("Tiles received.");
+           	ReceiveShuffleTilesMessage receiveShuffleTilesMessage = (ReceiveShuffleTilesMessage) message;
+           	if(receiveShuffleTilesMessage.getFrom().equals("")){
+                System.out.println("not enough tiles to shuffle");
+                match.newGameEvent("not enough tiles in bag to shuffle");
+              }
+              match.receiveShuffleTiles(receiveShuffleTilesMessage.getRack());
               break;
 
             case TIME_ALERT:
