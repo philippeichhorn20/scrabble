@@ -35,7 +35,7 @@ public class ClientMatch {
   private int yourTurnNum;
   private String gameEvents = "";    // stores the gameEvents that will be visible to the player
   private Tile[] newTilesToBeAdded;   //stores Tiles to be accessed from Controller
-  private boolean invalidMove;
+  private boolean invalidMove = true;
   private GameScreenController gameScreenController;
   private boolean dropTiles = false;
   private Tile[] newTilesOnRack;
@@ -181,9 +181,10 @@ otherwise it just informs the player about the new turn
  */
   public void playFeedBackIntegration(PlayFeedbackMessage message) {
     if (message.isSuccessfulMove()) {
-      this.gameScreenController.showServerMessage(message.getFeedback(),7);
+      this.gameScreenController.showServerMessage(message.getFeedback(),3);
       scrabbleBoard.nextTurn();
     } else {
+      System.out.println("You FUCKED UP");
       this.gameScreenController.showServerMessage(message.getFeedback(),3);
       removeChangedTiles();
     }
@@ -223,7 +224,7 @@ sends tiles to server top shuffle
  */
   public void shuffleTiles(Tile[] oldTiles) throws IOException {
     waitingForShuffledTiles = true;
-    protocol.sendToServer(new ShuffleTilesMessage(from, oldTiles));
+    protocol.sendToServer(new ShuffleTilesMessage(this.player.getName(), oldTiles));
   }
 
 
@@ -244,6 +245,7 @@ sends tiles to server top shuffle
   public void endMatch() {
     protocol.disconnect();
   }
+
 
   public void youWon() {
     this.youWon = true;

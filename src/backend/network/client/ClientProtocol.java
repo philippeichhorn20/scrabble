@@ -142,6 +142,8 @@ public class ClientProtocol extends Thread{
                 System.out.print(p+" ");
               }
               break;
+
+
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add
               // points to the player statistics

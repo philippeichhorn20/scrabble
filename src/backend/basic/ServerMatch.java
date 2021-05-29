@@ -3,9 +3,10 @@ package backend.basic;
 import backend.ai.PlayerAI;
 import backend.basic.Player.Playerstatus;
 import backend.network.client.AIProtocol;
-import backend.network.messages.game.GameOverMessage;
+import backend.network.messages.game.GameLooseMessage;
 import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.GameTurnMessage;
+import backend.network.messages.game.GameWinMessage;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.points.SendPointsMessage;
@@ -135,11 +136,11 @@ public class ServerMatch {
       if (!this.scrabbleBoard.wordIsConnectedToMiddle(tiles)) {
         System.out.println("wrong first move detected");
         server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server",
-            "Start the Game by placing a word over the center matchfield", false));
+            "Please place tiles properly", false));
+        this.scrabbleBoard.dropChangedTiles();
       } else {
         System.out.println("everything alrighty");
         PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
-        message.setSuccessfulMove(true);
         if (message.isSuccessfulMove()) {
           System.out.println("input was valid");
           server.sendOnlyTo(this.players[this.currentPlayer].name, message);
@@ -248,20 +249,19 @@ public class ServerMatch {
 
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
-    if (!this.tileBag.isEmpty()) {
+    if (this.tileBag.size()>7) {
       if (playerNum == -1) {
         System.out.println("Player not found, at shuffle request");
       } else if (playerNum != currentPlayer) {
         System.out.println("Wrong player, at shuffle request");
       } else {
-        if (this.players[playerNum].shuffleRack(oldTiles, this.tileBag)) {
-          server.sendOnlyTo(from,
-              new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
-        } else {
-          System.out.println("couldn't shuffle since bag was empty");
-          server.sendOnlyTo(from,
-              new ReceiveShuffleTilesMessage("server", this.players[playerNum].getRack()));
+        Tile[] newTiles = this.players[playerNum].shuffleRack(oldTiles, this.tileBag);
+        for(Tile tile : newTiles){
+          System.out.print(tile.getLetter()+"--");
         }
+          server.sendOnlyTo(from,
+              new ReceiveShuffleTilesMessage("server", this.players[playerNum].shuffleRack(oldTiles, this.tileBag)));
+
       }
     } else {
       server.sendOnlyTo(from,
@@ -383,7 +383,8 @@ public class ServerMatch {
 
 
   public void gameOver() {
-    this.server.sendToAll(new GameOverMessage("server"));
+    this.server.sendToAllBut(this.getWinner().getName(), new GameLooseMessage("server"));
+    this.server.sendOnlyTo(this.getWinner().getName(),new GameWinMessage("server"));
   }
 
   public void incrementPointlessTurns() {
@@ -392,5 +393,17 @@ public class ServerMatch {
 
   public Player[] getPlayers() {
     return players;
+  }
+
+  public Player getWinner(){
+    Player winner = this.players[0];
+    for(int x = 1; x < this.players.length; x++){
+      if(players[x] != null){
+        if(players[x].getScore() > winner.getScore()){
+          winner =this.players[x];
+        }
+      }
+    }
+    return winner;
   }
 }

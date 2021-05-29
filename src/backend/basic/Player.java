@@ -25,16 +25,13 @@ public class Player implements Serializable {
   }
 
   /*A methode to shuffle chosen tiles from the players rack and drawing new random tile instead*/
-  public boolean shuffleRack(Tile[] tilesToShuffel, TileBag bag) {
+  public Tile[] shuffleRack(Tile[] tilesToShuffel, TileBag bag) {
     Tile[] newTiles = new Tile[tilesToShuffel.length];
-
-    if (bag.size() >= 7) {
-      for (int i = 0; i < tilesToShuffel.length; i++) {
-        newTiles[i] = bag.drawTile();
-      }
-      for (int i = 0; i < tilesToShuffel.length; i++) {
-        bag.insertTileToBag(drawTileFromRack(tilesToShuffel[i]));
-      }
+    for (int i = 0; i < tilesToShuffel.length; i++) {
+      newTiles[i] = bag.drawTile();
+      bag.insertTileToBag(tilesToShuffel[i]);
+    }
+      /*
       int count = 0;
       for (int i = 0; i < this.rack.length; i++) {
         if (this.rack[i] == null) {
@@ -42,8 +39,8 @@ public class Player implements Serializable {
           count++;
         }
       }
-    }
-    return false;
+       */
+    return newTiles;
   }
 
   /*Add points to the players score*/

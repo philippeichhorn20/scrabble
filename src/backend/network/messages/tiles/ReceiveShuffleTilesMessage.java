@@ -14,7 +14,6 @@ public class ReceiveShuffleTilesMessage extends Message {
   public ReceiveShuffleTilesMessage(String from, Tile[] rack) {
     super(MessageType.RECEIVE_SHUFFLE_TILES, from);
     this.rack = rack;
-
   }
 
   public Tile[] getRack() {

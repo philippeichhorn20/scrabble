@@ -3,7 +3,6 @@ package backend.network.server;
 import backend.ai.PlayerAI;
 import backend.basic.GameInformation;
 import backend.basic.Player;
-import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
@@ -15,7 +14,6 @@ import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import backend.network.tools.IDGeneratorBasic;
-import frontend.Main;
 import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -167,6 +165,7 @@ public class ServerProtocol extends Thread {
               // TODO At game controller there must be a methode which shuffle tiles
               // and return the shuffled tiles
               ShuffleTilesMessage shuffleTilesMessage = (ShuffleTilesMessage) message;
+              this.server.serverMatch.shuffleTilesOfPlayer(message.getFrom(), shuffleTilesMessage.getToShuffleTiles());
               break;
 
             case GAME_TURN:

@@ -132,11 +132,9 @@ public class TileBag implements Serializable {
    * @param tileToAdd the tile that will be added to the bag*/
   public void insertTileToBag(Tile tileToAdd) {
     Tile[] newTileSet = new Tile[this.bag.length + 1];
-
     for (int i = 0; i < this.bag.length; i++) {
       newTileSet[i] = this.bag[i];
     }
-
     tileToAdd.setStatus(Tilestatus.INBAG);
     newTileSet[newTileSet.length - 1] = tileToAdd;
 
