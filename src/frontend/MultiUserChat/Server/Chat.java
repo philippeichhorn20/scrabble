@@ -41,7 +41,7 @@ public class Chat {
 		window.setMaxWidth(260);
 		textArea = new TextArea();
 		textArea.setEditable(false);
-		textArea.setMaxWidth(200);
+		textArea.setMaxWidth(220);
 		textArea.setMinHeight(300);
 		TextField inputField = new TextField();
 		inputField.setPrefWidth(220);
@@ -59,17 +59,21 @@ public class Chat {
 		});
 		VBox layout = new VBox(10);
 
-//		layout.setPadding(new Insets(10.0d));
-//		layout.setBackground(
-//				new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), new CornerRadii(0), new Insets(0))));
-//
-//		((VBox) layout)
-//				.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		layout.setPadding(new Insets(10.0d));
+		layout.setBackground(
+				new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), new CornerRadii(0), new Insets(0))));
 
-		btnClose.setMaxWidth(20);
-		btnClose.setMinWidth(20);
-		btnClose.setMaxHeight(10);
-		btnClose.setMinHeight(10);
+		((VBox) layout)
+				.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+
+		btnClose.setMaxWidth(60);
+		btnClose.setMinWidth(60);
+		btnClose.setMaxHeight(50);
+		btnClose.setMinHeight(30);
+		btnSend.setMinWidth(60);
+		btnSend.setMaxWidth(60);
+		btnSend.setMaxHeight(50);
+		btnSend.setMinHeight(30);
 		btnClose.setStyle(".button {\n" + "    -fx-padding: 8 15 15 15;\n"
 				+ "    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;\n" + "    -fx-background-radius: 8;\n"
 				+ "    -fx-background-color:\n"
@@ -118,7 +122,7 @@ public class Chat {
 	}
 
 	public void fillTextArea(String from, String text) {
-		this.textArea.appendText(from + ": " + text + "\n");
+		this.textArea.appendText(from.toUpperCase() + ": " + text + "\n");
 		System.out.println();
 	}
 
