@@ -1,11 +1,15 @@
 package frontend.screens.controllers;
 
+import backend.basic.Tile;
 import frontend.screens.controllertools.LetterSetHolder;
-import java.awt.ScrollPane;
-import java.awt.TextField;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class SelectLetterSetController extends Thread {
@@ -15,42 +19,93 @@ public class SelectLetterSetController extends Thread {
   boolean setUpDone = false;
   GridPane gridPane = new GridPane();
   Label[] lettersLB;
-  TextField[] numberOfLetters;
-  TextField[] valueOfLetters;
+  TextField[] numberOfLettersTF;
+  TextField[] valueOfLettersTF;
 
+  /*Set up the view for the player to select the whiched tileset*/
   public void setUp(MouseEvent e) {
     if(!setUpDone) {
       lettersLB = new Label[LetterSetHolder.getInstance().getPossibleLetters().length];
-      numberOfLetters = new TextField[LetterSetHolder.getInstance().getPossibleLetters().length];
-      valueOfLetters = new TextField[LetterSetHolder.getInstance().getPossibleLetters().length];
+      numberOfLettersTF = new TextField[LetterSetHolder.getInstance().getPossibleLetters().length];
+      valueOfLettersTF = new TextField[LetterSetHolder.getInstance().getPossibleLetters().length];
 
-      /* List<Item> toAdd = new ArrayList<>();
-    for (int column = 0; column < columnCount; column++) {
-        for (int row = 0; row < rowCount; row++) {
-            Item item = getItemAt(column, row);
+      int countLetter[] = new int[LetterSetHolder.getInstance().getPossibleLetters().length];
 
-            // if it is null it wont be painted e.g. empty/blank item
-            if (item != null) {
-                toAdd.add(item);
-                GridPane.setColumnIndex(item, item.getColumn());
-                GridPane.setRowIndex(item, item.getRow());
-            }
-        }
-    }
+      for(int i = 0; i < LetterSetHolder.getInstance().getTileSet().length; i++) {
+        countLetter[getPositionOfLetterInSet(LetterSetHolder.getInstance().getTileSet()[i].getLetter())] += 1;
+      }
 
-    // add all at once for better performance
-    grid.getChildren().setAll(toAdd);
-}*/
+      for (int row = 0; row < LetterSetHolder.getInstance().getPossibleLetters().length; row++) {
 
+        lettersLB[row] = new Label();
+        lettersLB[row].setText(String.valueOf(LetterSetHolder.getInstance().getPossibleLetters()[row]));
+
+        numberOfLettersTF[row] = new TextField();
+        numberOfLettersTF[row].setText(countLetter[row] + "");
+
+        valueOfLettersTF[row] = new TextField();
+        valueOfLettersTF[row].setText(getValueOfLetter(LetterSetHolder.getInstance().getPossibleLetters()[row]) + "");
+
+        gridPane.add(lettersLB[row], row, 0 );
+        gridPane.add(numberOfLettersTF[row], row, 1 );
+        gridPane.add(valueOfLettersTF[row], row, 2 );
+
+      }
+      viewSP.setContent(gridPane);
       setUpDone = true;
     }
   }
 
-  public void save(){
+  private int getPositionOfLetterInSet(char letter) {
+    for(int i = 0; i < LetterSetHolder.getInstance().getPossibleLetters().length; i++) {
+      if(LetterSetHolder.getInstance().getPossibleLetters()[i] == letter) {
+        return i;
+      }
+    }
 
+    return -1;
+  }
+
+  private int getValueOfLetter(char letter) {
+    for(int i = 0; i < LetterSetHolder.getInstance().getTileSet().length; i++) {
+      if(LetterSetHolder.getInstance().getTileSet()[i].getLetter() == letter) {
+        return LetterSetHolder.getInstance().getTileSet()[i].getValue();
+      }
+    }
+
+    return -1;
+  }
+
+  private int getTotalNumberOfTiles() {
+    int count = 0;
+
+    for(int i = 0; i < numberOfLettersTF.length; i++) {
+      count += Integer.parseInt(numberOfLettersTF[i].getText());
+    }
+
+    return count;
+  }
+
+  /*Create a letter set out of the value from the textfields
+  * @return the created letterSet*/
+  private Tile[] getLetterSet() {
+    int setPosition = 0;
+    Tile[] newSet = new Tile[getTotalNumberOfTiles()];
+
+    for(int i = 0; i < LetterSetHolder.getInstance().getPossibleLetters().length; i++) {
+      for(int j = 0; j < Integer.parseInt(numberOfLettersTF[i].getText()); j++) {
+        newSet[setPosition++] =  new Tile(LetterSetHolder.getInstance().getPossibleLetters()[i],Integer.parseInt(valueOfLettersTF[i].getText()));
+      }
+    }
+
+    return newSet;
+  }
+
+  public void save(){
+    LetterSetHolder.getInstance().setTileSet(getLetterSet());
   }
 
   public void goBack() {
-
+    this.interrupt();
   }
 }
