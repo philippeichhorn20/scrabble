@@ -15,6 +15,8 @@ import javafx.scene.layout.GridPane;
 public class SelectLetterSetController extends Thread {
   @FXML
   ScrollPane viewSP;
+  @FXML
+  Label totalNumberLB;
 
   boolean setUpDone = false;
   GridPane gridPane = new GridPane();
@@ -24,7 +26,6 @@ public class SelectLetterSetController extends Thread {
 
   /*Set up the view for the player to select the whiched tileset*/
   public void setUp(MouseEvent e) {
-    System.out.println("Test");
     if(!setUpDone) {
       lettersLB = new Label[LetterSetHolder.getInstance().getPossibleLetters().length];
       numberOfLettersTF = new TextField[LetterSetHolder.getInstance().getPossibleLetters().length];
@@ -66,6 +67,9 @@ public class SelectLetterSetController extends Thread {
       viewSP.setContent(gridPane);
       setUpDone = true;
     }
+
+    totalNumberLB.setText("Total number of tiles in tilebag: " + getTotalNumberOfTiles());
+
   }
 
   private int getPositionOfLetterInSet(char letter) {
