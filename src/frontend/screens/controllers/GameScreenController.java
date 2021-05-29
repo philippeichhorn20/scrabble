@@ -516,6 +516,7 @@ public class GameScreenController extends Thread{
   public void setUp(MouseEvent e) {
     this.match.setGameScreenController(this);
     if (!setUpDone) {
+      serverMessage.setVisible(false);
       Thread taskThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -664,7 +665,9 @@ public class GameScreenController extends Thread{
       gtiles[i].getRec().setFill(Color.web("#ffe5b4"));
     }
   }
+  public void update(MouseEvent e){
 
+  }
   public static class AlertBox {
     public static void display(String title, String message) {
       Stage window = new Stage();

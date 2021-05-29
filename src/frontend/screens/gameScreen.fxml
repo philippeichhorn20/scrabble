@@ -147,42 +147,42 @@
                <content>
                   <AnchorPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #ffe5b4;">
                      <children>
-                        <Label fx:id="name1" layoutX="20.0" layoutY="10.0">
+                        <Label fx:id="name1" layoutX="17.0" layoutY="23.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="name2" layoutX="20.0" layoutY="55.0">
+                        <Label fx:id="name2" layoutX="17.0" layoutY="70.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="name3" layoutX="20.0" layoutY="100.0">
+                        <Label fx:id="name3" layoutX="20.0" layoutY="110.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="name4" layoutX="20.0" layoutY="142.0" prefHeight="31.0" prefWidth="68.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="name4" layoutX="20.0" layoutY="145.0" prefHeight="31.0" prefWidth="68.0">
+                        <Label fx:id="nameScore1" layoutX="121.0" layoutY="23.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore1" layoutX="121.0" layoutY="10.0">
+                        <Label fx:id="nameScore4" layoutX="121.0" layoutY="143.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore4" layoutX="121.0" layoutY="145.0">
+                        <Label fx:id="nameScore3" layoutX="121.0" layoutY="108.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore3" layoutX="121.0" layoutY="100.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="nameScore2" layoutX="121.0" layoutY="55.0">
+                        <Label fx:id="nameScore2" layoutX="121.0" layoutY="70.0" text="Label">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -259,9 +259,9 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Label fx:id="serverMessage" contentDisplay="CENTER" layoutX="224.0" layoutY="280.0" style="-fx-alignment: center; -fx-background-color: #F5F5DC; -fx-background-radius: 10;" text="WARNING" textFill="#404d2c">
+            <Label fx:id="serverMessage" contentDisplay="CENTER" layoutX="224.0" layoutY="280.0" maxWidth="1000.0" minHeight="110.0" minWidth="642.0" style="-fx-alignment: center; -fx-background-color: #F5F5DC; -fx-background-radius: 10;" text="WARNING" textFill="#404d2c">
                <font>
-                  <Font name="Georgia" size="57.0" />
+                  <Font name="Georgia" size="30.0" />
                </font>
             </Label>
             <Button layoutX="900.0" layoutY="500.0" mnemonicParsing="false" onAction="#openChat" text="Chat" />
