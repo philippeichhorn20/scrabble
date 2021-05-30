@@ -70,7 +70,6 @@ public class ClientMatch {
   public void yourTurn() {
     yourTurnNum = currentPlayer;
     scrabbleBoard.nextTurn();
-    this.getTimer().nextPlayer();
     this.writeTextMessages("You have 2 minutes to make a move!");
   }
 
@@ -81,6 +80,7 @@ otherwise it just informs the player about the new turn
  */
   public void turnTaken(int nowTurn){
     currentPlayer = nowTurn;
+    this.getTimer().nextPlayer();
     if(players[currentPlayer].getName().equals(GameInformation.getInstance().getProfile().getName())){
       yourTurn();
     }else{
@@ -182,18 +182,18 @@ otherwise it just informs the player about the new turn
   method checks if move was successful and informs the player about it
  */
   public void playFeedBackIntegration(PlayFeedbackMessage message) {
-    System.out.println("playFeedBackIntegration");
     if (message.isSuccessfulMove()) {
       this.textMessages.addAll(message.getFeedback());
       scrabbleBoard.nextTurn();
+      invalidMove=false;
     } else if(message.getFeedback() == null) {
       this.gameScreenController.showServerMessage("please place the tiles properly",3);
     }else{
       System.out.println("removing tiles");
       System.out.println(this.textMessages.size());
-      System.out.println(message.getFeedback().size());
+      System.out.println(message.getFeedback());
       this.textMessages.addAll(message.getFeedback());
-      System.out.println("= "+this.textMessages.size());
+      System.out.println("poop "+this.textMessages.size());
       removeChangedTiles();
     }
   }

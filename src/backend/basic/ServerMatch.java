@@ -160,9 +160,7 @@ public class ServerMatch {
 
     } else {
     }
-    // } else {
-    //  System.out.println("wrong player requested game move: Place Tiles");
-    // }
+
 
   }
 
@@ -171,7 +169,6 @@ public class ServerMatch {
     Tile[] newTiles = new Tile[amountNeeded];
     for (int i = 0; i < amountNeeded; i++) {
       newTiles[i] = this.tileBag.drawTile();
-      System.out.print("..." + newTiles[i].getLetter());
     }
     return newTiles;
   }
@@ -181,29 +178,7 @@ public class ServerMatch {
   }
 
 
-  /*
-    @method stars the match. It triggers the start of the thread, as well as different methods
-    */
-  /*public void startMatch() {
-    int count = 0;
-    this.startAiProtocols();
-    server.sendToAll(new LobbyInformationMessage("server", this.players));
-    for (int i = 0; i < this.players.length; i++) {
-      if (this.players[i] != null) {
-        Tile[] tiles = new Tile[7];
-        for (int x = 0; x < tiles.length; x++) {
-          tiles[x] = tileBag.drawTile();
-          System.out.println(tiles[x].getValue());
-        }
-        server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
-        count++;
-      }
-    }
-    startTimer();
-    // server message, find out turn, send turn message && send wait message, send out initial tiles,
-    // start game thread programmieren. Diese ruft das auf
-    //server.sendToAll(new);
-  }*/ //i have something different but it works
+
   public void startMatch() {
     int count = 0;
     this.startAiProtocols();

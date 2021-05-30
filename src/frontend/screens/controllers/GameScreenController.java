@@ -130,6 +130,7 @@ public class GameScreenController extends Thread {
   public void endTurn(ActionEvent e) {
     new Bounce(endTurnButton).play();
     endTurnFunction();
+    System.out.println("Turn: " + turn);
   }
   /**
    * This function sends the tiles that are placed on the current turn to the serverthrough a
@@ -138,8 +139,9 @@ public class GameScreenController extends Thread {
 
   private void endTurnFunction() {
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
-      activateServerMessage("Checking the word...");
+      showServerMessage("Checking your word..",4);
     }
+    System.out.println(GameInformation.getInstance().getClientmatch());
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
   }
   /** AlertBox that pops up after the player has won the game. */
@@ -340,7 +342,6 @@ public class GameScreenController extends Thread {
                 if (tilesOnBoard[i][j]) {
                   break;
                 }
-
                 Rectangle rec =
                     new Rectangle(
                         gtiles[k].getRec().getX(),
@@ -621,7 +622,7 @@ public class GameScreenController extends Thread {
       Text tileChar = new Text(" " + String.valueOf(t.getLetter()).toUpperCase());
       tileChar.setId("tilesfromothers");
       tileChar.setFont(new Font("Times New Roman Bold", 20));
-
+      tilesOnBoard[t.getX()][t.getY()]=true;
       board.add(rec, t.getX(), t.getY());
       board.add(tileChar, t.getX(), t.getY());
     }
@@ -712,7 +713,7 @@ public class GameScreenController extends Thread {
                             }
                             if (!match.checkTimer()
                                 && Main.profile.getName().equals(match.getCurrentPlayerName())) {
-                               endTurnFunction();
+                               //endTurnFunction();
                             }
                             if (match.dropTiles()) {
                               resetTilesAction();
@@ -721,6 +722,7 @@ public class GameScreenController extends Thread {
                             if (!match.isInvalidMove()) {
                               drawTiles();
                               turn++;
+                              System.out.println("TURNPLUSPLUS");
                               match.setInvalidMove(true);
                             }
                             if (match.getNewTilesOnRack() != null) {
