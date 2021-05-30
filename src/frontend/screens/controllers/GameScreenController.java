@@ -187,7 +187,7 @@ public class GameScreenController extends Thread {
         let.setFont(gt.getLetter().getFont());
         let.setMouseTransparent(true);
         pane.getChildren().add(let);
-        gt.setXY(gt.getRec().getLayoutX(), gt.getRec().getLayoutY());
+        gt.setXy(gt.getRec().getLayoutX(), gt.getRec().getLayoutY());
         pane.getChildren().remove(gt.getLetter());
         gt.setLetter(let);
         gt.setVisiblee(true);
@@ -739,7 +739,7 @@ public class GameScreenController extends Thread {
                                 gtiles[d].setTile(t);
                                 gtiles[d].setLetter(t.getLetter());
                                 gtiles[d].getLetter().setFont(new Font(20));
-                                gtiles[d].setXY(402 + (d * 36), 644);
+                                gtiles[d].setXy(402 + (d * 36), 644);
                                 gtiles[d].getLetter().setVisible(true);
                                 d++;
                               }

@@ -28,6 +28,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Client protocol is responsible for reading the messages that were sent from the server and
+ * interpreting them in the right way so that the game works.
+ */
 public class ClientProtocol extends Thread {
 
   private String username;
@@ -43,15 +47,27 @@ public class ClientProtocol extends Thread {
   private boolean running = true;
   private Message lastMessage = new Message(MessageType.GAME_LOOSE, "");
 
+  /**
+   * Constructor.
+   *
+   * @param ip The ip needed for the client socket.
+   * @param port The port needed for the client socket.
+   * @param username Client's username.
+   * @param match Clientmatch.
+   */
   public ClientProtocol(String ip, int port, String username, ClientMatch match) {
     try {
       this.username = username;
       this.clientSocket = new Socket(ip, port);
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
-      this.clientPlayer = new Player(username, Main.profile.getColor(), Main.profile.getGames(),
-          Main.profile
-              .getWins(), Playerstatus.WAIT);
+      this.clientPlayer =
+          new Player(
+              username,
+              Main.profile.getColor(),
+              Main.profile.getGames(),
+              Main.profile.getWins(),
+              Playerstatus.WAIT);
 
       this.out.writeObject(new ConnectMessage(this.username, clientPlayer));
       out.flush();
@@ -60,32 +76,63 @@ public class ClientProtocol extends Thread {
 
     } catch (IOException e) {
       System.out.println(e.getMessage());
-      System.out.println("Could not establish connection to " + ip + ":" + port + ".\n"
-          + "Please make sure the ip is correct and the server is online");
+      System.out.println(
+          "Could not establish connection to "
+              + ip
+              + ":"
+              + port
+              + ".\n"
+              + "Please make sure the ip is correct and the server is online");
     }
   }
 
+  /**
+   * Getter for boolean that tells the client match if the client has gotten his starting tiles.
+   *
+   * @return boolean
+   */
   public boolean isStartingTiles() {
     return startingTiles;
   }
 
+  /**
+   * Setter for starting tiles, sets to true if the game has started and the message with starting
+   * tiles came through.
+   *
+   * @param startingTiles boolean.
+   */
   public void setStartingTiles(boolean startingTiles) {
     this.startingTiles = startingTiles;
   }
 
+  /**
+   * Getter of the starting tiles.
+   *
+   * @return starting tiles.
+   */
   public Tile[] getStartingRack() {
     return startingRack;
   }
 
+  /**
+   * Setter of the starting tiles.
+   *
+   * @param startingRack starting tiles.
+   */
   public void setStartingRack(Tile[] startingRack) {
     this.startingRack = startingRack;
   }
 
+  /**
+   * Returns whether the socket is connected correctly.
+   *
+   * @return boolean.
+   */
   public boolean isStable() {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 
-  /*process the incoming messages from the server*/
+  /** Processes the incoming messages from the server. */
   public void run() {
     while (running) {
       try {
@@ -128,8 +175,11 @@ public class ClientProtocol extends Thread {
             case GAME_WIN:
               // TODO At game controller there must be a methode which show
               // that the player won
-              this.match.getGameScreenController().showServerMessage(
-                  "Congrats, you won with " + this.match.getPlayer().getScore() + " points!", 10);
+              this.match
+                  .getGameScreenController()
+                  .showServerMessage(
+                      "Congrats, you won with " + this.match.getPlayer().getScore() + " points!",
+                      10);
               this.match.youWon();
               break;
 
@@ -147,7 +197,7 @@ public class ClientProtocol extends Thread {
               // redundant, by sending out the Player info, this info can be taken from Game Lobby
               break;
 
-            // initialized the game with the lobby information
+              // initialized the game with the lobby information
             case GAME_INFO:
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
               GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
@@ -160,8 +210,10 @@ public class ClientProtocol extends Thread {
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
               this.match.writeTextMessages(
-                  message2.getFrom().substring(0, 1).toUpperCase() + message2.getFrom().substring(1)
-                      .toLowerCase() + " got " + message2.getPoints()
+                  message2.getFrom().substring(0, 1).toUpperCase()
+                      + message2.getFrom().substring(1).toLowerCase()
+                      + " got "
+                      + message2.getPoints()
                       + " points with his latest move");
               this.match.addPointsToPlayer(message2.getPoints());
               break;
@@ -176,21 +228,16 @@ public class ClientProtocol extends Thread {
               m.changeScene("screens/gameScreen.fxml");
               break;
 
-            case SEND_RACK_POINTS:
-              // TODO At game controller there must be a methode which
-              // calculate the points left on the rack
-
-              // Why and also when?
-              break;
-
             case PLACE_TILES:
               PlaceTilesMessage message4 = (PlaceTilesMessage) message;
-              GameInformation.getInstance().getClientmatch()
+              GameInformation.getInstance()
+                  .getClientmatch()
                   .placeTilesOfOtherPlayers(message4.getTiles());
               break;
 
             case RECEIVE_SHUFFLE_TILES:
-              ReceiveShuffleTilesMessage receiveShuffleTilesMessage = (ReceiveShuffleTilesMessage) message;
+              ReceiveShuffleTilesMessage receiveShuffleTilesMessage =
+                  (ReceiveShuffleTilesMessage) message;
               if (receiveShuffleTilesMessage.getFrom().equals("")) {
                 match.writeTextMessages("not enough tiles in bag to shuffle");
               }
@@ -206,7 +253,8 @@ public class ClientProtocol extends Thread {
               TimeAlertMessage timeAlertMessage = (TimeAlertMessage) message;
               switch (timeAlertMessage.getAlertType()) {
                 case TIME_OVER:
-                  match.getGameScreenController()
+                  match
+                      .getGameScreenController()
                       .showServerMessage("Your time is up, moving on.", 5);
                   break;
                 case TIMER_STARTED:
@@ -218,30 +266,29 @@ public class ClientProtocol extends Thread {
                 case THIRTY_SECONDS_LEFT:
                   match.thirtySecondsAlert();
                   break;
+                default:
+                  break;
               }
+
               break;
 
             case TIME_SYNC:
               // it nulls the timer
               this.match.setTimerToZero();
               break;
-            /**
-             *@author vivanova
-             */
+              //author @vivanova
             case TEXT:
               TextMessage textMessage = (TextMessage) message;
               String sender = textMessage.getFrom();
               String text = textMessage.getText();
               GameInformation.getInstance().getChat().fillTextArea(sender, text);
-              /**
-               * Call Text Box to add new Text
-               */
-
+              /* Call Text Box to add new Text */
               break;
             case HISTORY:
-              HistoryMessage hMessage = (HistoryMessage) message;
-              historyMess = hMessage.getMessage();
+              HistoryMessage historyMessage = (HistoryMessage) message;
+              historyMess = historyMessage.getMessage();
               messChange = true;
+              break;
             case SEND_START_RACK:
               SendStartRackMessage ssrMessage = (SendStartRackMessage) message;
               setStartingTiles(true);
@@ -260,7 +307,9 @@ public class ClientProtocol extends Thread {
     }
   }
 
-  /*Disconnect the client from the server*/
+  /**
+   * Disconnects the player from the server.
+   */
   public void disconnect() {
     running = false;
     try {
@@ -273,29 +322,60 @@ public class ClientProtocol extends Thread {
     }
   }
 
+  /**
+   * Getter of the new history message.
+   *
+   * @return history message string.
+   */
+
   public String getHistoryMessage() {
     return historyMess;
   }
+
+  /**
+   * Returns whether a new history message arrived.
+   *
+   * @return boolean.
+   */
 
   public boolean messageChanged() {
     return messChange;
   }
 
+  /**
+   * Sets the new message as read - ergo false.
+   *
+   */
   public void messageRead() {
     messChange = false;
   }
 
+  /**
+   * Returns whether the client protocol is still running.
+   *
+   * @return boolean
+   */
   public boolean isRunning() {
     return running;
   }
 
-  /*Send messages from client to server*/
+  /**
+   * Sends messages from client to server.
+   *
+   * @param message the message being sent.
+   * @throws IOException if out is messed up.
+   */
   public void sendToServer(Message message) throws IOException {
     this.out.writeObject(message);
     out.flush();
     out.reset();
   }
 
+  /**
+   * Getter of this protocol's client match.
+   *
+   * @return ClientMatch.
+   */
   public ClientMatch getMatch() {
     return this.match;
   }

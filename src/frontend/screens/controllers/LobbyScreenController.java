@@ -43,72 +43,52 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/*
-@author jawinter
-    This is the controller for the lobby screen. Here the user should be able to choose between hosting and joining a game, or starting a tutorial.
+/**
+ * Controller for the lobby screen. Here you can start a lobby, join an existing one, or play a
+ * tutorial game.
+ *
+ * @author jawinter
  */
 public class LobbyScreenController {
 
-  @FXML
-  private VBox joinGameView;
-  @FXML
-  private ImageView lobbyView;
-  @FXML
-  private VBox startGameView;
-  @FXML
-  private TextField hostIP;
-  @FXML
-  private TextField adressIP;
-  @FXML
-  private Button startGameButton;
-  @FXML
-  private Button loadLibraryButton;
-  @FXML
-  private Text player1Name;
-  @FXML
-  private Text player2Name;
-  @FXML
-  private Text player3Name;
-  @FXML
-  private Text player4Name;
-  @FXML
-  private ImageView player1Icon;
-  @FXML
-  private ImageView player2Icon;
-  @FXML
-  private ImageView player3Icon;
-  @FXML
-  private ImageView player4Icon;
-  @FXML
-  private Label statPlayer1Name;
-  @FXML
-  private Label statPlayer1Games;
-  @FXML
-  private Label statPlayer1Wins;
-  @FXML
-  private Label statPlayer2Name;
-  @FXML
-  private Label statPlayer2Games;
-  @FXML
-  private Label statPlayer2Wins;
-  @FXML
-  private Label statPlayer3Name;
-  @FXML
-  private Label statPlayer3Games;
-  @FXML
-  private Label statPlayer3Wins;
-  @FXML
-  private Label statPlayer4Name;
-  @FXML
-  private Label statPlayer4Games;
-  @FXML
-  private Label statPlayer4Wins;
+  @FXML private VBox joinGameView;
+  @FXML private ImageView lobbyView;
+  @FXML private VBox startGameView;
+  @FXML private TextField hostIP;
+  @FXML private TextField adressIP;
+  @FXML private Button startGameButton;
+  @FXML private Button loadLibraryButton;
+  @FXML private Text player1Name;
+  @FXML private Text player2Name;
+  @FXML private Text player3Name;
+  @FXML private Text player4Name;
+  @FXML private ImageView player1Icon;
+  @FXML private ImageView player2Icon;
+  @FXML private ImageView player3Icon;
+  @FXML private ImageView player4Icon;
+  @FXML private Label statPlayer1Name;
+  @FXML private Label statPlayer1Games;
+  @FXML private Label statPlayer1Wins;
+  @FXML private Label statPlayer2Name;
+  @FXML private Label statPlayer2Games;
+  @FXML private Label statPlayer2Wins;
+  @FXML private Label statPlayer3Name;
+  @FXML private Label statPlayer3Games;
+  @FXML private Label statPlayer3Wins;
+  @FXML private Label statPlayer4Name;
+  @FXML private Label statPlayer4Games;
+  @FXML private Label statPlayer4Wins;
 
   boolean isHost = true;
 
   private Server server;
-  // Method determines button clicked and changes to desired scene
-  @FXML
+
+  /**
+   * Function that determines which button was clicked and changes scene accordingly.
+   *
+   * @param e Click
+   * @throws IOException If source for scene is wrong.
+   */
   public void changeScene(ActionEvent e) throws IOException {
     Main m = new Main();
     Button trigger = (Button) e.getSource();
@@ -130,11 +110,17 @@ public class LobbyScreenController {
         isHost = true;
         scene += "mainMenu.fxml";
         break;
+      default:
+        break;
     }
     m.changeScene(scene);
   }
 
-  // Makes settings visible to hosting player.
+  /**
+   * Makes the starting game view visible.
+   *
+   * @param e Click
+   */
   public void openStartGameView(ActionEvent e) {
     lobbyView.setVisible(false);
     joinGameView.setVisible(false);
@@ -144,26 +130,34 @@ public class LobbyScreenController {
     }
   }
 
-  // Allows player to enter a code to join hosting player's server
+  /**
+   * Allows player to enter a code to join hosting player's server.
+   *
+   * @param e Click
+   */
   public void openJoinGameView(ActionEvent e) {
     lobbyView.setVisible(false);
     startGameView.setVisible(false);
     joinGameView.setVisible(true);
 
-    if(this.server != null) {
+    if (this.server != null) {
       server.stopServer();
       GameInformation.getInstance().setPlayers(new Player[4]);
     }
   }
 
+  /**
+   * Function that starts the lobby and a thread that updates the status of the lobby.
+   *
+   * @param e Click.
+   */
   public void startLobby(ActionEvent e) {
-    if(server != null) {
+    if (server != null) {
       server.stopServer();
       GameInformation.getInstance().setPlayers(new Player[4]);
     }
     isHost = true;
-    Player host = new Player(Main.profile.getName(), Main.profile.getColor(),
-        Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT);
+
     server = new Server();
     server.setServerMatch(new ServerMatch(server));
     GameInformation.getInstance().setServermatch(server.getServerMatch());
@@ -189,13 +183,16 @@ public class LobbyScreenController {
                   if (server.newPlayer()) {
                     Player[] correctPlayer = new Player[4];
 
-                    for(int i = 0; i < 4; i++) {
+                    for (int i = 0; i < 4; i++) {
                       Player p = GameInformation.getInstance().getPlayers()[i];
-                      if(p != null && p.getStatus() == Playerstatus.AI) {
-                        Player aiPlayer = new Player(GameInformation.getInstance().getPlayers()[i].getName(),
-                            GameInformation.getInstance().getPlayers()[i].getColor(),
-                            GameInformation.getInstance().getPlayers()[i].getGames(),
-                            GameInformation.getInstance().getPlayers()[i].getWins(), Playerstatus.WAIT);
+                      if (p != null && p.getStatus() == Playerstatus.AI) {
+                        Player aiPlayer =
+                            new Player(
+                                GameInformation.getInstance().getPlayers()[i].getName(),
+                                GameInformation.getInstance().getPlayers()[i].getColor(),
+                                GameInformation.getInstance().getPlayers()[i].getGames(),
+                                GameInformation.getInstance().getPlayers()[i].getWins(),
+                                Playerstatus.WAIT);
 
                         correctPlayer[i] = aiPlayer;
 
@@ -204,7 +201,9 @@ public class LobbyScreenController {
                       }
                     }
 
-                    server.sendToAllBut(Main.profile.getName(),new LobbyInformationMessage(Main.profile.getName(), correctPlayer));
+                    server.sendToAllBut(
+                        Main.profile.getName(),
+                        new LobbyInformationMessage(Main.profile.getName(), correctPlayer));
                     server.playerAdded();
                   }
 
@@ -215,12 +214,17 @@ public class LobbyScreenController {
 
                           Player[] players = GameInformation.getInstance().getPlayers();
 
-                          if (players[0] != null && !player1Name.getText().toLowerCase()
-                              .equals(players[0].getName())) {
-                            String name = players[0].getName().substring(0, 1).toUpperCase()
-                                + players[0].getName().substring(1).toLowerCase();
+                          if (players[0] != null
+                              && !player1Name
+                                  .getText()
+                                  .toLowerCase()
+                                  .equals(players[0].getName())) {
+                            String name =
+                                players[0].getName().substring(0, 1).toUpperCase()
+                                    + players[0].getName().substring(1).toLowerCase();
                             player1Name.setText(name);
-                            player1Icon.setImage(new Image("frontend/screens/resources/playerIcon.png"));
+                            player1Icon.setImage(
+                                new Image("frontend/screens/resources/playerIcon.png"));
                             statPlayer1Name.setText(name);
                             statPlayer1Games.setText("" + players[0].getGames());
                             statPlayer1Wins.setText("" + players[0].getWins());
@@ -229,10 +233,14 @@ public class LobbyScreenController {
                           } else if (players[0] == null) {
                             setPlayer1NotExist();
                           }
-                          if (players[1] != null && !player2Name.getText().toLowerCase()
-                              .equals(players[1].getName())) {
-                            String name = players[1].getName().substring(0, 1).toUpperCase()
-                                + players[1].getName().substring(1).toLowerCase();
+                          if (players[1] != null
+                              && !player2Name
+                                  .getText()
+                                  .toLowerCase()
+                                  .equals(players[1].getName())) {
+                            String name =
+                                players[1].getName().substring(0, 1).toUpperCase()
+                                    + players[1].getName().substring(1).toLowerCase();
                             player2Name.setText(name);
                             statPlayer2Name.setText(name);
                             statPlayer2Games.setText("" + players[1].getGames());
@@ -244,10 +252,14 @@ public class LobbyScreenController {
                           } else if (players[1] == null) {
                             setPlayer2NotExist();
                           }
-                          if (players[2] != null && !player3Name.getText().toLowerCase()
-                              .equals(players[2].getName())) {
-                            String name = players[2].getName().substring(0, 1).toUpperCase()
-                                + players[2].getName().substring(1).toLowerCase();
+                          if (players[2] != null
+                              && !player3Name
+                                  .getText()
+                                  .toLowerCase()
+                                  .equals(players[2].getName())) {
+                            String name =
+                                players[2].getName().substring(0, 1).toUpperCase()
+                                    + players[2].getName().substring(1).toLowerCase();
                             player3Name.setText(name);
                             statPlayer3Name.setText(name);
                             statPlayer3Games.setText("" + players[2].getGames());
@@ -260,10 +272,14 @@ public class LobbyScreenController {
                           } else if (players[2] == null) {
                             setPlayer3NotExist();
                           }
-                          if (players[3] != null && !player4Name.getText().toLowerCase()
-                              .equals(players[3].getName())) {
-                            String name = players[3].getName().substring(0, 1).toUpperCase()
-                                + players[3].getName().substring(1).toLowerCase();
+                          if (players[3] != null
+                              && !player4Name
+                                  .getText()
+                                  .toLowerCase()
+                                  .equals(players[3].getName())) {
+                            String name =
+                                players[3].getName().substring(0, 1).toUpperCase()
+                                    + players[3].getName().substring(1).toLowerCase();
                             player4Name.setText(name);
                             statPlayer4Name.setText(name);
                             statPlayer4Games.setText("" + players[3].getGames());
@@ -290,24 +306,38 @@ public class LobbyScreenController {
             ServerSettings.port,
             Main.profile.getName(),
             new ClientMatch(
-                Main.profile.getName(), new Player(Main.profile.getName(), "", Main.profile
-                .getGames(), Main.profile.getWins(), Playerstatus.WAIT)));
+                Main.profile.getName(),
+                new Player(
+                    Main.profile.getName(),
+                    "",
+                    Main.profile.getGames(),
+                    Main.profile.getWins(),
+                    Playerstatus.WAIT)));
     clientProtocol.start();
 
     clientProtocol.getMatch().addProtocol(clientProtocol);
     GameInformation gameInformation = GameInformation.getInstance();
     gameInformation.setProfile(Main.profile);
+    Player host =
+        new Player(
+            Main.profile.getName(),
+            Main.profile.getColor(),
+            Main.profile.getGames(),
+            Main.profile.getWins(),
+            Playerstatus.WAIT);
     gameInformation.setHost(host);
 
     gameInformation.setClientmatch(clientProtocol.getMatch());
   }
 
+  /** Helping function that sets the nodes in case the player 1 leaves the lobby. */
   public void setPlayer1NotExist() {
     player1Name.setText("Waiting");
     statPlayer1Name.setText("");
     statPlayer1Games.setText("");
     statPlayer1Wins.setText("");
   }
+  /** Helping function that sets the nodes in case the player 2 leaves the lobby. */
 
   public void setPlayer2NotExist() {
     player2Name.setText("Waiting");
@@ -315,6 +345,7 @@ public class LobbyScreenController {
     statPlayer2Games.setText("");
     statPlayer2Wins.setText("");
   }
+  /** Helping function that sets the nodes in case the player 3 leaves the lobby. */
 
   public void setPlayer3NotExist() {
     player3Name.setText("Waiting");
@@ -322,6 +353,7 @@ public class LobbyScreenController {
     statPlayer3Games.setText("");
     statPlayer3Wins.setText("");
   }
+  /** Helping function that sets the nodes in case the player 4 leaves the lobby. */
 
   public void setPlayer4NotExist() {
     player4Name.setText("Waiting");
@@ -330,6 +362,11 @@ public class LobbyScreenController {
     statPlayer4Wins.setText("");
   }
 
+  /**
+   * Function that loads a dictionary the host player hast chosen.
+   *
+   * @param e Click.
+   */
   public void loadLibrary(ActionEvent e) {
     startGameButton.setVisible(false);
     loadLibraryButton.setDisable(true);
@@ -338,27 +375,29 @@ public class LobbyScreenController {
     try {
       File selectedFile = fileChooser.showOpenDialog(Main.getStg());
       try {
-        if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
-            .equals("text/plain")) {
+        if (selectedFile != null
+            && Files.probeContentType(selectedFile.toPath()).equals("text/plain")) {
           WordCheckDB.loadNewLibrary(selectedFile.getPath());
           loadLibraryButton.setText("Success");
         } else {
-          GameScreenController.AlertBox
-              .display("Could not load Library", "Be sure to choose a .txt file");
+          GameScreenController.AlertBox.display(
+              "Could not load Library", "Be sure to choose a .txt file");
         }
       } catch (IOException ioe) {
-        GameScreenController.AlertBox
-            .display("Could not load Library", "Be sure to choose a .txt file");
+        GameScreenController.AlertBox.display(
+            "Could not load Library", "Be sure to choose a .txt file");
       }
     } catch (Exception exception) {
-      //File selectedFile = fileChooser.showOpenDialog(Main.getStg());
+      // File selectedFile = fileChooser.showOpenDialog(Main.getStg());
     }
     startGameButton.setVisible(true);
     loadLibraryButton.setDisable(false);
   }
 
-  /*
-  Method adds an EasyAI PLayer to the lobby. If lobby is full, alert will be displayed
+  /**
+   * Method adds an EasyAI PLayer to the lobby. If lobby is full, alert will be displayed.
+   *
+   * @param e Click.
    */
   public void addEasyAI(ActionEvent e) {
     Player[] player = GameInformation.getInstance().getServermatch().getPlayers();
@@ -369,17 +408,18 @@ public class LobbyScreenController {
       }
     }
     EasyAI newAI = new EasyAI("easyAI " + (playerInLobby + 1));
-    if (!GameInformation.getInstance().getServermatch()
-        .addPlayer(newAI)) {
-      GameScreenController.AlertBox
-          .display("ERROR", "Lobby is already full. It is not possible to add further players.");
+    if (!GameInformation.getInstance().getServermatch().addPlayer(newAI)) {
+      GameScreenController.AlertBox.display(
+          "ERROR", "Lobby is already full. It is not possible to add further players.");
     } else {
       GameInformation.getInstance().addPlayer(newAI);
     }
   }
 
-  /*
-  Method adds an HardAI PLayer to the lobby. If lobby is full, alert will be displayed
+  /**
+   * Method adds an HardAI PLayer to the lobby. If lobby is full, alert will be displayed.
+   *
+   * @param e Click.
    */
   public void addHardAI(ActionEvent e) {
     Player[] player = GameInformation.getInstance().getServermatch().getPlayers();
@@ -391,19 +431,15 @@ public class LobbyScreenController {
     }
     HardAI newAI = new HardAI("hardAI" + (playerInLobby + 1));
 
-
-    if (!GameInformation.getInstance().getServermatch()
-        .addPlayer(newAI)) {
-      GameScreenController.AlertBox
-          .display("ERROR", "Lobby is already full. It is not possible to add further players.");
+    if (!GameInformation.getInstance().getServermatch().addPlayer(newAI)) {
+      GameScreenController.AlertBox.display(
+          "ERROR", "Lobby is already full. It is not possible to add further players.");
     } else {
       GameInformation.getInstance().addPlayer(newAI);
     }
   }
 
-  /*
-  Remove all player from lobby with Playerstatus AI.
-   */
+  /** Removes all players from lobby with Playerstatus AI. */
   public void removeAI() {
     for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
       if (p != null) {
@@ -415,18 +451,29 @@ public class LobbyScreenController {
     }
   }
 
-  // Method switches to playboard and starts game.
+  /**
+   * Method that switches the screen to game screen.
+   *
+   * @param e Click.
+   * @throws IOException if source for game screen is wrong.
+   */
   public void startGame(ActionEvent e) throws IOException {
-    GameInformation.getInstance().getServermatch().getTileBag().importBagSet(LetterSetHolder.getInstance().getTileSet());
+    GameInformation.getInstance()
+        .getServermatch()
+        .getTileBag()
+        .importBagSet(LetterSetHolder.getInstance().getTileSet());
     GameInformation.getInstance().getServermatch().startMatch();
     WordCheckDB.importTextToDB();
     Main m = new Main();
     m.changeScene("screens/gameScreen.fxml");
     GameInformation.getInstance().getChat().display();
-
   }
 
-  // Method connects joining player to lobby or server of hosting player.
+  /**
+   * Method connects joining player to lobby and server of hosting player.
+   *
+   * @param e Click
+   */
   public void enterLobby(ActionEvent e) {
     boolean validIP = true;
 
@@ -438,8 +485,12 @@ public class LobbyScreenController {
               Main.profile.getName(),
               new ClientMatch(
                   Main.profile.getName(),
-                  new Player(Main.profile.getName(), "", Main.profile.getGames(), Main.profile
-                      .getWins(), Playerstatus.WAIT)));
+                  new Player(
+                      Main.profile.getName(),
+                      "",
+                      Main.profile.getGames(),
+                      Main.profile.getWins(),
+                      Playerstatus.WAIT)));
       cp.start();
       Thread lob =
           new Thread(
@@ -460,28 +511,37 @@ public class LobbyScreenController {
                           public void run() {
 
                             Player[] players = GameInformation.getInstance().getPlayers();
-                            if (players[0]==null){
+                            if (players[0] == null) {
                               setPlayer1NotExist();
                             }
-                            if (players[0] != null && !player1Name.getText().toLowerCase()
-                                .equals(players[0].getName())) {
-                              String name = players[0].getName().substring(0, 1).toUpperCase()
-                                  + players[0].getName().substring(1).toLowerCase();
+                            if (players[0] != null
+                                && !player1Name
+                                    .getText()
+                                    .toLowerCase()
+                                    .equals(players[0].getName())) {
+                              String name =
+                                  players[0].getName().substring(0, 1).toUpperCase()
+                                      + players[0].getName().substring(1).toLowerCase();
                               player1Name.setText(name);
-                              player1Icon.setImage(new Image("frontend/screens/resources/playerIcon.png"));
+                              player1Icon.setImage(
+                                  new Image("frontend/screens/resources/playerIcon.png"));
                               statPlayer1Name.setText(name);
                               statPlayer1Games.setText("" + players[0].getGames());
                               statPlayer1Wins.setText("" + players[0].getWins());
                               new Flash(player1Name).play();
                               new Flash(player1Icon).play();
                             }
-                            if (players[1]==null){
+                            if (players[1] == null) {
                               setPlayer2NotExist();
                             }
-                            if (players[1] != null && !player2Name.getText().toLowerCase()
-                                .equals(players[1].getName())) {
-                              String name = players[1].getName().substring(0, 1).toUpperCase()
-                                  + players[1].getName().substring(1).toLowerCase();
+                            if (players[1] != null
+                                && !player2Name
+                                    .getText()
+                                    .toLowerCase()
+                                    .equals(players[1].getName())) {
+                              String name =
+                                  players[1].getName().substring(0, 1).toUpperCase()
+                                      + players[1].getName().substring(1).toLowerCase();
                               player2Name.setText(name);
                               statPlayer2Name.setText(name);
                               statPlayer2Games.setText("" + players[1].getGames());
@@ -491,10 +551,14 @@ public class LobbyScreenController {
                                   new Image("frontend/screens/resources/playerIcon.png"));
                               new Flash(player2Icon).play();
                             }
-                            if (players[2] != null && !player3Name.getText().toLowerCase()
-                                .equals(players[2].getName())) {
-                              String name = players[2].getName().substring(0, 1).toUpperCase()
-                                  + players[2].getName().substring(1).toLowerCase();
+                            if (players[2] != null
+                                && !player3Name
+                                    .getText()
+                                    .toLowerCase()
+                                    .equals(players[2].getName())) {
+                              String name =
+                                  players[2].getName().substring(0, 1).toUpperCase()
+                                      + players[2].getName().substring(1).toLowerCase();
                               player3Name.setText(name);
                               statPlayer3Name.setText(name);
                               statPlayer3Games.setText("" + players[2].getGames());
@@ -503,15 +567,18 @@ public class LobbyScreenController {
                               player3Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
                               new Flash(player3Icon).play();
-
                             }
-                            if (players[2]==null){
+                            if (players[2] == null) {
                               setPlayer3NotExist();
                             }
-                            if (players[3] != null && !player4Name.getText().toLowerCase()
-                                .equals(players[3].getName())) {
-                              String name = players[3].getName().substring(0, 1).toUpperCase()
-                                  + players[3].getName().substring(1).toLowerCase();
+                            if (players[3] != null
+                                && !player4Name
+                                    .getText()
+                                    .toLowerCase()
+                                    .equals(players[3].getName())) {
+                              String name =
+                                  players[3].getName().substring(0, 1).toUpperCase()
+                                      + players[3].getName().substring(1).toLowerCase();
                               player4Name.setText(name);
                               statPlayer4Name.setText(name);
                               statPlayer4Games.setText("" + players[3].getGames());
@@ -520,12 +587,10 @@ public class LobbyScreenController {
                               player4Icon.setImage(
                                   new Image("frontend/screens/resources/playerIcon.png"));
                               new Flash(player4Icon).play();
-
                             }
-                            if(players[3]==null){
+                            if (players[3] == null) {
                               setPlayer4NotExist();
                             }
-
                           }
                         });
                   }
@@ -534,9 +599,12 @@ public class LobbyScreenController {
       lob.start();
       cp.getMatch().addProtocol(cp);
       Player player =
-          new Player(Main.profile.getName(), Main.profile.getColor(), Main.profile.getGames(),
-              Main.profile
-                  .getWins(), Playerstatus.WAIT);
+          new Player(
+              Main.profile.getName(),
+              Main.profile.getColor(),
+              Main.profile.getGames(),
+              Main.profile.getWins(),
+              Playerstatus.WAIT);
       GameInformation gameInformation = GameInformation.getInstance();
       gameInformation.setProfile(Main.profile);
       gameInformation.setHost(player);
@@ -548,11 +616,20 @@ public class LobbyScreenController {
     loadLibraryButton.setVisible(false);
   }
 
-  // Method responsible for animations
+  /**
+   * Method responsible for animations.
+   *
+   * @param e Mouseover
+   */
   public void animate(MouseEvent e) {
     new Pulse((Button) e.getSource()).play();
   }
 
+  /**
+   * Method which starts the tutorial game.
+   *
+   * @throws IOException if source for tutorial screen is wrong.
+   */
   public void startTutorial() throws IOException {
     Alert startTutorial = new Alert(AlertType.CONFIRMATION);
 
@@ -573,26 +650,41 @@ public class LobbyScreenController {
     }
   }
 
-  /*creates a pop up screen from selectLetterSetScreen.fxml*/
+
+  /**
+   * Creates instance of window which shows the select letter set fxml.
+   *
+   * @param e Click
+   */
   public void changeLetterSet(ActionEvent e) {
     try {
       Window window = new Window();
     } catch (IOException ioException) {
       ioException.printStackTrace();
     }
-
-
   }
 
+  /**
+   * Creates pop up screen from Select letter set fxml file.
+   *
+   */
   public class Window {
 
     public Window() throws IOException {
       display();
     }
 
+    /**
+     * Displays the window.
+     *
+     * @throws IOException if the source for the screen is wrong.
+     */
     public void display() throws IOException {
-      Parent root = FXMLLoader.load(
-          getClass().getClassLoader().getResource("frontend/screens/selectLetterSetScreen.fxml"));
+      Parent root =
+          FXMLLoader.load(
+              getClass()
+                  .getClassLoader()
+                  .getResource("frontend/screens/selectLetterSetScreen.fxml"));
       Scene scene = new Scene(root);
       Stage window = new Stage();
 

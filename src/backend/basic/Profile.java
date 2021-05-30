@@ -137,8 +137,12 @@ public class Profile {
     this.games = games;
   }
 
-  /*
-  @author jawinter Brings color to profile and updates db
+  /**
+   * Brings color to profile and updates db.
+   *
+   * @param color Color
+   * @param id Id of the player's profile.
+   * @author jawinter
    */
   public void setColor(String color, int id) {
     this.color = color;
@@ -177,11 +181,12 @@ public class Profile {
     this.points = points;
   }
 
-
-  /*
-  @author jawinter
-  Method should be used before setting a name to check, whether it already was used. Return
-  boolean value is true if the name was not used.
+  /**
+   * Method should be used before setting a name to check, whether it already was used.
+   *
+   * @author jawinter
+   * @param name Name to be checked
+   * @return returns true if the name is free to use
    */
   public boolean checkName(String name) {
     boolean nameNotExists = true;

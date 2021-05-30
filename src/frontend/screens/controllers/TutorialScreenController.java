@@ -209,7 +209,7 @@ public class TutorialScreenController extends Thread{
         let.setFont(gt.getLetter().getFont());
         let.setMouseTransparent(true);
         pane.getChildren().add(let);
-        gt.setXY(gt.getRec().getLayoutX(), gt.getRec().getLayoutY());
+        gt.setXy(gt.getRec().getLayoutX(), gt.getRec().getLayoutY());
         pane.getChildren().remove(gt.getLetter());
         gt.setLetter(let);
         gt.setVisiblee(true);
@@ -445,7 +445,7 @@ public class TutorialScreenController extends Thread{
                     gtiles[i].setTile(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]);
                     gtiles[i].getLetter().setText(String.valueOf(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i].getLetter()));
                     gtiles[i].getLetter().setFont(new Font(20));
-                    gtiles[i].setXY(402 + (i * 36), 644);
+                    gtiles[i].setXy(402 + (i * 36), 644);
                     gtiles[i].getLetter().setVisible(true);
                   }
 
