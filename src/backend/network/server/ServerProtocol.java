@@ -170,11 +170,7 @@ public class ServerProtocol extends Thread {
         if (message != null && lastMessage != null && !lastMessage.equals(message)) {
           switch (message.getMessageType()) {
             case GET_ID:
-              id = IDGeneratorBasic.createID();
-              SendIDMessage idMessage =
-                  new SendIDMessage("Host", id + "", ((GetIDMessage) message).getTmpId());
-              sendToClient(idMessage);
-              server.addIDToClient(id, clientName);
+              System.out.println("ID's are gone. Ask Nils for questions");
               break;
 
             case DISCONNECT:

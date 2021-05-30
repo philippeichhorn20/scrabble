@@ -33,13 +33,9 @@ public class Server {
   }
 
   private boolean running;
-  private boolean nextMessageOnlyForHost = false;
-  private boolean nextMessageAdditionalForHost = false;
   private boolean newPlayerAdded = false;
   private final HashMap<String, ServerProtocol> clients = new HashMap<>(); // map with serverprotocols of clients
-  private final HashMap<Integer, String> objecIDMap = new HashMap<>(); // map with owners of object ids
   ServerMatch serverMatch;
-  ClientMatch match;
 
 
   /*
@@ -80,17 +76,6 @@ public class Server {
   public synchronized Set<String> getClientNames() {
     Set<String> clientNames = this.clients.keySet();
     return new HashSet<String>(clientNames); // create a new list, because keySet modifications also modify map
-  }
-
-  /* add id of an object to the given client
-  * @param id the id of the object
-  * @param clientName the name of the client who own the object of the id*/
-  public synchronized void  addIDToClient(Integer id, String clientName){
-    objecIDMap.put(id, clientName);
-  }
-
-  public synchronized String getOwner(Integer id){
-    return objecIDMap.get(id);
   }
 
   // setup server +  listen to connection requests from clients
@@ -209,115 +194,4 @@ public class Server {
   public void setServerSocket(ServerSocket serverSocket) {
     this.serverSocket = serverSocket;
   }
-
-/*  public void updateHostGame(Message message) {
-    switch(message.getMessageType()) {
-      case GAME_START:
-        //TODO At game controller there must be a methode which show
-        // the player the start of game
-        break;
-
-      case GAME_TURN:
-        if (this.match.getMyNumber() == this.match.getCurrentPlayer() + 1) {
-          this.match.nextPlayer();
-        } else {
-
-        }
-        break;
-
-      case GAME_WAIT:
-        //TODO At game controller there must be a methode which show
-        // that the player have to wait because of another players turn
-
-        //redundant in my view, happens with GAME_TURN already
-        break;
-
-      case GAME_OVER:
-        //TODO At game controller there must be a methode which show
-        // the player that the game is over
-        this.match.isOver();
-        break;
-
-      case GAME_WIN:
-        //TODO At game controller there must be a methode which show
-        // that the player won
-        this.match.youWon();
-        break;
-
-      case GAME_LOOSE:
-        //TODO At game controller there must be a methode which show
-        // that the player lost
-        this.match.youLost();
-        break;
-
-      case GAME_PLACEMENT:
-        //TODO At game controller there must be a methode which show
-        // the player the placement
-
-        //redundant, by sending out the Player info, this info can be taken from Game Lobby
-        break;
-
-      case GAME_INFO:
-        LobbyInformationMessage message1 = (LobbyInformationMessage) message;
-        //this.match = new ClientMatch(this, message1.getPlayers(), "server",
-        //    new Player("ToDo", "TodO", Playerstatus.WAIT));
-        break;
-      case SEND_POINTS:
-        //TODO At game controller there must be a methode which add
-        // points to the player statistics
-        SendPointsMessage message2 = (SendPointsMessage) message;
-        this.match.addPointsToPlayer(message2.getPoints());
-        break;
-
-      case SEND_RACK_POINTS:
-        //TODO At game controller there must be a methode which
-        // calculate the points left on the rack
-
-        //Why and also when?
-        break;
-
-      case PLACE_TILES:
-        PlaceTilesMessage message3 = (PlaceTilesMessage) message;
-        match.placeTilesOfOtherPlayers(message3.getTiles());
-        break;
-
-      case RECEIVE_SHUFFLE_TILES:
-        match.receiveShuffleTiles((ReceiveShuffleTilesMessage) message);
-        break;
-
-      case TIME_ALERT:
-        TimeAlertMessage timeAlertMessage = (TimeAlertMessage) message;
-        switch (timeAlertMessage.getAlertType()) {
-          case TIME_OVER:
-            match.nextPlayer();
-            break;
-          case TIMER_STARTED:
-            match.getPlayer().setTimerPersonalTimerToZero();
-            break;
-          case ONE_MINUTE_LEFT:
-            match.oneMinuteAlert();
-            break;
-          case THIRTY_SECONDS_LEFT:
-            match.thirtySecondsAlert();
-            break;
-        }
-        break;
-
-      case TIME_SYNC:
-        //it nulls the timer
-        this.match.getPlayer().setTimerToZero();
-        break;
-
-      default:
-        break;
-      }
-    }
-
-    public void setNextMessageOnlyForHost() {
-      this.nextMessageOnlyForHost = true;
-    }
-
-    public void setNextMessageAdditionalForHost() {
-      this.nextMessageAdditionalForHost = true;
-    }*/
 }
