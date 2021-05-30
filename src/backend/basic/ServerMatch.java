@@ -153,7 +153,6 @@ public class ServerMatch {
           nextPlayer();
         } else {
           server.sendOnlyTo(this.players[this.currentPlayer].name, message);
-          server.sendToAll(message);
           this.scrabbleBoard.dropChangedTiles();
         }
       }

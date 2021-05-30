@@ -74,14 +74,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </GridPane>
-            <Button fx:id="backButton" layoutX="972.0" layoutY="670.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
-               <font>
-                  <Font name="HoloLens MDL2 Assets" size="19.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
             <ImageView fitHeight="95.0" fitWidth="297.0" layoutX="383.0" layoutY="614.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@resources/rack.png" />
@@ -143,7 +135,7 @@
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></Text>
-            <TitledPane animated="false" layoutX="826.0" layoutY="39.0" prefHeight="236.0" prefWidth="243.0" style="-fx-background-color: #ffe5b4;" text="Scoreboard">
+            <TitledPane animated="false" layoutX="826.0" layoutY="39.0" prefHeight="236.0" prefWidth="243.0" style="-fx-background-color: #ffe5b4;" text="   Scoreboard">
                <content>
                   <AnchorPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #ffe5b4;">
                      <children>
@@ -167,22 +159,22 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore1" layoutX="125.0" layoutY="5.0">
+                        <Label fx:id="nameScore1" layoutX="150.0" layoutY="5.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore4" layoutX="121.0" layoutY="155.0">
+                        <Label fx:id="nameScore4" layoutX="150.0" layoutY="155.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore3" layoutX="121.0" layoutY="105.0">
+                        <Label fx:id="nameScore3" layoutX="150.0" layoutY="105.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameScore2" layoutX="121.0" layoutY="55.0">
+                        <Label fx:id="nameScore2" layoutX="150.0" layoutY="55.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -208,17 +200,17 @@
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label fx:id="currPlayerText" layoutX="820.0" layoutY="420.0" prefHeight="50.0" prefWidth="253.0" style="-fx-alignment: center;" text="Player" textFill="#751e1e">
+            <Label fx:id="currPlayerText" layoutX="810.0" layoutY="420.0" prefHeight="50.0" prefWidth="253.0" style="-fx-alignment: center;" text="Player" textFill="#751e1e">
                <font>
                   <Font name="Trebuchet MS" size="42.0" />
                </font>
             </Label>
-            <Button fx:id="endTurnButton" layoutX="780.0" layoutY="650.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="48.0" prefWidth="118.0" text="End Turn">
+            <Button fx:id="endTurnButton" layoutX="870.0" layoutY="630.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green; -fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10;" text="End Turn">
                <font>
                   <Font size="21.0" />
                </font>
             </Button>
-            <Button fx:id="resetTilesButton" layoutX="820.0" layoutY="559.0" mnemonicParsing="false" onAction="#resetTiles" prefHeight="36.0" prefWidth="92.0" text="Set back" />
+            <Button fx:id="resetTilesButton" layoutX="820.0" layoutY="559.0" mnemonicParsing="false" onAction="#resetTiles" prefHeight="36.0" prefWidth="92.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Set back" />
             <ImageView fx:id="tileBagIcon" fitHeight="95.0" fitWidth="131.0" layoutX="15.0" layoutY="600.0" onMouseClicked="#getNewTiles" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@resources/tilebagicon.jpg" />
@@ -256,7 +248,7 @@
                   <Font name="Georgia" size="30.0" />
                </font>
             </Label>
-            <Button layoutX="900.0" layoutY="500.0" mnemonicParsing="false" onAction="#openChat" text="Chat" />
+            <Button layoutX="950.0" layoutY="559.0" mnemonicParsing="false" onAction="#openChat" prefHeight="36.0" prefWidth="92.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: black;" text="Chat" />
          </children>
       </AnchorPane>
    </center>
