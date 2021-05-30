@@ -3,6 +3,9 @@ package backend.ai;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 /*
  * @author jawinter
@@ -10,30 +13,28 @@ import java.io.IOException;
  */
 public class HardAI extends PlayerAI {
 
-
   public HardAI(String name) {
     super(name);
   }
 
   //choose best Tiles to place and if not found shuffles tiles
   public void handleTurn() {
-    System.out.println("HardAI: Ich muss nachdenken");
-    for(Tile t: tilesOnHand){
-      if(t==null){
-        t = new Tile('A',1, Tilestatus.ONPLAYERRACK);
-      }
+    PossibleWord bestWord = null;
+    TreeSet<PossibleWord> possibleWords = brain.getPlayableWords(this.tilesOnHand);
+    possibleWords.removeAll(this.getTriedWords());
+    if(possibleWords.size()!=0) {
+       bestWord = possibleWords.first();
     }
-    PossibleWord bestWord = brain.getPlayableWords(this.tilesOnHand).first();
     try {
       if (bestWord != null) {
+        this.getTriedWords().add(bestWord);
         Tile[] toPlace = bestWord.getTile().toArray(new Tile[0]);
-        removeUsedTilesFromHand(toPlace);
-        placeTiles(toPlace);
-        System.out.println(bestWord);
-      } else {
+        Tile[] toPlaceCleaned = removeBaseTile(toPlace,bestWord);
+        placeTiles(toPlaceCleaned);
+      }
+      if(possibleWords.size()==0){
+        sendShuffleMessage(this.tilesOnHand);
         this.setTiles(new Tile[]{null, null, null, null, null, null, null});
-        System.out.println("AI musste ziehen weil zu dumm");
-        requestNewTiles();
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -41,16 +42,4 @@ public class HardAI extends PlayerAI {
   }
   //If placetiles or shuffleTiles dont forget to set them null
 
-  /*
-  Method removes tiles from hand after being placed on board. Tiles to remove are given in parameter
-   */
-  public void removeUsedTilesFromHand(Tile[] tilesRemove) {
-    for (Tile t : tilesRemove) {
-      for (Tile tileOnHand : this.tilesOnHand) {
-        if (t.getLetter() == tileOnHand.getLetter()) {
-          tileOnHand = null;
-        }
-      }
-    }
-  }
 }

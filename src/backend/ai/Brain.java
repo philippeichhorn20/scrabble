@@ -81,7 +81,7 @@ public class Brain implements Serializable {
   public TreeSet<PossibleWord> checkIfSpaceSufficient(String currentWord,
       WordPossibility wordPossibility, Tile[] tilesOnHand) {
     TreeSet<PossibleWord> list = new TreeSet<PossibleWord>();
-    int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter());
+    int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter().getLetter());
     int verticalPoints = 0;
     int horizontalPoints = 0;
     int xPosBaseLetter = wordPossibility.getxPos();
@@ -104,7 +104,8 @@ public class Brain implements Serializable {
           calculatePoints.add(newTile);
         }
         verticalPoints = this.scrabbleBoard.getPointsOfWord(calculatePoints);
-        list.add(new PossibleWord(currentWord, verticalPoints, calculatePoints));
+        list.add(new PossibleWord(currentWord, verticalPoints, calculatePoints,
+            wordPossibility.getLetter()));
       }
     }
     //horizontal
@@ -123,7 +124,8 @@ public class Brain implements Serializable {
           calculatePoints.add(newTile);
         }
         horizontalPoints = this.scrabbleBoard.getPointsOfWord(calculatePoints);
-        list.add(new PossibleWord(currentWord, horizontalPoints, calculatePoints));
+        list.add(new PossibleWord(currentWord, horizontalPoints, calculatePoints,
+            wordPossibility.getLetter()));
       }
     }
     return list;
@@ -144,7 +146,7 @@ public class Brain implements Serializable {
         }
         without[j] = tilesOnHand[skip++];
       }
-      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i].getLetter(), 8, 8,
+      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i], 8, 8,
           tilesOnHand[i].getValue(), this.scrabbleBoard);
       allWords = findCorrectWords(wordPossibility, without);
       Iterator<String> it = allWords.iterator();
@@ -187,7 +189,7 @@ public class Brain implements Serializable {
    */
   TreeSet<String> findCorrectWords(WordPossibility wordPossibility, Tile[] tilesOnHand) {
     TreeSet<String> words = new TreeSet<String>();
-    char givenChar = wordPossibility.getLetter();
+    char givenChar = wordPossibility.getLetter().getLetter();
     String lettersOnHand = "";
     //get letters from tiles on hand
     for (int i = 0; i < tilesOnHand.length; i++) {
@@ -368,7 +370,7 @@ public class Brain implements Serializable {
       for (int y = 1; y < scrabbleBoard.getScrabbleBoard()[x].length; y++) {
         if (scrabbleBoard.getScrabbleBoard()[x][y] != null && scrabbleBoard.getScrabbleBoard()[x][y]
             .hasTile()) {
-          char letter = scrabbleBoard.getScrabbleBoard()[x][y].getTile().getLetter();
+          Tile letter = scrabbleBoard.getScrabbleBoard()[x][y].getTile();
           int value = scrabbleBoard.getScrabbleBoard()[x][y].getTile().getValue();
           wordPossibilities.add(new WordPossibility(letter, x, y, value, scrabbleBoard));
         }

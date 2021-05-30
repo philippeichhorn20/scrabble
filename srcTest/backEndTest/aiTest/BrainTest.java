@@ -93,11 +93,10 @@ public class BrainTest {
     easyAI.getEasyBrain().setScrabbleboard(board);
     TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
     Iterator<PossibleWord> it = wordsTest.iterator();
-    PossibleWord ginch = new PossibleWord("", 0, new ArrayList<Tile>());
+    PossibleWord ginch = new PossibleWord("", 0, new ArrayList<Tile>(),null);
     int ginchPoints = 0;
     while (it.hasNext()) {
       String z = it.next().getWord();
-      System.out.println(z);
       if (z.equals("GINCH")) {
         ginchPoints = ginch.getPoints();
       }

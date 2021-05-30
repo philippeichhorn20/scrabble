@@ -18,7 +18,7 @@ public class WordPossibility {
 
   private int xPos;
   private int yPos;
-  private char baseLetter; //letter which will be laid next to
+  private Tile baseLetter; //letter which will be laid next to
   private int baseLetterValue;
   private int aboveSpace;
   private int rightSpace;
@@ -27,7 +27,7 @@ public class WordPossibility {
   private ScrabbleBoard board;
 
   //Instructor for initialization
-  public WordPossibility(char givenLetter, int xPosition, int yPosition, int value,
+  public WordPossibility(Tile givenLetter, int xPosition, int yPosition, int value,
       ScrabbleBoard scrabbleBoard) {
     this.baseLetter = givenLetter;
     this.baseLetterValue = value;
@@ -74,7 +74,7 @@ public class WordPossibility {
     }
   }
 
-  public char getLetter() {
+  public Tile getLetter() {
     return baseLetter;
   }
 

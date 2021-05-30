@@ -13,11 +13,13 @@ public class PossibleWord implements Comparable<PossibleWord> {
   private String word;
   private int points;
   private ArrayList<Tile> tiles = new ArrayList<Tile>();
+  private Tile baseTile;
 
-  public PossibleWord(String s, int p, ArrayList<Tile> tiles) {
+  public PossibleWord(String s, int p, ArrayList<Tile> tiles,Tile baseTile) {
     this.word = s;
     this.points = p;
     this.tiles = tiles;
+    this.baseTile = baseTile;
   }
 
   /*
@@ -33,6 +35,14 @@ public class PossibleWord implements Comparable<PossibleWord> {
 
   public String getWord() {
     return word;
+  }
+
+  public Tile getBaseTile() {
+    return baseTile;
+  }
+
+  public void setBaseTile(Tile baseTile) {
+    this.baseTile = baseTile;
   }
 
   @Override

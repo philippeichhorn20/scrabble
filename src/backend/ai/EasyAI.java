@@ -1,8 +1,13 @@
 package backend.ai;
 
 import backend.basic.Tile;
+
+import backend.basic.Tile.Tilestatus;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Random;
+import backend.basic.ScrabbleBoard;
+import java.util.TreeSet;
 
 /*
 @author vivanova
@@ -12,6 +17,7 @@ EasyAI uses Brain to find simple possible moves.
 public class EasyAI extends PlayerAI {
 
   private Random r = new Random(System.currentTimeMillis());
+  private int random = 1;
 
   public EasyAI(String name) {
     super(name);
@@ -21,78 +27,49 @@ public class EasyAI extends PlayerAI {
     return brain;
   }
 
-  @Override
   public void handleTurn() {
-    // Make a random choice;
-    int choice = r.nextInt(3);
-    switch (choice) {
-      case 0: {
-        var moves = brain.getPlayableWords(tilesOnHand);
-        // If we can not make a move we request new Tiles
-        if (moves.isEmpty()) {
-          try {
-            // ?Does it automatically end the Turn?
-            this.setTiles(new Tile[7]);
-            requestNewTiles();
-          } catch (IOException e) {
-            // What is a good way to handle the Exception?
-            System.err.println("Easy Ai could not request new tiles.");
-            e.printStackTrace();
-          }
-
-        } else {
-          PossibleWord pick = null;
-          int counter = 0;
-          int random = r.nextInt(moves.size() - 1) + 1;
-          var it = moves.iterator();
-          // Loop through words until we are finished with the array or until we hit the
-          // random number.
-          while (it.hasNext() && (counter != random)) {
-            pick = it.next();
-            counter++;
-          }
-          // We take the tiles of our current word and place them
-          var word = pick.getTile();
-          try {
-            Tile[] tilesToUse = (Tile[]) word.toArray();
-            removeUsedTilesFromHand(tilesToUse);
-            placeTiles(tilesToUse);
-          } catch (IOException e) {
-            System.err.println("Easy Ai could not play tiles");
-          }
-        }
-
+    if(this.random%4==0) {
+      System.out.println("ICH WILL NIX LEGEN");
+      try {
+        pass();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-      case 1: {
-        try {
-          // Request new Tiles and end turn.
-          this.setTiles(new Tile[7]);
-          requestNewTiles();
-        } catch (IOException e) {
-          System.err.println("Easy Ai could not request new tiles.");
-        }
+      this.random++;
+      if(this.random>100) {
+        this.random = 0;
       }
-      case 2: {
-        try {
-          // Pass a turn because we did not have an interest to Play
-          pass();
-        } catch (IOException e) {
-          System.err.println("Easy Ai could not pass turn");
-        }
+    }else {
+      this.random++;
+      if(this.random>100) {
+        this.random = 0;
       }
-      default:
-        throw new IllegalArgumentException("Unexpected value: " + choice);
+      tryFindingWord();
     }
-
   }
 
-  public void removeUsedTilesFromHand(Tile[] tilesRemove) {
-    for (Tile t : tilesRemove) {
-      for (Tile tileOnHand : this.tilesOnHand) {
-        if (t.getLetter() == tileOnHand.getLetter()) {
-          tileOnHand = null;
-        }
+  /*
+  Tries to put word on board, but if it doesnt work, then don't bother.
+   */
+  public void tryFindingWord(){
+    PossibleWord worstWord = null;
+    TreeSet<PossibleWord> possibleWords = brain.getPlayableWords(this.tilesOnHand);
+    possibleWords.removeAll(this.getTriedWords());
+    if(possibleWords.size()!=0) {
+      worstWord = possibleWords.last();
+    }
+    try {
+      if (worstWord != null) {
+        this.getTriedWords().add(worstWord);
+        Tile[] toPlace = worstWord.getTile().toArray(new Tile[0]);
+        Tile[] toPlaceCleaned = removeBaseTile(toPlace,worstWord);
+        placeTiles(toPlaceCleaned);
+      } else {
+        sendShuffleMessage(this.tilesOnHand);
+        this.setTiles(new Tile[]{null, null, null, null, null, null, null});
       }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 

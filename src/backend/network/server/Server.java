@@ -109,8 +109,6 @@ public class Server {
     List<String> cFails = new ArrayList<String>();
     for (String cName : clientNames) {
       try {
-        System.out.println("message sending to " + cName);
-        System.out.println("exists: " + clients.containsKey(cName));
         if(!clients.containsKey(cName)){
           System.out.println(cName+" does not exist in client array");
         }

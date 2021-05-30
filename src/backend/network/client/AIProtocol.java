@@ -1,6 +1,7 @@
 package backend.network.client;
 
 import backend.ai.PlayerAI;
+import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
@@ -8,6 +9,7 @@ import backend.network.messages.connection.DisconnectMessage;
 import backend.network.messages.game.GameStartMessage;
 import backend.network.messages.game.GameTurnMessage;
 import backend.network.messages.game.LobbyInformationMessage;
+import backend.network.messages.points.PlayFeedbackMessage;
 import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import java.io.IOException;
@@ -66,12 +68,10 @@ public class AIProtocol extends Thread implements Serializable {
               break;
 
             case GAME_START:
-              System.out.println("Game started");
               ai.handleGameStartMessage(((GameStartMessage)message).getTiles());
               break;
 
             case GAME_TURN:
-              System.out.println("Game turn of AI");
               ai.handleGameTurnMessage(((GameTurnMessage)message).getNowTurn());
               break;
 
@@ -82,6 +82,16 @@ public class AIProtocol extends Thread implements Serializable {
             case PLACE_TILES:
               ai.placeTilesFromServer(((PlaceTilesMessage)message).getTiles());
               break;
+            case PLAY_FEEDBACK:
+              PlayFeedbackMessage feedbackMessage = (PlayFeedbackMessage) message;
+                  if(!feedbackMessage.isSuccessfulMove()){
+                    ai.acceptNewTiles(ai.getLastTilesSent().toArray(new Tile[0]));
+                    ai.handleTurn();
+                  } else if(feedbackMessage.isSuccessfulMove()) {
+                    ai.flushTried();
+                    ai.validWordConfirmation();
+                  }
+                  break;
 
             default:
               break;

@@ -8,7 +8,10 @@ import backend.network.messages.Message;
 import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
+import frontend.screens.controllertools.LetterSetHolder;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /*
 @author jawinter
@@ -21,9 +24,12 @@ public class PlayerAI extends Player {
   int myNumber = -1;
   protected Tile[] tilesOnHand = new Tile[7];
   protected AIProtocol aiProtocol;
+  private ArrayList<PossibleWord> triedWords = new ArrayList<PossibleWord>();
+  private ArrayList<Tile> lastTilesSent = new ArrayList<Tile>();
+
 
   public PlayerAI(String name) {
-    super(name,"#d3d3d3",0,0,Playerstatus.AI);
+    super(name, "#d3d3d3", 0, 0, Playerstatus.AI);
     this.name = name;
     this.brain = new Brain(new ScrabbleBoard());
   }
@@ -33,16 +39,42 @@ public class PlayerAI extends Player {
   }
 
   public void setTiles(Tile[] tiles) {
-    for (Tile t : tiles) {
-      if (t.isJoker()) {
-        t.setLetter(getRandomLetter());
-      }
-    }
     this.tilesOnHand = tiles;
+  }
+
+  public void sendShuffleMessage(Tile[] oldTiles) {
+    try {
+      aiProtocol.sendToServer(new ShuffleTilesMessage(this.name, oldTiles));
+      aiProtocol.sendToServer(new PassMessage(this.name));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /*
+  to let next player take turn
+   */
+  public void sendPassMessage() {
+    try {
+      aiProtocol.sendToServer(new PassMessage(this.name));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public Brain getBrain() {
     return brain;
+  }
+
+  public ArrayList<PossibleWord> getTriedWords() {
+    return triedWords;
+  }
+
+  /*
+  resets tried words
+   */
+  public void flushTried() {
+    this.triedWords.clear();
   }
 
   public void setBrainBoard(ScrabbleBoard board) {
@@ -53,10 +85,9 @@ public class PlayerAI extends Player {
     Initalize playerList when game starts
      */
   public void handleStartGame(Player[] players) {
-    for(int i = 0;i<players.length;i++) {
-      if(players[i]!=null && players[i].getName().equals(this.name)){
+    for (int i = 0; i < players.length; i++) {
+      if (players[i] != null && players[i].getName().equals(this.name)) {
         this.myNumber = i;
-        System.out.println("Meine AI Nummer ist" + this.myNumber);
       }
     }
   }
@@ -77,7 +108,7 @@ public class PlayerAI extends Player {
   Recognizes whether it is AI's turn. Triggers handleTurn.
    */
   public void handleGameTurnMessage(int nowTurn) {
-    if (nowTurn==myNumber) {
+    if (nowTurn == myNumber) {
       handleTurn();
     }
   }
@@ -102,26 +133,46 @@ public class PlayerAI extends Player {
   When AI receives new tiles this will add it to tilesOnHand
    */
   public void acceptNewTiles(Tile[] tiles) {
-    int count = 0;
-    if(this.tilesOnHand==null){
-      System.out.println("AI hat nix auf der Hand");
-    }
-    for (int i = 0;i<tiles.length;i++) {
-      if (tiles[i]==null) {
-        if (tiles[i].isJoker()) {
-          tiles[i].setLetter(getRandomLetter());
+    int indexCounter = 0;
+    for (int i = 0; i < this.tilesOnHand.length; i++) {
+      if (tilesOnHand[i] == null) {
+        if (indexCounter < tiles.length && tiles[indexCounter].isJoker()) {
+          tiles[indexCounter].setLetter(getRandomLetter());
+          tiles[indexCounter].setValue(getValueForLetter(tiles[indexCounter]));
+        }
+        if (indexCounter < tiles.length) {
+          tilesOnHand[i] = tiles[indexCounter++];
         }
       }
-      Tile t = tiles[count++];
-      this.addTileToHand(t);
     }
   }
 
-  public void addTileToHand(Tile tile){
-    for(Tile t : this.tilesOnHand) {
-      if(t==null){
-        t=tile;
+  /*
+  Remove the tile which is needed for building the board, but is from the board
+   */
+  public Tile[] removeBaseTile(Tile[] tilesToPlay, PossibleWord possibleWord) {
+    if (this.brain.getScrabbleBoard().getScrabbleBoard()[8][8].hasTile()) {
+      Tile avoid = possibleWord.getBaseTile();
+      int avoidIndex = -1;
+      for (int i = 0; i < tilesToPlay.length; i++) {
+        if (tilesToPlay[i].equals(avoid)) {
+          avoidIndex = i;
+        }
       }
+      Tile[] tilesToPlaceOnBoard = new Tile[tilesToPlay.length - 1];
+      int j = 0;
+      for (int i = 0; i < tilesToPlay.length; i++) {
+        if (i == avoidIndex) {
+          i++;
+        }
+        if (j < tilesToPlaceOnBoard.length) {
+          tilesToPlaceOnBoard[j] = tilesToPlay[i];
+        }
+        j++;
+      }
+      return tilesToPlaceOnBoard;
+    } else {
+      return tilesToPlay;
     }
   }
 
@@ -137,15 +188,21 @@ public class PlayerAI extends Player {
   When AI places word
    */
   public void placeTiles(Tile[] tilesToPlay) throws IOException {
+    brain.getScrabbleBoard().nextTurn();
     Message place = new PlaceTilesMessage(name, tilesToPlay);
     aiProtocol.sendToServer(place);
+    for (int i = 0; i < tilesToPlay.length; i++) {
+      this.lastTilesSent.add(tilesToPlay[i]);
+    }
+    removeUsedTilesFromHand(tilesToPlay);
   }
 
   /*
   When others place words
    */
-  public void placeTilesFromServer(Tile[] word){
+  public void placeTilesFromServer(Tile[] word) {
     brain.updateScrabbleboard(word);
+    brain.getScrabbleBoard().nextTurn();
   }
 
   /*
@@ -169,7 +226,41 @@ public class PlayerAI extends Player {
     return aiProtocol;
   }
 
+  /*
+  Method removes tiles from hand after being placed on board. Tiles to remove are given in parameter
+   */
+  public void removeUsedTilesFromHand(Tile[] tilesRemove) {
+    for (int j = 0; j < tilesRemove.length; j++) {
+      for (int i = 0; i < this.tilesOnHand.length; i++) {
+        if (tilesOnHand[i] != null && tilesRemove[j].equals(tilesOnHand[i])) {
+          tilesOnHand[i] = null;
+          break;
+        }
+      }
+    }
+  }
+
   public void setAiProtocol(AIProtocol aiProtocol) {
     this.aiProtocol = aiProtocol;
+  }
+
+  public int getValueForLetter(Tile t) {
+    Tile[] tileSet = LetterSetHolder.getInstance().getTileSet();
+    for (int i = 0; i < tileSet.length; i++) {
+      if (tileSet[i].getLetter() == t.getLetter()) {
+        return tileSet[i].getValue();
+      }
+    }
+    return -1;
+  }
+
+  public ArrayList<Tile> getLastTilesSent() {
+    return lastTilesSent;
+  }
+
+  public void validWordConfirmation() {
+    Tile[] place = this.lastTilesSent.toArray(new Tile[0]);
+    updateScrabbleboard(place);
+    this.lastTilesSent = new ArrayList<Tile>();
   }
 }
