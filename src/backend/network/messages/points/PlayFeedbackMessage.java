@@ -2,16 +2,17 @@ package backend.network.messages.points;
 
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
+import java.util.ArrayList;
 
 /*
 @author peichhor
  */
 public class PlayFeedbackMessage extends Message {
 
-  String feedback;
+  ArrayList<String> feedback;
   boolean successfulMove;
 
-  public PlayFeedbackMessage(String from, String feedback, boolean successfulMove) {
+  public PlayFeedbackMessage(String from, ArrayList<String> feedback, boolean successfulMove) {
     super(MessageType.PLAY_FEEDBACK, from);
       this.feedback = feedback;
       this.successfulMove = successfulMove;
@@ -34,11 +35,11 @@ public class PlayFeedbackMessage extends Message {
     super.setFrom(name);
   }
 
-  public String getFeedback() {
+  public ArrayList<String> getFeedback() {
     return feedback;
   }
 
-  public void setFeedback(String feedback) {
+  public void setFeedback(ArrayList<String> feedback) {
     this.feedback = feedback;
   }
 

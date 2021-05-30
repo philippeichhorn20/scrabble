@@ -88,7 +88,6 @@ public class ClientProtocol extends Thread{
               break;
 
             case SEND_ID:
-              System.out.println("send id received");
               // TODO At game controller there must be a methode which receive ID's
               // for example for a tile
               break;
@@ -99,7 +98,6 @@ public class ClientProtocol extends Thread{
               break;
 
             case PLAY_FEEDBACK:
-              System.out.println("play feedback message received");
               PlayFeedbackMessage message6 = (PlayFeedbackMessage) message;
               this.match.playFeedBackIntegration(message6);
               break;
@@ -134,7 +132,6 @@ public class ClientProtocol extends Thread{
 
               // initialized the game with the lobby information
             case GAME_INFO:
-              System.out.println("Game info message received");
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
               GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
               GameInformation.getInstance().setPlayers(message1.getPlayers());
@@ -148,22 +145,18 @@ public class ClientProtocol extends Thread{
               // TODO At game controller there must be a methode which add
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
-              this.match.newGameEvent(message2.getFrom()+" got "+ message2.getPoints()+ " points with his latest move");
-              System.out.println("this guy got points: "+ message2.getPoints());
+              this.match.writeTextMessages(message2.getFrom()+" got "+ message2.getPoints()+ " points with his latest move");
               this.match.addPointsToPlayer(message2.getPoints());
               break;
 
             case GAME_START:
-              System.out.println("game start message received");
               // TODO At game controller there must be a methode which add
               // points to the player statistics
               GameStartMessage message3 = (GameStartMessage) message;
               this.match.getPlayer().updateRack(message3.getTiles());
               this.match.getTimer().start();
-              System.out.println("showing the screen now...");
               Main m = new Main();
               m.changeScene("screens/gameScreen.fxml");
-              System.out.println("showing the screen now");
               break;
 
             case SEND_RACK_POINTS:
@@ -174,25 +167,20 @@ public class ClientProtocol extends Thread{
               break;
 
             case PLACE_TILES:
-              System.out.println("received tiles");
               PlaceTilesMessage message4 = (PlaceTilesMessage) message;
               GameInformation.getInstance().getClientmatch().placeTilesOfOtherPlayers(message4.getTiles());
               break;
 
             case RECEIVE_SHUFFLE_TILES:
-              System.out.println("received tiles");
               ReceiveShuffleTilesMessage receiveShuffleTilesMessage = (ReceiveShuffleTilesMessage) message;
               if(receiveShuffleTilesMessage.getFrom().equals("")){
-                System.out.println("not enough tiles to shuffle");
-                match.newGameEvent("not enough tiles in bag to shuffle");
+                match.writeTextMessages("not enough tiles in bag to shuffle");
               }
               match.receiveShuffleTiles(receiveShuffleTilesMessage.getRack());
               break;
 
             case GET_NEW_TILES:
-              System.out.println("Get new Tiles");
               GetNewTilesMessage getNewTilesMessage = (GetNewTilesMessage) message;
-              System.out.println("new tiles first: "+ getNewTilesMessage.getTiles()[0].getLetter());
               match.receiveShuffleTiles(getNewTilesMessage.getTiles());
               break;
 

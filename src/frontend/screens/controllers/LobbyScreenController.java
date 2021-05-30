@@ -423,7 +423,6 @@ public class LobbyScreenController {
 
   // Method connects joining player to lobby or server of hosting player.
   public void enterLobby(ActionEvent e) {
-    System.out.println("enter Lobby called");
     boolean validIP = true;
 
     if (validIP) {

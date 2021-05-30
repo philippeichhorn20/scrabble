@@ -66,7 +66,7 @@ public class ServerMatch {
     this.server = s;
     scrabbleBoard = new ScrabbleBoard();
     scrabbleBoard.setUpScrabbleBoard();
-    timer = new Timer();
+    timer = new Timer(this);
   }
   /*
   this constructor creates a game with a default scrabbleboard, tilebag and adds all the
@@ -74,18 +74,13 @@ public class ServerMatch {
    */
 
   public boolean addPlayer(Player p) {
-    System.out.println("adding a player: " + p.getName());
     if (players[0] == null) {
-      System.out.println("!");
       players[0] = p;
     } else if (players[1] == null) {
-      System.out.println("!");
       players[1] = p;
     } else if (players[2] == null) {
-      System.out.println("!");
       players[2] = p;
     } else if (players[3] == null) {
-      System.out.println("!");
       players[3] = p;
     } else {
       return false;
@@ -134,17 +129,13 @@ public class ServerMatch {
         this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
       }
       if (!this.scrabbleBoard.wordIsConnectedToMiddle(tiles)) {
-        System.out.println("wrong first move detected");
         server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server",
-            "Please place tiles properly", false));
+            null, false));
         this.scrabbleBoard.dropChangedTiles();
       } else {
-        System.out.println("everything alrighty");
         PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
         if (message.isSuccessfulMove()) {
-          System.out.println("input was valid");
           server.sendOnlyTo(this.players[this.currentPlayer].name, message);
-          System.out.println(this.players[this.currentPlayer].name + " is receiving tiles");
           server.sendOnlyTo(this.players[this.currentPlayer].name,
               new GetNewTilesMessage(this.players[this.currentPlayer].name,
                   this.drawNewTiles(tiles.length)));
@@ -155,7 +146,6 @@ public class ServerMatch {
             pointlessTurns = 0;
           }
           this.players[this.currentPlayer].addPoints(points);
-          System.out.println("points received" + points);
           server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
           //TODO: send to all but
           server.sendToAll(
@@ -163,14 +153,12 @@ public class ServerMatch {
           nextPlayer();
         } else {
           server.sendOnlyTo(this.players[this.currentPlayer].name, message);
-          System.out.println("input was invalid");
           this.scrabbleBoard.dropChangedTiles();
         }
       }
 
 
     } else {
-      System.out.println("no tiles were found");
     }
     // } else {
     //  System.out.println("wrong player requested game move: Place Tiles");
@@ -222,6 +210,7 @@ public class ServerMatch {
         Tile[] tiles = new Tile[7];
         for (int x = 0; x < tiles.length; x++) {
           tiles[x] = tileBag.drawTile();
+          System.out.println(tiles[x].getValue());
         }
         server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
         count++;
@@ -250,14 +239,11 @@ public class ServerMatch {
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
     if (this.tileBag.size()>7) {
-      if (playerNum == -1) {
-        System.out.println("Player not found, at shuffle request");
-      } else if (playerNum != currentPlayer) {
+      if (playerNum != currentPlayer) {
         System.out.println("Wrong player, at shuffle request");
       } else {
         Tile[] newTiles = this.players[playerNum].shuffleRack(oldTiles, this.tileBag);
         for(Tile tile : newTiles){
-          System.out.print(tile.getLetter()+"--");
         }
           server.sendOnlyTo(from,
               new ReceiveShuffleTilesMessage("server", newTiles));
@@ -303,8 +289,7 @@ public class ServerMatch {
     int notActivePlayers = 0;
     currentPlayer = (currentPlayer + 1) % 4;
     boolean foundNextPlayer = false;
-    System.out.println("die spieler: " + this.players);
-    for (int x = 0; x < 3 && !foundNextPlayer; x++) {
+    for (int x = 0; x < 4 && !foundNextPlayer; x++) {
       if (this.players[currentPlayer] == null) {
         currentPlayer = (currentPlayer + 1) % 4;
       } else {
@@ -318,7 +303,6 @@ public class ServerMatch {
     }
     if (!foundNextPlayer) {
       System.out.println("no player in game found");
-      //TODO: end game
     }
   }
 

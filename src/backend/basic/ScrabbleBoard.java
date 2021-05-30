@@ -131,11 +131,8 @@ public class ScrabbleBoard implements Serializable {
           }
         }
       }
-      System.out.println();
     }
-    for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
-      System.out.print(newTilesOfCurrentMove.get(i).getLetter() + " | ");
-    }
+
 
   }
 
@@ -146,9 +143,7 @@ public class ScrabbleBoard implements Serializable {
       for (int s = 0; s < word.size(); s++) {
         System.out.print(editedWords.get(s).get(i).getLetter());
       }
-      System.out.println();
     }
-    System.out.println();
   }
 
 
@@ -198,15 +193,15 @@ public class ScrabbleBoard implements Serializable {
    */
   public PlayFeedbackMessage wordCheck(String from) {
     boolean inputValid = true;
-    String result = "";
+    ArrayList<String> result = new ArrayList<>();
     String[] words = getEditedWordsAsString(true);
     for (int i = 0; i < words.length; i++) {
       String resultString = WordCheckDB.findWord(words[i]);
       if(resultString == ""){
-        result += words[i] + ", that's not even a word *friends voice*\n";
+        result.add( words[i] + ", that's not even a word *friends voice*\n");
         inputValid = false;
       }else if(inputValid){
-        result += resultString +"\n";
+        result.add(resultString +"\n");
       }
     }
     return new PlayFeedbackMessage(from, result ,inputValid);
@@ -262,7 +257,6 @@ public class ScrabbleBoard implements Serializable {
   finishes its turn and submits all the words
    */
   public PlayFeedbackMessage submitTiles(String from) {
-    System.out.println(newTilesOfCurrentMove.size());
     for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
       if (getWordFromLeadingTileHorizontal(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))
           .size() > 1 && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
@@ -290,7 +284,6 @@ public class ScrabbleBoard implements Serializable {
       int wordMultiplikant = 1;
       for (int letterNum = 0; letterNum < word.size(); letterNum++) {
         Tile letter = word.get(letterNum);
-        System.out.println(letter.getValue());
         wordAsMatchfields.add(scrabbleBoard[letter.getX()][letter.getY()]);
       }
       for (int length = 0; length < wordAsMatchfields.size(); length++) {
@@ -319,7 +312,6 @@ public class ScrabbleBoard implements Serializable {
       pointsOfWord *= wordMultiplikant;
       points += pointsOfWord;
     }
-    System.out.println("worth: "+points);
     if(this.newTilesOfCurrentMove.size()==7){
       points += 50;
     }
@@ -373,7 +365,6 @@ public class ScrabbleBoard implements Serializable {
   public void nextTurn() {
     editedWords.clear();
     newTilesOfCurrentMove.clear();
-    System.out.println("cleared "+ newTilesOfCurrentMove.size());
 
    // newTilesOfCurrentMove.clear();
   }
@@ -445,7 +436,6 @@ public class ScrabbleBoard implements Serializable {
     return false;
   }
   public boolean wordIsConnectedToMiddle(Tile[] tiles){
-    System.out.println("DER SPASS STARTED");
     Matchfield[][] temporaryScrabbleBoard = placeTiles(tiles,this.scrabbleBoard);
     ArrayList<Tile> tilesOnBoard = getTilesOnBoard(temporaryScrabbleBoard);
     if(temporaryScrabbleBoard[8][8].hasTile()){
@@ -460,25 +450,21 @@ public class ScrabbleBoard implements Serializable {
   }
 
   public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered){
-    System.out.println("discover tiles instanz: "+ tile.getX()+"."+tile.getY()+"  has oben: "+ board[tile.getX()][tile.getY()+1].hasTile());
     if(tile.getY()<15 && board[tile.getX()][tile.getY()+1].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX()][tile.getY()+1].getTile())){
       alreadyDiscovered.add(board[tile.getX()][tile.getY()+1].getTile());
       discoverTile(board[tile.getX()][tile.getY()+1].getTile(),board,alreadyDiscovered);
     }
-    System.out.println("has rechts: "+ board[tile.getX()+1][tile.getY()].hasTile()+ "contains: "+alreadyDiscovered.contains(tile));
     if(tile.getX()<15 && board[tile.getX()+1][tile.getY()].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX()+1][tile.getY()].getTile())){
       alreadyDiscovered.add(board[tile.getX()+1][tile.getY()].getTile());
       discoverTile(board[tile.getX()+1][tile.getY()].getTile(),board,alreadyDiscovered);
     }
-    System.out.println("has unten: "+ board[tile.getX()][tile.getY()-1].hasTile());
     if(tile.getY()>1 && board[tile.getX()][tile.getY()-1].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX()][tile.getY()-1].getTile())){
       alreadyDiscovered.add(board[tile.getX()][tile.getY()-1].getTile());
       discoverTile(board[tile.getX()][tile.getY()-1].getTile(),board,alreadyDiscovered);
     }
-    System.out.println("has links: "+ board[tile.getX()-1][tile.getY()].hasTile());
     if(tile.getX()>1 && board[tile.getX()-1][tile.getY()].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX()-1][tile.getY()].getTile())){
       alreadyDiscovered.add(board[tile.getX()-1][tile.getY()].getTile());

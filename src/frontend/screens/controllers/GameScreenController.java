@@ -20,6 +20,7 @@ import backend.network.messages.text.HistoryMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -131,11 +132,21 @@ public class GameScreenController extends Thread{
 	  gameInformation.getChat().display();
   }
 
+  public void writeTextMessages(){
+    ArrayList<String> textMessageClone = (ArrayList<String>) match.getTextMessages().clone();
+    Iterator<String> iterator = textMessageClone.iterator();
+    while(iterator.hasNext()){
+      String s = iterator.next();
+      System.out.println(s);
+      newHistoryMessage(s);
+    }
+    match.getTextMessages().clear();
+  }
+
 
   int timInt = 0;
 
   public void endTurn(ActionEvent e) throws IOException {
-    activateServerMessage("checking your words...");
     endTurnB();
   }
   public void endTurnB(){
@@ -143,10 +154,9 @@ public class GameScreenController extends Thread{
       scrabbleBoard.nextTurn();
     }
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
-      showServerMessage("Checking the word...", 5);
+   //   activateServerMessage("Checking the word...");
     }
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
-
   }
 
   public void sendWinBox() {
@@ -232,6 +242,9 @@ public class GameScreenController extends Thread{
     }
 
   public void newTilesFromBag(Tile[] tiles) {
+    for(Tile tile: tiles){
+      System.out.println("lol: "+tile.getLetter());
+    }
     resetColor();
     int i = 0;
     for (GraphicTile gt : gtiles) {
@@ -263,7 +276,7 @@ public class GameScreenController extends Thread{
       public void run() {
         for (int i  = 0;i<8;i++){
           try{
-            Thread.sleep(1000);
+            Thread.sleep(100);
           }catch(InterruptedException e){
             e.printStackTrace();
           }
@@ -335,13 +348,8 @@ public class GameScreenController extends Thread{
               int ite = 0;
               placeTilesList.add(newTile);
               tilesOnBoard[i][j]=true;
-                newHistoryMessage(
-                    GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase()
-                        + " placed a tile "
-                        + newTile.getLetter()
-                        + " on "
-                        + newTile.getX() + "  "+ newTile.getY());
-              GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
+
+              GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(gtiles[k].getTile(), newTile.getX(), newTile.getY());
               resetColor();
             }
             }
@@ -359,9 +367,8 @@ public class GameScreenController extends Thread{
     this.match.getScrabbleBoard().nextTurn();
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
-    nodesToRemove = new Node[14];
+    nodesToRemove = new Node[boardChildren.size()]; //vorher 14
     int i = 0;
-    newHistoryMessage(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase() + " returned his tiles to the rack");
     for (Node node : boardChildren) {
       int x = 0;
       int y = 0;
@@ -374,7 +381,6 @@ public class GameScreenController extends Thread{
           y = (int) help.getY();
         }
         tilesOnBoard[x][y] = false;
-
         i++;
       }
     }
@@ -392,7 +398,7 @@ public class GameScreenController extends Thread{
   }
 
   public void highlightTile(MouseEvent e) {
-    if(Main.profile.getName().equals(match.getCurrentPlayerName())){
+    if(Main.profile.getName().equals(match.getCurrentPlayerName()) && !match.isOver()){
       Rectangle tile = (Rectangle) e.getSource();
       if (e.isControlDown()) {
         tile.setFill(Color.BLUE);
@@ -468,7 +474,6 @@ public class GameScreenController extends Thread{
         full = true;
         break;
       }
-
     }
     if (!full){
       String help = history[10].getText();
@@ -476,9 +481,7 @@ public class GameScreenController extends Thread{
         history[i].setText(history[i+1].getText());
       }
       history[10].setText(mess);
-
       new FadeIn(history[10]).play();
-
     }
 
   }
@@ -544,7 +547,13 @@ public class GameScreenController extends Thread{
             Platform.runLater(new Runnable(){
               @Override
               public void run() {
-                currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
+                if(Main.profile.getName().equals(match.getCurrentPlayerName())){
+                  currPlayerText.setText("Yor Turn");
+                  currPlayerText.setFont(Font.font(35));
+                }else{
+                  currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
+
+                }
                 nameScore1.setText( (match.getPlayers()[0] != null ) ? ""+match.getPlayers()[0].getScore(): "");
                 nameScore2.setText( (match.getPlayers()[1] != null ) ? ""+match.getPlayers()[1].getScore(): "");
                 nameScore3.setText( (match.getPlayers()[2] != null ) ? ""+match.getPlayers()[2].getScore(): "");
@@ -561,6 +570,9 @@ public class GameScreenController extends Thread{
                   newHistoryMessageOther(GameInformation.getInstance().getClientmatch().getProtocol().getHistoryMessage());
                   GameInformation.getInstance().getClientmatch().getProtocol().messageRead();
                 }
+                if(match.getTextMessages() != null && match.getTextMessages().size() >0){
+                  writeTextMessages();
+                }
                 if(!match.checkTimer() && Main.profile.getName().equals(match.getCurrentPlayerName())){
                   //endTurnB();
                 }
@@ -574,7 +586,7 @@ public class GameScreenController extends Thread{
                   match.setInvalidMove(true);
                 }
                 if(match.getNewTilesOnRack() != null){
-                  System.out.println("new racks are being4ttruehj");
+                  System.out.println("new racks are being4ttruehj "+ match.getNewTilesOnRack().length);
                   newTilesFromBag(match.getNewTilesOnRack());
                   match.clearNewTilesOnRack();
                 }
@@ -693,6 +705,7 @@ public class GameScreenController extends Thread{
   public void update(MouseEvent e){
 
   }
+
   public static class AlertBox {
     public static void display(String title, String message) {
       Stage window = new Stage();

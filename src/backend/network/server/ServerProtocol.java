@@ -103,13 +103,10 @@ public class ServerProtocol extends Thread {
               }
             }
           } else {
-            System.out.println("Lobby be full");
             Message connectionRefused = new ConnectionRefusedMessage("server",
                 "Lobby is full!");
           }
         }
-
-        //    }
 
       } else if (message.getMessageType() == MessageType.CONNECT_AI) {
         System.out.println("new AI attempts to connect...");
@@ -189,9 +186,8 @@ public class ServerProtocol extends Thread {
             // Pass leads to the server telling next player it's his turn.
             case PASS:
               server.serverMatch.incrementPointlessTurns();
-              if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
-                server.serverMatch.nextPlayer();
-              }
+              server.serverMatch.nextPlayer();
+
               break;
 
             /** @author vivanova */

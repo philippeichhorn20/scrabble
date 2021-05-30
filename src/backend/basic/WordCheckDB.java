@@ -59,7 +59,6 @@ public class WordCheckDB {
       conn.close();
       stm.close();
       if(result == ""){
-        System.out.println("not found");
       }
       return result;
 
@@ -146,7 +145,6 @@ public class WordCheckDB {
       reader.close();
       ps.close();
     } catch (SQLException e) {
-      System.out.println("struggle with sql");
       System.out.println(e.getMessage());
       e.printStackTrace();
     } catch (FileNotFoundException fnfe) {

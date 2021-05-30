@@ -17,10 +17,16 @@ public class Timer extends Thread implements Serializable {
   private boolean isRunning = false;
   private GameScreenController gameScreenController;
   private ServerMatch serverMatch;
+  private ClientMatch clientMatch;
 
   public Timer(ServerMatch serverMatch){
     this.serverMatch = serverMatch;
   }
+
+  public Timer(ClientMatch clientMatch){
+    this.clientMatch = clientMatch;
+  }
+
   public Timer(){
 
   }
@@ -39,14 +45,12 @@ public class Timer extends Thread implements Serializable {
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
-      if (gameScreenController!= null && timerCurrentPlayer == 60 * 9) {
-        gameScreenController.newHistoryMessage("you have 60 seconds left");
-      }else if (gameScreenController!= null && timerCurrentPlayer == 60 * 9.5){
-        gameScreenController.newHistoryMessage("you have 30 seconds left");
-      }else if(serverMatch!= null && timerCurrentPlayer == 60 * 10){
+      if (clientMatch != null && timerCurrentPlayer == 9*60) {
+        clientMatch.oneMinuteAlert();
+      }else if (clientMatch!= null && timerCurrentPlayer == 9.5*60){
+        clientMatch.thirtySecondsAlert();
+      }else if(serverMatch != null && timerCurrentPlayer == 10*60){
         serverMatch.gameOver();
-      }else if(serverMatch!= null && timerCurrentPlayer == 60 * 10){
-        serverMatch.sendTimeIsUp();
       }
     }
   }
@@ -95,5 +99,9 @@ public class Timer extends Thread implements Serializable {
 
   public void stopTimer() {
     this.isRunning = false;
+  }
+
+  public void setClientMatch(ClientMatch clientMatch) {
+    this.clientMatch = clientMatch;
   }
 }
