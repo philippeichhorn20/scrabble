@@ -12,10 +12,20 @@ public final class GameInformation {
   private ClientMatch clientmatch;
   private Chat chat = new Chat();
   private Music music;
-
+/**
+ * @author vivanova
+ */
   public void startMusic() {
 	  music = new Music();
   }
+
+  /**
+   * @author vivanova
+   */
+  public Music getMusic() {
+	  return music;
+  }
+  
   
   public GameScreenController getGsc() {
     return gsc;

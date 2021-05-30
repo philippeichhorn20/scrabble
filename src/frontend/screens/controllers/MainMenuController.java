@@ -22,7 +22,7 @@ public class MainMenuController {
   @FXML
   private Button manageButton;
   @FXML
-  private Button settingsButton;
+  private Button goSettings;
   @FXML
   private Text userName;
   private boolean setUpDone = false;
@@ -46,7 +46,11 @@ public class MainMenuController {
     m.changeScene("screens/statScreen.fxml");
   }
 
-  public void goSettings(ActionEvent e) throws IOException {
+  /**
+   * 
+   * @author vivanova
+   */
+  public void openSettings(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/settingsScreen.fxml");
   }

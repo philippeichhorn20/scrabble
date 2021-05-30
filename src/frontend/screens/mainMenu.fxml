@@ -67,6 +67,17 @@
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Button>
+                        <Button fx:id="goSettings" minWidth="380.0" mnemonicParsing="false" onAction="#openSettings" onMouseEntered="#animate" prefHeight="50.0" style="-fx-background-color: #B08968;" text="Settings" textFill="WHITE">
+                           <font>
+                              <Font name="Consolas Bold" size="20.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
                </center>

@@ -28,6 +28,10 @@ import javafx.stage.StageStyle;
 public class Chat {
 	private TextArea textArea;
 	private Stage window;
+	
+	public Chat(String test) {
+		
+	}
 
 	public Chat() {
 		window = new Stage();
@@ -120,10 +124,21 @@ public class Chat {
 		Scene scene = new Scene(layout);
 		window.setScene(scene);
 	}
+	
+	public void emptyTextArea() {
+		this.textArea.clear();
+	}
 
 	public void fillTextArea(String from, String text) {
 		this.textArea.appendText(from.toUpperCase() + ": " + text + "\n");
 		System.out.println();
+	}
+	public String readOutTextArea() {
+		return textArea.getText();
+	}
+	public void setTextArea() {
+		this.textArea = new TextArea();
+		 
 	}
 
 	public void display() {

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SettingsScreenController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SettingsScreenController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1080.0" layoutX="-2.0" layoutY="-1.0">
          <image>
@@ -31,8 +31,8 @@
             <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
          </effect>
       </Label>
-      <Slider fx:id="volumeKey" layoutX="437.0" layoutY="195.0" onMouseReleased="#music" prefHeight="43.0" prefWidth="293.0" />
-      <Button fx:id="backButton" layoutX="969.0" layoutY="673.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
+      <Slider fx:id="volumeKey" layoutX="437.0" layoutY="195.0" prefHeight="43.0" prefWidth="293.0" value="10.0" />
+      <Button fx:id="backButton" layoutX="888.0" layoutY="617.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
          <font>
             <Font name="HoloLens MDL2 Assets" size="19.0" />
          </font>
@@ -48,7 +48,7 @@
             <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
          </effect>
       </Label>
-      <RadioButton fx:id="radioButton" layoutX="438.0" layoutY="310.0" mnemonicParsing="false" onMouseClicked="#music" prefHeight="27.0" prefWidth="123.0" text="On/Off">
+      <RadioButton fx:id="radioButton" layoutX="438.0" layoutY="310.0" mnemonicParsing="false" onAction="#radioButton" prefHeight="27.0" prefWidth="123.0" selected="true" text="On/Off">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
