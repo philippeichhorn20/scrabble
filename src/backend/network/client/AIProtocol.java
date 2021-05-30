@@ -1,8 +1,6 @@
 package backend.network.client;
 
 import backend.ai.PlayerAI;
-import backend.basic.Player;
-import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
@@ -37,9 +35,7 @@ public class AIProtocol extends Thread implements Serializable {
       this.in = new ObjectInputStream(clientSocket.getInputStream());
       this.ai = playerAI;
 
-      Player playerDisguised = new Player(ai.getName(), ai.getColor(),ai.getGames(),ai.getWins(),
-          Playerstatus.AI);
-      ConnectMessage connectMessage = new ConnectMessage(this.username,playerDisguised);
+      ConnectMessage connectMessage = new ConnectMessage(this.username,playerAI);
       connectMessage.setMessageType(MessageType.CONNECT_AI);
       this.out.writeObject(connectMessage);
       out.flush();

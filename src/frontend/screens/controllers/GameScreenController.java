@@ -138,7 +138,7 @@ public class GameScreenController extends Thread{
     while(iterator.hasNext()){
       String s = iterator.next();
       System.out.println(s);
-      newHistoryMessage(s);
+      newHistoryMessageOther(s);
     }
     match.getTextMessages().clear();
   }
@@ -152,6 +152,10 @@ public class GameScreenController extends Thread{
   public void endTurnB(){
     if (match.isInvalidMove() && !match.dropTiles()) {
       scrabbleBoard.nextTurn();
+      if (tileBagIcon.isMouseTransparent()){
+        new FadeIn(tileBagIcon).play();
+        tileBagIcon.setMouseTransparent(false);
+      }
     }
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
    //   activateServerMessage("Checking the word...");
@@ -182,9 +186,10 @@ public class GameScreenController extends Thread{
   }
 
   private void drawTiles() {
-    this.activateServerMessage("exchanging your tiles");
+    this.activateServerMessage("Exchanging your tiles");
     resetColor();
     int i = 0;
+    new FadeOut(tileBagIcon).play();
     Tile[] tilesToDraw = new Tile[7];
     for (GraphicTile gt : gtiles) {
       if (!gt.isVisiblee() || gt.toDraw()) {
@@ -365,9 +370,13 @@ public class GameScreenController extends Thread{
 
   public void resetTilesAction(){
     this.match.getScrabbleBoard().nextTurn();
+    if (tileBagIcon.isMouseTransparent()){
+      new FadeIn(tileBagIcon).play();
+      tileBagIcon.setMouseTransparent(false);
+    }
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
-    nodesToRemove = new Node[boardChildren.size()]; //vorher 14
+    nodesToRemove = new Node[boardChildren.size()]; //vorher 14 //es konnen nicht mehr als 14 entfernt werden anyway.
     int i = 0;
     for (Node node : boardChildren) {
       int x = 0;
@@ -548,7 +557,7 @@ public class GameScreenController extends Thread{
               @Override
               public void run() {
                 if(Main.profile.getName().equals(match.getCurrentPlayerName())){
-                  currPlayerText.setText("Yor Turn");
+                  currPlayerText.setText("Your Turn");
                   currPlayerText.setFont(Font.font(35));
                 }else{
                   currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
@@ -655,10 +664,6 @@ public class GameScreenController extends Thread{
           name4.setText(players[3].getName() + ":");
         }
 
-        nameScore1.setText("0");
-        nameScore2.setText("0");
-        nameScore3.setText("0");
-        nameScore4.setText("0");
 
       setUpDone = true;
     }

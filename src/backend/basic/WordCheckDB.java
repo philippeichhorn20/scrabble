@@ -22,11 +22,7 @@ public class WordCheckDB {
   public static HashSet<String> words = new HashSet<String>();
 
 
-  /*
-  public static void main(String[] args) {
-    System.out.println(findWord("ANORTHITE"));
-  }
-  */
+
   public static String url = "jdbc:sqlite:src/resources/wordsList.db";
   public static String urlTxt = "src/resources/dictionary.txt";
   public static String newUrl;
@@ -52,20 +48,19 @@ public class WordCheckDB {
               + " OR word LIKE '% " + word + "' ;");
       rs.next();
       if(rs.isClosed()){
-        System.out.println(word+" not found");
         return "";
       }
       String result = rs.getString(1);
       conn.close();
       stm.close();
       if(result == ""){
+
       }
       return result;
 
 
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println(e.getMessage());
     }
     return "";
   }
@@ -121,15 +116,14 @@ public class WordCheckDB {
       conn.setAutoCommit(false);
       while ((line = reader.readLine()) != null) {
         count++;
-        System.out.println(line);
+
         ps.setString(1, line);
         ps.execute();
       }
       conn.commit();
       conn.setAutoCommit(true);
 
-      System.out.println("job done");
-      System.out.println("database intialized..");
+
 
       /*
         stm.execute(" LOAD DATA LOCAL INFILE  words"
@@ -145,6 +139,7 @@ public class WordCheckDB {
       reader.close();
       ps.close();
     } catch (SQLException e) {
+      System.out.println("struggle with sql");
       System.out.println(e.getMessage());
       e.printStackTrace();
     } catch (FileNotFoundException fnfe) {

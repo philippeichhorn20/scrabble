@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -46,24 +47,24 @@ public class Main extends Application {
       DatabaseMetaData meta = connection.getMetaData();
       connection = DriverManager.getConnection("jdbc:sqlite:src/resources/profilesdb.db");
       Statement stmt = connection.createStatement();
-      stmt.execute("CREATE TABLE IF NOT EXISTS profiles (\n"
-          + "              name text,\n"
-          + "              games integer,\n"
-          + "              wins integer,\n"
-          + "              points integer,\n"
-          + "              color text)");
-
+      stmt.execute(
+          "CREATE TABLE IF NOT EXISTS profiles (\n"
+              + "              name text,\n"
+              + "              games integer,\n"
+              + "              wins integer,\n"
+              + "              points integer,\n"
+              + "              color text)");
     }
     profile = new Profile("");
     primaryStage.setResizable(false);
     Parent root = FXMLLoader.load(getClass().getResource("screens/startingMenu.fxml"));
-    primaryStage.setTitle("Scrabble Application");
+    primaryStage.getIcons().add(new Image("frontend/screens/resources/gameIcon.png"));
+    primaryStage.setTitle("Scrabble");
     primaryStage.setScene(new Scene(root, 1080, 720));
-    GameInformation.getInstance().startMusic();
+    //GameInformation.getInstance().startMusic();
     primaryStage.show();
     
   }
-
 
   /**
    * Changes the scene.
@@ -78,7 +79,7 @@ public class Main extends Application {
 
   @Override
   public void stop() {
-    if(GameInformation.getInstance().getServermatch()!=null) {
+    if (GameInformation.getInstance().getServermatch() != null) {
       if (GameInformation.getInstance().getServermatch().getServer() != null) {
         GameInformation.getInstance().getServermatch().getServer().stopServer();
       }

@@ -75,7 +75,7 @@ public class ClientMatch {
     yourTurnNum = currentPlayer;
     scrabbleBoard.nextTurn();
     this.getTimer().nextPlayer();
-    this.writeTextMessages("You have 10 minutes to make a move");
+    this.writeTextMessages("You have 2 minutes to make a move!");
   }
 
   /*
@@ -88,7 +88,7 @@ otherwise it just informs the player about the new turn
     if(players[currentPlayer].getName().equals(GameInformation.getInstance().getProfile().getName())){
       yourTurn();
     }else{
-      this.gameScreenController.showServerMessage("It is now " + players[currentPlayer].getName()+ "'s turn!", 5);
+      this.gameScreenController.showServerMessage("It is now " + players[currentPlayer].getName().substring(0,1).toUpperCase()+players[currentPlayer].getName().substring(1).toLowerCase()+ "'s turn!", 5);
     }
   }
 
@@ -130,12 +130,12 @@ otherwise it just informs the player about the new turn
    * @author vivanova
    */
   public void sendChatMessage(String textMessage) {
-	  System.out.println("Sending Relay Message to Server"); 
-	  try {
-		GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new TextMessage(MessageType.RELAY,this.player.getName(),textMessage));
-	} catch (IOException e) {
-		System.err.println("Could not send Relay Message to Server");
-	}
+    System.out.println("Sending Relay Message to Server");
+    try {
+      GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new TextMessage(MessageType.RELAY,this.player.getName(),textMessage));
+    } catch (IOException e) {
+      System.err.println("Could not send Relay Message to Server");
+    }
   }
 
   /*
@@ -193,7 +193,7 @@ otherwise it just informs the player about the new turn
       this.textMessages.addAll(message.getFeedback());
       System.out.println("= "+this.textMessages.size());
       removeChangedTiles();
-      }
+    }
   }
 
   /*

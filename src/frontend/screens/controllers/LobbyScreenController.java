@@ -134,7 +134,6 @@ public class LobbyScreenController {
 
   // Makes settings visible to hosting player.
   public void openStartGameView(ActionEvent e) {
-    System.out.println("openStartGameView called");
     lobbyView.setVisible(false);
     joinGameView.setVisible(false);
     startGameView.setVisible(true);
@@ -145,14 +144,12 @@ public class LobbyScreenController {
 
   // Allows player to enter a code to join hosting player's server
   public void openJoinGameView(ActionEvent e) {
-    System.out.println("openJoinGameView called");
     lobbyView.setVisible(false);
     startGameView.setVisible(false);
     joinGameView.setVisible(true);
   }
 
   public void startLobby(ActionEvent e) {
-    System.out.println("start Lobby called");
     isHost = true;
     Player host = new Player(Main.profile.getName(), Main.profile.getColor(),
         Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT);
@@ -212,6 +209,7 @@ public class LobbyScreenController {
                             String name = players[0].getName().substring(0, 1).toUpperCase()
                                 + players[0].getName().substring(1).toLowerCase();
                             player1Name.setText(name);
+                            player1Icon.setImage(new Image("frontend/screens/resources/playerIcon.png"));
                             statPlayer1Name.setText(name);
                             statPlayer1Games.setText("" + players[0].getGames());
                             statPlayer1Wins.setText("" + players[0].getWins());
@@ -408,17 +406,13 @@ public class LobbyScreenController {
   }
 
   // Method switches to playboard and starts game.
-  public void startGame(ActionEvent e) {
-    System.out.println("Start match triggered");
+  public void startGame(ActionEvent e) throws IOException {
     GameInformation.getInstance().getServermatch().startMatch();
-    //WordCheckDB.importTextToDB();
-    GameInformation.getInstance().getChat().display();
+    WordCheckDB.importTextToDB();
     Main m = new Main();
-    try {
-      m.changeScene("screens/gameScreen.fxml");
-    } catch (IOException ioException) {
-      ioException.printStackTrace();
-    }
+    m.changeScene("screens/gameScreen.fxml");
+    GameInformation.getInstance().getChat().display();
+
   }
 
   // Method connects joining player to lobby or server of hosting player.
@@ -461,6 +455,7 @@ public class LobbyScreenController {
                               String name = players[0].getName().substring(0, 1).toUpperCase()
                                   + players[0].getName().substring(1).toLowerCase();
                               player1Name.setText(name);
+                              player1Icon.setImage(new Image("frontend/screens/resources/playerIcon.png"));
                               statPlayer1Name.setText(name);
                               statPlayer1Games.setText("" + players[0].getGames());
                               statPlayer1Wins.setText("" + players[0].getWins());

@@ -139,9 +139,7 @@ public class ScrabbleBoard implements Serializable {
   public void printEditedWords() {
     for (int i = 0; i < editedWords.size(); i++) {
       ArrayList<Tile> word = editedWords.get(i);
-      System.out.print("wordsize " + word.size() + ": ");
       for (int s = 0; s < word.size(); s++) {
-        System.out.print(editedWords.get(s).get(i).getLetter());
       }
     }
   }
@@ -192,19 +190,20 @@ public class ScrabbleBoard implements Serializable {
   checks all the current words and returns the word+descriptipn of the word
    */
   public PlayFeedbackMessage wordCheck(String from) {
-    boolean inputValid = true;
+    boolean inputInvalid = false;
     ArrayList<String> result = new ArrayList<>();
     String[] words = getEditedWordsAsString(true);
     for (int i = 0; i < words.length; i++) {
       String resultString = WordCheckDB.findWord(words[i]);
       if(resultString == ""){
-        result.add( words[i] + ", that's not even a word *friends voice*\n");
-        inputValid = false;
-      }else if(inputValid){
+        result.add( words[i] + " - word isn't valid");
+        inputInvalid = true;
+      }else if(!inputInvalid){
         result.add(resultString +"\n");
       }
     }
-    return new PlayFeedbackMessage(from, result ,inputValid);
+    GameInformation.getInstance().getClientmatch().setInvalidMove(inputInvalid);
+    return new PlayFeedbackMessage(from, result ,!inputInvalid);
   }
 
   public boolean inputValudation(String[][] result) {

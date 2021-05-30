@@ -56,7 +56,6 @@ public class CreateProfileController {
         Main m = new Main();
         m.changeProfile(newName);
         m.changeScene("screens/mainMenu.fxml");
-        System.out.println("entered " + newName + " into the system");
       } catch (SQLException | IOException sqlE) {
         sqlE.printStackTrace();
       }

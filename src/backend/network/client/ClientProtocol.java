@@ -145,7 +145,7 @@ public class ClientProtocol extends Thread{
               // TODO At game controller there must be a methode which add
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
-              this.match.writeTextMessages(message2.getFrom()+" got "+ message2.getPoints()+ " points with his latest move");
+              this.match.writeTextMessages(message2.getFrom().substring(0,1).toUpperCase()+message2.getFrom().substring(1).toLowerCase()+" got "+ message2.getPoints()+ " points with his latest move");
               this.match.addPointsToPlayer(message2.getPoints());
               break;
 

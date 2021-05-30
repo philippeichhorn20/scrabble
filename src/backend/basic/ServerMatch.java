@@ -135,7 +135,7 @@ public class ServerMatch {
       } else {
         PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
         if (message.isSuccessfulMove()) {
-          server.sendOnlyTo(this.players[this.currentPlayer].name, message);
+          server.sendToAll( message);
           server.sendOnlyTo(this.players[this.currentPlayer].name,
               new GetNewTilesMessage(this.players[this.currentPlayer].name,
                   this.drawNewTiles(tiles.length)));
@@ -148,11 +148,12 @@ public class ServerMatch {
           this.players[this.currentPlayer].addPoints(points);
           server.sendToAll(new SendPointsMessage(this.players[currentPlayer].getName(), points));
           //TODO: send to all but
-          server.sendToAll(
+          server.sendToAllBut(this.players[currentPlayer].name,
               new PlaceTilesMessage(this.players[this.currentPlayer].name, tiles));
           nextPlayer();
         } else {
           server.sendOnlyTo(this.players[this.currentPlayer].name, message);
+          server.sendToAll(message);
           this.scrabbleBoard.dropChangedTiles();
         }
       }
@@ -184,6 +185,26 @@ public class ServerMatch {
   /*
     @method stars the match. It triggers the start of the thread, as well as different methods
     */
+  /*public void startMatch() {
+    int count = 0;
+    this.startAiProtocols();
+    server.sendToAll(new LobbyInformationMessage("server", this.players));
+    for (int i = 0; i < this.players.length; i++) {
+      if (this.players[i] != null) {
+        Tile[] tiles = new Tile[7];
+        for (int x = 0; x < tiles.length; x++) {
+          tiles[x] = tileBag.drawTile();
+          System.out.println(tiles[x].getValue());
+        }
+        server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
+        count++;
+      }
+    }
+    startTimer();
+    // server message, find out turn, send turn message && send wait message, send out initial tiles,
+    // start game thread programmieren. Diese ruft das auf
+    //server.sendToAll(new);
+  }*/ //i have something different but it works
   public void startMatch() {
     int count = 0;
     this.startAiProtocols();
@@ -221,7 +242,6 @@ public class ServerMatch {
     // start game thread programmieren. Diese ruft das auf
     //server.sendToAll(new);
   }
-
   public void startAiProtocols(){
     for(Player p : this.players){
       if(p!=null && p.getStatus()==Playerstatus.AI){
