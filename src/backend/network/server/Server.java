@@ -1,13 +1,11 @@
 package backend.network.server;
 
-import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
 import backend.network.messages.Message;
 import backend.network.messages.connection.ShutDownMessage;
-import frontend.Main;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
@@ -64,7 +62,6 @@ public class Server {
       System.out.println(player.getName() + " : new client has been added");
     }
   }
-
   public void playerAdded(){
     newPlayerAdded=false;
   }

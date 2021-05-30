@@ -6,14 +6,11 @@ import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectionRefusedMessage;
-import backend.network.messages.connection.GetIDMessage;
-import backend.network.messages.connection.SendIDMessage;
 import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.SendStartRackMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
-import backend.network.tools.IDGeneratorBasic;
 import frontend.Main;
 import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
@@ -143,9 +140,10 @@ public class ServerProtocol extends Thread {
         } else {
           System.out.println("successful");
           this.clientName = from;
-          server.addClient(from, this);
+
           Player clientPlayer = new Player(from, Main.profile.getColor(),Main.profile.getGames(), Main.profile
               .getWins(), Playerstatus.WAIT);
+          server.addClient(clientPlayer, this);
           if (GameInformation.getInstance().getServermatch().addPlayer(clientPlayer)) {
             System.out.print("player in game lol: ");
             for(Player p: GameInformation.getInstance().getServermatch().getPlayers()){
