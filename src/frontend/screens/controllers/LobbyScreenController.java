@@ -152,12 +152,14 @@ public class LobbyScreenController {
 
     if(this.server != null) {
       server.stopServer();
+      GameInformation.getInstance().setPlayers(new Player[4]);
     }
   }
 
   public void startLobby(ActionEvent e) {
     if(server != null) {
       server.stopServer();
+      GameInformation.getInstance().setPlayers(new Player[4]);
     }
     isHost = true;
     Player host = new Player(Main.profile.getName(), Main.profile.getColor(),
