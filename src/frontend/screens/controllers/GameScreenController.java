@@ -138,7 +138,7 @@ public class GameScreenController extends Thread {
 
   private void endTurnFunction() {
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
-      showServerMessage("Checking your word..",4);
+      activateServerMessage("Checking the word...");
     }
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
   }
@@ -340,6 +340,7 @@ public class GameScreenController extends Thread {
                 if (tilesOnBoard[i][j]) {
                   break;
                 }
+
                 Rectangle rec =
                     new Rectangle(
                         gtiles[k].getRec().getX(),
@@ -711,7 +712,7 @@ public class GameScreenController extends Thread {
                             }
                             if (!match.checkTimer()
                                 && Main.profile.getName().equals(match.getCurrentPlayerName())) {
-                               //endTurnFunction();
+                               endTurnFunction();
                             }
                             if (match.dropTiles()) {
                               resetTilesAction();
@@ -732,7 +733,6 @@ public class GameScreenController extends Thread {
                             }
                             if (GameInformation.getInstance()
                                 .getClientmatch()
-                                .getProtocol()
                                 .isStartingTiles()) {
                               int d = 0;
                               for (Tile t : match.getProtocol().getStartingRack()) {
@@ -743,10 +743,10 @@ public class GameScreenController extends Thread {
                                 gtiles[d].getLetter().setVisible(true);
                                 d++;
                               }
-                              match.getProtocol().setStartingTiles(false);
+                              match.setStartingTiles(false);
                             }
 
-                            time.setText(String.valueOf(match.getTimer().getTimerCurrentPlayer()));
+                            time.setText(String.valueOf(match.getTimer().getTimerCurrentPlayerString()));
                           }
                         });
                   }

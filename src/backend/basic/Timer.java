@@ -3,13 +3,14 @@ package backend.basic;
 import frontend.screens.controllers.GameScreenController;
 import java.io.Serializable;
 
-/*
-@peichhor
-This class represents a clock
-@param timerOverall keeps track of how long the game has been going on
-@param timerOverall keeps track of how long this turn has been going on
-@param isRunning keeps track of weather or not the game is running
+
+/**
+ * @peichhor
+ * This class represents a clock
+ * @param timerOverall keeps track of how long the game has been going on
+ * @param isRunning keeps track of weather or not the game is running
  */
+
 public class Timer extends Thread implements Serializable {
 
   private long timerOverall = 0; //in seconds
@@ -18,6 +19,8 @@ public class Timer extends Thread implements Serializable {
   private GameScreenController gameScreenController;
   private ServerMatch serverMatch;
   private ClientMatch clientMatch;
+  private int[] clientTimes = new int[4];
+  private int currentPlayer;
 
   public Timer(ServerMatch serverMatch){
     this.serverMatch = serverMatch;
@@ -36,20 +39,23 @@ public class Timer extends Thread implements Serializable {
    */
   @Override
   public void run() {
+    for(int x = 0; x < clientTimes.length; x++){
+      clientTimes[x] = 0;
+    }
     isRunning = true;
     while (isRunning) {
       try {
         sleep(1000);
         timerOverall += 1;
-        timerCurrentPlayer += 1;
+        clientTimes[currentPlayer] += 1;
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
-      if (clientMatch != null && timerCurrentPlayer == 1*60) {
+      if (clientMatch != null && clientTimes[currentPlayer] == 9*60) {
         clientMatch.oneMinuteAlert();
-      }else if (clientMatch!= null && timerCurrentPlayer == 1.5*60){
+      }else if (clientMatch!= null && clientTimes[currentPlayer] == 9.5*60){
         clientMatch.thirtySecondsAlert();
-      }else if(serverMatch != null && timerCurrentPlayer == 2*60){
+      }else if(serverMatch != null && clientTimes[currentPlayer] == 10*60){
         serverMatch.gameOver();
       }
     }
@@ -59,26 +65,20 @@ public class Timer extends Thread implements Serializable {
     return timerOverall;
   }
 
+  public void setTimerTo(int player){
+    currentPlayer = player;
+  }
+
   public long getTimerCurrentPlayer() {
     return timerCurrentPlayer;
   }
 
-  public String getTimerCurrentPlayerString() {
-    String timeString = "";
-    if(timerCurrentPlayer > 60){
-      timeString += timerCurrentPlayer / 60+" minutes and " + timerCurrentPlayer % 60 +" seconds left";
-    }else{
-      timeString += timerCurrentPlayer +" seconds left";
-    }
-    return timeString;
+  public long getTimerCurrentPlayerString() {
+    return timerCurrentPlayer;
   }
 
-  /*
-  is called when the next turn is triggered. It resets the timer of current turn
-   */
-  public void nextPlayer() {
-    timerCurrentPlayer = 0;
-  }
+
+
 
   public void setTimerCurrentPlayer(long timerCurrentPlayer) {
     this.timerCurrentPlayer = timerCurrentPlayer;

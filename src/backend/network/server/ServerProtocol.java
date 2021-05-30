@@ -158,9 +158,7 @@ public class ServerProtocol extends Thread {
               break;
 
             case GAME_TURN:
-              if (server.serverMatch.getPlayerName().equals(message.getFrom())) {
-                server.serverMatch.nextPlayer();
-              }
+
               break;
 
             case GAME_OVER:

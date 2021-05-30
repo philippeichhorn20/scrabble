@@ -1,9 +1,8 @@
 package backend.basic;
 
+import backend.basic.Tile.Tilestatus;
 import java.io.Serializable;
 import java.util.Random;
-
-import backend.basic.Tile.Tilestatus;
 
 /* @author Nils Sch�fer
  * @version 1.0
@@ -124,7 +123,7 @@ public class TileBag implements Serializable {
       }
 
       this.bag = newTileSet; // Override the bag with the new tileset
-
+      System.out.println("Tilebag size: "+ this.size() +": "+drawnTile.getLetter());
       return drawnTile;
     }else{
       System.out.println("NOTHING LEFT IN THE BAG");

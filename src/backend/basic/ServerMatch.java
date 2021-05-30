@@ -14,24 +14,24 @@ import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
-import backend.network.messages.time.TimeAlertMessage;
-import backend.network.messages.time.TimeAlertType;
 import backend.network.server.Server;
 import backend.network.server.ServerProtocol;
 import backend.network.server.ServerSettings;
 import java.io.IOException;
 
-/*
-@author peichhor
-@version 1.0
-@param players: the players that are participating in the game
-@param scrabbleboard: an instance of the physical scrabble board with some additions
-to represent the actions of the current turn
-@param tileBag the bag that conatins the tiles that were not pulled yet
-@param currentPlayer conatins the number in the players array which
-points at the player who's turn it is
-@param roundNum number of the current round
+
+/**
+ * @author peichhor
+ * @version 1.0
+ * @param players: the players that are participating in the game
+ * @param scrabbleboard: an instance of the physical scrabble board with some additions
+ * to represent the actions of the current turn
+ * @param tileBag the bag that conatins the tiles that were not pulled yet
+ * @param currentPlayer conatins the number in the players array which
+ * points at the player who's turn it is
+ * @param roundNum number of the current round
  */
+
 
 public class ServerMatch {
 
@@ -46,10 +46,12 @@ public class ServerMatch {
   private boolean isFirstMove = true;
   private int pointlessTurns = 0;
 
-  /*
-  @method
-  this constructor creates a game with a default scrabbleboard, tilebag and adds only the
-  hosting player to the game. Use addPlayer() to add up to 3 players afterwords
+  /**
+   *   @method ServerMatch
+   *   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
+   *   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
+   * @param s the server of the instance
+   * @param players who has already joined
    */
   public ServerMatch(Server s, Player[] players) {
     super();
@@ -60,6 +62,10 @@ public class ServerMatch {
     timer = new Timer(this);
   }
 
+  /**
+   * Constructor when players are not determined yet
+   * @param s the server instance
+   */
   public ServerMatch(Server s) {
     super();
     this.players = new Player[4];
@@ -68,11 +74,12 @@ public class ServerMatch {
     scrabbleBoard.setUpScrabbleBoard();
     timer = new Timer(this);
   }
-  /*
-  this constructor creates a game with a default scrabbleboard, tilebag and adds all the
-   players to the game. Players cannot be added with addPlayer() afterwords
-   */
 
+  /**
+   *   adds a player in the next free spot in player array
+   * @param p
+   * @return returns true if array is full
+   */
   public boolean addPlayer(Player p) {
     if (players[0] == null) {
       players[0] = p;
@@ -89,6 +96,10 @@ public class ServerMatch {
 
   }
 
+  /**
+   * removes players from player array
+   * @param player
+   */
   public void removePlayer(String player) {
     for (int x = 0; x < this.players.length; x++) {
       if (this.players[x] != null && this.players[x].name.equals(player)) {
@@ -99,29 +110,50 @@ public class ServerMatch {
   }
 
 
-  /*
-    @method checks if Tiles are left in the bag
-     */
+  /**
+   * checks if tiles are left in the instances tile bag
+   * @return
+   */
   public boolean checkTileBag() {
     return tileBag.size() > 0;
   }
 
+  /**
+   * @return the number from the current round
+   */
   public int getRound() {
     return round;
   }
 
+  /**
+   * @return the instances tile bag
+   */
   public TileBag getTileBag() {
     return tileBag;
   }
 
+  /**
+   * starts the timer
+   */
   public void startTimer() {
     this.timer.start();
   }
 
+  /**
+   * @return the player who's turn it is at the moment
+   */
   public String getPlayerName() {
     return this.players[currentPlayer].getName();
   }
 
+  /**
+   *   this method handles incoming requests for Game Moves. It then returns a message with
+   *   the word explanation, if the input was successful. Otherwise a message is deployed
+   *   explaining why the move could not be performed
+   * @param tiles the tiles that were placed
+   * @param from  the user who placed the tiles
+   * @throws IOException
+   */
   public void placeTiles(Tile[] tiles, String from) throws IOException {
     //if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
     if (tiles.length != 0) {
@@ -129,10 +161,12 @@ public class ServerMatch {
         this.scrabbleBoard.placeTile(tiles[i], tiles[i].getX(), tiles[i].getY());
       }
       if (!this.scrabbleBoard.wordIsConnectedToMiddle(tiles)) {
+        //word input is structrually wrong
         server.sendOnlyTo(this.players[this.currentPlayer].name, new PlayFeedbackMessage("server",
             null, false));
         this.scrabbleBoard.dropChangedTiles();
       } else {
+        //word input is technically right, but the words are not in the selected database
         PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
         if (message.isSuccessfulMove()) {
           server.sendToAll(message);
@@ -156,15 +190,16 @@ public class ServerMatch {
           this.scrabbleBoard.dropChangedTiles();
         }
       }
-
-
-    } else {
     }
 
 
   }
 
-  //Method gives back field with random tiles with the size of needed tiles
+  /**
+   * Method gives back field with random tiles with the size of needed tiles
+   * @param amountNeeded
+   * @return
+   */
   public Tile[] drawNewTiles(int amountNeeded) {
     Tile[] newTiles = new Tile[amountNeeded];
     for (int i = 0; i < amountNeeded; i++) {
@@ -173,11 +208,17 @@ public class ServerMatch {
     return newTiles;
   }
 
+  /**
+   * @return the timer
+   */
   public Timer getTimer() {
     return timer;
   }
 
 
+  /**
+   * starts the matches, including starting the ai-protocolls
+   */
 
   public void startMatch() {
     int count = 0;
@@ -191,9 +232,7 @@ public class ServerMatch {
             GameInformation.getInstance().getPlayers()[i].getColor(),
             GameInformation.getInstance().getPlayers()[i].getGames(),
             GameInformation.getInstance().getPlayers()[i].getWins(), Playerstatus.WAIT);
-
         correctPlayer[i] = aiPlayer;
-
       } else {
         correctPlayer[i] = GameInformation.getInstance().getPlayers()[i];
       }
@@ -216,8 +255,8 @@ public class ServerMatch {
     //server.sendToAll(new);
   }
 
-  /*
-  starts the protocols of the AIPLayers that were added
+  /**
+   *   starts the protocols of the AIPLayers that were added
    */
   public void startAiProtocols() {
     for (Player p : this.players) {
@@ -230,13 +269,21 @@ public class ServerMatch {
     }
   }
 
+  /**
+   * informes the other players about a new history message
+   * @param from
+   * @param mess
+   */
   public void sendHistoryMessage(String from, String mess) {
     server.sendToAllBut(from, new HistoryMessage(from, mess));
   }
 
-  /*
-  receives Tiles from Player in @param oldTiles. If the bag has less than 7 Tiles left, the old tiles will be
-  returned. Otherwise tiles are drawn from the bag and send back to the client
+  /**
+   *
+   receives Tiles from Player in @param oldTiles. If the bag has less than 7 Tiles left, the old tiles will be
+   returned. Otherwise tiles are drawn from the bag and send back to the client
+   * @param from
+   * @param oldTiles
    */
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
@@ -256,9 +303,10 @@ public class ServerMatch {
     }
   }
 
-
-  /*
-  @method finds the player with the inputted name. Returns the number of him in the array. If not found, returns -1
+  /**
+   *   @method finds the player with the inputted name.
+   * @param name
+   * @returnthe number of him in the array. If not found, returns -1
    */
   public int getPlayersNumber(String name) {
     for (int x = 0; x < this.players.length; x++) {
@@ -269,16 +317,9 @@ public class ServerMatch {
     return -1;
   }
 
-  /*
-@method ends the match. It triggers the end of the thread, as well as different methods
- */
-  public void endMatch() {
-    timer.stopTimer();
-  }
-
-  /*
-   @method finds out who is the next player in line and send the GameTurnMessages to the players
-    */
+  /**
+   * finds out who is the next player in line and send the GameTurnMessages to the players
+   */
   public void nextPlayer() {
     isFirstMove = false;
     int notActivePlayers = 0;
@@ -289,20 +330,19 @@ public class ServerMatch {
         currentPlayer = (currentPlayer + 1) % 4;
       } else {
         scrabbleBoard.nextTurn();
-        timer.nextPlayer();
+        timer.setTimerTo(currentPlayer);
         server.sendToAll(new GameTurnMessage("server", currentPlayer));
         foundNextPlayer = !foundNextPlayer;
         break;
       }
-
     }
     if (!foundNextPlayer) {
       System.out.println("no player in game found");
     }
   }
 
-  /*
-  @return the winner, the player with the most points
+  /**
+   * @return the winner, the player with the most points
    */
   public Player getWinner() {
     Player winner = this.players[0];
@@ -316,18 +356,8 @@ public class ServerMatch {
     return winner;
   }
 
-  /*
-  @method send the information to the current player, that is time is up.
-  Now it is the next players turn
-   */
-  public void sendTimeIsUp() {
-    this.server.sendOnlyTo(players[currentPlayer].getName(),
-        new TimeAlertMessage("server", TimeAlertType.TIME_OVER));
-    this.nextPlayer();
-  }
-
-  /*
-  sends out a message to the players, if they have won or not
+  /**
+   * sends out a message to the players, if they have won or not
    */
   public void gameOver() {
     this.server.sendToAllBut(this.getWinner().getName(), new GameLooseMessage("server"));
@@ -336,34 +366,59 @@ public class ServerMatch {
 
   //getter and setter
 
+  /**
+   * @return the scrabbleboard
+   */
   public ScrabbleBoard getScrabbleBoard() {
     return scrabbleBoard;
   }
 
+  /**
+   * @return getServer
+   */
   public Server getServer() {
     return server;
   }
 
+  /**
+   *
+   * @param server the server of current instance
+   */
   public void setServer(Server server) {
     this.server = server;
   }
 
+  /**
+   * @return the protocol
+   */
   public ServerProtocol getProtocol() {
     return protocol;
   }
 
+  /**
+   * @param protocol sets the protocol
+   */
   public void setProtocol(ServerProtocol protocol) {
     this.protocol = protocol;
   }
 
+  /**
+   * @param currentPlayer sets the number of the arry of the current player
+   */
   public void setCurrentPlayer(int currentPlayer) {
     this.currentPlayer = currentPlayer;
   }
 
+  /**
+   * increments the pointless turns
+   */
   public void incrementPointlessTurns() {
     pointlessTurns++;
   }
 
+  /**
+   * @return the player array
+   */
   public Player[] getPlayers() {
     return players;
   }
