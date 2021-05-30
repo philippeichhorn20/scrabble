@@ -130,7 +130,7 @@ public class Chat {
 	}
 
 	public void fillTextArea(String from, String text) {
-		this.textArea.appendText(from.toUpperCase() + ": " + text + "\n");
+		this.textArea.appendText(from.substring(0,1).toUpperCase()+from.substring(1).toLowerCase() + ": " + text + "\n");
 		System.out.println();
 	}
 	public String readOutTextArea() {
@@ -142,7 +142,10 @@ public class Chat {
 	}
 
 	public void display() {
-		window.showAndWait();
+		window.show();
+	}
+	public void close(){
+		window.close();
 	}
 
 }

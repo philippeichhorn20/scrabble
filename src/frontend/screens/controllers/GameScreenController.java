@@ -537,6 +537,7 @@ public class GameScreenController extends Thread{
   }
   public void openChat(ActionEvent e){
     new Bounce(openChatButton).play();
+    GameInformation.getInstance().getChat().close();
     GameInformation.getInstance().getChat().display();
   }
 
