@@ -1,5 +1,6 @@
 package frontend.screens.controllers;
 
+import animatefx.animation.Bounce;
 import animatefx.animation.FadeIn;
 import animatefx.animation.FadeOut;
 import animatefx.animation.Flash;
@@ -17,6 +18,7 @@ import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 import backend.basic.TileBag;
 import backend.network.messages.text.HistoryMessage;
+import backend.network.messages.tiles.SendStartRackMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,11 +82,13 @@ public class GameScreenController extends Thread{
   @FXML private AnchorPane scoreboard;
   @FXML private Label currPlayer;
   @FXML private Label time;
+  @FXML private Button openChatButton;
   @FXML private AnchorPane pane;
   @FXML private ImageView tileBagIcon;
   @FXML private Button resetTilesButton;
-  @FXML private Label currPlayerText;
+  @FXML public Label currPlayerText;
   @FXML private Label serverMessage;
+  @FXML private Button endTurnButton;
   ClientMatch match = GameInformation.getInstance().getClientmatch();
   Player thisPlayer = match.getPlayer();
   private GameInformation gameInformation = GameInformation.getInstance();
@@ -137,7 +141,6 @@ public class GameScreenController extends Thread{
     Iterator<String> iterator = textMessageClone.iterator();
     while(iterator.hasNext()){
       String s = iterator.next();
-      System.out.println(s);
       newHistoryMessageOther(s);
     }
     match.getTextMessages().clear();
@@ -147,16 +150,11 @@ public class GameScreenController extends Thread{
   int timInt = 0;
 
   public void endTurn(ActionEvent e) throws IOException {
+    new Bounce(endTurnButton).play();
     endTurnB();
   }
   public void endTurnB(){
-    if (match.isInvalidMove() && !match.dropTiles()) {
-      scrabbleBoard.nextTurn();
-      if (tileBagIcon.isMouseTransparent()){
-        new FadeIn(tileBagIcon).play();
-        tileBagIcon.setMouseTransparent(false);
-      }
-    }
+
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
    //   activateServerMessage("Checking the word...");
     }
@@ -185,8 +183,8 @@ public class GameScreenController extends Thread{
     shuffleTiles();
   }
 
-  private void drawTiles() {
-    this.activateServerMessage("Exchanging your tiles");
+  private void drawTiles(){
+    showServerMessage("Exchanging your tiles",3);
     resetColor();
     int i = 0;
     new FadeOut(tileBagIcon).play();
@@ -234,6 +232,7 @@ public class GameScreenController extends Thread{
   }
 
   public void shuffleTiles(){
+    new FadeOut(tileBagIcon).play();
     Tile[] oldTiles = tilesToSwitch();
     if(oldTiles.length == 0){
       showServerMessage("Please chose Tiles!", 2);
@@ -435,6 +434,7 @@ public class GameScreenController extends Thread{
               if (gtiles[i].getTile().isJoker()) {
                 AlertBox.display("Choose Joker", "Enter the letter the Joker should assume:");
                 gtiles[i].setLetter(jokerChar);
+                gtiles[i].getTile().setLetter(jokerChar);
                 gtiles[i].getTile().setJoker(false);
                 gtiles[i].getLetter().setFill(Color.PURPLE);
               }
@@ -536,6 +536,7 @@ public class GameScreenController extends Thread{
     }
   }
   public void openChat(ActionEvent e){
+    new Bounce(openChatButton).play();
     GameInformation.getInstance().getChat().display();
   }
 
@@ -603,6 +604,19 @@ public class GameScreenController extends Thread{
                   sendLostBox();
                   //or send win box
                 }
+                if(GameInformation.getInstance().getClientmatch().getProtocol().isStartingTiles()){
+                  int d = 0;
+                  for (Tile t:match.getProtocol().getStartingRack()){
+                    gtiles[d].setTile(t);
+                    gtiles[d].setLetter(t.getLetter());
+                    gtiles[d].getLetter().setFont(new Font(20));
+                    gtiles[d].setXY(402 + (d * 36), 644);
+                    gtiles[d].getLetter().setVisible(true);
+                    d++;
+                  }
+                  match.getProtocol().setStartingTiles(false);
+
+                }
 
                 time.setText(String.valueOf(match.getTimer().getTimerCurrentPlayer()));
               }
@@ -637,16 +651,20 @@ public class GameScreenController extends Thread{
           tilesOnBoard[i][j] = false;
         }
       }
-      for (int i = 0; i < 7; i++) {
-        TileBag tb = new TileBag();
-        // gtiles[i].getLetter().setText(String.valueOf(servMatch.getTileBag().drawTile().getLetter()));
-        Tile drawnTile = tb.drawTile();
+      try{
+        GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new SendStartRackMessage(Main.profile.getName(),new Tile[7]));
+      }catch (IOException ie){
+        ie.printStackTrace();
+      }
+      /*for (int i = 0; i < 7; i++) {
+
+        Tile drawnTile = startingTiles[i];
         gtiles[i].setTile(drawnTile);
         gtiles[i].getLetter().setText(String.valueOf(drawnTile.getLetter()));
         gtiles[i].getLetter().setFont(new Font(20));
         gtiles[i].setXY(402 + (i * 36), 644);
         gtiles[i].getLetter().setVisible(true);
-      }
+      }*/
       Player[] players = GameInformation.getInstance().getPlayers();
 
 
@@ -654,14 +672,14 @@ public class GameScreenController extends Thread{
         name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
       }
       if (players[1]!=null){
-        name2.setText(players[1].getName() + ":");
+        name2.setText(players[1].getName().substring(0,1).toUpperCase()+players[1].getName().substring(1).toLowerCase() + ":");
       }
 
         if (players[2]!=null){
-          name3.setText(players[2].getName() + ":");
+          name2.setText(players[2].getName().substring(0,1).toUpperCase()+players[2].getName().substring(1).toLowerCase() + ":");
         }
         if (players[3]!=null){
-          name4.setText(players[3].getName() + ":");
+          name2.setText(players[3].getName().substring(0,1).toUpperCase()+players[3].getName().substring(1).toLowerCase() + ":");
         }
 
 

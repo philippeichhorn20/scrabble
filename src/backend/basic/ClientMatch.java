@@ -110,11 +110,16 @@ otherwise it just informs the player about the new turn
         this.gameScreenController.showServerMessage("Your message could not be send, please try again",3);
       }
     }else{
-      try {
-        this.pass();
-      }catch (IOException ioe){
-        this.gameScreenController.showServerMessage("Your message could not be send, please try again", 3);
+      if(!this.gameScreenController.currPlayerText.getText().equals("Your Turn")){
+        //do nothing
+      }else{
+        try {
+          this.pass();
+        }catch (IOException ioe){
+          this.gameScreenController.showServerMessage("Your message could not be send, please try again", 3);
+        }
       }
+
     }
 
   }

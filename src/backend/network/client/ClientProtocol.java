@@ -4,6 +4,7 @@ import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
+import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 import backend.network.messages.connection.ConnectMessage;
@@ -19,6 +20,7 @@ import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.GetNewTilesMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ReceiveShuffleTilesMessage;
+import backend.network.messages.tiles.SendStartRackMessage;
 import backend.network.messages.time.TimeAlertMessage;
 import frontend.Main;
 import java.io.IOException;
@@ -35,6 +37,25 @@ public class ClientProtocol extends Thread{
   private String historyMess;
   private boolean messChange = false;
   private Player clientPlayer;
+
+  public boolean isStartingTiles() {
+    return startingTiles;
+  }
+
+  public void setStartingTiles(boolean startingTiles) {
+    this.startingTiles = startingTiles;
+  }
+
+  private boolean startingTiles;
+  public Tile[] getStartingRack() {
+    return startingRack;
+  }
+
+  public void setStartingRack(Tile[] startingRack) {
+    this.startingRack = startingRack;
+  }
+
+  private Tile[] startingRack;
 
 
 
@@ -224,7 +245,11 @@ public class ClientProtocol extends Thread{
               HistoryMessage hMessage = (HistoryMessage) message;
               historyMess = hMessage.getMessage();
               messChange = true;
-
+            case SEND_START_RACK:
+              SendStartRackMessage ssrMessage = (SendStartRackMessage) message;
+              setStartingTiles(true);
+              setStartingRack(ssrMessage.getTiles());
+              break;
             default:
               break;
           }

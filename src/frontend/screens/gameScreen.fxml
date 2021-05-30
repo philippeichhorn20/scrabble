@@ -18,7 +18,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#highlightTileKey" onMouseEntered="#setUp" onMouseMoved="#update" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.GameScreenController">
    <center>
-      <AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #606C38;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="720.0" fitWidth="1080.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -135,7 +135,7 @@
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></Text>
-            <TitledPane animated="false" layoutX="826.0" layoutY="39.0" prefHeight="236.0" prefWidth="243.0" style="-fx-background-color: #ffe5b4;" text="   Scoreboard">
+            <TitledPane animated="false" layoutX="826.0" layoutY="39.0" prefHeight="236.0" prefWidth="243.0" text="   Scoreboard">
                <content>
                   <AnchorPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #ffe5b4;">
                      <children>
@@ -190,7 +190,7 @@
                   <Font size="44.0" />
                </font>
             </Label>
-            <Label fx:id="time" layoutX="930.0" layoutY="285.0" prefHeight="54.0" prefWidth="103.0" text="05:00" textFill="#c4eff5">
+            <Label fx:id="time" layoutX="940.0" layoutY="285.0" prefHeight="54.0" prefWidth="103.0" text="05:00" textFill="#c4eff5">
                <font>
                   <Font name="Franklin Gothic Medium" size="39.0" />
                </font>
@@ -205,15 +205,18 @@
                   <Font name="Trebuchet MS" size="42.0" />
                </font>
             </Label>
-            <Button fx:id="endTurnButton" layoutX="870.0" layoutY="630.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green; -fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10;" text="End Turn">
+            <Button fx:id="endTurnButton" layoutX="870.0" layoutY="630.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: #606C38; -fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10;" text="End Turn" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </Button>
-            <Button fx:id="resetTilesButton" layoutX="820.0" layoutY="559.0" mnemonicParsing="false" onAction="#resetTiles" prefHeight="36.0" prefWidth="92.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Set back" />
+            <Button fx:id="resetTilesButton" layoutX="820.0" layoutY="559.0" maxHeight="36.0" maxWidth="92.0" mnemonicParsing="false" onAction="#resetTiles" prefHeight="36.0" prefWidth="92.0" style="-fx-background-color: #606C38 #606C38; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Set back" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font></Button>
             <ImageView fx:id="tileBagIcon" fitHeight="95.0" fitWidth="131.0" layoutX="15.0" layoutY="600.0" onMouseClicked="#getNewTiles" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@resources/tilebagicon.jpg" />
+                  <Image url="@resources/tilebagicon%20-%20Copy.jpg" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -248,7 +251,10 @@
                   <Font name="Georgia" size="30.0" />
                </font>
             </Label>
-            <Button layoutX="950.0" layoutY="559.0" mnemonicParsing="false" onAction="#openChat" prefHeight="36.0" prefWidth="92.0" style="-fx-background-color: green; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: black;" text="Chat" />
+            <Button fx:id="openChatButton" layoutX="950.0" layoutY="559.0" maxHeight="36.0" maxWidth="92.0" mnemonicParsing="false" onAction="#openChat" prefHeight="36.0" prefWidth="92.0" style="-fx-background-color: #606C38; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: black;" text="Chat" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font></Button>
          </children>
       </AnchorPane>
    </center>
