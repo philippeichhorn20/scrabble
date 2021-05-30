@@ -359,7 +359,7 @@ public class LobbyScreenController {
         playerInLobby++;
       }
     }
-    EasyAI newAI = new EasyAI("easyAI" + (playerInLobby + 1));
+    EasyAI newAI = new EasyAI("easyAI " + (playerInLobby + 1));
     if (!GameInformation.getInstance().getServermatch()
         .addPlayer(newAI)) {
       GameScreenController.AlertBox

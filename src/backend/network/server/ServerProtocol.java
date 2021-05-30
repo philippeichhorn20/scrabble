@@ -1,17 +1,17 @@
 package backend.network.server;
 
+import backend.ai.PlayerAI;
 import backend.basic.GameInformation;
 import backend.basic.Player;
-import backend.basic.Player.Playerstatus;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
+import backend.network.messages.connection.ConnectMessage;
 import backend.network.messages.connection.ConnectionRefusedMessage;
 import backend.network.messages.text.HistoryMessage;
 import backend.network.messages.text.TextMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.SendStartRackMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
-import frontend.Main;
 import frontend.screens.controllers.GameScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -140,21 +140,37 @@ public class ServerProtocol extends Thread {
         } else {
           System.out.println("successful");
           this.clientName = from;
-
-          Player clientPlayer = new Player(from, Main.profile.getColor(),Main.profile.getGames(), Main.profile
-              .getWins(), Playerstatus.WAIT);
-          server.addClient(clientPlayer, this);
-          if (GameInformation.getInstance().getServermatch().addPlayer(clientPlayer)) {
+          Player player = ((ConnectMessage) message).getPlayer();
+          server.addClient(player, this);
+          if (GameInformation.getInstance().getServermatch().addPlayer(player)) {
             System.out.print("player in game lol: ");
-            for(Player p: GameInformation.getInstance().getServermatch().getPlayers()){
-              if(p!= null){
-                System.out.print(p.getName()+" ");
+            for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
+              if (p != null) {
+                System.out.print(p.getName() + " ");
               }
             }
           } else {
             Message connectionRefused = new ConnectionRefusedMessage("server",
                 "Lobby is full!");
           }
+        }
+
+      } else if (message.getMessageType() == MessageType.CONNECT_AI) {
+        System.out.println("new AI attempts to connect...");
+        String from = message.getFrom();
+        if (server.userExistsP(from)) {
+          System.out.println("unsuccessful since already in lobby...");
+          Message connectionRefused = new ConnectionRefusedMessage("host",
+              "Username already connected to the server!");
+          out.writeObject(connectionRefused);
+          out.flush();
+          out.reset();
+          disconnect();
+        } else {
+          System.out.println("successful");
+          this.clientName = from;
+          PlayerAI aiPlayer = (PlayerAI) ((ConnectMessage)message).getPlayer();
+          server.addClient(aiPlayer, this);
         }
 
       } else { // first message of client have to be connection message

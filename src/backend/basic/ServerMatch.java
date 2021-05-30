@@ -225,6 +225,7 @@ public class ServerMatch {
     }
 
     server.sendToAll(new LobbyInformationMessage("server", correctPlayer));
+    System.out.println("LOBBY INFORMATION START MATCH MESSAGE SENT CORRECTPLAYERS");
     for (int i = 0; i < this.players.length; i++) {
       if (this.players[i] != null) {
         Tile[] tiles = new Tile[7];

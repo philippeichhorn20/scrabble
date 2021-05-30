@@ -115,9 +115,9 @@ public class Server {
           System.out.println(cName+" does not exist in client array");
         }
         ServerProtocol c = clients.get(cName);
-        if(c!=null) {
+        //if(c!=null) {
           c.sendToClient(message);
-        }
+        //}
 
       } catch (IOException e) {
         e.printStackTrace();

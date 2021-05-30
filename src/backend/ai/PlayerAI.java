@@ -9,7 +9,6 @@ import backend.network.messages.tiles.PassMessage;
 import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import java.io.IOException;
-import java.io.Serializable;
 
 /*
 @author jawinter
@@ -55,7 +54,7 @@ public class PlayerAI extends Player {
      */
   public void handleStartGame(Player[] players) {
     for(int i = 0;i<players.length;i++) {
-      if(players[i].getName().equals(this.name)){
+      if(players[i]!=null && players[i].getName().equals(this.name) ){
         this.myNumber = i;
       }
     }
