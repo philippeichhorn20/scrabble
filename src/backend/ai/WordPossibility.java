@@ -54,8 +54,8 @@ public class WordPossibility {
     boolean rightDone = false;
     boolean belowDone = false;
     boolean leftDone = false;
-    for (int i = 0; i < 15; i++) {
-      if ((y - (i + 1) < 0 || scrabbleBoard[x][y - (i + 1)].hasTile()) && !aboveDone) {
+    for (int i = 0; i < scrabbleBoard.length; i++) {
+      if ((y - (i + 1) < 1 || scrabbleBoard[x][y - (i + 1)].hasTile()) && !aboveDone) {
         aboveSpace = i;
         aboveDone = true;
       }
@@ -67,7 +67,7 @@ public class WordPossibility {
         belowSpace = i;
         belowDone = true;
       }
-      if ((x - (i + 1) < 0 || scrabbleBoard[x - (i + 1)][y].hasTile()) && !leftDone) {
+      if ((x - (i + 1) < 1 || scrabbleBoard[x - (i + 1)][y].hasTile()) && !leftDone) {
         leftSpace = i;
         leftDone = true;
       }

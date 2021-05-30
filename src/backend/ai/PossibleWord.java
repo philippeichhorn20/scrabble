@@ -53,7 +53,8 @@ public class PossibleWord implements Comparable<PossibleWord> {
   public int compareTo(PossibleWord otherPossibleWord) {
     if (otherPossibleWord.getPoints() > this.points) {
       return 1;
-    } else if (otherPossibleWord.getPoints() == this.points) {
+    } else if (otherPossibleWord.getPoints() == this.points && this.word
+        .equals(otherPossibleWord.word)) {
       return 0;
     } else {
       return -1;

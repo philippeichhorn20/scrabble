@@ -90,12 +90,15 @@ public class BrainTest {
 
   @Test
   void testPointsCalculation() {
+    easyAI.getEasyBrain().setScrabbleboard(board);
     TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
     Iterator<PossibleWord> it = wordsTest.iterator();
     PossibleWord ginch = new PossibleWord("", 0, new ArrayList<Tile>());
     int ginchPoints = 0;
     while (it.hasNext()) {
-      if ((ginch = it.next()).getWord().equals("GINCH")) {
+      String z = it.next().getWord();
+      System.out.println(z);
+      if (z.equals("GINCH")) {
         ginchPoints = ginch.getPoints();
       }
     }

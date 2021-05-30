@@ -34,7 +34,7 @@ public class ScrabbleBoard implements Serializable {
    * TODO: add the rest of the Premiumstatuses
    */
 
-  public ScrabbleBoard(){
+  public ScrabbleBoard() {
     this.scrabbleBoard = setUpScrabbleBoard();
 
   }
@@ -42,7 +42,7 @@ public class ScrabbleBoard implements Serializable {
   /*
   in case tiles were already placed
    */
-  public ScrabbleBoard(Matchfield[][] scrabbleBoard){
+  public ScrabbleBoard(Matchfield[][] scrabbleBoard) {
     this.scrabbleBoard = scrabbleBoard;
   }
 
@@ -82,7 +82,6 @@ public class ScrabbleBoard implements Serializable {
     scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
 
-
     scrabbleBoard[1][12].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[12][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[15][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
@@ -99,34 +98,32 @@ public class ScrabbleBoard implements Serializable {
     scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
 
-
-
-
     return scrabbleBoard;
   }
 
 
   public void printScrabbleBoard() {
-    for (int y = 0; y < 15; y++) {
-      for (int x = 0; x < 15; x++) {
+    for (int y = 1; y < 16; y++) {
+      System.out.println();
+      for (int x = 1; x < 16; x++) {
         if (scrabbleBoard[x][y].hasTile()) {
-          System.out.print(scrabbleBoard[x][y].getTile().getLetter() + ":");
+          System.out.print(scrabbleBoard[x][y].getTile().getLetter() + " ");
         } else {
           switch (scrabbleBoard[x][y].getPremiumstatus()) {
             case NOPREMIUM:
-              System.out.print("N" + "\t");
+              System.out.print(" " + " ");
               break;
             case DOUBLELETTER:
-              System.out.print("N" + "\t");
+              System.out.print(" " + " ");
               break;
             case TRIPLELETTER:
-              System.out.print("N" + "\t");
+              System.out.print(" " + " ");
               break;
             case TRIPLEWORD:
-              System.out.print("N" + "\t");
+              System.out.print(" " + " ");
               break;
             case DOUBLEWORD:
-              System.out.print("N" + "\t");
+              System.out.print(" " + " ");
               break;
           }
         }
@@ -195,15 +192,15 @@ public class ScrabbleBoard implements Serializable {
     String[] words = getEditedWordsAsString(true);
     for (int i = 0; i < words.length; i++) {
       String resultString = WordCheckDB.findWord(words[i]);
-      if(resultString == ""){
-        result.add( words[i] + " - word isn't valid");
+      if (resultString == "") {
+        result.add(words[i] + " - word isn't valid");
         inputInvalid = true;
-      }else if(!inputInvalid){
-        result.add(resultString +"\n");
+      } else if (!inputInvalid) {
+        result.add(resultString + "\n");
       }
     }
     GameInformation.getInstance().getClientmatch().setInvalidMove(inputInvalid);
-    return new PlayFeedbackMessage(from, result ,!inputInvalid);
+    return new PlayFeedbackMessage(from, result, !inputInvalid);
   }
 
   public boolean inputValudation(String[][] result) {
@@ -224,12 +221,13 @@ public class ScrabbleBoard implements Serializable {
     this.tilesOnScrabbleBoard.add(newTile);
   }
 
+
   /*
   this function removes the Tile from the Board. It is only possible to remove it,
   if it was placed in the current turn. It removes true if that is the case and false if it was not
    */
   public void removeTile(final backend.basic.Tile tile) {
-      this.scrabbleBoard[tile.getX()][tile.getY()].setTile(null);
+    this.scrabbleBoard[tile.getX()][tile.getY()].setTile(null);
   }
 
   public boolean isInEditedTiles(Tile tile) {
@@ -311,7 +309,7 @@ public class ScrabbleBoard implements Serializable {
       pointsOfWord *= wordMultiplikant;
       points += pointsOfWord;
     }
-    if(this.newTilesOfCurrentMove.size()==7){
+    if (this.newTilesOfCurrentMove.size() == 7) {
       points += 50;
     }
     return points;
@@ -321,14 +319,15 @@ public class ScrabbleBoard implements Serializable {
   @author jawinter
   method returns points of string
    */
-  public int getPointsOfWord(ArrayList<Tile> tiles){
+  public int getPointsOfWord(ArrayList<Tile> tiles) {
     int pointsOfWord = 0;
     int wordMultiplikant = 1;
     ArrayList<Matchfield> wordAsMatchfields = new ArrayList<Matchfield>();
     for (int letterNum = 0; letterNum < tiles.size(); letterNum++) {
       Tile letter = tiles.get(letterNum);
-      scrabbleBoard[letter.getX()][letter.getY()].setTile(letter);
-      wordAsMatchfields.add(scrabbleBoard[letter.getX()][letter.getY()]);
+      Matchfield copy = new Matchfield(scrabbleBoard[letter.getX()][letter.getY()]);
+      copy.setTile(letter);
+      wordAsMatchfields.add(copy);
     }
     for (int length = 0; length < wordAsMatchfields.size(); length++) {
       int letterValue = 0;
@@ -365,13 +364,13 @@ public class ScrabbleBoard implements Serializable {
     editedWords.clear();
     newTilesOfCurrentMove.clear();
 
-   // newTilesOfCurrentMove.clear();
+    // newTilesOfCurrentMove.clear();
   }
 
-  public void dropChangedTiles(){
+  public void dropChangedTiles() {
     this.editedWords.clear();
     Iterator<Tile> iterator = newTilesOfCurrentMove.iterator();
-    while(iterator.hasNext()){
+    while (iterator.hasNext()) {
       Tile tile = iterator.next();
       this.removeTile(tile);
     }
@@ -426,60 +425,60 @@ public class ScrabbleBoard implements Serializable {
     return tiles;
   }
 
-  public static boolean hasTileOnCenterMatchfield(Tile[] tiles){
-    for(int x = 0; x < tiles.length; x++){
-      if(tiles[x].getY() == 8 && tiles[x].getY() == 8){
+  public static boolean hasTileOnCenterMatchfield(Tile[] tiles) {
+    for (int x = 0; x < tiles.length; x++) {
+      if (tiles[x].getY() == 8 && tiles[x].getY() == 8) {
         return true;
       }
     }
     return false;
   }
-  public boolean wordIsConnectedToMiddle(Tile[] tiles){
-    Matchfield[][] temporaryScrabbleBoard = placeTiles(tiles,this.scrabbleBoard);
+
+  public boolean wordIsConnectedToMiddle(Tile[] tiles) {
+    Matchfield[][] temporaryScrabbleBoard = placeTiles(tiles, this.scrabbleBoard);
     ArrayList<Tile> tilesOnBoard = getTilesOnBoard(temporaryScrabbleBoard);
-    if(temporaryScrabbleBoard[8][8].hasTile()){
+    if (temporaryScrabbleBoard[8][8].hasTile()) {
       ArrayList<Tile> discoveredTiles = new ArrayList<>();
       discoveredTiles.add(temporaryScrabbleBoard[8][8].getTile());
       discoverTile(temporaryScrabbleBoard[8][8].getTile(), temporaryScrabbleBoard, discoveredTiles);
-      if(discoveredTiles.size() == tilesOnBoard.size()){
+      if (discoveredTiles.size() == tilesOnBoard.size()) {
         return true;
       }
     }
     return false;
   }
 
-  public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered){
-    if(tile.getY()<15 && board[tile.getX()][tile.getY()+1].hasTile()
-        && !alreadyDiscovered.contains(board[tile.getX()][tile.getY()+1].getTile())){
-      alreadyDiscovered.add(board[tile.getX()][tile.getY()+1].getTile());
-      discoverTile(board[tile.getX()][tile.getY()+1].getTile(),board,alreadyDiscovered);
+  public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered) {
+    if (tile.getY() < 15 && board[tile.getX()][tile.getY() + 1].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX()][tile.getY() + 1].getTile())) {
+      alreadyDiscovered.add(board[tile.getX()][tile.getY() + 1].getTile());
+      discoverTile(board[tile.getX()][tile.getY() + 1].getTile(), board, alreadyDiscovered);
     }
-    if(tile.getX()<15 && board[tile.getX()+1][tile.getY()].hasTile()
-        && !alreadyDiscovered.contains(board[tile.getX()+1][tile.getY()].getTile())){
-      alreadyDiscovered.add(board[tile.getX()+1][tile.getY()].getTile());
-      discoverTile(board[tile.getX()+1][tile.getY()].getTile(),board,alreadyDiscovered);
+    if (tile.getX() < 15 && board[tile.getX() + 1][tile.getY()].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX() + 1][tile.getY()].getTile())) {
+      alreadyDiscovered.add(board[tile.getX() + 1][tile.getY()].getTile());
+      discoverTile(board[tile.getX() + 1][tile.getY()].getTile(), board, alreadyDiscovered);
     }
-    if(tile.getY()>1 && board[tile.getX()][tile.getY()-1].hasTile()
-        && !alreadyDiscovered.contains(board[tile.getX()][tile.getY()-1].getTile())){
-      alreadyDiscovered.add(board[tile.getX()][tile.getY()-1].getTile());
-      discoverTile(board[tile.getX()][tile.getY()-1].getTile(),board,alreadyDiscovered);
+    if (tile.getY() > 1 && board[tile.getX()][tile.getY() - 1].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX()][tile.getY() - 1].getTile())) {
+      alreadyDiscovered.add(board[tile.getX()][tile.getY() - 1].getTile());
+      discoverTile(board[tile.getX()][tile.getY() - 1].getTile(), board, alreadyDiscovered);
     }
-    if(tile.getX()>1 && board[tile.getX()-1][tile.getY()].hasTile()
-        && !alreadyDiscovered.contains(board[tile.getX()-1][tile.getY()].getTile())){
-      alreadyDiscovered.add(board[tile.getX()-1][tile.getY()].getTile());
-      discoverTile(board[tile.getX()-1][tile.getY()].getTile(),board,alreadyDiscovered);
+    if (tile.getX() > 1 && board[tile.getX() - 1][tile.getY()].hasTile()
+        && !alreadyDiscovered.contains(board[tile.getX() - 1][tile.getY()].getTile())) {
+      alreadyDiscovered.add(board[tile.getX() - 1][tile.getY()].getTile());
+      discoverTile(board[tile.getX() - 1][tile.getY()].getTile(), board, alreadyDiscovered);
 
     }
-
 
 
   }
 
-  public static ArrayList<Tile> getTilesOnBoard(Matchfield[][] board){
+  public static ArrayList<Tile> getTilesOnBoard(Matchfield[][] board) {
     ArrayList<Tile> tilesOnBoard = new ArrayList<>();
-    for(int x = 1; x < board.length; x++){
-      for(int y = 1; y < board.length; y++){
-        if(board[x][y].hasTile()){
+    for (int x = 1; x < board.length; x++) {
+      for (int y = 1; y < board.length; y++) {
+        if (board[x][y].hasTile()) {
           tilesOnBoard.add(board[x][y].getTile());
         }
       }
@@ -488,9 +487,9 @@ public class ScrabbleBoard implements Serializable {
     return tilesOnBoard;
   }
 
-  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board){
+  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board) {
     Matchfield[][] temporaryScrabbleBoard = board.clone();
-    for(int x = 0; x < tiles.length; x++){
+    for (int x = 0; x < tiles.length; x++) {
       temporaryScrabbleBoard[tiles[x].getX()][tiles[x].getY()].setTile(tiles[x]);
     }
     return temporaryScrabbleBoard;

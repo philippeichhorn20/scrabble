@@ -57,7 +57,7 @@ public class Brain implements Serializable {
   public TreeSet<PossibleWord> getPlayableWords(Tile[] tilesOnHand) {
     ArrayList<WordPossibility> wordPossibilities = getWordPossibilities();
     TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
-    if (wordPossibilities.size() == 0) {
+    if (!scrabbleBoard.getScrabbleBoard()[8][8].hasTile()) {
       playableWords = getPlayableWordsFirstMove(tilesOnHand);
     }
     Timer timer = new Timer();
@@ -364,9 +364,10 @@ public class Brain implements Serializable {
    */
   public ArrayList<WordPossibility> getWordPossibilities() {
     ArrayList<WordPossibility> wordPossibilities = new ArrayList<WordPossibility>();
-    for (int x = 0; x < scrabbleBoard.getScrabbleBoard().length; x++) {
-      for (int y = 0; y < scrabbleBoard.getScrabbleBoard()[x].length; y++) {
-        if (scrabbleBoard.getScrabbleBoard()[x][y].hasTile()) {
+    for (int x = 1; x < scrabbleBoard.getScrabbleBoard().length; x++) {
+      for (int y = 1; y < scrabbleBoard.getScrabbleBoard()[x].length; y++) {
+        if (scrabbleBoard.getScrabbleBoard()[x][y] != null && scrabbleBoard.getScrabbleBoard()[x][y]
+            .hasTile()) {
           char letter = scrabbleBoard.getScrabbleBoard()[x][y].getTile().getLetter();
           int value = scrabbleBoard.getScrabbleBoard()[x][y].getTile().getValue();
           wordPossibilities.add(new WordPossibility(letter, x, y, value, scrabbleBoard));
@@ -376,9 +377,13 @@ public class Brain implements Serializable {
     return wordPossibilities;
   }
 
+  public ScrabbleBoard getScrabbleBoard() {
+    return scrabbleBoard;
+  }
+
   /*
-  Method checks whether word is valid
-   */
+    Method checks whether word is valid
+     */
   public boolean checkWord(String word) {
     boolean exists = false;
     if (this.words.contains(word.toUpperCase())) {
