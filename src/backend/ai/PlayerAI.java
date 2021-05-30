@@ -19,7 +19,7 @@ public class PlayerAI extends Player {
   protected Brain brain;
   protected String name;
   int myNumber = -1;
-  protected Tile[] tilesOnHand;
+  protected Tile[] tilesOnHand = new Tile[7];
   protected AIProtocol aiProtocol;
 
   public PlayerAI(String name) {
@@ -54,8 +54,9 @@ public class PlayerAI extends Player {
      */
   public void handleStartGame(Player[] players) {
     for(int i = 0;i<players.length;i++) {
-      if(players[i]!=null && players[i].getName().equals(this.name) ){
+      if(players[i]!=null && players[i].getName().equals(this.name)){
         this.myNumber = i;
+        System.out.println("Meine AI Nummer ist" + this.myNumber);
       }
     }
   }
@@ -102,12 +103,24 @@ public class PlayerAI extends Player {
    */
   public void acceptNewTiles(Tile[] tiles) {
     int count = 0;
-    for (Tile t : this.tilesOnHand) {
-      if (t.equals(null)) {
-        if (tiles[count].isJoker()) {
-          tiles[count].setLetter(getRandomLetter());
+    if(this.tilesOnHand==null){
+      System.out.println("AI hat nix auf der Hand");
+    }
+    for (int i = 0;i<tiles.length;i++) {
+      if (tiles[i]==null) {
+        if (tiles[i].isJoker()) {
+          tiles[i].setLetter(getRandomLetter());
         }
-        t = tiles[count++];
+      }
+      Tile t = tiles[count++];
+      this.addTileToHand(t);
+    }
+  }
+
+  public void addTileToHand(Tile tile){
+    for(Tile t : this.tilesOnHand) {
+      if(t==null){
+        t=tile;
       }
     }
   }
@@ -126,6 +139,13 @@ public class PlayerAI extends Player {
   public void placeTiles(Tile[] tilesToPlay) throws IOException {
     Message place = new PlaceTilesMessage(name, tilesToPlay);
     aiProtocol.sendToServer(place);
+  }
+
+  /*
+  When others place words
+   */
+  public void placeTilesFromServer(Tile[] word){
+    brain.updateScrabbleboard(word);
   }
 
   /*

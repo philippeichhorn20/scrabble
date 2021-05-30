@@ -332,7 +332,7 @@ public class LobbyScreenController {
         if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
             .equals("text/plain")) {
           WordCheckDB.loadNewLibrary(selectedFile.getPath());
-          loadLibraryButton.setText("Sucecss");
+          loadLibraryButton.setText("Success");
         } else {
           GameScreenController.AlertBox
               .display("Could not load Library", "Be sure to choose a .txt file");

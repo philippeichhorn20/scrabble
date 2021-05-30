@@ -144,7 +144,7 @@ public class Brain implements Serializable {
         }
         without[j] = tilesOnHand[skip++];
       }
-      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i].getLetter(), 7, 7,
+      WordPossibility wordPossibility = new WordPossibility(tilesOnHand[i].getLetter(), 8, 8,
           tilesOnHand[i].getValue(), this.scrabbleBoard);
       allWords = findCorrectWords(wordPossibility, without);
       Iterator<String> it = allWords.iterator();
@@ -480,4 +480,9 @@ public class Brain implements Serializable {
     }
     return empty;
   }
+
+  public HashSet<String> getWords() {
+    return words;
+  }
+
 }

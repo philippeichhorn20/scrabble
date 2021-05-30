@@ -1,6 +1,7 @@
 package backend.ai;
 
 import backend.basic.Tile;
+import backend.basic.Tile.Tilestatus;
 import java.io.IOException;
 
 /*
@@ -16,15 +17,22 @@ public class HardAI extends PlayerAI {
 
   //choose best Tiles to place and if not found shuffles tiles
   public void handleTurn() {
+    System.out.println("HardAI: Ich muss nachdenken");
+    for(Tile t: tilesOnHand){
+      if(t==null){
+        t = new Tile('A',1, Tilestatus.ONPLAYERRACK);
+      }
+    }
     PossibleWord bestWord = brain.getPlayableWords(this.tilesOnHand).first();
-    System.out.println(bestWord);
     try {
       if (bestWord != null) {
         Tile[] toPlace = bestWord.getTile().toArray(new Tile[0]);
         removeUsedTilesFromHand(toPlace);
         placeTiles(toPlace);
+        System.out.println(bestWord);
       } else {
         this.setTiles(new Tile[]{null, null, null, null, null, null, null});
+        System.out.println("AI musste ziehen weil zu dumm");
         requestNewTiles();
       }
     } catch (IOException e) {

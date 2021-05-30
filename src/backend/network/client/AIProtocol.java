@@ -71,7 +71,7 @@ public class AIProtocol extends Thread implements Serializable {
               break;
 
             case GAME_TURN:
-              System.out.println("Game turn");
+              System.out.println("Game turn of AI");
               ai.handleGameTurnMessage(((GameTurnMessage)message).getNowTurn());
               break;
 
@@ -80,7 +80,7 @@ public class AIProtocol extends Thread implements Serializable {
               break;
 
             case PLACE_TILES:
-              ai.placeTiles(((PlaceTilesMessage)message).getTiles());
+              ai.placeTilesFromServer(((PlaceTilesMessage)message).getTiles());
               break;
 
             default:
