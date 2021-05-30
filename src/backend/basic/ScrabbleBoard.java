@@ -55,15 +55,25 @@ public class ScrabbleBoard implements Serializable {
     for (int x = 1; x < 16; x++) {
       for (int y = 1; y < 16; y++) {
         scrabbleBoard[x][y] = new Matchfield(x, y, Premiumstatus.NOPREMIUM);
-        if (x == y || x == 15 - y) {
+        if (x == y || x == 16 - y) {
           if (((x == 1 || x == 15) && (y == 1 || y == 15))) {
             scrabbleBoard[x][y].setPremiumstatus(Premiumstatus.TRIPLEWORD);
-          } else if ((x < 6 && x > 1) || (x > 10 && x < 15)) {
+          } else if ((x < 6 && x > 1) || (x > 10 && x < 16)) {
             scrabbleBoard[x][y].setPremiumstatus(Premiumstatus.DOUBLEWORD);
           }
         }
       }
     }
+    scrabbleBoard[8][1].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[1][8].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[8][15].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[15][8].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[14][6].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[14][10].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[6][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+    scrabbleBoard[10][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
+
+
 
     scrabbleBoard[2][6].setPremiumstatus(Premiumstatus.TRIPLELETTER);
     scrabbleBoard[6][2].setPremiumstatus(Premiumstatus.TRIPLELETTER);
@@ -76,59 +86,89 @@ public class ScrabbleBoard implements Serializable {
 
     scrabbleBoard[4][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[1][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[11][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[1][11].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[7][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-
     scrabbleBoard[1][12].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[12][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+    scrabbleBoard[3][7].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[3][9].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[4][8].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[7][7].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[7][9].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+    scrabbleBoard[9][7].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[9][9].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
     scrabbleBoard[15][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[4][11].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[7][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
 
     scrabbleBoard[4][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[1][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[11][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[1][11].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[7][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[9][3].setPremiumstatus(Premiumstatus.DOUBLELETTER);
-    scrabbleBoard[8][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[15][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[1][15].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[15][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[15][12].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[12][15].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[4][15].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+    scrabbleBoard[13][7].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[13][9].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[12][15].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[4][15].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+    scrabbleBoard[7][13].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[9][13].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[15][12].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[15][4].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+    scrabbleBoard[8][12].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[12][8].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+    scrabbleBoard[12][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
+
+
 
     return scrabbleBoard;
   }
 
+  public static void main(String[] args){
+    ScrabbleBoard board = new ScrabbleBoard();
+    board.printScrabbleBoard();
+  }
 
   public void printScrabbleBoard() {
+    int count = 0;
     for (int y = 1; y < 16; y++) {
       System.out.println();
       for (int x = 1; x < 16; x++) {
-        if (scrabbleBoard[x][y].hasTile()) {
-          System.out.print(scrabbleBoard[x][y].getTile().getLetter() + " ");
+        if (x ==  8 && y == 8) {
+          System.out.print("00\t");
+       //   System.out.print(scrabbleBoard[x][y].getTile().getLetter() + " ");
         } else {
           switch (scrabbleBoard[x][y].getPremiumstatus()) {
             case NOPREMIUM:
-              System.out.print(" " + " ");
+              System.out.print("  \t");
               break;
             case DOUBLELETTER:
-              System.out.print(" " + " ");
+              count++;
+              System.out.print("2L\t");
               break;
             case TRIPLELETTER:
-              System.out.print(" " + " ");
+              count++;
+              System.out.print("3L\t");
               break;
             case TRIPLEWORD:
-              System.out.print(" " + " ");
+              count++;
+              System.out.print("3W\t");
               break;
             case DOUBLEWORD:
-              System.out.print(" " + " ");
+              count++;
+              System.out.print("2W\t");
               break;
           }
         }
       }
     }
+    System.out.println("\n" +count);
 
 
   }

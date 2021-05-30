@@ -45,11 +45,11 @@ public class Timer extends Thread implements Serializable {
       } catch (InterruptedException exe) {
         exe.printStackTrace();
       }
-      if (clientMatch != null && timerCurrentPlayer == 9*60) {
+      if (clientMatch != null && timerCurrentPlayer == 1*60) {
         clientMatch.oneMinuteAlert();
-      }else if (clientMatch!= null && timerCurrentPlayer == 9.5*60){
+      }else if (clientMatch!= null && timerCurrentPlayer == 1.5*60){
         clientMatch.thirtySecondsAlert();
-      }else if(serverMatch != null && timerCurrentPlayer == 10*60){
+      }else if(serverMatch != null && timerCurrentPlayer == 2*60){
         serverMatch.gameOver();
       }
     }
