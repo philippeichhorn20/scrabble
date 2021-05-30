@@ -10,12 +10,12 @@ import backend.network.messages.tiles.PlaceTilesMessage;
 import backend.network.messages.tiles.ShuffleTilesMessage;
 import frontend.screens.controllertools.LetterSetHolder;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/*
-@author jawinter
-@description Superclass for AIs
+/**
+ * @auhtor jawinter Superclass for the AIs. All Ai players are extended from this class, which is
+ * extended from player. The handleTurn method is the only thing, which should be customized
+ * according to the AIs difficulty
  */
 public class PlayerAI extends Player {
 
@@ -27,7 +27,11 @@ public class PlayerAI extends Player {
   private ArrayList<PossibleWord> triedWords = new ArrayList<PossibleWord>();
   private ArrayList<Tile> lastTilesSent = new ArrayList<Tile>();
 
-
+  /**
+   * Constructor which you can modify to set different color for AIs
+   *
+   * @param name the name is needed for creating a unique AI player
+   */
   public PlayerAI(String name) {
     super(name, "#d3d3d3", 0, 0, Playerstatus.AI);
     this.name = name;
@@ -42,6 +46,11 @@ public class PlayerAI extends Player {
     this.tilesOnHand = tiles;
   }
 
+  /**
+   * Requests to shuffle tiles on hand
+   *
+   * @param oldTiles give the tiles you dont want anymore
+   */
   public void sendShuffleMessage(Tile[] oldTiles) {
     try {
       aiProtocol.sendToServer(new ShuffleTilesMessage(this.name, oldTiles));
@@ -51,8 +60,8 @@ public class PlayerAI extends Player {
     }
   }
 
-  /*
-  to let next player take turn
+  /**
+   * Message allows to let next player now its his turn
    */
   public void sendPassMessage() {
     try {
@@ -70,8 +79,8 @@ public class PlayerAI extends Player {
     return triedWords;
   }
 
-  /*
-  resets tried words
+  /**
+   * Resets tried words. Only need to be saved for one turn.
    */
   public void flushTried() {
     this.triedWords.clear();
@@ -81,9 +90,11 @@ public class PlayerAI extends Player {
     this.brain.setScrabbleboard(board);
   }
 
-  /*
-    Initalize playerList when game starts
-     */
+  /**
+   * Initalize myNumber which is used for determining if AIs turn is now
+   *
+   * @param players list with players to assign the number inside AI
+   */
   public void handleStartGame(Player[] players) {
     for (int i = 0; i < players.length; i++) {
       if (players[i] != null && players[i].getName().equals(this.name)) {
@@ -92,8 +103,10 @@ public class PlayerAI extends Player {
     }
   }
 
-  /*
-  Receive first tiles and put them on rack of AI
+  /**
+   * Method accepts first tiles
+   *
+   * @param tiles first rack given by server
    */
   public void handleGameStartMessage(Tile[] tiles) {
     for (Tile t : tiles) {
@@ -104,8 +117,10 @@ public class PlayerAI extends Player {
     this.tilesOnHand = tiles;
   }
 
-  /*
-  Recognizes whether it is AI's turn. Triggers handleTurn.
+  /**
+   * Method decides whether it is AIs turn or not by comparing nowTurn with myNumber
+   *
+   * @param nowTurn number of player whos turn it is
    */
   public void handleGameTurnMessage(int nowTurn) {
     if (nowTurn == myNumber) {
@@ -113,24 +128,26 @@ public class PlayerAI extends Player {
     }
   }
 
-  /*
-  Handles turn. Different ai handle this one differently.
+  /**
+   * This method should be overwritten by different difficulties of AIs
    */
   public void handleTurn() {
-
-    //If placetiles or shuffleTiles dont forget to set them null
   }
 
-  /*
-  Method is called and given new Tiles which were put on board. Brain needs ne tiles to know
-  how to play
+  /**
+   * Method is called and given new Tiles which were put on board. Brain needs new tiles to know how
+   * to play.
+   *
+   * @param tiles tiles that were put on board
    */
   public void updateScrabbleboard(Tile[] tiles) {
     brain.updateScrabbleboard(tiles);
   }
 
-  /*
-  When AI receives new tiles this will add it to tilesOnHand
+  /**
+   * Method accepts new tiles and fills rack
+   *
+   * @param tiles new tiles to put in rack
    */
   public void acceptNewTiles(Tile[] tiles) {
     int indexCounter = 0;
@@ -147,8 +164,13 @@ public class PlayerAI extends Player {
     }
   }
 
-  /*
-  Remove the tile which is needed for building the board, but is from the board
+  /**
+   * This is needed to let the AI only send the tiles it puts on the board, which are not alraedy
+   * situated there
+   *
+   * @param tilesToPlay  tiles to form the word which AI wants to place
+   * @param possibleWord is the possibleWord and holds the basetile
+   * @return tile array without the base tile
    */
   public Tile[] removeBaseTile(Tile[] tilesToPlay, PossibleWord possibleWord) {
     if (this.brain.getScrabbleBoard().getScrabbleBoard()[8][8].hasTile()) {
@@ -176,16 +198,11 @@ public class PlayerAI extends Player {
     }
   }
 
-  /*
-  When AI wants to shuffle
-   */
-  public void requestNewTiles() throws IOException {
-    Message shuffle = new ShuffleTilesMessage(name, this.tilesOnHand);
-    aiProtocol.sendToServer(shuffle);
-  }
-
-  /*
-  When AI places word
+  /**
+   * Method is used to place tiles on the board
+   *
+   * @param tilesToPlay tiles to be laid on board
+   * @throws IOException
    */
   public void placeTiles(Tile[] tilesToPlay) throws IOException {
     brain.getScrabbleBoard().nextTurn();
@@ -197,25 +214,30 @@ public class PlayerAI extends Player {
     removeUsedTilesFromHand(tilesToPlay);
   }
 
-  /*
-  When others place words
+  /**
+   * Updates the srabbleboard the brain uses to calculate
+   *
+   * @param word tile array which was placed
    */
   public void placeTilesFromServer(Tile[] word) {
     brain.updateScrabbleboard(word);
     brain.getScrabbleBoard().nextTurn();
   }
 
-  /*
-  When AI doesnt want is lazy
+  /**
+   * Pass message is used if AI should not place a word
+   *
+   * @throws IOException
    */
   public void pass() throws IOException {
     Message pass = new PassMessage(name);
     aiProtocol.sendToServer(pass);
   }
 
-  /*
-  AI is not smart enough to deal with blanks. Therefore this method helps getting a random char and
-  returns it.
+  /**
+   * Method avoids joker, because AI can't handle them yet
+   *
+   * @return a random char between capital A and Z
    */
   public static char getRandomLetter() {
     int random = (int) (Math.random() * 25 + 65);
@@ -226,8 +248,10 @@ public class PlayerAI extends Player {
     return aiProtocol;
   }
 
-  /*
-  Method removes tiles from hand after being placed on board. Tiles to remove are given in parameter
+  /**
+   * Method makes place for ne tiles, which will be sent by server
+   *
+   * @param tilesRemove
    */
   public void removeUsedTilesFromHand(Tile[] tilesRemove) {
     for (int j = 0; j < tilesRemove.length; j++) {
@@ -244,6 +268,12 @@ public class PlayerAI extends Player {
     this.aiProtocol = aiProtocol;
   }
 
+  /**
+   * Calculates value for a given letter
+   *
+   * @param t Tile which needs evaluation
+   * @return int wiht points of a word
+   */
   public int getValueForLetter(Tile t) {
     Tile[] tileSet = LetterSetHolder.getInstance().getTileSet();
     for (int i = 0; i < tileSet.length; i++) {
@@ -258,6 +288,10 @@ public class PlayerAI extends Player {
     return lastTilesSent;
   }
 
+  /**
+   * When AI placed correct word this updates the AIs board too and resets lastTilesSent as it is
+   * not needed anymore
+   */
   public void validWordConfirmation() {
     Tile[] place = this.lastTilesSent.toArray(new Tile[0]);
     updateScrabbleboard(place);

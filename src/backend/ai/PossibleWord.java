@@ -1,13 +1,11 @@
 package backend.ai;
 
-/*
-@auhtor jawinter
-Class represents a word which can ba put on board. It stores the word and points
- */
-
 import backend.basic.Tile;
 import java.util.ArrayList;
 
+/**
+ * @author jawinter Class represents a word which can ba put on board. It stores the word and points
+ */
 public class PossibleWord implements Comparable<PossibleWord> {
 
   private String word;
@@ -15,16 +13,21 @@ public class PossibleWord implements Comparable<PossibleWord> {
   private ArrayList<Tile> tiles = new ArrayList<Tile>();
   private Tile baseTile;
 
-  public PossibleWord(String s, int p, ArrayList<Tile> tiles,Tile baseTile) {
+  /**
+   * Constructor to initalize a PossibleWord
+   *
+   * @param s        the word
+   * @param p        holds points this word would give
+   * @param tiles    holds the tiles with coordinates
+   * @param baseTile holds the tile where AI wants to put tiles next to
+   */
+  public PossibleWord(String s, int p, ArrayList<Tile> tiles, Tile baseTile) {
     this.word = s;
     this.points = p;
     this.tiles = tiles;
     this.baseTile = baseTile;
   }
 
-  /*
-   * @author vivanova
-   */
   public ArrayList<Tile> getTile() {
     return this.tiles;
   }
@@ -59,6 +62,13 @@ public class PossibleWord implements Comparable<PossibleWord> {
         '}';
   }
 
+  /**
+   * Very important, because this method ensures correct implementation of the TreeSet in Brain
+   * which holds in TreeSet.first() the PossibleWord with highest points
+   *
+   * @param otherPossibleWord other word to compare to
+   * @return int positive if other word is smaller
+   */
   @Override
   public int compareTo(PossibleWord otherPossibleWord) {
     if (otherPossibleWord.getPoints() > this.points) {

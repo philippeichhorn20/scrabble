@@ -7,12 +7,10 @@ import backend.basic.Tile;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-/*
-@auhtor jawinter
-This class helps dealing with the handling of available possibilities
-to place Tiles and create words. xPos and yPos tell the position of
-available Tilefield and the different spaces hold the number of empty
-Matchfields in given direction from current.
+/**
+ * @author jawinter This class helps dealing with the handling of available possibilities to place
+ * Tiles and create words. xPos and yPos tell the position of available Tilefield and the different
+ * spaces hold the number of empty Matchfields in given direction from current.
  */
 public class WordPossibility {
 
@@ -26,7 +24,15 @@ public class WordPossibility {
   private int leftSpace;
   private ScrabbleBoard board;
 
-  //Instructor for initialization
+  /**
+   * Constructor to create instance of WordPossibility
+   *
+   * @param givenLetter   tile which is already on the board
+   * @param xPosition     of the tile
+   * @param yPosition
+   * @param value         of the tile
+   * @param scrabbleBoard board brain uses
+   */
   public WordPossibility(Tile givenLetter, int xPosition, int yPosition, int value,
       ScrabbleBoard scrabbleBoard) {
     this.baseLetter = givenLetter;
@@ -45,7 +51,9 @@ public class WordPossibility {
     calculateSpaces();
   }
 
-  //Method to calculate available empty spaces for each direction
+  /**
+   * Initalizes the fields of WordPossibility.
+   */
   public void calculateSpaces() {
     Matchfield[][] scrabbleBoard = board.getScrabbleBoard();
     int x = this.xPos;

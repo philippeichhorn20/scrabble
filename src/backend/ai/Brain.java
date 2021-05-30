@@ -18,17 +18,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-/*
-@author jawinter
-@version 1.2
-@description This class is responsible for finding possible placements of tiles to identify possible
-combinations for words, which can be laid. The brain needs a scrabbleBoard, which it tries to analyse.
+/**
+ * @author jawinter
+ * @version 1.2
+ * @description This class is responsible for finding possible placements of tiles to identify
+ * possible combinations for words, which can be laid. The brain needs a scrabbleBoard, which it
+ * tries to analyse.
  */
 public class Brain implements Serializable {
 
   private ScrabbleBoard scrabbleBoard; //ScrabbleBoard, which is analysed by Brain
   private HashSet<String> words = new HashSet<String>(); //set of words from dictionary
 
+  /**
+   * @param board
+   */
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
     if (WordCheckDB.newUrl == null) {
@@ -38,8 +42,10 @@ public class Brain implements Serializable {
     }
   }
 
-  /*
-  Method to update board brain uses to play
+  /**
+   * Method to update board brain uses to play
+   *
+   * @param tiles are the tiles placed on the board
    */
   public void updateScrabbleboard(Tile[] tiles) {
     for (int i = 0; i < tiles.length; i++) {
@@ -47,12 +53,20 @@ public class Brain implements Serializable {
     }
   }
 
+  /**
+   * Basic setter method for scrabbleboard of brain
+   *
+   * @param board
+   */
   public void setScrabbleboard(ScrabbleBoard board) {
     this.scrabbleBoard = board;
   }
 
-  /*
-  Method should return all possible Words that could be played
+  /**
+   * Method should return all possible Words that could be played
+   *
+   * @param tilesOnHand the tiles of ai player should be
+   * @return return value is a treeset ordered by points of a posible word
    */
   public TreeSet<PossibleWord> getPlayableWords(Tile[] tilesOnHand) {
     ArrayList<WordPossibility> wordPossibilities = getWordPossibilities();
@@ -78,10 +92,19 @@ public class Brain implements Serializable {
     return playableWords;
   }
 
+  /**
+   * Method tries to place a word preliminary by calculating space needed
+   *
+   * @param currentWord     the word which is tried to put on the board
+   * @param wordPossibility holds the possible slot
+   * @param tilesOnHand     holds the tiles which are in rack of ai
+   * @return treeset to add to all playable words
+   */
   public TreeSet<PossibleWord> checkIfSpaceSufficient(String currentWord,
       WordPossibility wordPossibility, Tile[] tilesOnHand) {
     TreeSet<PossibleWord> list = new TreeSet<PossibleWord>();
-    int positionBaseLetter = getPositionBaseLetter(currentWord, wordPossibility.getLetter().getLetter());
+    int positionBaseLetter = getPositionBaseLetter(currentWord,
+        wordPossibility.getLetter().getLetter());
     int verticalPoints = 0;
     int horizontalPoints = 0;
     int xPosBaseLetter = wordPossibility.getxPos();
@@ -131,8 +154,12 @@ public class Brain implements Serializable {
     return list;
   }
 
-  /*
-  This method is executed, when the ScrabbleBoard is empty
+  /**
+   * This method is executed, when the ScrabbleBoard is empty
+   *
+   * @param tilesOnHand ai rack to look for words
+   * @return returns same as getPlayablewords but deals with no tile on board due to making first
+   * place tiles
    */
   public TreeSet<PossibleWord> getPlayableWordsFirstMove(Tile[] tilesOnHand) {
     TreeSet<PossibleWord> playableWords = new TreeSet<PossibleWord>();
@@ -158,8 +185,13 @@ public class Brain implements Serializable {
     return playableWords;
   }
 
-  /*
-  Method returns Points of a tile letter
+  /**
+   * Method returns Points of a tile letter
+   *
+   * @param c               letter which needs points
+   * @param tiles
+   * @param wordPossibility possible Slot
+   * @return an int which is a value for the letter
    */
   public int getPointsOfLetter(char c, Tile[] tiles, WordPossibility wordPossibility) {
     for (int i = 0; i < tiles.length; i++) {
@@ -171,8 +203,12 @@ public class Brain implements Serializable {
 
   }
 
-  /*
-  Of the given word
+  /**
+   * Method is responsible for determining position of letter on which ai places new tiles
+   *
+   * @param word       word which would be placed
+   * @param baseLetter the letter which is extended
+   * @return int which is like the index in the string word
    */
   public static int getPositionBaseLetter(String word, char baseLetter) {
     int position = 0;
@@ -184,8 +220,12 @@ public class Brain implements Serializable {
     return position;
   }
 
-  /*
-  Tries creating words by mixing letter with wordlength amount of tiles from tilesOnHand
+  /**
+   * Tries creating words by mixing letter with wordlength amount of tiles from tilesOnHand
+   *
+   * @param wordPossibility wordSlot for which words should be found
+   * @param tilesOnHand     tiles which could be placed
+   * @return treeset with strings containing possible words permutated
    */
   TreeSet<String> findCorrectWords(WordPossibility wordPossibility, Tile[] tilesOnHand) {
     TreeSet<String> words = new TreeSet<String>();
@@ -304,13 +344,25 @@ public class Brain implements Serializable {
     return words;
   }
 
-  private static void swap(char[] a, int i, int j) {
-    char ch = a[i];
-    a[i] = a[j];
-    a[j] = ch;
+  /**
+   * swaps characters in character array
+   *
+   * @param charArray represents the char array
+   * @param i         is first index
+   * @param j         is second index
+   */
+  private static void swap(char[] charArray, int i, int j) {
+    char ch = charArray[i];
+    charArray[i] = charArray[j];
+    charArray[j] = ch;
   }
 
-  // Iterative function to find permutations of a string
+  /**
+   * Iterative function to find permutations of a string
+   *
+   * @param s the string which is permutated
+   * @return list of strings, which are valid words
+   */
   public List<String> validPermutations(String s) {
     int counter = 0;
     ArrayList<String> valid = new ArrayList<String>();
@@ -326,7 +378,6 @@ public class Brain implements Serializable {
 
     // print the given string, as only its permutations will be printed later
     if (this.checkWord(s)) {
-
       valid.add(String.valueOf(chars));
     }
     counter++;
@@ -360,9 +411,10 @@ public class Brain implements Serializable {
     return valid;
   }
 
-  /*
-  Method returns List of slots where player could place a word
-  @param board is the current scrabbleBoard
+  /**
+   * Method returns List of slots where player could place a word
+   *
+   * @return slots where words could be placed
    */
   public ArrayList<WordPossibility> getWordPossibilities() {
     ArrayList<WordPossibility> wordPossibilities = new ArrayList<WordPossibility>();
@@ -383,9 +435,12 @@ public class Brain implements Serializable {
     return scrabbleBoard;
   }
 
-  /*
-    Method checks whether word is valid
-     */
+  /**
+   * Method uses internal set of words from dictionary to check if words are valid
+   *
+   * @param word which should be checked
+   * @return true if word exists
+   */
   public boolean checkWord(String word) {
     boolean exists = false;
     if (this.words.contains(word.toUpperCase())) {
@@ -394,9 +449,12 @@ public class Brain implements Serializable {
     return exists;
   }
 
-  /*
-  Method reads textfile containing dictionary and assigns it to dictionary brain will use to check words
-  @TODO textFile should be used to dynamically read dictionary
+  /**
+   * Method reads textfile containing dictionary and assigns it to dictionary brain will use to
+   * check words
+   *
+   * @param textFile path of the txt file in correct format for dictionary see user manual for the
+   *                 correct format
    */
   public void readDictionary(String textFile) {
     try {
@@ -415,15 +473,14 @@ public class Brain implements Serializable {
     }
   }
 
-  /*
-  Method is used for a given matchfield and checks, where a matchfield has a neighboring non-empty
-  matchfield.
-  @param board is the current board played on
-  xPos and yPos give access to the matchfield which is checked for neighbors (we assume coord is
-  allowed)
-  return value neighbors is an array of length 4, the array fields are empty if no tile is on the
-  matchfield or filled with the neighboring tile. [top] [right] [bottom] [left] -> if possibleSlot
-  has a neighbor above neighbors[0] returns the tile
+  /**
+   * Method is used for a given matchfield and checks, where a matchfield has a neighboring
+   * non-empty matchfield.
+   *
+   * @param board board the brain uses
+   * @param xPos  of matchfield
+   * @param yPos  of matchfield
+   * @return a matchfield with the sorrounding neighbors
    */
   public static Matchfield[] getNeighbors(ScrabbleBoard board, int xPos, int yPos) {
     Matchfield[][] boardArray = board.getScrabbleBoard();
@@ -468,10 +525,11 @@ public class Brain implements Serializable {
     return neighbors;
   }
 
-  /*
-  Method helps recognize whether array is empty or not.
-  @param field is the array to be checked if empty
-  return value is true, if every element is null
+  /**
+   * Method helps recognize whether array is empty or not.
+   *
+   * @param field which is check if it is empty
+   * @return true if field empty
    */
   public static boolean isEmpty(Matchfield[] field) {
     boolean empty = true;
@@ -483,6 +541,11 @@ public class Brain implements Serializable {
     return empty;
   }
 
+  /**
+   * basic setter
+   *
+   * @return return the words (dictionary) actually quite large set pay attention
+   */
   public HashSet<String> getWords() {
     return words;
   }
