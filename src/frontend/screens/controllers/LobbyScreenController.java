@@ -106,6 +106,7 @@ public class LobbyScreenController {
 
   boolean isHost = true;
 
+  private Server server;
   // Method determines button clicked and changes to desired scene
   @FXML
   public void changeScene(ActionEvent e) throws IOException {
@@ -148,13 +149,20 @@ public class LobbyScreenController {
     lobbyView.setVisible(false);
     startGameView.setVisible(false);
     joinGameView.setVisible(true);
+
+    if(this.server != null) {
+      server.stopServer();
+    }
   }
 
   public void startLobby(ActionEvent e) {
+    if(server != null) {
+      server.stopServer();
+    }
     isHost = true;
     Player host = new Player(Main.profile.getName(), Main.profile.getColor(),
         Main.profile.getGames(), Main.profile.getWins(), Playerstatus.WAIT);
-    Server server = new Server();
+    server = new Server();
     server.setServerMatch(new ServerMatch(server));
     GameInformation.getInstance().setServermatch(server.getServerMatch());
     Runnable r =
