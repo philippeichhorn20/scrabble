@@ -46,10 +46,6 @@ public class ScrabbleBoard implements Serializable {
     this.scrabbleBoard = scrabbleBoard;
   }
 
-  public Matchfield[][] getScrabbleBoard() {
-    return this.scrabbleBoard;
-  }
-
   public static Matchfield[][] setUpScrabbleBoard() {
     Matchfield[][] scrabbleBoard = new Matchfield[16][16];
     for (int x = 1; x < 16; x++) {
@@ -72,8 +68,6 @@ public class ScrabbleBoard implements Serializable {
     scrabbleBoard[14][10].setPremiumstatus(Premiumstatus.TRIPLEWORD);
     scrabbleBoard[6][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
     scrabbleBoard[10][14].setPremiumstatus(Premiumstatus.TRIPLEWORD);
-
-
 
     scrabbleBoard[2][6].setPremiumstatus(Premiumstatus.TRIPLELETTER);
     scrabbleBoard[6][2].setPremiumstatus(Premiumstatus.TRIPLELETTER);
@@ -125,14 +119,50 @@ public class ScrabbleBoard implements Serializable {
     scrabbleBoard[12][8].setPremiumstatus(Premiumstatus.DOUBLELETTER);
     scrabbleBoard[12][1].setPremiumstatus(Premiumstatus.DOUBLELETTER);
 
-
-
     return scrabbleBoard;
   }
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
     ScrabbleBoard board = new ScrabbleBoard();
     board.printScrabbleBoard();
+  }
+
+  public static boolean hasTileOnCenterMatchfield(Tile[] tiles) {
+    for (int x = 0; x < tiles.length; x++) {
+      if (tiles[x].getY() == 8 && tiles[x].getY() == 8) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static ArrayList<Tile> getTilesOnBoard(Matchfield[][] board) {
+    ArrayList<Tile> tilesOnBoard = new ArrayList<>();
+    for (int x = 1; x < board.length; x++) {
+      for (int y = 1; y < board.length; y++) {
+        if (board[x][y].hasTile()) {
+          tilesOnBoard.add(board[x][y].getTile());
+        }
+      }
+    }
+
+    return tilesOnBoard;
+  }
+
+  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board) {
+    Matchfield[][] temporaryScrabbleBoard = board.clone();
+    for (int x = 0; x < tiles.length; x++) {
+      temporaryScrabbleBoard[tiles[x].getX()][tiles[x].getY()].setTile(tiles[x]);
+    }
+    return temporaryScrabbleBoard;
+  }
+
+  public Matchfield[][] getScrabbleBoard() {
+    return this.scrabbleBoard;
+  }
+
+  public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
+    this.scrabbleBoard = scrabbleBoard;
   }
 
   public void printScrabbleBoard() {
@@ -140,9 +170,9 @@ public class ScrabbleBoard implements Serializable {
     for (int y = 1; y < 16; y++) {
       System.out.println();
       for (int x = 1; x < 16; x++) {
-        if (x ==  8 && y == 8) {
+        if (x == 8 && y == 8) {
           System.out.print("00\t");
-       //   System.out.print(scrabbleBoard[x][y].getTile().getLetter() + " ");
+          //   System.out.print(scrabbleBoard[x][y].getTile().getLetter() + " ");
         } else {
           switch (scrabbleBoard[x][y].getPremiumstatus()) {
             case NOPREMIUM:
@@ -168,7 +198,7 @@ public class ScrabbleBoard implements Serializable {
         }
       }
     }
-    System.out.println("\n" +count);
+    System.out.println("\n" + count);
 
 
   }
@@ -180,7 +210,6 @@ public class ScrabbleBoard implements Serializable {
       }
     }
   }
-
 
   public Tile getLeadingTileVertical(Tile tile) {
     while (tile.getY() > 0 && scrabbleBoard[tile.getX()][tile.getY() - 1].hasTile()) {
@@ -222,7 +251,6 @@ public class ScrabbleBoard implements Serializable {
 
   }
 
-
   /*
   checks all the current words and returns the word+descriptipn of the word
    */
@@ -260,7 +288,6 @@ public class ScrabbleBoard implements Serializable {
     newTile.setStatus(Tilestatus.ONBOARD);
     this.tilesOnScrabbleBoard.add(newTile);
   }
-
 
   /*
   this function removes the Tile from the Board. It is only possible to remove it,
@@ -435,7 +462,6 @@ public class ScrabbleBoard implements Serializable {
     return tilesOnScrabbleBoard;
   }
 
-
   public ArrayList<ArrayList<Tile>> getEditedWords() {
     return editedWords;
   }
@@ -452,26 +478,12 @@ public class ScrabbleBoard implements Serializable {
     this.newTilesOfCurrentMove = newTilesOfCurrentMove;
   }
 
-
-  public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
-    this.scrabbleBoard = scrabbleBoard;
-  }
-
   public Tile[] lastPlacedTiles() {
     Tile[] tiles = new Tile[this.newTilesOfCurrentMove.size()];
     for (int x = 0; x < this.newTilesOfCurrentMove.size(); x++) {
       tiles[x] = this.newTilesOfCurrentMove.get(x);
     }
     return tiles;
-  }
-
-  public static boolean hasTileOnCenterMatchfield(Tile[] tiles) {
-    for (int x = 0; x < tiles.length; x++) {
-      if (tiles[x].getY() == 8 && tiles[x].getY() == 8) {
-        return true;
-      }
-    }
-    return false;
   }
 
   public boolean wordIsConnectedToMiddle(Tile[] tiles) {
@@ -512,27 +524,6 @@ public class ScrabbleBoard implements Serializable {
     }
 
 
-  }
-
-  public static ArrayList<Tile> getTilesOnBoard(Matchfield[][] board) {
-    ArrayList<Tile> tilesOnBoard = new ArrayList<>();
-    for (int x = 1; x < board.length; x++) {
-      for (int y = 1; y < board.length; y++) {
-        if (board[x][y].hasTile()) {
-          tilesOnBoard.add(board[x][y].getTile());
-        }
-      }
-    }
-
-    return tilesOnBoard;
-  }
-
-  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board) {
-    Matchfield[][] temporaryScrabbleBoard = board.clone();
-    for (int x = 0; x < tiles.length; x++) {
-      temporaryScrabbleBoard[tiles[x].getX()][tiles[x].getY()].setTile(tiles[x]);
-    }
-    return temporaryScrabbleBoard;
   }
 }
 

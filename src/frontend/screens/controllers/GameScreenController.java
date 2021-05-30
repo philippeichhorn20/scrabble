@@ -53,67 +53,112 @@ import javafx.stage.Stage;
    This is an empty controller of the game screen. This is the main screen the user sees when they're playing the scrabble game.
    This should contain the board, tiles, chat, points and much more.
 */
-public class GameScreenController extends Thread{
-  @FXML private Rectangle tile1;
-  @FXML private Rectangle tile2;
-  @FXML private Rectangle tile3;
-  @FXML private Rectangle tile4;
-  @FXML private Rectangle tile5;
-  @FXML private Rectangle tile6;
-  @FXML private Rectangle tile7;
-  @FXML private Button backButton;
-  @FXML private Text text1;
-  @FXML private Text text2;
-  @FXML private Text text3;
-  @FXML private Text text4;
-  @FXML private Text text5;
-  @FXML private Text text6;
-  @FXML private Text text7;
-  @FXML private Label name1;
-  @FXML private Label name2;
-  @FXML private Label name3;
-  @FXML private Label name4;
-  @FXML private Label nameScore1;
-  @FXML private Label nameScore2;
-  @FXML private Label nameScore3;
-  @FXML private Label nameScore4;
-  @FXML private GridPane board;
-  @FXML private Button boun;
-  @FXML private AnchorPane scoreboard;
-  @FXML private Label currPlayer;
-  @FXML private Label time;
-  @FXML private Button openChatButton;
-  @FXML private AnchorPane pane;
-  @FXML private ImageView tileBagIcon;
-  @FXML private Button resetTilesButton;
-  @FXML public Label currPlayerText;
-  @FXML private Label serverMessage;
-  @FXML private Button endTurnButton;
+public class GameScreenController extends Thread {
+
+  private static char jokerChar;
+  @FXML
+  public Label currPlayerText;
   ClientMatch match = GameInformation.getInstance().getClientmatch();
   Player thisPlayer = match.getPlayer();
+  int timInt = 0;
+  @FXML
+  private Rectangle tile1;
+  @FXML
+  private Rectangle tile2;
+  @FXML
+  private Rectangle tile3;
+  @FXML
+  private Rectangle tile4;
+  @FXML
+  private Rectangle tile5;
+  @FXML
+  private Rectangle tile6;
+  @FXML
+  private Rectangle tile7;
+  @FXML
+  private Button backButton;
+  @FXML
+  private Text text1;
+  @FXML
+  private Text text2;
+  @FXML
+  private Text text3;
+  @FXML
+  private Text text4;
+  @FXML
+  private Text text5;
+  @FXML
+  private Text text6;
+  @FXML
+  private Text text7;
+  @FXML
+  private Label name1;
+  @FXML
+  private Label name2;
+  @FXML
+  private Label name3;
+  @FXML
+  private Label name4;
+  @FXML
+  private Label nameScore1;
+  @FXML
+  private Label nameScore2;
+  @FXML
+  private Label nameScore3;
+  @FXML
+  private Label nameScore4;
+  @FXML
+  private GridPane board;
+  @FXML
+  private Button boun;
+  @FXML
+  private AnchorPane scoreboard;
+  @FXML
+  private Label currPlayer;
+  @FXML
+  private Label time;
+  @FXML
+  private Button openChatButton;
+  @FXML
+  private AnchorPane pane;
+  @FXML
+  private ImageView tileBagIcon;
+  @FXML
+  private Button resetTilesButton;
+  @FXML
+  private Label serverMessage;
+  @FXML
+  private Button endTurnButton;
   private GameInformation gameInformation = GameInformation.getInstance();
   private ServerMatch servMatch = gameInformation.getServermatch();
   private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   private Tile[] placedTiles;
   private ArrayList<Tile> placeTilesList = new ArrayList<Tile>();
-  private static char jokerChar;
   private boolean[][] tilesOnBoard = new boolean[17][16];
-
-
-
   private boolean setUpDone = false;
   private int totalNumberOfTiles = 0;
-  @FXML private Label history1;
-  @FXML private Label history2;
-  @FXML private Label history3;
-  @FXML private Label history4;
-  @FXML private Label history5;
-  @FXML private Label history6;
-  @FXML private Label history7;
-  @FXML private Label history8;
-  @FXML private Label history9;
-  @FXML private Label history10;
-  @FXML private Label history11;
+  @FXML
+  private Label history1;
+  @FXML
+  private Label history2;
+  @FXML
+  private Label history3;
+  @FXML
+  private Label history4;
+  @FXML
+  private Label history5;
+  @FXML
+  private Label history6;
+  @FXML
+  private Label history7;
+  @FXML
+  private Label history8;
+  @FXML
+  private Label history9;
+  @FXML
+  private Label history10;
+  @FXML
+  private Label history11;
   private Label[] history = new Label[11];// = {history1,history2,history3,history4,history5,history6,history7,history8,history9,history10,history11};
   private GraphicTile gtile1;
   private GraphicTile gtile2;
@@ -124,6 +169,7 @@ public class GameScreenController extends Thread{
   private GraphicTile gtile7;
   private GraphicTile[] gtiles = new GraphicTile[7];
   private int turn = 0;
+  private int keyIterator = 0;
 
   public void goBack(ActionEvent e) throws IOException {
     Main m = new Main();
@@ -133,27 +179,25 @@ public class GameScreenController extends Thread{
   public void goSettings(MouseEvent e) throws IOException {
 //    Main m = new Main();
 //    m.changeScene("screens/settingsScreen.fxml");
-	  gameInformation.getChat().display();
+    gameInformation.getChat().display();
   }
 
-  public void writeTextMessages(){
+  public void writeTextMessages() {
     ArrayList<String> textMessageClone = (ArrayList<String>) match.getTextMessages().clone();
     Iterator<String> iterator = textMessageClone.iterator();
-    while(iterator.hasNext()){
+    while (iterator.hasNext()) {
       String s = iterator.next();
       newHistoryMessageOther(s);
     }
     match.getTextMessages().clear();
   }
 
-
-  int timInt = 0;
-
   public void endTurn(ActionEvent e) throws IOException {
     new Bounce(endTurnButton).play();
     endTurnB();
   }
-  public void endTurnB(){
+
+  public void endTurnB() {
 
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
       activateServerMessage("Checking the word...");
@@ -183,8 +227,8 @@ public class GameScreenController extends Thread{
     shuffleTiles();
   }
 
-  private void drawTiles(){
-    showServerMessage("Exchanging your tiles",3);
+  private void drawTiles() {
+    showServerMessage("Exchanging your tiles", 3);
     resetColor();
     int i = 0;
     new FadeOut(tileBagIcon).play();
@@ -193,8 +237,8 @@ public class GameScreenController extends Thread{
       if (!gt.isVisiblee() || gt.toDraw()) {
         // Tile newTile = servMatch.getTileBag().drawTile(); unlock when servermatch is done
         Tile newTile = new TileBag().drawTile();
-        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0),0, Tilestatus.INBAG);
-        tilesToDraw[i]=exchangeTile;
+        Tile exchangeTile = new Tile(gt.getLetter().getText().charAt(0), 0, Tilestatus.INBAG);
+        tilesToDraw[i] = exchangeTile;
         i++;
         Text let = new Text(String.valueOf(newTile.getLetter()));
         let.setLayoutX((gt.getLetter().getLayoutX()));
@@ -210,11 +254,11 @@ public class GameScreenController extends Thread{
         new SlideInLeft(gt.getRec()).play();
         new SlideInLeft(gt.getLetter()).play();
 
-
         //resetTilesButton.setVisible(false);
       }
     }
   }
+
   public Tile[] tilesToSwitch() {
     // resetColor();
     activateServerMessage("new tiles are loading");
@@ -225,30 +269,30 @@ public class GameScreenController extends Thread{
       }
     }
     Tile[] tilesToDraw = new Tile[tiles.size()];
-    for(int x = 0; x < tilesToDraw.length; x++){
+    for (int x = 0; x < tilesToDraw.length; x++) {
       tilesToDraw[x] = tiles.get(x);
     }
     return tilesToDraw;
   }
 
-  public void shuffleTiles(){
+  public void shuffleTiles() {
     new FadeOut(tileBagIcon).play();
     tileBagIcon.setMouseTransparent(true);
     Tile[] oldTiles = tilesToSwitch();
-    if(oldTiles.length == 0){
+    if (oldTiles.length == 0) {
       showServerMessage("Please chose Tiles!", 2);
-    }else{
+    } else {
       try {
         this.match.shuffleTiles(oldTiles);
         GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
-      }catch(IOException ioe){
+      } catch (IOException ioe) {
         showServerMessage("Could not perform action, try again", 2);
       }
     }
-    }
+  }
 
   public void newTilesFromBag(Tile[] tiles) {
-    for(Tile tile: tiles){
+    for (Tile tile : tiles) {
     }
     resetColor();
     int i = 0;
@@ -263,99 +307,101 @@ public class GameScreenController extends Thread{
     deactivateServerMessage();
   }
 
-  public void activateServerMessage(String textString){
+  public void activateServerMessage(String textString) {
     serverMessage.setVisible(true);
     serverMessage.setText(textString);
   }
 
-  public void deactivateServerMessage(){
+  public void deactivateServerMessage() {
     new FadeOut(serverMessage).play();
     serverMessage.setMouseTransparent(true);
   }
 
-
-  public void showServerMessage(String mess, int duration){
+  public void showServerMessage(String mess, int duration) {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        for (int i  = 0;i<8;i++){
-          try{
+        for (int i = 0; i < 8; i++) {
+          try {
             Thread.sleep(100);
-          }catch(InterruptedException e){
+          } catch (InterruptedException e) {
             e.printStackTrace();
           }
           final int f = i;
 
-        Platform.runLater(new Runnable() {
-          @Override
-          public void run() {
+          Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
 
-            if(f == 0){
-              serverMessage.setVisible(true);
-              serverMessage.setText(mess);
-              new FadeIn(serverMessage).play();
-            }else if (f == duration){
-              new FadeOut(serverMessage).play();
-              serverMessage.setMouseTransparent(true);
+              if (f == 0) {
+                serverMessage.setVisible(true);
+                serverMessage.setText(mess);
+                new FadeIn(serverMessage).play();
+              } else if (f == duration) {
+                new FadeOut(serverMessage).play();
+                serverMessage.setMouseTransparent(true);
+              }
+
             }
-
-          }
-        });}
+          });
+        }
       }
     }).start();
   }
+
   public void setTileOnBoard(MouseEvent e) {
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
         Bounds b = board.getCellBounds(i, j);
-        if (i == 0 || j == 0  || i == 16 ){
+        if (i == 0 || j == 0 || i == 16) {
 
-        }else{
-        if (b.contains(e.getX(), e.getY())) {
-          if(!tileBagIcon.isMouseTransparent()){
-            new FadeOut(tileBagIcon).play();
-            tileBagIcon.setMouseTransparent(true);
-          }
-          for (int k = 0; k < 7; k++) {
-            if (gtiles[k].isHighlighted()) {
-              if(tilesOnBoard[i][j]){
-                break;
-              }
-
-              Rectangle rec =
-                  new Rectangle(
-                      gtiles[k].getRec().getX(),
-                      gtiles[k].getRec().getY(),
-                      gtiles[k].getRec().getWidth(),
-                      gtiles[k].getRec().getHeight());
-              rec.setFill(Color.web("#ffe5b4"));
-              Text let =
-                  new Text(gtiles[k].getX(), gtiles[k].getY(), gtiles[k].getLetter().getText());
-              let.setFont(new Font("Times New Roman Bold", 20));
-              let.setText("  " + let.getText());
-              rec.setId("tile" + turn);
-              Rectangle help = new Rectangle();
-              help.setX(i);
-              help.setY(j);
-              rec.setUserData(help);
-              let.setId("tile" + turn);
-              totalNumberOfTiles++;
-              board.add(rec, i, j);
-              board.add(let, i, j);
-              new ZoomIn(rec).play();
-              new ZoomIn(let).play();
-              gtiles[k].highlight(false);
-              gtiles[k].setToDraw(false);
-              gtiles[k].setVisiblee(false);
-              Tile newTile = new Tile(gtiles[k].getLetter().getText().charAt(0), 0);
-              newTile.setXY(i, j);
-              int ite = 0;
-              placeTilesList.add(newTile);
-              tilesOnBoard[i][j]=true;
-
-              GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(gtiles[k].getTile(), newTile.getX(), newTile.getY());
-              resetColor();
+        } else {
+          if (b.contains(e.getX(), e.getY())) {
+            if (!tileBagIcon.isMouseTransparent()) {
+              new FadeOut(tileBagIcon).play();
+              tileBagIcon.setMouseTransparent(true);
             }
+            for (int k = 0; k < 7; k++) {
+              if (gtiles[k].isHighlighted()) {
+                if (tilesOnBoard[i][j]) {
+                  break;
+                }
+
+                Rectangle rec =
+                    new Rectangle(
+                        gtiles[k].getRec().getX(),
+                        gtiles[k].getRec().getY(),
+                        gtiles[k].getRec().getWidth(),
+                        gtiles[k].getRec().getHeight());
+                rec.setFill(Color.web("#ffe5b4"));
+                Text let =
+                    new Text(gtiles[k].getX(), gtiles[k].getY(), gtiles[k].getLetter().getText());
+                let.setFont(new Font("Times New Roman Bold", 20));
+                let.setText("  " + let.getText());
+                rec.setId("tile" + turn);
+                Rectangle help = new Rectangle();
+                help.setX(i);
+                help.setY(j);
+                rec.setUserData(help);
+                let.setId("tile" + turn);
+                totalNumberOfTiles++;
+                board.add(rec, i, j);
+                board.add(let, i, j);
+                new ZoomIn(rec).play();
+                new ZoomIn(let).play();
+                gtiles[k].highlight(false);
+                gtiles[k].setToDraw(false);
+                gtiles[k].setVisiblee(false);
+                Tile newTile = new Tile(gtiles[k].getLetter().getText().charAt(0), 0);
+                newTile.setXY(i, j);
+                int ite = 0;
+                placeTilesList.add(newTile);
+                tilesOnBoard[i][j] = true;
+
+                GameInformation.getInstance().getClientmatch().getScrabbleBoard()
+                    .placeTile(gtiles[k].getTile(), newTile.getX(), newTile.getY());
+                resetColor();
+              }
             }
           }
         }
@@ -364,25 +410,26 @@ public class GameScreenController extends Thread{
   }
 
   public void resetTiles(ActionEvent e) {
-   resetTilesAction();
+    resetTilesAction();
   }
 
-  public void resetTilesAction(){
+  public void resetTilesAction() {
     this.match.getScrabbleBoard().nextTurn();
-    if (tileBagIcon.isMouseTransparent()){
+    if (tileBagIcon.isMouseTransparent()) {
       new FadeIn(tileBagIcon).play();
       tileBagIcon.setMouseTransparent(false);
     }
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
-    nodesToRemove = new Node[boardChildren.size()]; //vorher 14 //es konnen nicht mehr als 14 entfernt werden anyway.
+    nodesToRemove = new Node[boardChildren
+        .size()]; //vorher 14 //es konnen nicht mehr als 14 entfernt werden anyway.
     int i = 0;
     for (Node node : boardChildren) {
       int x = 0;
       int y = 0;
       if (node.getId().equals("tile" + turn)) {
         nodesToRemove[i] = node;
-        if(node instanceof Rectangle){
+        if (node instanceof Rectangle) {
           Rectangle r = (Rectangle) node;
           Rectangle help = (Rectangle) r.getUserData();
           x = (int) help.getX();
@@ -406,7 +453,7 @@ public class GameScreenController extends Thread{
   }
 
   public void highlightTile(MouseEvent e) {
-    if(Main.profile.getName().equals(match.getCurrentPlayerName()) && !match.isOver()){
+    if (Main.profile.getName().equals(match.getCurrentPlayerName()) && !match.isOver()) {
       Rectangle tile = (Rectangle) e.getSource();
       if (e.isControlDown()) {
         tile.setFill(Color.BLUE);
@@ -445,8 +492,8 @@ public class GameScreenController extends Thread{
     }
 
   }
-  private int keyIterator = 0;
-  public void highlightTileKey(KeyEvent e){
+
+  public void highlightTileKey(KeyEvent e) {
     if (e.getCode().equals(KeyCode.D)) {
       boolean allInvis = true;
       for (int i = 0; i < 7; i++) {
@@ -472,37 +519,40 @@ public class GameScreenController extends Thread{
           keyIterator = 0;
         }
       }
-      }
+    }
   }
-  public void newHistoryMessageOther(String mess){
+
+  public void newHistoryMessageOther(String mess) {
     boolean full = false;
-    for (int i = 0;i<=10;i++){
-      if (history[i].getText().equals("")){
+    for (int i = 0; i <= 10; i++) {
+      if (history[i].getText().equals("")) {
         history[i].setText(mess);
         new FadeIn(history[i]).play();
         full = true;
         break;
       }
     }
-    if (!full){
+    if (!full) {
       String help = history[10].getText();
-      for (int i = 0;i<=9;i++){
-        history[i].setText(history[i+1].getText());
+      for (int i = 0; i <= 9; i++) {
+        history[i].setText(history[i + 1].getText());
       }
       history[10].setText(mess);
       new FadeIn(history[10]).play();
     }
 
   }
-  public void newHistoryMessage(String mess){
+
+  public void newHistoryMessage(String mess) {
     boolean full = false;
-    for (int i = 0;i<=10;i++){
-     if (history[i].getText().equals("")){
+    for (int i = 0; i <= 10; i++) {
+      if (history[i].getText().equals("")) {
         history[i].setText(mess);
         new FadeIn(history[i]).play();
-        try{
-          GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new HistoryMessage(Main.profile.getName(),mess));
-        }catch(IOException ie){
+        try {
+          GameInformation.getInstance().getClientmatch().getProtocol()
+              .sendToServer(new HistoryMessage(Main.profile.getName(), mess));
+        } catch (IOException ie) {
           ie.printStackTrace();
         }
         full = true;
@@ -510,32 +560,35 @@ public class GameScreenController extends Thread{
       }
 
     }
-    if (!full){
+    if (!full) {
       String help = history[10].getText();
-      for (int i = 0;i<=9;i++){
-        history[i].setText(history[i+1].getText());
+      for (int i = 0; i <= 9; i++) {
+        history[i].setText(history[i + 1].getText());
       }
       history[10].setText(mess);
-      try{
-        GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new HistoryMessage(Main.profile.getName(),mess));
-      }catch(IOException ie){
+      try {
+        GameInformation.getInstance().getClientmatch().getProtocol()
+            .sendToServer(new HistoryMessage(Main.profile.getName(), mess));
+      } catch (IOException ie) {
         ie.printStackTrace();
       }
       new FadeIn(history[10]).play();
 
     }
   }
-  private boolean checkNextVisible(){
-    if (keyIterator >= 7){
+
+  private boolean checkNextVisible() {
+    if (keyIterator >= 7) {
       keyIterator = 0;
     }
-    if (gtiles[keyIterator].isVisiblee()){
+    if (gtiles[keyIterator].isVisiblee()) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-  public void openChat(ActionEvent e){
+
+  public void openChat(ActionEvent e) {
     new Bounce(openChatButton).play();
     GameInformation.getInstance().getChat().close();
     GameInformation.getInstance().getChat().display();
@@ -548,43 +601,55 @@ public class GameScreenController extends Thread{
       Thread taskThread = new Thread(new Runnable() {
         @Override
         public void run() {
-          while (!GameInformation.getInstance().getClientmatch().isOver()) { //for (int i = 0;i<100;i++){
-            try{
+          while (!GameInformation.getInstance().getClientmatch()
+              .isOver()) { //for (int i = 0;i<100;i++){
+            try {
               Thread.sleep(1000);
-            }catch(InterruptedException ie){
+            } catch (InterruptedException ie) {
               ie.printStackTrace();
             }
 
-            Platform.runLater(new Runnable(){
+            Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                if(Main.profile.getName().equals(match.getCurrentPlayerName())){
+                if (Main.profile.getName().equals(match.getCurrentPlayerName())) {
                   currPlayerText.setText("Your Turn");
                   currPlayerText.setFont(Font.font(35));
-                }else{
-                  currPlayerText.setText(GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(0,1).toUpperCase() + GameInformation.getInstance().getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
+                } else {
+                  currPlayerText.setText(
+                      GameInformation.getInstance().getClientmatch().getCurrentPlayerName()
+                          .substring(0, 1).toUpperCase() + GameInformation.getInstance()
+                          .getClientmatch().getCurrentPlayerName().substring(1).toLowerCase());
 
                 }
-                nameScore1.setText( (match.getPlayers()[0] != null ) ? ""+match.getPlayers()[0].getScore(): "");
-                nameScore2.setText( (match.getPlayers()[1] != null ) ? ""+match.getPlayers()[1].getScore(): "");
-                nameScore3.setText( (match.getPlayers()[2] != null ) ? ""+match.getPlayers()[2].getScore(): "");
-                nameScore4.setText( (match.getPlayers()[3] != null ) ? ""+match.getPlayers()[3].getScore(): "");
-                if(GameInformation.getInstance().getClientmatch().hasNewTiles()){
-                  Tile[] newTiles = GameInformation.getInstance().getClientmatch().getNewTilesToBeAdded();
-                  for(int x = 0; x < newTiles.length; x++){
+                nameScore1.setText(
+                    (match.getPlayers()[0] != null) ? "" + match.getPlayers()[0].getScore() : "");
+                nameScore2.setText(
+                    (match.getPlayers()[1] != null) ? "" + match.getPlayers()[1].getScore() : "");
+                nameScore3.setText(
+                    (match.getPlayers()[2] != null) ? "" + match.getPlayers()[2].getScore() : "");
+                nameScore4.setText(
+                    (match.getPlayers()[3] != null) ? "" + match.getPlayers()[3].getScore() : "");
+                if (GameInformation.getInstance().getClientmatch().hasNewTiles()) {
+                  Tile[] newTiles = GameInformation.getInstance().getClientmatch()
+                      .getNewTilesToBeAdded();
+                  for (int x = 0; x < newTiles.length; x++) {
                     tilesOnBoard[newTiles[x].getX()][newTiles[x].getY()] = true;
                     placeTile(newTiles[x]);
                   }
                   match.dropNewTiles();
                 }
-                if(GameInformation.getInstance().getClientmatch().getProtocol().messageChanged()){
-                  newHistoryMessageOther(GameInformation.getInstance().getClientmatch().getProtocol().getHistoryMessage());
+                if (GameInformation.getInstance().getClientmatch().getProtocol().messageChanged()) {
+                  newHistoryMessageOther(
+                      GameInformation.getInstance().getClientmatch().getProtocol()
+                          .getHistoryMessage());
                   GameInformation.getInstance().getClientmatch().getProtocol().messageRead();
                 }
-                if(match.getTextMessages() != null && match.getTextMessages().size() >0){
+                if (match.getTextMessages() != null && match.getTextMessages().size() > 0) {
                   writeTextMessages();
                 }
-                if(!match.checkTimer() && Main.profile.getName().equals(match.getCurrentPlayerName())){
+                if (!match.checkTimer() && Main.profile.getName()
+                    .equals(match.getCurrentPlayerName())) {
                   //endTurnB();
                 }
                 if (match.dropTiles()) {
@@ -596,17 +661,18 @@ public class GameScreenController extends Thread{
                   turn++;
                   match.setInvalidMove(true);
                 }
-                if(match.getNewTilesOnRack() != null){
+                if (match.getNewTilesOnRack() != null) {
                   newTilesFromBag(match.getNewTilesOnRack());
                   match.clearNewTilesOnRack();
                 }
-                if(match.isOver()){
+                if (match.isOver()) {
                   sendLostBox();
                   //or send win box
                 }
-                if(GameInformation.getInstance().getClientmatch().getProtocol().isStartingTiles()){
+                if (GameInformation.getInstance().getClientmatch().getProtocol()
+                    .isStartingTiles()) {
                   int d = 0;
-                  for (Tile t:match.getProtocol().getStartingRack()){
+                  for (Tile t : match.getProtocol().getStartingRack()) {
                     gtiles[d].setTile(t);
                     gtiles[d].setLetter(t.getLetter());
                     gtiles[d].getLetter().setFont(new Font(20));
@@ -628,16 +694,15 @@ public class GameScreenController extends Thread{
       GameInformation.getInstance().setGsc(this);
       history[0] = history1;
       history[1] = history2;
-      history[2] =  history3;
+      history[2] = history3;
       history[3] = history4;
-      history[4] =  history5;
-      history[5] =  history6;
+      history[4] = history5;
+      history[5] = history6;
       history[6] = history7;
-      history[7] =  history8;
-      history[8] =  history9;
-      history[9] =  history10;
-      history[10] =  history11;
-
+      history[7] = history8;
+      history[8] = history9;
+      history[9] = history10;
+      history[10] = history11;
 
       gtiles[0] = new GraphicTile(tile1, text1);
       gtiles[1] = new GraphicTile(tile2, text2);
@@ -646,14 +711,15 @@ public class GameScreenController extends Thread{
       gtiles[4] = new GraphicTile(tile5, text5);
       gtiles[5] = new GraphicTile(tile6, text6);
       gtiles[6] = new GraphicTile(tile7, text7);
-      for (int i = 0;i<17;i++){
-        for (int j = 0;j<16;j++){
+      for (int i = 0; i < 17; i++) {
+        for (int j = 0; j < 16; j++) {
           tilesOnBoard[i][j] = false;
         }
       }
-      try{
-        GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new SendStartRackMessage(Main.profile.getName(),new Tile[7]));
-      }catch (IOException ie){
+      try {
+        GameInformation.getInstance().getClientmatch().getProtocol()
+            .sendToServer(new SendStartRackMessage(Main.profile.getName(), new Tile[7]));
+      } catch (IOException ie) {
         ie.printStackTrace();
       }
       /*for (int i = 0; i < 7; i++) {
@@ -667,21 +733,27 @@ public class GameScreenController extends Thread{
       }*/
       Player[] players = GameInformation.getInstance().getPlayers();
 
-
-      if (players[0]!=null){
-        name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
+      if (players[0] != null) {
+        name1.setText(
+            players[0].getName().substring(0, 1).toUpperCase() + players[0].getName().substring(1)
+                .toLowerCase() + ":");
       }
-      if (players[1]!=null){
-        name2.setText(players[1].getName().substring(0,1).toUpperCase()+players[1].getName().substring(1).toLowerCase() + ":");
+      if (players[1] != null) {
+        name2.setText(
+            players[1].getName().substring(0, 1).toUpperCase() + players[1].getName().substring(1)
+                .toLowerCase() + ":");
       }
 
-        if (players[2]!=null){
-          name2.setText(players[2].getName().substring(0,1).toUpperCase()+players[2].getName().substring(1).toLowerCase() + ":");
-        }
-        if (players[3]!=null){
-          name2.setText(players[3].getName().substring(0,1).toUpperCase()+players[3].getName().substring(1).toLowerCase() + ":");
-        }
-
+      if (players[2] != null) {
+        name2.setText(
+            players[2].getName().substring(0, 1).toUpperCase() + players[2].getName().substring(1)
+                .toLowerCase() + ":");
+      }
+      if (players[3] != null) {
+        name2.setText(
+            players[3].getName().substring(0, 1).toUpperCase() + players[3].getName().substring(1)
+                .toLowerCase() + ":");
+      }
 
       setUpDone = true;
     }
@@ -699,7 +771,8 @@ public class GameScreenController extends Thread{
       board.add(tileChar, t.getX(), t.getY());
     }
   }
-  public void placeTile(Tile tile){
+
+  public void placeTile(Tile tile) {
     Rectangle rec = new Rectangle(36, 36, Color.web("ffe5b4"));
     rec.setId("tiles");
     Text tileChar = new Text(" " + String.valueOf(tile.getLetter()).toUpperCase());
@@ -725,11 +798,13 @@ public class GameScreenController extends Thread{
       gtiles[i].getRec().setFill(Color.web("#ffe5b4"));
     }
   }
-  public void update(MouseEvent e){
+
+  public void update(MouseEvent e) {
 
   }
 
   public static class AlertBox {
+
     public static void display(String title, String message) {
       Stage window = new Stage();
       window.initModality(Modality.APPLICATION_MODAL);

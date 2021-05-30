@@ -28,7 +28,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientProtocol extends Thread{
+public class ClientProtocol extends Thread {
+
   private String username;
   private Socket clientSocket;
   private ObjectOutputStream out;
@@ -37,28 +38,8 @@ public class ClientProtocol extends Thread{
   private String historyMess;
   private boolean messChange = false;
   private Player clientPlayer;
-
-  public boolean isStartingTiles() {
-    return startingTiles;
-  }
-
-  public void setStartingTiles(boolean startingTiles) {
-    this.startingTiles = startingTiles;
-  }
-
   private boolean startingTiles;
-  public Tile[] getStartingRack() {
-    return startingRack;
-  }
-
-  public void setStartingRack(Tile[] startingRack) {
-    this.startingRack = startingRack;
-  }
-
   private Tile[] startingRack;
-
-
-
   private boolean running = true;
   private Message lastMessage = new Message(MessageType.GAME_LOOSE, "");
 
@@ -68,10 +49,11 @@ public class ClientProtocol extends Thread{
       this.clientSocket = new Socket(ip, port);
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
-      this.clientPlayer = new Player(username,Main.profile.getColor(),Main.profile.getGames(), Main.profile
-          .getWins(), Playerstatus.WAIT);
+      this.clientPlayer = new Player(username, Main.profile.getColor(), Main.profile.getGames(),
+          Main.profile
+              .getWins(), Playerstatus.WAIT);
 
-      this.out.writeObject(new ConnectMessage(this.username,clientPlayer));
+      this.out.writeObject(new ConnectMessage(this.username, clientPlayer));
       out.flush();
       out.reset();
       System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
@@ -84,7 +66,23 @@ public class ClientProtocol extends Thread{
     }
   }
 
-  public boolean isStable(){
+  public boolean isStartingTiles() {
+    return startingTiles;
+  }
+
+  public void setStartingTiles(boolean startingTiles) {
+    this.startingTiles = startingTiles;
+  }
+
+  public Tile[] getStartingRack() {
+    return startingRack;
+  }
+
+  public void setStartingRack(Tile[] startingRack) {
+    this.startingRack = startingRack;
+  }
+
+  public boolean isStable() {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 
@@ -126,14 +124,15 @@ public class ClientProtocol extends Thread{
             case GAME_OVER:
               // TODO At game controller there must be a methode which show
               // the player that the game is over
-              this.match.getGameScreenController().showServerMessage("Game over",10);
+              this.match.getGameScreenController().showServerMessage("Game over", 10);
               this.match.setOver(true);
               break;
 
             case GAME_WIN:
               // TODO At game controller there must be a methode which show
               // that the player won
-              this.match.getGameScreenController().showServerMessage("Congrats, you won with "+ this.match.getPlayer().getScore()+" points!", 10);
+              this.match.getGameScreenController().showServerMessage(
+                  "Congrats, you won with " + this.match.getPlayer().getScore() + " points!", 10);
               this.match.youWon();
               break;
 
@@ -151,22 +150,24 @@ public class ClientProtocol extends Thread{
               // redundant, by sending out the Player info, this info can be taken from Game Lobby
               break;
 
-              // initialized the game with the lobby information
+            // initialized the game with the lobby information
             case GAME_INFO:
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
               GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
               GameInformation.getInstance().setPlayers(message1.getPlayers());
-              for(Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
-                System.out.print(p+" ");
+              for (Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
+                System.out.print(p + " ");
               }
               break;
-
 
             case SEND_POINTS:
               // TODO At game controller there must be a methode which add
               // points to the player statistics
               SendPointsMessage message2 = (SendPointsMessage) message;
-              this.match.writeTextMessages(message2.getFrom().substring(0,1).toUpperCase()+message2.getFrom().substring(1).toLowerCase()+" got "+ message2.getPoints()+ " points with his latest move");
+              this.match.writeTextMessages(
+                  message2.getFrom().substring(0, 1).toUpperCase() + message2.getFrom().substring(1)
+                      .toLowerCase() + " got " + message2.getPoints()
+                      + " points with his latest move");
               this.match.addPointsToPlayer(message2.getPoints());
               break;
 
@@ -189,12 +190,13 @@ public class ClientProtocol extends Thread{
 
             case PLACE_TILES:
               PlaceTilesMessage message4 = (PlaceTilesMessage) message;
-              GameInformation.getInstance().getClientmatch().placeTilesOfOtherPlayers(message4.getTiles());
+              GameInformation.getInstance().getClientmatch()
+                  .placeTilesOfOtherPlayers(message4.getTiles());
               break;
 
             case RECEIVE_SHUFFLE_TILES:
               ReceiveShuffleTilesMessage receiveShuffleTilesMessage = (ReceiveShuffleTilesMessage) message;
-              if(receiveShuffleTilesMessage.getFrom().equals("")){
+              if (receiveShuffleTilesMessage.getFrom().equals("")) {
                 match.writeTextMessages("not enough tiles in bag to shuffle");
               }
               match.receiveShuffleTiles(receiveShuffleTilesMessage.getRack());
@@ -209,7 +211,8 @@ public class ClientProtocol extends Thread{
               TimeAlertMessage timeAlertMessage = (TimeAlertMessage) message;
               switch (timeAlertMessage.getAlertType()) {
                 case TIME_OVER:
-                  match.getGameScreenController().showServerMessage("Your time is up, moving on.", 5);
+                  match.getGameScreenController()
+                      .showServerMessage("Your time is up, moving on.", 5);
                   break;
                 case TIMER_STARTED:
                   match.setTimerPersonalTimerToZero();
@@ -227,20 +230,19 @@ public class ClientProtocol extends Thread{
               // it nulls the timer
               this.match.setTimerToZero();
               break;
+            /**
+             *@author vivanova
+             */
+            case TEXT:
+              TextMessage textMessage = (TextMessage) message;
+              String sender = textMessage.getFrom();
+              String text = textMessage.getText();
+              GameInformation.getInstance().getChat().fillTextArea(sender, text);
               /**
-               *@author vivanova
+               * Call Text Box to add new Text
                */
-            case TEXT: 
-            	TextMessage textMessage = (TextMessage)message;
-            	String sender = textMessage.getFrom();
-            	String text = textMessage.getText();
-            	GameInformation.getInstance().getChat().fillTextArea(sender, text);
-            	/**
-            	 * Call Text Box to add new Text
-            	 */
-            	
-            	
-            	break;
+
+              break;
             case HISTORY:
               HistoryMessage hMessage = (HistoryMessage) message;
               historyMess = hMessage.getMessage();
@@ -264,29 +266,34 @@ public class ClientProtocol extends Thread{
   }
 
   /*Disconnect the client from the server*/
-  public void disconnect(){
+  public void disconnect() {
     running = false;
     try {
-      if (!clientSocket.isClosed()){
+      if (!clientSocket.isClosed()) {
         this.out.writeObject(new DisconnectMessage(this.username));
         clientSocket.close(); // close streams and socket
       }
-    } catch (IOException e){
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
-  public String getHistoryMessage(){
+
+  public String getHistoryMessage() {
     return historyMess;
   }
-  public boolean messageChanged(){
+
+  public boolean messageChanged() {
     return messChange;
   }
-  public void messageRead(){
+
+  public void messageRead() {
     messChange = false;
   }
+
   public boolean isRunning() {
     return running;
   }
+
   /*Send messages from client to server*/
   public void sendToServer(Message message) throws IOException {
     this.out.writeObject(message);

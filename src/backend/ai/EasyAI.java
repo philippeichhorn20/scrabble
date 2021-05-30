@@ -1,6 +1,7 @@
 package backend.ai;
 
 import backend.basic.Tile;
+import java.io.IOException;
 import java.util.Random;
 
 /*
@@ -19,7 +20,7 @@ public class EasyAI extends PlayerAI {
   public Brain getEasyBrain() {
     return brain;
   }
-/*
+
   @Override
   public void handleTurn() {
     // Make a random choice;
@@ -84,7 +85,7 @@ public class EasyAI extends PlayerAI {
     }
 
   }
-*/
+
   public void removeUsedTilesFromHand(Tile[] tilesRemove) {
     for (Tile t : tilesRemove) {
       for (Tile tileOnHand : this.tilesOnHand) {
