@@ -1,4 +1,4 @@
-package frontend.MultiUserChat.Server;
+package frontend.chat;
 
 import backend.basic.GameInformation;
 import javafx.event.EventHandler;

@@ -18,10 +18,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-
-/*A server protocol which tells the server how to transfer messages to the client
+/**
+ * A server protocol which tells the server how to transfer messages to the client.
+ *
  * @author nilschae
- * @version 1.0 */
+ */
 public class ServerProtocol extends Thread {
 
   private final Socket socket;
@@ -32,7 +33,6 @@ public class ServerProtocol extends Thread {
   private boolean running = true;
   private Player[] players;
   private Message lastMessage = new Message(MessageType.GAME_WIN, "");
-
 
   /*A Constructor which connects a client with the server
    * @param client the client that is being communicated with
@@ -49,19 +49,24 @@ public class ServerProtocol extends Thread {
     }
   }
 
-  private void sendInitialObjects() throws IOException {
+  private void sendInitialObjects() throws IOException {}
 
-  }
 
-  /* Send a message to the client of this server protocol
-   * @param message the message which is sent*/
+  /**
+   * Send a message to the client of this server protocol.
+   *
+   * @param message Message that will be sent to the client.
+   * @throws IOException if out is messed up.
+   */
   public void sendToClient(Message message) throws IOException {
     this.out.writeObject(message);
     out.flush();
     out.reset();
   }
 
-  /* close streams and socket */
+  /**
+   * Closes streams and sockets.
+   */
   public void disconnect() {
     running = false;
     try {
@@ -69,59 +74,11 @@ public class ServerProtocol extends Thread {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
-  /*
-  Message message;
-    try {
-      message = (Message) in.readObject();
-      if (message.getMessageType() == MessageType.CONNECT) {
-        System.out.println("new User attempts to connect...");
-        String from = message.getFrom();
-        if (server.userExistsP(from)) {
-          System.out.println("unsuccessful since already in lobby...");
-          Message connectionRefused = new ConnectionRefusedMessage("host",
-              "Username already connected to the server!");
-          out.writeObject(connectionRefused);
-          out.flush();
-          out.reset();
-          disconnect();
-        } else {
-          System.out.println("successful");
-          this.clientName = from;
-          Player player = ((ConnectMessage) message).getPlayer();
-          server.addClient(player, this);
-          if (GameInformation.getInstance().getServermatch().addPlayer(player)) {
-            System.out.print("player in game lol: ");
-            for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
-              if (p != null) {
-                System.out.print(p.getName() + " ");
-              }
-            }
-          } else {
-            Message connectionRefused = new ConnectionRefusedMessage("server",
-                "Lobby is full!");
-          }
-        }
 
-      } else if (message.getMessageType() == MessageType.CONNECT_AI) {
-        System.out.println("new AI attempts to connect...");
-        String from = message.getFrom();
-        if (server.userExistsP(from)) {
-          System.out.println("unsuccessful since already in lobby...");
-          Message connectionRefused = new ConnectionRefusedMessage("host",
-              "Username already connected to the server!");
-          out.writeObject(connectionRefused);
-          out.flush();
-          out.reset();
-          disconnect();
-        } else {
-          System.out.println("successful");
-          this.clientName = from;
-          PlayerAI aiPlayer = (PlayerAI) ((ConnectMessage)message).getPlayer();
-          server.addClient(aiPlayer, this);
-        }
-   */// i copied this from the master branch will probably need to paste this instead of the code below
+  /**
+   * Starts the server protocol, waits for messages.
+   */
   public void run() {
     Message message;
     try {
@@ -131,8 +88,8 @@ public class ServerProtocol extends Thread {
         String from = message.getFrom();
         if (server.userExistsP(from)) {
           System.out.println("unsuccessful since already in lobby...");
-          Message connectionRefused = new ConnectionRefusedMessage("host",
-              "Username already connected to the server!");
+          Message connectionRefused =
+              new ConnectionRefusedMessage("host", "Username already connected to the server!");
           out.writeObject(connectionRefused);
           out.flush();
           out.reset();
@@ -150,8 +107,7 @@ public class ServerProtocol extends Thread {
               }
             }
           } else {
-            Message connectionRefused = new ConnectionRefusedMessage("server",
-                "Lobby is full!");
+            Message connectionRefused = new ConnectionRefusedMessage("server", "Lobby is full!");
           }
         }
 
@@ -160,8 +116,8 @@ public class ServerProtocol extends Thread {
         String from = message.getFrom();
         if (server.userExistsP(from)) {
           System.out.println("unsuccessful since already in lobby...");
-          Message connectionRefused = new ConnectionRefusedMessage("host",
-              "Username already connected to the server!");
+          Message connectionRefused =
+              new ConnectionRefusedMessage("host", "Username already connected to the server!");
           out.writeObject(connectionRefused);
           out.flush();
           out.reset();
@@ -169,7 +125,7 @@ public class ServerProtocol extends Thread {
         } else {
           System.out.println("successful");
           this.clientName = from;
-          PlayerAI aiPlayer = (PlayerAI) ((ConnectMessage)message).getPlayer();
+          PlayerAI aiPlayer = (PlayerAI) ((ConnectMessage) message).getPlayer();
           server.addClient(aiPlayer, this);
         }
 
@@ -198,15 +154,17 @@ public class ServerProtocol extends Thread {
             case PLACE_TILES:
               System.out.println("receiving tiles");
               PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
-              GameInformation.getInstance().getServermatch().placeTiles(
-                  placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
+              GameInformation.getInstance()
+                  .getServermatch()
+                  .placeTiles(placeTilesMessage.getTiles(), placeTilesMessage.getFrom());
               break;
 
             case SHUFFLE_TILES:
               // TODO At game controller there must be a methode which shuffle tiles
               // and return the shuffled tiles
               ShuffleTilesMessage shuffleTilesMessage = (ShuffleTilesMessage) message;
-              this.server.serverMatch.shuffleTilesOfPlayer(message.getFrom(), shuffleTilesMessage.getToShuffleTiles());
+              this.server.serverMatch.shuffleTilesOfPlayer(
+                  message.getFrom(), shuffleTilesMessage.getToShuffleTiles());
               break;
 
             case GAME_TURN:
@@ -227,33 +185,37 @@ public class ServerProtocol extends Thread {
               // does it automatically after game move
               break;
 
-            // Pass leads to the server telling next player it's his turn.
+              // Pass leads to the server telling next player it's his turn.
             case PASS:
               server.serverMatch.incrementPointlessTurns();
               server.serverMatch.nextPlayer();
 
               break;
 
-            /** @author vivanova */
-            // Server receives a Relay message from Client
+              /* @author vivanova */
+              // Server receives a Relay message from Client
             case RELAY:
               // Server sends the message to everyone
               TextMessage textMessage = (TextMessage) message;
               if (textMessage.getText() != null) {
                 System.out.println("Sending Text Message");
-            	  server.sendToAll(
+                server.sendToAll(
                     // with a new Flag that means it has to be rendered in the chat area
-                    new TextMessage(MessageType.TEXT,textMessage.getFrom(), textMessage.getText()));
+                    new TextMessage(
+                        MessageType.TEXT, textMessage.getFrom(), textMessage.getText()));
               }
               break;
             case HISTORY:
               HistoryMessage historyMessage = (HistoryMessage) message;
-              server.sendToAllBut(historyMessage.getFrom(),historyMessage);
+              server.sendToAllBut(historyMessage.getFrom(), historyMessage);
               break;
             case SEND_START_RACK:
               SendStartRackMessage ssrMessage = (SendStartRackMessage) message;
-              for (String s:server.getClientNames()){
-                server.sendOnlyTo(s,new SendStartRackMessage(ssrMessage.getFrom(),server.serverMatch.drawNewTiles(7)));
+              for (String s : server.getClientNames()) {
+                server.sendOnlyTo(
+                    s,
+                    new SendStartRackMessage(
+                        ssrMessage.getFrom(), server.serverMatch.drawNewTiles(7)));
               }
               break;
 
@@ -267,7 +229,8 @@ public class ServerProtocol extends Thread {
       running = false;
       if (socket.isClosed()) {
         System.out.println("Socket closed. Name of disconnected Client: " + this.clientName);
-        GameScreenController.AlertBox.display("Could not connect", "please chose a different name and reconnect");
+        GameScreenController.AlertBox.display(
+            "Could not connect", "please chose a different name and reconnect");
       } else {
         try {
           socket.close();
@@ -280,7 +243,6 @@ public class ServerProtocol extends Thread {
       e2.printStackTrace();
     }
   }
-
 
   public Server getServer() {
     return server;

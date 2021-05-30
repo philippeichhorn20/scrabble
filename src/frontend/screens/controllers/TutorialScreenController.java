@@ -6,13 +6,11 @@ import animatefx.animation.Pulse;
 import animatefx.animation.SlideInLeft;
 import animatefx.animation.ZoomIn;
 import animatefx.animation.ZoomInDown;
-import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
 import backend.basic.GraphicTile;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ScrabbleBoard;
-import backend.basic.ServerMatch;
 import backend.basic.Tile;
 import backend.basic.TileBag;
 import backend.tutorial.TutorialInformation;
@@ -229,51 +227,53 @@ public class TutorialScreenController extends Thread{
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
         Bounds b = board.getCellBounds(i, j);
-        if (i == 0 || j == 0 || i == 16 || i == 17 || j == 16){
-
-        }else{
-        if (b.contains(e.getX(), e.getY())) {
-          new FadeOut(tileBagIcon).play();
-          //tileBagIcon.setVisible(false);
-          for (int k = 0; k < 7; k++) {
-            if (gtiles[k].isHighlighted()) {
-              if(tilesOnBoard[i][j]){
-                break;
-              }
-
-              Rectangle rec =
-                  new Rectangle(
-                      gtiles[k].getRec().getX(),
-                      gtiles[k].getRec().getY(),
-                      gtiles[k].getRec().getWidth(),
-                      gtiles[k].getRec().getHeight());
-              rec.setFill(Color.web("#ffe5b4"));
-              Text let =
-                  new Text(gtiles[k].getX(), gtiles[k].getY(), gtiles[k].getLetter().getText());
-              let.setFont(new Font("Times New Roman Bold", 20));
-              let.setText("  " + let.getText());
-              rec.setId("tile" + turn);
-              let.setId("tile" + turn);
-              totalNumberOfTiles++;
-              board.add(rec, i, j);
-              board.add(let, i, j);
-              new ZoomIn(rec).play();
-              new ZoomIn(let).play();
-              gtiles[k].highlight(false);
-              gtiles[k].setToDraw(false);
-              gtiles[k].setVisiblee(false);
-              Tile newTile = new Tile(gtiles[k].getLetter().getText().charAt(0), 0);
-              newTile.setXY(i, j);
-              int ite = 0;
-              placeTilesList.add(newTile);
-              if(setTiles < 5) {
-                turnTiles[setTiles++] = newTile;
-              }
-              tilesOnBoard[i][j]=true;
-              Tile[] tt = {newTile};
-
-              resetColor();
+        if (i == 0 || j == 0 || i == 16) {
+          // do nothing
+        } else {
+          if (b.contains(e.getX(), e.getY())) {
+            if (!tileBagIcon.isMouseTransparent()) {
+              new FadeOut(tileBagIcon).play();
+              tileBagIcon.setMouseTransparent(true);
             }
+            for (int k = 0; k < 7; k++) {
+              if (gtiles[k].isHighlighted()) {
+                if (tilesOnBoard[i][j]) {
+                  break;
+                }
+
+                Rectangle rec =
+                    new Rectangle(
+                        gtiles[k].getRec().getX(),
+                        gtiles[k].getRec().getY(),
+                        gtiles[k].getRec().getWidth(),
+                        gtiles[k].getRec().getHeight());
+                rec.setFill(Color.web("#ffe5b4"));
+                Text let =
+                    new Text(gtiles[k].getX(), gtiles[k].getY(), gtiles[k].getLetter().getText());
+                let.setFont(new Font("Times New Roman Bold", 20));
+                let.setText("  " + let.getText());
+                rec.setId("tile" + turn);
+                Rectangle help = new Rectangle();
+                help.setX(i);
+                help.setY(j);
+                rec.setUserData(help);
+                let.setId("tile" + turn);
+                board.add(rec, i, j);
+                board.add(let, i, j);
+                new ZoomIn(rec).play();
+                new ZoomIn(let).play();
+                gtiles[k].highlight(false);
+                gtiles[k].setToDraw(false);
+                gtiles[k].setVisiblee(false);
+                Tile newTile = new Tile(gtiles[k].getLetter().getText().charAt(0), 0);
+                newTile.setXY(i, j);
+                int ite = 0;
+                placeTilesList.add(newTile);
+                tilesOnBoard[i][j] = true;
+
+
+                resetColor();
+              }
             }
           }
         }
@@ -288,23 +288,28 @@ public class TutorialScreenController extends Thread{
     }
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
-    nodesToRemove = new Node[boardChildren
-        .size()]; //vorher 14 //es konnen nicht mehr als 14 entfernt werden anyway.
+    nodesToRemove = new Node[14];
     int i = 0;
     for (Node node : boardChildren) {
       int x = 0;
       int y = 0;
-      if (node.getId().equals("tile" + turn)) {
-        nodesToRemove[i] = node;
-        if (node instanceof Rectangle) {
-          Rectangle r = (Rectangle) node;
-          Rectangle help = (Rectangle) r.getUserData();
-          x = (int) help.getX();
-          y = (int) help.getY();
+      if (node.getId()==null){
+
+      } else {
+
+        if (node.getId().equals("tile" + turn)) {
+          nodesToRemove[i] = node;
+          if (node instanceof Rectangle) {
+            Rectangle r = (Rectangle) node;
+            Rectangle help = (Rectangle) r.getUserData();
+            x = (int) help.getX();
+            y = (int) help.getY();
+          }
+          tilesOnBoard[x][y] = false;
+          i++;
         }
-        tilesOnBoard[x][y] = false;
-        i++;
       }
+
     }
     for (GraphicTile gt : gtiles) {
       if (!gt.isVisiblee()) {

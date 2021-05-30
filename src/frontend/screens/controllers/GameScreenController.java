@@ -617,9 +617,9 @@ public class GameScreenController extends Thread {
   public void placeTiles(Tile[] tiles) {
     for (Tile t : tiles) {
       Rectangle rec = new Rectangle(36, 36, Color.web("ffe5b4"));
-      rec.setId("tiles");
+      rec.setId("tilesfromothers");
       Text tileChar = new Text(" " + String.valueOf(t.getLetter()).toUpperCase());
-      tileChar.setId("tiles");
+      tileChar.setId("tilesfromothers");
       tileChar.setFont(new Font("Times New Roman Bold", 20));
 
       board.add(rec, t.getX(), t.getY());
