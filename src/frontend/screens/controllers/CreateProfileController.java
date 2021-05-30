@@ -35,9 +35,8 @@ public class CreateProfileController {
    * If the name is an unique name it is entered into the database.
    *
    * @param e Click
-   * @throws IOException Exception
    */
-  public void checkName(ActionEvent e) throws IOException {
+  public void checkName(ActionEvent e) {
     check();
     if (noNewNameAdded) {
       String newName = username.getText();
@@ -51,7 +50,7 @@ public class CreateProfileController {
         stmt.setInt(2, 0);
         stmt.setInt(3, 0);
         stmt.setInt(4, 0);
-        stmt.setString(5,"Color.BLACK");
+        stmt.setString(5, "Color.BLACK");
         stmt.executeUpdate();
         Main m = new Main();
         m.changeProfile(newName);

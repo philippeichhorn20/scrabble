@@ -3,9 +3,11 @@ package backend.network.messages.game;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/* Message to show which placement a player have at the end of the game
-* @author nilschae
-* @version 1.0*/
+/**
+ * Message that sends the placement at the end of the game.
+ *
+ * @author nilschae
+ */
 public class GamePlacementMessage extends Message {
   int placement;
   int playerNumber;

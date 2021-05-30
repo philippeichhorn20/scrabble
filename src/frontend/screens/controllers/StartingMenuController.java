@@ -16,30 +16,41 @@ import javafx.scene.input.MouseEvent;
  */
 public class StartingMenuController {
 
-  // @author mkolinsk
-
   @FXML private Button newProfileButton;
   @FXML private Button existProfileButton;
 
-  public void createNew(ActionEvent e) throws IOException {
-    newProfile();
-  }
 
-  private void newProfile() throws IOException {
+
+  /**
+   * Opens the new profile screen.
+   *
+   * @param e Click on the button.
+   * @throws IOException When the source for the screen is wrong.
+   */
+
+  public void createNew(ActionEvent e) throws IOException {
 
     Main m = new Main();
     m.changeScene("screens/createProfile.fxml");
   }
 
-  public void logInto(ActionEvent e) throws IOException {
-    logIn();
-  }
+  /**
+   * Opens the existing profile screen.
+   *
+   * @param e Click on the button.
+   * @throws IOException When the source for the screen is wrong.
+   */
 
-  private void logIn() throws IOException {
+  public void logInto(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/existingProfile.fxml");
   }
 
+  /**
+   * Animates the buttons.
+   *
+   * @param e when hovered over.
+   */
   public void animate(MouseEvent e) {
     new Pulse((Button) e.getSource()).play();
   }

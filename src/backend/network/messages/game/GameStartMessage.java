@@ -4,12 +4,14 @@ import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*Message which indicates the beginning of a game
-* @author nilschae
- * @version 1.0*/
+/**
+ * A message which indicates the start of the game.
+ *
+ * @author nilschae
+ */
 public class GameStartMessage extends Message {
 
-  Tile[] tiles;
+  private Tile[] tiles;
 
   public GameStartMessage(String from, Tile[] tiles) {
     super(MessageType.GAME_START, from);

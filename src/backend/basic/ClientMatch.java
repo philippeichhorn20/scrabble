@@ -125,6 +125,7 @@ otherwise it just informs the player about the new turn
     try{
       GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new HistoryMessage(from,mess));
     }catch (IOException e){
+      e.printStackTrace();
     }
   }
   /**
@@ -178,7 +179,7 @@ otherwise it just informs the player about the new turn
 
   /*
   @method playFeedBackIntegration
-  method checks if move was successful and informes the player about it
+  method checks if move was successful and informs the player about it
  */
   public void playFeedBackIntegration(PlayFeedbackMessage message) {
     System.out.println("playFeedBackIntegration");
@@ -218,8 +219,8 @@ puts all the tiles back on the players rack*/
    */
   public void placeTilesOfOtherPlayers(Tile[] tiles) {
     this.newTilesToBeAdded = tiles;
-    for (int x = 0; x < tiles.length; x++) {
-      this.scrabbleBoard.placeTile(tiles[x], tiles[x].getX(), tiles[x].getY());
+    for (Tile tile : tiles) {
+      this.scrabbleBoard.placeTile(tile, tile.getX(), tile.getY());
       this.scrabbleBoard.nextTurn();
     }
   }
@@ -337,11 +338,7 @@ sends tiles to server top shuffle
     newTilesToBeAdded = null;
   }
   public boolean hasNewTiles(){
-    if(newTilesToBeAdded == null){
-      return false;
-    }else{
-      return true;
-    }
+    return newTilesToBeAdded != null;
 
   }
 

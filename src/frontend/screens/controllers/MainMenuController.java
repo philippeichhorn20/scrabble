@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 
 /**
  * Controller for the main menu screen. Nothing too interesting here, just a screen that leads to
@@ -17,29 +16,36 @@ import javafx.scene.text.Text;
  */
 public class MainMenuController {
 
-  @FXML
-  private Button playButton;
-  @FXML
-  private Button manageButton;
-  @FXML
-  private Button goSettings;
-  @FXML
-  private Text userName;
-  private boolean setUpDone = false;
+  @FXML private Button playButton;
+  @FXML private Button manageButton;
+  @FXML private Button goSettings;
 
+  /**
+   * animates the buttons.
+   *
+   * @param e when hovered with a mouse.
+   */
   public void animate(MouseEvent e) {
     Button b = (Button) e.getSource();
     new Pulse(b).play();
   }
-
-  public void animateText(MouseEvent e) {
-    new Pulse(userName).play();
-  }
+  /**
+   * opens the lobby screen.
+   *
+   * @param e click on the button
+   * @throws IOException when source for the screen is wrong.
+   */
 
   public void goPlay(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/lobbyScreen.fxml");
   }
+  /**
+   * opens the statistics screen.
+   *
+   * @param e click on the button
+   * @throws IOException when source for the screen is wrong.
+   */
 
   public void goManage(ActionEvent e) throws IOException {
     Main m = new Main();
@@ -47,30 +53,27 @@ public class MainMenuController {
   }
 
   /**
-   * 
+   * opens the settings screen.
+   *
    * @author vivanova
+   * @param e click on the button
+   * @throws IOException when source for the screen is wrong.
    */
+
   public void openSettings(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/settingsScreen.fxml");
   }
 
+  /**
+   * opens the rule screen.
+   *
+   * @param e click on the button
+   * @throws IOException when source for the screen is wrong.
+   */
+
   public void goRule(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/ruleScreen.fxml");
-  }
-
-  /**
-   * Sets up the user profile name in the upper left corner.
-   *
-   * @param e MouseEvent
-   */
-  public void setUp(MouseEvent e) {
-    if (!setUpDone) {
-      String name = Main.profile.getName();
-      name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-      userName.setText(name);
-      setUpDone = true;
-    }
   }
 }

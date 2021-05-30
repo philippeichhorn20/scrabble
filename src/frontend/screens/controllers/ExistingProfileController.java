@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 
 /**
  * Controller for the existing profile screen, where the user can log into an existing profile.
@@ -33,13 +32,19 @@ public class ExistingProfileController {
   @FXML private Button backButton;
   @FXML private ImageView nextButton;
   @FXML private ImageView lastPageButton;
-  @FXML private Text scrabbleText;
   @FXML private Label wrongProfileText;
 
   public String profile;
   private boolean first = true;
   private static int currentPage = 0;
   private int totalPages;
+
+  /**
+   * The player goes back to the starting menu.
+   *
+   * @param e click on the back button.
+   * @throws IOException when the source for the scene is wrong.
+   */
   public void goBack(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/startingMenu.fxml");
@@ -54,7 +59,7 @@ public class ExistingProfileController {
     clear();
     currentPage++;
     lastPageButton.setVisible(true);
-    //nextButton.setVisible(false);
+    // nextButton.setVisible(false);
     Button[] buttonNames = {
       button00, button01, button02, button03, button10, button11, button12, button13
     };
@@ -68,15 +73,14 @@ public class ExistingProfileController {
 
       ResultSet result = stmt.executeQuery(sql);
       while (result.next()) {
-        if (i < currentPage*8) {
-          //buttonNames[i].setText(" ");
-        }
-        else if (i >= (currentPage+1)*8){
+        if (i < currentPage * 8) {
+          /*do nothing */
+        } else if (i >= (currentPage + 1) * 8) {
           break;
-        }else {
+        } else {
           String name = result.getString("name");
           name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-          buttonNames[i - currentPage*8].setText(name);
+          buttonNames[i - currentPage * 8].setText(name);
         }
         i++;
       }
@@ -84,7 +88,7 @@ public class ExistingProfileController {
     } catch (SQLException sqle) {
       sqle.printStackTrace();
     }
-    if (currentPage == totalPages-1){
+    if (currentPage == totalPages - 1) {
       nextButton.setVisible(false);
     }
   }
@@ -98,7 +102,7 @@ public class ExistingProfileController {
     nextButton.setVisible(true);
     currentPage--;
     Button[] buttonNames = {
-        button00, button01, button02, button03, button10, button11, button12, button13
+      button00, button01, button02, button03, button10, button11, button12, button13
     };
     String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
     int i = 0;
@@ -110,15 +114,14 @@ public class ExistingProfileController {
 
       ResultSet result = stmt.executeQuery(sql);
       while (result.next()) {
-        if (i < currentPage*8) {
-          //buttonNames[i].setText(" ");
-        }
-        else if (i >= (currentPage+1)*8){
+        if (i < currentPage * 8) {
+          // buttonNames[i].setText(" ");
+        } else if (i >= (currentPage + 1) * 8) {
           break;
-        }else {
+        } else {
           String name = result.getString("name");
           name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-          buttonNames[i - currentPage*8].setText(name);
+          buttonNames[i - currentPage * 8].setText(name);
         }
         i++;
       }
@@ -126,7 +129,7 @@ public class ExistingProfileController {
     } catch (SQLException sqle) {
       sqle.printStackTrace();
     }
-    if(currentPage == 0){
+    if (currentPage == 0) {
       lastPageButton.setVisible(false);
     }
   }
@@ -135,9 +138,8 @@ public class ExistingProfileController {
    * Loads the profiles onto the screen.
    *
    * @param e Click
-   * @throws IOException IOException
    */
-  public void load(MouseEvent e) throws IOException {
+  public void load(MouseEvent e) {
     if (first) {
       loadProfiles();
       lastPageButton.setVisible(false);
@@ -153,14 +155,13 @@ public class ExistingProfileController {
    */
   public void goMainMenu(ActionEvent e) throws IOException {
     Button button = (Button) e.getSource();
-    if (button.getText().equals("")){
+    if (button.getText().equals("")) {
       wrongProfileText.setVisible(true);
-    }else{
+    } else {
       Main m = new Main();
       m.changeProfile(button.getText().toLowerCase());
       m.changeScene("screens/mainMenu.fxml");
     }
-
   }
 
   /**
@@ -182,11 +183,11 @@ public class ExistingProfileController {
       Statement stmt = connection.createStatement();
 
       ResultSet result = stmt.executeQuery(sql);
-      //calculates total number of profiles
-      while (result.next()){
+      // calculates total number of profiles
+      while (result.next()) {
         j++;
       }
-      totalPages = j/8+1;
+      totalPages = j / 8 + 1;
       result = stmt.executeQuery(sql);
       while (result.next()) {
         if (i >= 8) {
