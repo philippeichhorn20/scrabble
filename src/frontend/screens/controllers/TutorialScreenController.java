@@ -464,7 +464,7 @@ public class TutorialScreenController extends Thread{
                     tutorialInformation.getTutorialMatch().highligthTiles();
 
                     for(int i = 0; i < 5; i++){
-                      gtiles[i].highlight(true);
+                      gtiles[i].getRec().setFill(Color.RED);
                     }
                   }
 
@@ -480,9 +480,9 @@ public class TutorialScreenController extends Thread{
                   Optional<ButtonType> result = higlitedTilesAlert.showAndWait();
                   if (result.get() == ButtonType.OK){
                     tutorialInformation.getTutorialMatch().highlightScrabbleboardPosition();
-                    Rectangle highligth = new Rectangle(36,36,Color.RED);
 
                     for(int i = 0; i < 5; i++) {
+                      Rectangle highligth = new Rectangle(36,36,Color.RED);
                       board.add(highligth,6 + i, 8);
                     }
 
