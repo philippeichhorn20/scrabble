@@ -440,7 +440,6 @@ public class TutorialScreenController extends Thread{
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                //System.out.println("Test");
                 if(tutorialInformation.getTutorialMatch().getStartFlag()) {
                   for (int i = 0; i < 7; i++) {
                     gtiles[i].setTile(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]);

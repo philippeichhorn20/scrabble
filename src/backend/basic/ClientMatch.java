@@ -98,7 +98,7 @@ otherwise it just informs the player about the new turn
       Tile[] tiles = new Tile[this.scrabbleBoard.newTilesOfCurrentMove.size()];
       for(int x = 0; x < this.scrabbleBoard.newTilesOfCurrentMove.size(); x++){
         tiles[x] = this.scrabbleBoard.newTilesOfCurrentMove.get(x);
-        System.out.println(tiles[x].getValue());
+
       }
       try{
         GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(this.player.getName(), tiles));
@@ -132,7 +132,6 @@ otherwise it just informs the player about the new turn
    * @author vivanova
    */
   public void sendChatMessage(String textMessage) {
-    System.out.println("Sending Relay Message to Server");
     try {
       GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new TextMessage(MessageType.RELAY,this.player.getName(),textMessage));
     } catch (IOException e) {
@@ -189,11 +188,7 @@ otherwise it just informs the player about the new turn
     } else if(message.getFeedback() == null) {
       this.gameScreenController.showServerMessage("please place the tiles properly",3);
     }else{
-      System.out.println("removing tiles");
-      System.out.println(this.textMessages.size());
-      System.out.println(message.getFeedback());
       this.textMessages.addAll(message.getFeedback());
-      System.out.println("poop "+this.textMessages.size());
       removeChangedTiles();
     }
   }

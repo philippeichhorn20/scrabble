@@ -200,13 +200,11 @@ public class ServerMatch {
     }
 
     server.sendToAll(new LobbyInformationMessage("server", correctPlayer));
-    System.out.println("LOBBY INFORMATION START MATCH MESSAGE SENT CORRECTPLAYERS");
     for (int i = 0; i < this.players.length; i++) {
       if (this.players[i] != null) {
         Tile[] tiles = new Tile[7];
         for (int x = 0; x < tiles.length; x++) {
           tiles[x] = tileBag.drawTile();
-          System.out.println(tiles[x].getValue());
         }
         server.sendOnlyTo(this.players[i].name, new GameStartMessage("server", tiles));
         count++;
@@ -244,7 +242,6 @@ public class ServerMatch {
     int playerNum = getPlayersNumber(from);
     if (this.tileBag.size() > 7) {
       if (playerNum != currentPlayer) {
-        System.out.println("Wrong player, at shuffle request");
       } else {
         Tile[] newTiles = this.players[playerNum].shuffleRack(oldTiles, this.tileBag);
         for (Tile tile : newTiles) {

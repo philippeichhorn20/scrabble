@@ -338,7 +338,6 @@ public class LobbyScreenController {
     try {
       File selectedFile = fileChooser.showOpenDialog(Main.getStg());
       try {
-        System.out.println(Files.probeContentType(selectedFile.toPath()));
         if (selectedFile != null && Files.probeContentType(selectedFile.toPath())
             .equals("text/plain")) {
           WordCheckDB.loadNewLibrary(selectedFile.getPath());

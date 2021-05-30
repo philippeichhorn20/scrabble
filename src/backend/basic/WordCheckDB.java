@@ -107,7 +107,6 @@ public class WordCheckDB {
       stm.execute("DROP TABLE IF EXISTS words;");
       stm.execute("CREATE TABLE words (word VARCHAR(100) PRIMARY KEY)");
       PreparedStatement ps = conn.prepareStatement("INSERT INTO words (word) values (?);");
-      System.out.println("loading started..");
 
       File file = new File(urlTxt);    //creates a new file instance
       FileReader fr = new FileReader(file);
@@ -134,13 +133,10 @@ public class WordCheckDB {
           + "  ");
        */
 
-      System.out.println("database was written, "+ count+ " lines importet");
       fr.close();
       reader.close();
       ps.close();
     } catch (SQLException e) {
-      System.out.println("struggle with sql");
-      System.out.println(e.getMessage());
       e.printStackTrace();
     } catch (FileNotFoundException fnfe) {
       fnfe.printStackTrace();

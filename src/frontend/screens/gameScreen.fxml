@@ -191,7 +191,7 @@
                   <Font name="Candara Light" size="25.0" />
                </font>
             </TitledPane>
-            <Label layoutX="817.0" layoutY="274.0" text="Time: ">
+            <Label layoutX="817.0" layoutY="274.0" text="Time: " textFill="#bf8484">
                <font>
                   <Font size="44.0" />
                </font>
@@ -201,12 +201,12 @@
                   <Font name="Franklin Gothic Medium" size="39.0" />
                </font>
             </Label>
-            <Label layoutX="854.0" layoutY="379.0" prefHeight="41.0" prefWidth="160.0" text="Current turn:">
+            <Label layoutX="854.0" layoutY="379.0" prefHeight="41.0" prefWidth="160.0" text="Current turn:" textFill="#ffa4a4">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label fx:id="currPlayerText" layoutX="810.0" layoutY="420.0" prefHeight="50.0" prefWidth="253.0" style="-fx-alignment: center;" text="Player" textFill="#751e1e">
+            <Label fx:id="currPlayerText" layoutX="810.0" layoutY="420.0" prefHeight="50.0" prefWidth="253.0" style="-fx-alignment: center;" text="Player" textFill="#666de4">
                <font>
                   <Font name="Trebuchet MS" size="42.0" />
                </font>

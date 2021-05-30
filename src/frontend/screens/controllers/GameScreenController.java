@@ -130,7 +130,6 @@ public class GameScreenController extends Thread {
   public void endTurn(ActionEvent e) {
     new Bounce(endTurnButton).play();
     endTurnFunction();
-    System.out.println("Turn: " + turn);
   }
   /**
    * This function sends the tiles that are placed on the current turn to the serverthrough a
@@ -141,7 +140,6 @@ public class GameScreenController extends Thread {
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
       showServerMessage("Checking your word..",4);
     }
-    System.out.println(GameInformation.getInstance().getClientmatch());
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
   }
   /** AlertBox that pops up after the player has won the game. */
@@ -622,7 +620,7 @@ public class GameScreenController extends Thread {
       Text tileChar = new Text(" " + String.valueOf(t.getLetter()).toUpperCase());
       tileChar.setId("tilesfromothers");
       tileChar.setFont(new Font("Times New Roman Bold", 20));
-      tilesOnBoard[t.getX()][t.getY()]=true;
+      tilesOnBoard[t.getX()][t.getY()] = true;
       board.add(rec, t.getX(), t.getY());
       board.add(tileChar, t.getX(), t.getY());
     }
@@ -722,7 +720,6 @@ public class GameScreenController extends Thread {
                             if (!match.isInvalidMove()) {
                               drawTiles();
                               turn++;
-                              System.out.println("TURNPLUSPLUS");
                               match.setInvalidMove(true);
                             }
                             if (match.getNewTilesOnRack() != null) {
@@ -855,8 +852,22 @@ public class GameScreenController extends Thread {
       window.setMinHeight(250);
       Label label = new Label(message);
       Button button = new Button("CLOSE");
-      button.setOnAction(e -> window.close());
-      VBox layout = new VBox(10);
+      button.setOnAction(new EventHandler<ActionEvent>() {
+                           @Override
+                           public void handle(ActionEvent actionEvent) {
+                             if (GameInformation.getInstance().getClientmatch().isOver()){
+                               try{
+                                 Main m = new Main();
+                                 m.changeScene("screens/mainMenu.fxml");
+                               }catch(IOException e){
+                                 e.printStackTrace();
+                               }
+                             }else{
+                               window.close();
+                             }
+                           }
+                         });
+          VBox layout = new VBox(10);
       layout.getChildren().addAll(label, button);
       layout.setAlignment(Pos.CENTER);
       Scene scene = new Scene(layout);

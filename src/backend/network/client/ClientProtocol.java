@@ -56,7 +56,6 @@ public class ClientProtocol extends Thread {
       this.out.writeObject(new ConnectMessage(this.username, clientPlayer));
       out.flush();
       out.reset();
-      System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
       this.match = match;
 
     } catch (IOException e) {
@@ -95,10 +94,8 @@ public class ClientProtocol extends Thread {
         if (message != null && lastMessage != null && !lastMessage.equals(message)) {
           switch (message.getMessageType()) {
             case CONNECTION_REFUSED:
-              System.out.println("Connection closed, since connection refused");
               ConnectionRefusedMessage connectionRefusedMessage =
                   (ConnectionRefusedMessage) message;
-              System.out.println(connectionRefusedMessage.getErrorMessage());
               disconnect();
               break;
 
@@ -155,9 +152,7 @@ public class ClientProtocol extends Thread {
               LobbyInformationMessage message1 = (LobbyInformationMessage) message;
               GameInformation.getInstance().getClientmatch().setPlayers(message1.getPlayers());
               GameInformation.getInstance().setPlayers(message1.getPlayers());
-              for (Player p : GameInformation.getInstance().getClientmatch().getPlayers()) {
-                System.out.print(p + " ");
-              }
+
               break;
 
             case SEND_POINTS:

@@ -95,15 +95,12 @@ public class ServerProtocol extends Thread {
           out.reset();
           disconnect();
         } else {
-          System.out.println("successful");
           this.clientName = from;
           Player player = ((ConnectMessage) message).getPlayer();
           server.addClient(player, this);
           if (GameInformation.getInstance().getServermatch().addPlayer(player)) {
-            System.out.print("player in game lol: ");
             for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
               if (p != null) {
-                System.out.print(p.getName() + " ");
               }
             }
           } else {
@@ -112,7 +109,6 @@ public class ServerProtocol extends Thread {
         }
 
       } else if (message.getMessageType() == MessageType.CONNECT_AI) {
-        System.out.println("new AI attempts to connect...");
         String from = message.getFrom();
         if (server.userExistsP(from)) {
           System.out.println("unsuccessful since already in lobby...");
@@ -123,28 +119,23 @@ public class ServerProtocol extends Thread {
           out.reset();
           disconnect();
         } else {
-          System.out.println("successful");
           this.clientName = from;
           PlayerAI aiPlayer = (PlayerAI) ((ConnectMessage) message).getPlayer();
           server.addClient(aiPlayer, this);
         }
 
       } else { // first message of client have to be connection message
-        System.out.println("server disconnected");
         disconnect();
       }
-      System.out.println("server connection established successfully, now running");
       while (running) {
         message = (Message) in.readObject();
         int id = 0;
         if (message != null && lastMessage != null && !lastMessage.equals(message)) {
           switch (message.getMessageType()) {
             case GET_ID:
-              System.out.println("ID's are gone. Ask Nils for questions");
               break;
 
             case DISCONNECT:
-              System.out.println("removing player");
               server.removeClient(message.getFrom());
               running = false;
               GameInformation.getInstance().getServermatch().removePlayer(message.getFrom());
@@ -152,7 +143,6 @@ public class ServerProtocol extends Thread {
               break;
 
             case PLACE_TILES:
-              System.out.println("receiving tiles");
               PlaceTilesMessage placeTilesMessage = (PlaceTilesMessage) message;
               GameInformation.getInstance()
                   .getServermatch()
@@ -198,7 +188,6 @@ public class ServerProtocol extends Thread {
               // Server sends the message to everyone
               TextMessage textMessage = (TextMessage) message;
               if (textMessage.getText() != null) {
-                System.out.println("Sending Text Message");
                 server.sendToAll(
                     // with a new Flag that means it has to be rendered in the chat area
                     new TextMessage(
