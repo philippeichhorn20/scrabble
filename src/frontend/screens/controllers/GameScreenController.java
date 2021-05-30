@@ -308,7 +308,7 @@ public class GameScreenController extends Thread{
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
         Bounds b = board.getCellBounds(i, j);
-        if (i == 0 || j == 0 || i == 15 || i == 16 || j == 15){
+        if (i == 0 || j == 0  || i == 16 ){
 
         }else{
         if (b.contains(e.getX(), e.getY())) {
