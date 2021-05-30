@@ -61,10 +61,6 @@ public class ClientMatch {
     this.scrabbleBoard = new ScrabbleBoard();
   }
 
-  public static int getRound() {
-    return round;
-  }
-
   /*
   @method yourTurn
   this method resets temporary variables of the scrabble board
@@ -228,6 +224,13 @@ puts all the tiles back on the players rack*/
     }
   }
 
+  /*
+performs the actions when the Game_Over message is received
+ */
+  public void endGame(){
+
+  }
+
   //extended getter and setterr
 /*
 @method shuffleTiles
@@ -237,7 +240,6 @@ sends tiles to server top shuffle
     waitingForShuffledTiles = true;
     protocol.sendToServer(new ShuffleTilesMessage(this.player.getName(), oldTiles));
   }
-
 
   public void addPointsToPlayer(int points) {
     this.players[this.currentPlayer].addPoints(points);
@@ -274,11 +276,12 @@ sends tiles to server top shuffle
     return isOver;
 
   }
+
+  //getter and setter
+
   public void setOver(boolean b){
     this.isOver = b;
   }
-
-  //getter and setter
 
   public void setPlayers(Player[] players){
     this.players = players;
@@ -364,6 +367,25 @@ sends tiles to server top shuffle
     return newTilesOnRack;
   }
 
+
+  public ArrayList<String> getTextMessages() {
+    return textMessages;
+  }
+
+  public void setTextMessages(ArrayList<String> textMessages) {
+    this.textMessages = textMessages;
+  }
+
+  public void setGameScreenController(
+      GameScreenController gameScreenController) {
+    this.timer.setGameScreenController(gameScreenController);
+    this.gameScreenController = gameScreenController;
+  }
+
+  public GameScreenController getGameScreenController() {
+    return gameScreenController;
+  }
+
   public void clearNewTilesOnRack(){
     this.newTilesOnRack = null;
   }
@@ -386,31 +408,5 @@ sends tiles to server top shuffle
 
   public void setDropTiles(boolean dropTiles) {
     this.dropTiles = dropTiles;
-  }
-
-  public ArrayList<String> getTextMessages() {
-    return textMessages;
-  }
-
-  public void setTextMessages(ArrayList<String> textMessages) {
-    this.textMessages = textMessages;
-  }
-
-  public void setGameScreenController(
-      GameScreenController gameScreenController) {
-    this.timer.setGameScreenController(gameScreenController);
-    this.gameScreenController = gameScreenController;
-  }
-
-  public GameScreenController getGameScreenController() {
-    return gameScreenController;
-  }
-
-  /*
-  performs the actions when the Game_Over message is received
-   */
-
-  public void endGame(){
-
   }
 }

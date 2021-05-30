@@ -46,6 +46,9 @@ public class ScrabbleBoard implements Serializable {
     this.scrabbleBoard = scrabbleBoard;
   }
 
+  /*
+  adds the premiusstatus to the respective fields
+  */
   public static Matchfield[][] setUpScrabbleBoard() {
     Matchfield[][] scrabbleBoard = new Matchfield[16][16];
     for (int x = 1; x < 16; x++) {
@@ -122,11 +125,10 @@ public class ScrabbleBoard implements Serializable {
     return scrabbleBoard;
   }
 
-  public static void main(String[] args) {
-    ScrabbleBoard board = new ScrabbleBoard();
-    board.printScrabbleBoard();
-  }
 
+  /*
+  checks weather a tile is on the center of the field. This is necessary for any valid move
+   */
   public static boolean hasTileOnCenterMatchfield(Tile[] tiles) {
     for (int x = 0; x < tiles.length; x++) {
       if (tiles[x].getY() == 8 && tiles[x].getY() == 8) {
@@ -136,6 +138,9 @@ public class ScrabbleBoard implements Serializable {
     return false;
   }
 
+  /*
+  returns an array of all the tiles that were placed
+   */
   public static ArrayList<Tile> getTilesOnBoard(Matchfield[][] board) {
     ArrayList<Tile> tilesOnBoard = new ArrayList<>();
     for (int x = 1; x < board.length; x++) {
@@ -149,22 +154,9 @@ public class ScrabbleBoard implements Serializable {
     return tilesOnBoard;
   }
 
-  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board) {
-    Matchfield[][] temporaryScrabbleBoard = board.clone();
-    for (int x = 0; x < tiles.length; x++) {
-      temporaryScrabbleBoard[tiles[x].getX()][tiles[x].getY()].setTile(tiles[x]);
-    }
-    return temporaryScrabbleBoard;
-  }
-
-  public Matchfield[][] getScrabbleBoard() {
-    return this.scrabbleBoard;
-  }
-
-  public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
-    this.scrabbleBoard = scrabbleBoard;
-  }
-
+  /*
+  prints the scrabbleboard in console
+   */
   public void printScrabbleBoard() {
     int count = 0;
     for (int y = 1; y < 16; y++) {
@@ -203,6 +195,9 @@ public class ScrabbleBoard implements Serializable {
 
   }
 
+  /*
+  prints edited words
+   */
   public void printEditedWords() {
     for (int i = 0; i < editedWords.size(); i++) {
       ArrayList<Tile> word = editedWords.get(i);
@@ -211,6 +206,9 @@ public class ScrabbleBoard implements Serializable {
     }
   }
 
+    /*
+  returns the tile which would be the starting letter of a word in vertical direction
+   */
   public Tile getLeadingTileVertical(Tile tile) {
     while (tile.getY() > 0 && scrabbleBoard[tile.getX()][tile.getY() - 1].hasTile()) {
       tile = scrabbleBoard[tile.getX()][tile.getY() - 1].getTile();
@@ -218,6 +216,9 @@ public class ScrabbleBoard implements Serializable {
     return tile;
   }
 
+  /*
+  returns the tile which would be the starting letter of a word in horizontal direction
+   */
   Tile getLeadingTileHorizontal(Tile tile) {
     while (tile.getX() > 0 && scrabbleBoard[tile.getX() - 1][tile.getY()].hasTile()) {
       tile = scrabbleBoard[tile.getX() - 1][tile.getY()].getTile();
@@ -225,6 +226,9 @@ public class ScrabbleBoard implements Serializable {
     return tile;
   }
 
+  /*
+   * returns the word which starts with the @param tile in the vertical direction as array list
+   *  */
   public ArrayList<Tile> getWordFromLeadingTileVertical(Tile tile) {
     ArrayList<Tile> word = new ArrayList<Tile>();
 
@@ -238,6 +242,9 @@ public class ScrabbleBoard implements Serializable {
 
   }
 
+  /*
+  * returns the word which starts with the @param tile in the horizontal direction as array list
+  *  */
   ArrayList<Tile> getWordFromLeadingTileHorizontal(Tile tile) {
     ArrayList<Tile> word = new ArrayList<Tile>();
     word.add(tile);
@@ -271,12 +278,6 @@ public class ScrabbleBoard implements Serializable {
     return new PlayFeedbackMessage(from, result, !inputInvalid);
   }
 
-  public boolean inputValudation(String[][] result) {
-    for (int x = 0; x < result[0].length; x++) {
-      return result[1][x] != "";
-    }
-    return true;
-  }
 
   /* this functions simulates the placing of a single tile on the board.
   It also stores it into the temporary list that keeps track of the current move
@@ -297,6 +298,10 @@ public class ScrabbleBoard implements Serializable {
     this.scrabbleBoard[tile.getX()][tile.getY()].setTile(null);
   }
 
+
+  /*
+  checks, if a word is already in the editedWords list by comparing the first two tiles
+   */
   public boolean isInEditedTiles(Tile tile) {
     for (int i = 0; i < editedWords.size(); i++) {
       int x = tile.getX();
@@ -318,7 +323,8 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /*
-  finishes its turn and submits all the words
+  finishes its turn and submits all the words.
+  See Scrabble test, for further information about the algorithm that finds coneected tiles
    */
   public PlayFeedbackMessage submitTiles(String from) {
     for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
@@ -434,6 +440,9 @@ public class ScrabbleBoard implements Serializable {
     // newTilesOfCurrentMove.clear();
   }
 
+  /*
+  this method drops the changed tiles
+   */
   public void dropChangedTiles() {
     this.editedWords.clear();
     Iterator<Tile> iterator = newTilesOfCurrentMove.iterator();
@@ -444,6 +453,9 @@ public class ScrabbleBoard implements Serializable {
     newTilesOfCurrentMove.clear();
   }
 
+  /*
+  this method gets the edited words as a string and can be used for debugging
+   */
   public String[] getEditedWordsAsString(boolean printIt) {
     String[] words = new String[editedWords.size()];
     for (int x = 0; x < words.length; x++) {
@@ -456,6 +468,27 @@ public class ScrabbleBoard implements Serializable {
       }
     }
     return words;
+  }
+
+
+
+
+  public static Matchfield[][] placeTiles(Tile[] tiles, Matchfield[][] board) {
+    Matchfield[][] temporaryScrabbleBoard = board.clone();
+    for (int x = 0; x < tiles.length; x++) {
+      temporaryScrabbleBoard[tiles[x].getX()][tiles[x].getY()].setTile(tiles[x]);
+    }
+    return temporaryScrabbleBoard;
+  }
+
+  //getter and setter
+
+  public Matchfield[][] getScrabbleBoard() {
+    return this.scrabbleBoard;
+  }
+
+  public void setScrabbleBoard(Matchfield[][] scrabbleBoard) {
+    this.scrabbleBoard = scrabbleBoard;
   }
 
   public ArrayList<Tile> getTilesOnScrabbleBoard() {
@@ -486,6 +519,16 @@ public class ScrabbleBoard implements Serializable {
     return tiles;
   }
 
+  /*
+  @author peichhor
+  this method finds out weather the tiles are placed properly.
+  For the tiles to be valid there always has to be a tile which is placed on the center matchfield
+  and all the words need to be connected to each other.
+
+  @explanation We solved this implementing a recursive algorithm.
+  Each tile adds their neighbouring tiles to the @variable discovered list. And then the new tile does the same
+
+   */
   public boolean wordIsConnectedToMiddle(Tile[] tiles) {
     Matchfield[][] temporaryScrabbleBoard = placeTiles(tiles, this.scrabbleBoard);
     ArrayList<Tile> tilesOnBoard = getTilesOnBoard(temporaryScrabbleBoard);
@@ -499,6 +542,11 @@ public class ScrabbleBoard implements Serializable {
     }
     return false;
   }
+
+
+  /*
+  this method looks in all 4 directions to find neighbouring tiles
+   */
 
   public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered) {
     if (tile.getY() < 15 && board[tile.getX()][tile.getY() + 1].hasTile()

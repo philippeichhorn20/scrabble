@@ -38,8 +38,8 @@ public class ServerMatch {
   private final TileBag tileBag = new TileBag();
   private final int round = 0;
   private final ScrabbleBoard scrabbleBoard;
-  private int currentPlayer = 0;
   private final Timer timer;
+  private int currentPlayer = 0;
   private Server server;
   private ServerProtocol protocol;
   private Player[] players = new Player[4];
@@ -135,7 +135,7 @@ public class ServerMatch {
       } else {
         PlayFeedbackMessage message = this.scrabbleBoard.submitTiles(from);
         if (message.isSuccessfulMove()) {
-          server.sendToAll( message);
+          server.sendToAll(message);
           server.sendOnlyTo(this.players[this.currentPlayer].name,
               new GetNewTilesMessage(this.players[this.currentPlayer].name,
                   this.drawNewTiles(tiles.length)));
@@ -209,9 +209,9 @@ public class ServerMatch {
     this.startAiProtocols();
     Player[] correctPlayer = new Player[4];
 
-    for(int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
       Player p = GameInformation.getInstance().getPlayers()[i];
-      if(p != null && p.getStatus() == Playerstatus.AI) {
+      if (p != null && p.getStatus() == Playerstatus.AI) {
         Player aiPlayer = new Player(GameInformation.getInstance().getPlayers()[i].getName(),
             GameInformation.getInstance().getPlayers()[i].getColor(),
             GameInformation.getInstance().getPlayers()[i].getGames(),
@@ -242,10 +242,15 @@ public class ServerMatch {
     // start game thread programmieren. Diese ruft das auf
     //server.sendToAll(new);
   }
-  public void startAiProtocols(){
-    for(Player p : this.players){
-      if(p!=null && p.getStatus()==Playerstatus.AI){
-        AIProtocol aiProtocol = new AIProtocol(ServerSettings.getLocalHostIp4Address(),ServerSettings.port,p.getName(),(PlayerAI) p);
+
+  /*
+  starts the protocols of the AIPLayers that were added
+   */
+  public void startAiProtocols() {
+    for (Player p : this.players) {
+      if (p != null && p.getStatus() == Playerstatus.AI) {
+        AIProtocol aiProtocol = new AIProtocol(ServerSettings.getLocalHostIp4Address(),
+            ServerSettings.port, p.getName(), (PlayerAI) p);
         aiProtocol.start();
         ((PlayerAI) p).setAiProtocol(aiProtocol);
       }
@@ -256,17 +261,21 @@ public class ServerMatch {
     server.sendToAllBut(from, new HistoryMessage(from, mess));
   }
 
+  /*
+  receives Tiles from Player in @param oldTiles. If the bag has less than 7 Tiles left, the old tiles will be
+  returned. Otherwise tiles are drawn from the bag and send back to the client
+   */
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
-    if (this.tileBag.size()>7) {
+    if (this.tileBag.size() > 7) {
       if (playerNum != currentPlayer) {
         System.out.println("Wrong player, at shuffle request");
       } else {
         Tile[] newTiles = this.players[playerNum].shuffleRack(oldTiles, this.tileBag);
-        for(Tile tile : newTiles){
+        for (Tile tile : newTiles) {
         }
-          server.sendOnlyTo(from,
-              new ReceiveShuffleTilesMessage("server", newTiles));
+        server.sendOnlyTo(from,
+            new ReceiveShuffleTilesMessage("server", newTiles));
 
       }
     } else {
@@ -288,12 +297,6 @@ public class ServerMatch {
     return -1;
   }
 
-  public void sendTurn() {
-    //schikct turn raus
-  }
-
-  //
-
   /*
 @method ends the match. It triggers the end of the thread, as well as different methods
  */
@@ -302,7 +305,7 @@ public class ServerMatch {
   }
 
   /*
-   @method runs constantly and manages the timer of the player of the current turn
+   @method finds out who is the next player in line and send the GameTurnMessages to the players
     */
   public void nextPlayer() {
     isFirstMove = false;
@@ -326,27 +329,24 @@ public class ServerMatch {
     }
   }
 
-
-  public void sendPlacedTilesToClients(Tile[] tiles) {
-    server.sendToAllBut(this.players[this.currentPlayer].name, new PlaceTilesMessage("server",
-        scrabbleBoard.lastPlacedTiles()));
-  }
-
   /*
-  send current player profiles to All (occures when somebody joins or leaves)
+  @return the winner, the player with the most points
    */
-  public void sendOutPlayerInfos(Player[] players) {
-    server.sendToAll(new LobbyInformationMessage("Host", players));
+  public Player getWinner() {
+    Player winner = this.players[0];
+    for (int x = 1; x < this.players.length; x++) {
+      if (players[x] != null) {
+        if (players[x].getScore() > winner.getScore()) {
+          winner = this.players[x];
+        }
+      }
+    }
+    return winner;
   }
 
   /*
-  send Game start information
-   */
-  public void itIsYourTurn() {
-  }
-
-  /*
-  @method runs constantly and manages the timer of the player of the current turn
+  @method send the information to the current player, that is time is up.
+  Now it is the next players turn
    */
   public void sendTimeIsUp() {
     this.server.sendOnlyTo(players[currentPlayer].getName(),
@@ -354,12 +354,15 @@ public class ServerMatch {
     this.nextPlayer();
   }
 
-
   /*
-  this function adds a player to the game. If all places are already occupied, the
-  function return false. this indicates, that the game is already full and the player cannot join
+  sends out a message to the players, if they have won or not
    */
+  public void gameOver() {
+    this.server.sendToAllBut(this.getWinner().getName(), new GameLooseMessage("server"));
+    this.server.sendOnlyTo(this.getWinner().getName(), new GameWinMessage("server"));
+  }
 
+  //getter and setter
 
   public ScrabbleBoard getScrabbleBoard() {
     return scrabbleBoard;
@@ -385,12 +388,6 @@ public class ServerMatch {
     this.currentPlayer = currentPlayer;
   }
 
-
-  public void gameOver() {
-    this.server.sendToAllBut(this.getWinner().getName(), new GameLooseMessage("server"));
-    this.server.sendOnlyTo(this.getWinner().getName(),new GameWinMessage("server"));
-  }
-
   public void incrementPointlessTurns() {
     pointlessTurns++;
   }
@@ -399,15 +396,5 @@ public class ServerMatch {
     return players;
   }
 
-  public Player getWinner(){
-    Player winner = this.players[0];
-    for(int x = 1; x < this.players.length; x++){
-      if(players[x] != null){
-        if(players[x].getScore() > winner.getScore()){
-          winner =this.players[x];
-        }
-      }
-    }
-    return winner;
-  }
+
 }
