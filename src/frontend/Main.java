@@ -59,7 +59,9 @@ public class Main extends Application {
     Parent root = FXMLLoader.load(getClass().getResource("screens/startingMenu.fxml"));
     primaryStage.setTitle("Scrabble Application");
     primaryStage.setScene(new Scene(root, 1080, 720));
+    GameInformation.getInstance().startMusic();
     primaryStage.show();
+    
   }
 
 
@@ -115,5 +117,6 @@ public class Main extends Application {
 
   public static void main(String[] args) {
     launch(args);
+    
   }
 }

@@ -1,5 +1,6 @@
 package backend.basic;
 
+import backend.music.Music;
 import frontend.MultiUserChat.Server.Chat;
 
 import frontend.screens.controllers.GameScreenController;
@@ -10,7 +11,12 @@ public final class GameInformation {
   private Player[] players = new Player[4];
   private ClientMatch clientmatch;
   private Chat chat = new Chat();
+  private Music music;
 
+  public void startMusic() {
+	  music = new Music();
+  }
+  
   public GameScreenController getGsc() {
     return gsc;
   }
