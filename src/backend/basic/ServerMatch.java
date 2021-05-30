@@ -21,15 +21,14 @@ import java.io.IOException;
 
 
 /**
+ * players: the players that are participating in the game * scrabbleboard: an instance of the
+ * physical scrabble board with some additions * to represent the actions of the current turn *
+ * tileBag the bag that conatins the tiles that were not pulled yet * currentPlayer conatins the
+ * number in the players array which * points at the player who's turn it is * roundNum number of
+ * the current round.
+ *
  * @author peichhor
  * @version 1.0
- * @param players: the players that are participating in the game
- * @param scrabbleboard: an instance of the physical scrabble board with some additions
- * to represent the actions of the current turn
- * @param tileBag the bag that conatins the tiles that were not pulled yet
- * @param currentPlayer conatins the number in the players array which
- * points at the player who's turn it is
- * @param roundNum number of the current round
  */
 
 
@@ -47,10 +46,10 @@ public class ServerMatch {
   private int pointlessTurns = 0;
 
   /**
-   *   @method ServerMatch
-   *   this constructor creates a game with a default scrabbleboard, tilebag and adds only the
-   *   hosting player to the game. Use addPlayer() to add up to 3 players afterwords
-   * @param s the server of the instance
+   * * ServerMatch this constructor creates a game with a default scrabbleboard, tilebag and * adds
+   * only the hosting player to the game. Use addPlayer() to add up to 3 players afterwords
+   *
+   * @param s       the server of the instance
    * @param players who has already joined
    */
   public ServerMatch(Server s, Player[] players) {
@@ -63,7 +62,8 @@ public class ServerMatch {
   }
 
   /**
-   * Constructor when players are not determined yet
+   * Constructor when players are not determined yet.
+   *
    * @param s the server instance
    */
   public ServerMatch(Server s) {
@@ -76,8 +76,9 @@ public class ServerMatch {
   }
 
   /**
-   *   adds a player in the next free spot in player array
-   * @param p
+   * adds a player in the next free spot in player array.
+   *
+   * @param p the player which need to be added
    * @return returns true if array is full
    */
   public boolean addPlayer(Player p) {
@@ -97,8 +98,9 @@ public class ServerMatch {
   }
 
   /**
-   * removes players from player array
-   * @param player
+   * removes players from player array.
+   *
+   * @param player the player that need to be removed
    */
   public void removePlayer(String player) {
     for (int x = 0; x < this.players.length; x++) {
@@ -111,48 +113,41 @@ public class ServerMatch {
 
 
   /**
-   * checks if tiles are left in the instances tile bag
-   * @return
+   * checks if tiles are left in the instances tile bag.
+   *
+   * @return weather tiles are left or not
    */
   public boolean checkTileBag() {
     return tileBag.size() > 0;
   }
 
-  /**
-   * @return the number from the current round
-   */
   public int getRound() {
     return round;
   }
 
-  /**
-   * @return the instances tile bag
-   */
   public TileBag getTileBag() {
     return tileBag;
   }
 
   /**
-   * starts the timer
+   * starts the timer.
    */
   public void startTimer() {
     this.timer.start();
   }
 
-  /**
-   * @return the player who's turn it is at the moment
-   */
   public String getPlayerName() {
     return this.players[currentPlayer].getName();
   }
 
   /**
-   *   this method handles incoming requests for Game Moves. It then returns a message with
-   *   the word explanation, if the input was successful. Otherwise a message is deployed
-   *   explaining why the move could not be performed
+   * this method handles incoming requests for Game Moves. It then returns a message with the word
+   * explanation, if the input was successful. Otherwise a message is deployed explaining why the
+   * move could not be performed
+   *
    * @param tiles the tiles that were placed
    * @param from  the user who placed the tiles
-   * @throws IOException
+   * @throws IOException if messages could not be send
    */
   public void placeTiles(Tile[] tiles, String from) throws IOException {
     //if (from.equals(Main.lobby.players[this.currentPlayer].name)) {
@@ -196,9 +191,10 @@ public class ServerMatch {
   }
 
   /**
-   * Method gives back field with random tiles with the size of needed tiles
-   * @param amountNeeded
-   * @return
+   * Method gives back field with random tiles with the size of needed tiles.
+   *
+   * @param amountNeeded the amount of new tiles needed
+   * @return the tiles that were drawn
    */
   public Tile[] drawNewTiles(int amountNeeded) {
     Tile[] newTiles = new Tile[amountNeeded];
@@ -208,16 +204,13 @@ public class ServerMatch {
     return newTiles;
   }
 
-  /**
-   * @return the timer
-   */
   public Timer getTimer() {
     return timer;
   }
 
 
   /**
-   * starts the matches, including starting the ai-protocolls
+   * starts the matches, including starting the ai-protocolls.
    */
 
   public void startMatch() {
@@ -250,13 +243,10 @@ public class ServerMatch {
       }
     }
     startTimer();
-    // server message, find out turn, send turn message && send wait message, send out initial tiles,
-    // start game thread programmieren. Diese ruft das auf
-    //server.sendToAll(new);
   }
 
   /**
-   *   starts the protocols of the AIPLayers that were added
+   * starts the protocols of the AIPLayers that were added.
    */
   public void startAiProtocols() {
     for (Player p : this.players) {
@@ -270,26 +260,27 @@ public class ServerMatch {
   }
 
   /**
-   * informes the other players about a new history message
-   * @param from
-   * @param mess
+   * informs the other players about a new history message.
+   *
+   * @param from the sender
+   * @param mess the content
    */
   public void sendHistoryMessage(String from, String mess) {
     server.sendToAllBut(from, new HistoryMessage(from, mess));
   }
 
   /**
+   * receives Tiles from Player in @param oldTiles. If the bag has less than 7 Tiles left, the old
+   * tiles will be returned. Otherwise tiles are drawn from the bag and send back to the client
    *
-   receives Tiles from Player in @param oldTiles. If the bag has less than 7 Tiles left, the old tiles will be
-   returned. Otherwise tiles are drawn from the bag and send back to the client
-   * @param from
-   * @param oldTiles
+   * @param from     the sender
+   * @param oldTiles the tiles that need to be swapped
    */
   public void shuffleTilesOfPlayer(String from, Tile[] oldTiles) {
     int playerNum = getPlayersNumber(from);
     if (this.tileBag.size() > 7) {
-      if (playerNum != currentPlayer) {
-      } else {
+      if (playerNum == currentPlayer) {
+
         Tile[] newTiles = this.players[playerNum].shuffleRack(oldTiles, this.tileBag);
         for (Tile tile : newTiles) {
         }
@@ -304,9 +295,10 @@ public class ServerMatch {
   }
 
   /**
-   *   @method finds the player with the inputted name.
-   * @param name
-   * @returnthe number of him in the array. If not found, returns -1
+   * finds the player with the inputted name.
+   *
+   * @param name the string that describes the player
+   * @return the number of him in the array. If not found, returns -1
    */
   public int getPlayersNumber(String name) {
     for (int x = 0; x < this.players.length; x++) {
@@ -318,7 +310,7 @@ public class ServerMatch {
   }
 
   /**
-   * finds out who is the next player in line and send the GameTurnMessages to the players
+   * finds out who is the next player in line and send the GameTurnMessages to the players.
    */
   public void nextPlayer() {
     isFirstMove = false;
@@ -342,6 +334,8 @@ public class ServerMatch {
   }
 
   /**
+   * finds the winner.
+   *
    * @return the winner, the player with the most points
    */
   public Player getWinner() {
@@ -357,7 +351,7 @@ public class ServerMatch {
   }
 
   /**
-   * sends out a message to the players, if they have won or not
+   * sends out a message to the players, if they have won or not.
    */
   public void gameOver() {
     this.server.sendToAllBut(this.getWinner().getName(), new GameLooseMessage("server"));
@@ -366,59 +360,43 @@ public class ServerMatch {
 
   //getter and setter
 
-  /**
-   * @return the scrabbleboard
-   */
+
   public ScrabbleBoard getScrabbleBoard() {
     return scrabbleBoard;
   }
 
-  /**
-   * @return getServer
-   */
+
   public Server getServer() {
     return server;
   }
 
-  /**
-   *
-   * @param server the server of current instance
-   */
+
   public void setServer(Server server) {
     this.server = server;
   }
 
-  /**
-   * @return the protocol
-   */
+
   public ServerProtocol getProtocol() {
     return protocol;
   }
 
-  /**
-   * @param protocol sets the protocol
-   */
+
   public void setProtocol(ServerProtocol protocol) {
     this.protocol = protocol;
   }
 
-  /**
-   * @param currentPlayer sets the number of the arry of the current player
-   */
   public void setCurrentPlayer(int currentPlayer) {
     this.currentPlayer = currentPlayer;
   }
 
   /**
-   * increments the pointless turns
+   * increments the pointless turns.
    */
   public void incrementPointlessTurns() {
     pointlessTurns++;
   }
 
-  /**
-   * @return the player array
-   */
+
   public Player[] getPlayers() {
     return players;
   }

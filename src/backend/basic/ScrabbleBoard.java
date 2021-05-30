@@ -231,7 +231,8 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   returns the tile which would be the starting letter of a word in horizontal direction.
+   * returns the tile which would be the starting letter of a word in horizontal direction.
+   *
    * @param tile the tile that the starting letter is looked for
    * @return the tile which would be the starting letter of a word in horizontal direction
    */
@@ -244,6 +245,7 @@ public class ScrabbleBoard implements Serializable {
 
   /**
    * returns the word which starts with the @param tile in the vertical direction as array list.
+   *
    * @param tile the starting
    * @return the array going from the tile to the right
    */
@@ -261,7 +263,8 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   * returns the word which starts with the @param tile in the horizontal direction as array list
+   * returns the word which starts with the @param tile in the horizontal direction as array list.
+   *
    * @param tile the starting
    * @return the array going from the tile to the bottom
    */
@@ -279,7 +282,8 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   checks all the current words and returns the word+description in the message of the word.
+   * checks all the current words and returns the word+description in the message of the word.
+   *
    * @param from the player that requests the word check
    * @return a message that holds all the collected information
    */
@@ -301,12 +305,12 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   * this functions simulates the placing of a single tile on the board.
-   *   It also stores it into the temporary list that keeps track of the current move.
+   * this functions simulates the placing of a single tile on the board. It also stores it into the
+   * temporary list that keeps track of the current move.
    *
    * @param newTile the tile
-   * @param x the index in the matchfield array
-   * @param y the index in the matchfield array
+   * @param x       the index in the matchfield array
+   * @param y       the index in the matchfield array
    */
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
@@ -317,8 +321,8 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   this function removes the Tile from the Board. It is only possible to remove it,
-   *   if it was placed in the current turn. It removes true if that is the case and false if it was not.
+   * this function removes the Tile from the Board. It is only possible to remove it, if it was
+   * placed in the current turn. It removes true if that is the case and false if it was not.
    *
    * @param tile the tile that need removal
    */
@@ -327,7 +331,7 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   checks, if a word is already in the editedWords list by comparing the first two tiles.
+   * checks, if a word is already in the editedWords list by comparing the first two tiles.
    *
    * @param tile the tile that is looked for
    * @return if it is the case or not
@@ -353,8 +357,8 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   finishes its turn and submits all the words.
-   *   See Scrabble test, for further information about the algorithm that finds coneected tiles.
+   * finishes its turn and submits all the words. See Scrabble test, for further information about
+   * the algorithm that finds coneected tiles.
    *
    * @param from the String determining the person who requestst the move
    * @return the PlayFeedBack message
@@ -425,10 +429,11 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   * method returns points of string. It does not take other tiles on the board into considertion (as its static)
+   * method returns points of string. It does not take other tiles on the board into considertion
+   * (as its static)
    *
    * @param tiles the tiles of which the points are calculated
-   * @return  the amount
+   * @return the amount
    */
   public int getPointsOfWord(ArrayList<Tile> tiles) {
     int pointsOfWord = 0;
@@ -469,7 +474,7 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   this method clears the fields that are only tracking the information of the current move.
+   * this method clears the fields that are only tracking the information of the current move.
    */
   public void nextTurn() {
     editedWords.clear();
@@ -477,7 +482,7 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   this method drops the changed tiles.
+   * this method drops the changed tiles.
    */
   public void dropChangedTiles() {
     this.editedWords.clear();
@@ -490,10 +495,10 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   *   this method gets the edited words as a string
+   * this method gets the edited words as a string.
    *
-   * @param printIt  can be used for debugging
-   * @return  the words as Strings
+   * @param printIt can be used for debugging
+   * @return the words as Strings
    */
   public String[] getEditedWordsAsString(boolean printIt) {
     String[] words = new String[editedWords.size()];
@@ -539,6 +544,11 @@ public class ScrabbleBoard implements Serializable {
     this.newTilesOfCurrentMove = newTilesOfCurrentMove;
   }
 
+  /**
+   * returns th tiles that were placed last.
+   *
+   * @return the tiles
+   */
   public Tile[] lastPlacedTiles() {
     Tile[] tiles = new Tile[this.newTilesOfCurrentMove.size()];
     for (int x = 0; x < this.newTilesOfCurrentMove.size(); x++) {
@@ -547,27 +557,16 @@ public class ScrabbleBoard implements Serializable {
     return tiles;
   }
 
-  /*
-  @author peichhor
-  this method finds out weather the tiles are placed properly.
-  For the tiles to be valid there always has to be a tile which is placed on the center matchfield
-  and all the words need to be connected to each other.
-
-  @explanation We solved this implementing a recursive algorithm.
-  Each tile adds their neighbouring tiles to the @variable discovered list. And then the new tile does the same
-
-   */
 
   /**
-   * this method finds out weather the tiles are placed properly.
-   *   For the tiles to be valid there always has to be a tile which is placed on the center matchfield
-   *   and all the words need to be connected to each other.
+   * this method finds out weather the tiles are placed properly. For the tiles to be valid there
+   * always has to be a tile which is placed on the center matchfield and all the words need to be
+   * connected to each other. We solved this implementing a recursive algorithm. Each tile adds
+   * their * neighbouring tiles to the @variable discovered list. And then the new tile does the
+   * same.
    *
-   *
-   @explanation We solved this implementing a recursive algorithm.
-   Each tile adds their neighbouring tiles to the @variable discovered list. And then the new tile does the same
    * @param tiles the new tiles of the move
-   * @return  if the tales were placed properly (ignoring content)
+   * @return if the tales were placed properly (ignoring content)
    */
   public boolean wordIsConnectedToMiddle(Tile[] tiles) {
     Matchfield[][] temporaryScrabbleBoard = placeTiles(tiles, this.scrabbleBoard);
@@ -585,10 +584,10 @@ public class ScrabbleBoard implements Serializable {
 
 
   /**
-   *   this method looks in all 4 directions to find neighbouring tiles
+   * this method looks in all 4 directions to find neighbouring tiles.
    *
-   * @param tile The tile of which neighbouring tiles are searched for
-   * @param board the board in which the tiles are
+   * @param tile              The tile of which neighbouring tiles are searched for
+   * @param board             the board in which the tiles are
    * @param alreadyDiscovered the tiles that were already dicovered
    */
   public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered) {
