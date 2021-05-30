@@ -4,17 +4,23 @@ import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*
-Message (used when player demands new tiles or placed tiles) provides player needed amount of tiles.
-@author jawinter
+/**
+ * A message that is sent when a player demands new tiles, either at the start of the game or when
+ * he places a word and needs new tiles.
+ *
+ * @author jawinter
  */
 public class GetNewTilesMessage extends Message {
 
   private Tile[] tiles;
-  /*
-  @param newTiles will be filled with the tiles given to player
+
+  /**
+   * Constructor.
+   *
+   * @param from The name of the player that sends the message.
+   * @param newTiles The new tiles.
    */
-  public GetNewTilesMessage(String from,Tile[] newTiles) {
+  public GetNewTilesMessage(String from, Tile[] newTiles) {
     super(MessageType.GET_NEW_TILES, from);
     tiles = newTiles;
   }

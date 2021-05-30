@@ -3,9 +3,11 @@ package backend.network.messages.time;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*Message which alerts the player for a specific time event
-* @author nilschae
-* @version 1.0*/
+/**
+ * A message which alerts the player of a specific time event.
+ *
+ * @author nilschae
+ */
 public class TimeAlertMessage extends Message {
   TimeAlertType alertType;
 

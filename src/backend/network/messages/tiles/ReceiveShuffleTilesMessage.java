@@ -4,9 +4,11 @@ import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*Message which gives the player the shuffeld tiles
+/**
+ * A message which provides the player with new tiles from the bag.
+ *
  * @author nilschae
- * @version 1.0*/
+ */
 public class ReceiveShuffleTilesMessage extends Message {
 
   Tile[] rack;

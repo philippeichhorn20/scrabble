@@ -4,9 +4,11 @@ import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*Message which prompt the server to send to every client which tiles a player placed
-* @author nilschae
- * @version 1.0*/
+/**
+ * A message which sends an array of tiles that were placed by the player to other players.
+ *
+ * @author nilschae
+ */
 public class PlaceTilesMessage extends Message {
 
   Tile[] tiles;

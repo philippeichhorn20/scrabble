@@ -4,9 +4,10 @@ import backend.basic.Tile;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*
-Message, which sends random tiles to player at the start of the game.
-@author jawinter
+/**
+ * Message, which sends random tiles to player at the start of the game.
+ *
+ * @author jawinter
  */
 public class SendStartRackMessage extends Message {
 

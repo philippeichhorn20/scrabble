@@ -3,9 +3,12 @@ package backend.network.messages.time;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*Message to prompt the client to synchronize it's time a player has left for a turn, with the server
-* @author nilschae
-* @version 1.0*/
+/**
+ * Message to prompt the client to synchronize the time a player has left in their turn with the
+ * server's.
+ *
+ * @author nilschae
+ */
 public class TimeSyncMessage extends Message {
   double time;
 

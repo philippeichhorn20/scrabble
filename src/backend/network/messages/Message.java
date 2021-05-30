@@ -2,17 +2,21 @@ package backend.network.messages;
 
 import java.io.Serializable;
 
-/*
-* @author nilschae
-* @description standart message for every other message to extend
-* */
+/**
+ * Standard message that mostly gets overwritten by specific message types.
+ *
+ * @author nilschae
+ */
 public class Message implements Serializable {
   private MessageType messageType;
   private String from;
 
-  /*Constructor for standard message
-  * @param type the type of message which will be send
-  * @param from a string to save from who the message is*/
+  /**
+   * Standard constructor.
+   *
+   * @param type Type of the message.
+   * @param from The name of the user who sent the message.
+   */
   public Message(MessageType type, String from) {
     this.messageType = type;
     this.from = new String(from);
@@ -30,8 +34,7 @@ public class Message implements Serializable {
     return this.from;
   }
 
-  public void setFrom(String name){
+  public void setFrom(String name) {
     this.from = name;
   }
-
 }

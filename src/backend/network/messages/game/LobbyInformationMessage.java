@@ -4,11 +4,11 @@ import backend.basic.Player;
 import backend.network.messages.Message;
 import backend.network.messages.MessageType;
 
-/*
-Message which gives the information about players to the clients
- * @author peichhor
- * @version 1.0*/
-
+/**
+ * A message which sends out information about the players in the lobby.
+ *
+ * @author nilschae
+ */
 public class LobbyInformationMessage extends Message {
 
   Player[] players;
