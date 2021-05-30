@@ -17,6 +17,7 @@ import backend.network.server.ServerSettings;
 import backend.tutorial.TutorialInformation;
 import backend.tutorial.TutorialMatch;
 import frontend.Main;
+import frontend.screens.controllertools.LetterSetHolder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -407,6 +408,7 @@ public class LobbyScreenController {
 
   // Method switches to playboard and starts game.
   public void startGame(ActionEvent e) throws IOException {
+    GameInformation.getInstance().getServermatch().getTileBag().importBagSet(LetterSetHolder.getInstance().getTileSet());
     GameInformation.getInstance().getServermatch().startMatch();
     WordCheckDB.importTextToDB();
     Main m = new Main();
@@ -580,6 +582,7 @@ public class LobbyScreenController {
 
       window.setScene(scene);
       window.show();
+      LetterSetHolder.getInstance().setWindow(window);
     }
   }
 }

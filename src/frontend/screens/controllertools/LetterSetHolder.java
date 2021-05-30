@@ -2,18 +2,20 @@ package frontend.screens.controllertools;
 
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
+import javafx.stage.Stage;
 
 /*@autor nilschae
 * @version 1.0
 * @description a class to hold different variables for the letter set screen*/
 public final class LetterSetHolder {
+  private Stage window;
   private final static LetterSetHolder INSTANCE = new LetterSetHolder();
   private Tile[] tileSet;
   private char[] possibleLetters = {
       'A','B','C','D','E','F','G',
       'H','I','J','K','L','M','N',
       'O','P','Q','R','S','T','U',
-      'V','W','X','Y','Z'
+      'V','W','X','Y','Z', ' '
   };
 
   private LetterSetHolder() {
@@ -96,5 +98,13 @@ public final class LetterSetHolder {
 
   public void setTileSet(Tile[] tileSet) {
     this.tileSet = tileSet;
+  }
+
+  public void setWindow(Stage window) {
+    this.window = window;
+  }
+
+  public Stage getWindow() {
+    return window;
   }
 }
