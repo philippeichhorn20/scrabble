@@ -150,7 +150,7 @@ public class TutorialScreenController extends Thread{
       if(turnTiles[i] != null) {
         if(turnTiles[i].getX() == 6 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'H') {
 
-        } else if(turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'A') {
+        } else if(turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'E') {
 
         } else if(turnTiles[i].getX() == 8 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'L') {
 
@@ -184,13 +184,6 @@ public class TutorialScreenController extends Thread{
     new FadeIn(tileBagIcon).play();
   }
 
-  public void sendWinBox() {
-    AlertBox.display("You win!", "Congratulations,you have won!");
-  }
-
-  public void sendLostBox() {
-    AlertBox.display("Game over", "The game is over, you have lost");
-  }
 
   public void setTile(Tile tile, int x, int y) {
     Rectangle newTile = new Rectangle(36, 36, Color.web("#ffe5b4"));
@@ -277,20 +270,8 @@ public class TutorialScreenController extends Thread{
                 turnTiles[setTiles++] = newTile;
               }
               tilesOnBoard[i][j]=true;
-              GameInformation.getInstance().getClientmatch().getScrabbleBoard().placeTile(newTile, newTile.getX(), newTile.getY());
               Tile[] tt = {newTile};
-           //   try{
-                System.out.println(GameInformation.getInstance().getClientmatch());
-                System.out.println(GameInformation.getInstance().getClientmatch().getProtocol());
-            //    GameInformation.getInstance().getClientmatch().getProtocol().sendToServer(new PlaceTilesMessage(Main.profile.getName(),tt));
-             // }catch(IOException ie){
-            //    ie.printStackTrace();
-           //   }
 
-              //  while (placedTiles[ite] != null) {
-              //  ite++;
-              //  }
-              //  placedTiles[ite] = newTile;
               resetColor();
             }
             }
@@ -301,14 +282,27 @@ public class TutorialScreenController extends Thread{
   }
 
   public void resetTiles(ActionEvent e) {
+    if (tileBagIcon.isMouseTransparent()) {
+      new FadeIn(tileBagIcon).play();
+      tileBagIcon.setMouseTransparent(false);
+    }
     ObservableList<Node> boardChildren = board.getChildren();
     Node[] nodesToRemove;
-    nodesToRemove = new Node[14];
+    nodesToRemove = new Node[boardChildren
+        .size()]; //vorher 14 //es konnen nicht mehr als 14 entfernt werden anyway.
     int i = 0;
-    tileBagIcon.setVisible(true);
     for (Node node : boardChildren) {
+      int x = 0;
+      int y = 0;
       if (node.getId().equals("tile" + turn)) {
         nodesToRemove[i] = node;
+        if (node instanceof Rectangle) {
+          Rectangle r = (Rectangle) node;
+          Rectangle help = (Rectangle) r.getUserData();
+          x = (int) help.getX();
+          y = (int) help.getY();
+        }
+        tilesOnBoard[x][y] = false;
         i++;
       }
     }
