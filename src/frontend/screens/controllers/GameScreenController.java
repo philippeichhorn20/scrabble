@@ -156,7 +156,7 @@ public class GameScreenController extends Thread{
   public void endTurnB(){
 
     if (this.match.getScrabbleBoard().getNewTilesOfCurrentMove().size() > 0) {
-   //   activateServerMessage("Checking the word...");
+      activateServerMessage("Checking the word...");
     }
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
   }
@@ -233,12 +233,14 @@ public class GameScreenController extends Thread{
 
   public void shuffleTiles(){
     new FadeOut(tileBagIcon).play();
+    tileBagIcon.setMouseTransparent(true);
     Tile[] oldTiles = tilesToSwitch();
     if(oldTiles.length == 0){
       showServerMessage("Please chose Tiles!", 2);
     }else{
       try {
         this.match.shuffleTiles(oldTiles);
+        GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
       }catch(IOException ioe){
         showServerMessage("Could not perform action, try again", 2);
       }
@@ -247,13 +249,11 @@ public class GameScreenController extends Thread{
 
   public void newTilesFromBag(Tile[] tiles) {
     for(Tile tile: tiles){
-      System.out.println("lol: "+tile.getLetter());
     }
     resetColor();
     int i = 0;
     for (GraphicTile gt : gtiles) {
       if (!gt.isVisiblee() || gt.toDraw()) {
-        System.out.println(tiles[i].getLetter());
         gt.getLetter().setText(String.valueOf(tiles[i].getLetter()));
         gt.setTile(tiles[i]);
         gt.setVisiblee(true);
@@ -596,7 +596,6 @@ public class GameScreenController extends Thread{
                   match.setInvalidMove(true);
                 }
                 if(match.getNewTilesOnRack() != null){
-                  System.out.println("new racks are being4ttruehj "+ match.getNewTilesOnRack().length);
                   newTilesFromBag(match.getNewTilesOnRack());
                   match.clearNewTilesOnRack();
                 }
