@@ -34,9 +34,12 @@ public class ServerProtocol extends Thread {
   private Player[] players;
   private Message lastMessage = new Message(MessageType.GAME_WIN, "");
 
-  /*A Constructor which connects a client with the server
-   * @param client the client that is being communicated with
-   * @param server the server which manages the communication*/
+  /**
+   * A Constructor which connects a client with the server.
+   *
+   * @param client the client that is being communicated with.
+   * @param server the server which manages the communication.
+   */
   ServerProtocol(Socket client, Server server) {
     this.socket = client;
     this.server = server;
@@ -51,7 +54,6 @@ public class ServerProtocol extends Thread {
 
   private void sendInitialObjects() throws IOException {}
 
-
   /**
    * Send a message to the client of this server protocol.
    *
@@ -64,9 +66,7 @@ public class ServerProtocol extends Thread {
     out.reset();
   }
 
-  /**
-   * Closes streams and sockets.
-   */
+  /** Closes streams and sockets. */
   public void disconnect() {
     running = false;
     try {
@@ -76,9 +76,7 @@ public class ServerProtocol extends Thread {
     }
   }
 
-  /**
-   * Starts the server protocol, waits for messages.
-   */
+  /** Starts the server protocol, waits for messages. */
   public void run() {
     Message message;
     try {
@@ -99,10 +97,8 @@ public class ServerProtocol extends Thread {
           Player player = ((ConnectMessage) message).getPlayer();
           server.addClient(player, this);
           if (GameInformation.getInstance().getServermatch().addPlayer(player)) {
-            for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
-              if (p != null) {
-              }
-            }
+            for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {}
+
           } else {
             Message connectionRefused = new ConnectionRefusedMessage("server", "Lobby is full!");
           }
@@ -231,6 +227,11 @@ public class ServerProtocol extends Thread {
     }
   }
 
+  /**
+   * getter for the server.
+   *
+   * @return server.
+   */
   public Server getServer() {
     return server;
   }

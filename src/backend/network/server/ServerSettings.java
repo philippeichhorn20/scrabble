@@ -6,24 +6,31 @@ import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+/**
+ * Setting for the server.
+ *
+ * @author aus Stackoverflow
+ */
 public class ServerSettings {
   public static final int port = 8421;
+
   /**
-   * @author
-   * aus Stackoverflow
+   * getter for the local host ip.
+   *
+   * @return ip4 as String.
    */
-  public static String getLocalHostIp4Address()  {
-    String hostIP = "";
+  public static String getLocalHostIp4Address() {
+    String hostIp = "";
     try {
 
       InetAddress candidateAddress = null;
       for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
-          ifaces.hasMoreElements();) {
+          ifaces.hasMoreElements(); ) {
 
         NetworkInterface iface = ifaces.nextElement();
 
         for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
-            inetAddrs.hasMoreElements();) {
+            inetAddrs.hasMoreElements(); ) {
 
           InetAddress inetAddr = inetAddrs.nextElement();
 
@@ -47,13 +54,9 @@ public class ServerSettings {
       }
       return jdkSuppliedAddress.getHostAddress();
     } catch (Exception e) {
-      //UnknownHostException unknownHostException =
-      //new UnknownHostException("Failed to determine LAN address: " + e);
-      //unknownHostException.initCause(e);
-      //throw unknownHostException;
-      hostIP = "unknown (failed to determine LAN address)";
+
+      hostIp = "unknown (failed to determine LAN address)";
     }
-    return hostIP;
+    return hostIp;
   }
 }
-

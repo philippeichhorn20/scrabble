@@ -16,25 +16,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/*
- * @author nilschae
- * @version 1.0
- * @description A Server which manage the transfer of data between users
+/**
+ * A Server which distributes information through the game.
  *
- * */
+ * @author nilschae
+ */
 public class Server {
 
   private ServerSocket serverSocket;
 
+  /**
+   * check if server run.
+   *
+   * @return returns boolean if server running.
+   */
   public boolean isRunning() {
     return running;
   }
 
   private boolean running;
   private boolean newPlayerAdded = false;
-  private final HashMap<String, ServerProtocol> clients = new HashMap<>(); // map with serverprotocols of clients
+  private final HashMap<String, ServerProtocol> clients =
+      new HashMap<>(); // map with serverprotocols of clients
   ServerMatch serverMatch;
-
 
   /*
    * remove clients together with the matching protocol
@@ -45,37 +49,47 @@ public class Server {
 
   /* look up if the user already exist in the clients hashmap
    * @param name the name of the user which get looked up
-  * @return if the user exist true if not false  */
-  public synchronized boolean userExistsP(String name){
+   * @return if the user exist true if not false  */
+  public synchronized boolean userExistsP(String name) {
     return this.clients.containsKey(name);
   }
 
-  /*Add a client to the clients hashmap with a given serverprotocol
-  * @param name the name of the client to add
-  * @param protocol the server protocol which gets added with the name */
+  /**
+   * Adds a client to the server.
+   *
+   * @param player which will be added to the server.
+   * @param protocol for the player joined.
+   */
   public synchronized void addClient(Player player, ServerProtocol protocol) {
     this.clients.put(player.getName(), protocol);
-    //@TODO linecomment
-    if(player.getStatus()!=Playerstatus.AI) {
+    // @TODO linecomment
+    if (player.getStatus() != Playerstatus.AI) {
       GameInformation.getInstance().addPlayer(player);
       newPlayerAdded = true;
       System.out.println(player.getName() + " : new client has been added");
     }
   }
-  public void playerAdded(){
-    newPlayerAdded=false;
+
+  public void playerAdded() {
+    newPlayerAdded = false;
   }
-  public boolean newPlayer(){
+
+  public boolean newPlayer() {
     return newPlayerAdded;
   }
 
-  /*@return give back a set of clients which are connected to the server*/
+  /**
+   * Get the names of the connected clients.
+   *
+   * @return hashset which contains clients.
+   */
   public synchronized Set<String> getClientNames() {
     Set<String> clientNames = this.clients.keySet();
-    return new HashSet<String>(clientNames); // create a new list, because keySet modifications also modify map
+    return new HashSet<String>(
+        clientNames); // create a new list, because keySet modifications also modify map
   }
 
-  // setup server +  listen to connection requests from clients
+  /** listen if a user try to connect. */
   public void listen() {
     running = true;
     try {
@@ -90,11 +104,10 @@ public class Server {
         clientConnectionThread.start();
       }
 
-
-    } catch (BindException e){
+    } catch (BindException e) {
       e.printStackTrace();
-    }catch (IOException e) {
-      if (serverSocket != null && serverSocket.isClosed()){
+    } catch (IOException e) {
+      if (serverSocket != null && serverSocket.isClosed()) {
         System.out.println("Server stopped.");
       } else {
         e.printStackTrace();
@@ -102,20 +115,23 @@ public class Server {
     }
   }
 
-  /*Send a message to a list of clients
-  * @param clientNames names of the clients which receive the message
-  * @param message the message which have to be sent*/
-  private synchronized void sendTo(List<String> clientNames, Message message){
+  /**
+   * Send a message to a client.
+   *
+   * @param clientNames the names which the server send to.
+   * @param message which should be sent.
+   */
+  private synchronized void sendTo(List<String> clientNames, Message message) {
     List<String> cFails = new ArrayList<String>();
     for (String cName : clientNames) {
       try {
-        if(!clients.containsKey(cName)){
-          System.out.println(cName+" does not exist in client array");
+        if (!clients.containsKey(cName)) {
+          System.out.println(cName + " does not exist in client array");
         }
         ServerProtocol c = clients.get(cName);
-        //if(c!=null) {
-          c.sendToClient(message);
-        //}
+        // if(c!=null) {
+        c.sendToClient(message);
+        // }
 
       } catch (IOException e) {
         e.printStackTrace();
@@ -130,16 +146,17 @@ public class Server {
     }
   }
 
-
   /* send a message to all clients which are connected to the server
    * @param message the message which gets send to all clients*/
   public void sendToAll(Message message) {
     sendTo(new ArrayList<String>(getClientNames()), message);
   }
 
-  /* send a message to one clients which is connected to the server
-   * @param message the message which gets send to all clients
-   * @param recipient the client who the message is send to
+  /**
+   * send a message to one clients which is connected to the server.
+   *
+   * @param message the message which gets send to all clients.
+   * @param recepient the client who the message is send to.
    */
   public void sendOnlyTo(String recepient, Message message) {
     ArrayList<String> list = new ArrayList<>();
@@ -147,19 +164,21 @@ public class Server {
     sendTo(list, message);
   }
 
-  /* sends a message to all clients except one client
-   * @param name the name of the client who don't get the message
-   * @param message the message which gets send*/
+  /**
+   * sends a message to all clients except one client.
+   *
+   * @param name the name of the client who don't get the message.
+   * @param message the message which gets send.
+   */
   public void sendToAllBut(String name, Message message) {
     synchronized (this.clients) {
       Set<String> senderList = getClientNames();
       senderList.remove(name);
       sendTo(new ArrayList<String>(senderList), message);
     }
-
   }
 
-  /* stops the server and send a ShutDownMessage to every client*/
+  /** stops the server and send a ShutDownMessage to every client. */
   public void stopServer() {
     running = false;
     sendToAll(new ShutDownMessage("Server"));
@@ -172,9 +191,7 @@ public class Server {
         System.exit(0);
       }
     }
-
   }
-
 
   public ServerMatch getServerMatch() {
     return serverMatch;
