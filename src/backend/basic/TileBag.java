@@ -103,29 +103,36 @@ public class TileBag implements Serializable {
    * This returns the tile which got drawn and delete it out of the bag.
    * @return the drawn tile*/
   public Tile drawTile() {
-    Tile[] newTileSet = new Tile[this.bag.length - 1];
+    if(this.bag.length-1>=0){
+      Tile[] newTileSet = new Tile[this.bag.length - 1];
+      Random randomNumber = new Random();
+      int randomPosition = randomNumber.nextInt(bag.length);
 
-    Random randomNumber = new Random();
-    int randomPosition = randomNumber.nextInt(bag.length);
+      Tile drawnTile = this.bag[randomPosition];
 
-    Tile drawnTile = this.bag[randomPosition];
+      for (int i = 0;
+          i < this.bag.length;
+          i++) { // Go through the whole bag and copy it in the new set without the drawn tile
+        if (i < randomPosition) {
+          newTileSet[i] = this.bag[i];
 
-    for (int i = 0;
-        i < this.bag.length;
-        i++) { // Go through the whole bag and copy it in the new set without the drawn tile
-      if (i < randomPosition) {
-        newTileSet[i] = this.bag[i];
+        } else if (i == randomPosition) {
 
-      } else if (i == randomPosition) {
-
-      } else {
-        newTileSet[i - 1] = this.bag[i];
+        } else {
+          newTileSet[i - 1] = this.bag[i];
+        }
       }
+
+      this.bag = newTileSet; // Override the bag with the new tileset
+
+      return drawnTile;
+    }else{
+      System.out.println("NOTHING LEFT IN THE BAG");
+      return null;
     }
 
-    this.bag = newTileSet; // Override the bag with the new tileset
 
-    return drawnTile;
+
   }
 
   /*Add a new tile to the bag and increase the size of the bag by one

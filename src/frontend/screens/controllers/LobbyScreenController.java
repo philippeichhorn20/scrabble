@@ -459,7 +459,9 @@ public class LobbyScreenController {
                           public void run() {
 
                             Player[] players = GameInformation.getInstance().getPlayers();
-
+                            if (players[0]==null){
+                              setPlayer1NotExist();
+                            }
                             if (players[0] != null && !player1Name.getText().toLowerCase()
                                 .equals(players[0].getName())) {
                               String name = players[0].getName().substring(0, 1).toUpperCase()
@@ -471,6 +473,9 @@ public class LobbyScreenController {
                               statPlayer1Wins.setText("" + players[0].getWins());
                               new Flash(player1Name).play();
                               new Flash(player1Icon).play();
+                            }
+                            if (players[1]==null){
+                              setPlayer2NotExist();
                             }
                             if (players[1] != null && !player2Name.getText().toLowerCase()
                                 .equals(players[1].getName())) {
@@ -499,6 +504,9 @@ public class LobbyScreenController {
                               new Flash(player3Icon).play();
 
                             }
+                            if (players[2]==null){
+                              setPlayer3NotExist();
+                            }
                             if (players[3] != null && !player4Name.getText().toLowerCase()
                                 .equals(players[3].getName())) {
                               String name = players[3].getName().substring(0, 1).toUpperCase()
@@ -513,6 +521,10 @@ public class LobbyScreenController {
                               new Flash(player4Icon).play();
 
                             }
+                            if(players[3]==null){
+                              setPlayer4NotExist();
+                            }
+
                           }
                         });
                   }
