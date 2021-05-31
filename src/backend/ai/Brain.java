@@ -6,7 +6,7 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.basic.Tile.Tilestatus;
 import backend.basic.Timer;
-import backend.basic.WordCheckDB;
+import backend.basic.WordCheckDb;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -35,10 +35,10 @@ public class Brain implements Serializable {
    */
   public Brain(ScrabbleBoard board) {
     this.scrabbleBoard = board;
-    if (WordCheckDB.newUrl == null) {
-      readDictionary(WordCheckDB.urlTxt);
+    if (WordCheckDb.newUrl == null) {
+      readDictionary(WordCheckDb.urlTxt);
     } else {
-      readDictionary(WordCheckDB.newUrl);
+      readDictionary(WordCheckDb.newUrl);
     }
   }
 

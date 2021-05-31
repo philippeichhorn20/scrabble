@@ -275,7 +275,7 @@ public class ScrabbleBoard implements Serializable {
     ArrayList<String> result = new ArrayList<>();
     String[] words = getEditedWordsAsString(false);
     for (int i = 0; i < words.length; i++) {
-      String resultString = WordCheckDB.findWord(words[i]);
+      String resultString = WordCheckDb.findWord(words[i]);
       if (resultString == "") {
         result.add(words[i] + " - word isn't valid");
         inputInvalid = true;

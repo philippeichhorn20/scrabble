@@ -14,7 +14,6 @@ import backend.basic.Player;
 import backend.basic.Tile;
 import backend.basic.TileBag;
 import backend.network.messages.text.HistoryMessage;
-import backend.network.messages.tiles.SendStartRackMessage;
 import frontend.Main;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -222,7 +221,7 @@ public class GameScreenController extends Thread {
   }
 
   private void drawTiles() {
-    showServerMessage("Exchanging your tiles", 3);
+    activateServerMessage("Exchanging your tiles");
     resetColor();
     int i = 0;
     new FadeOut(tileBagIcon).play();
@@ -296,19 +295,34 @@ public class GameScreenController extends Thread {
    *
    * @param tiles This is called from the shared tile bag from client match.
    */
-  private void newTilesFromBag(Tile[] tiles) {
+  public void newTilesFromBag(Tile[] tiles) {
     resetColor();
     int i = 0;
-    for (GraphicTile gt : gtiles) {
-      if (!gt.isVisiblee() || gt.toDraw()) {
-        gt.getLetter().setText(String.valueOf(tiles[i].getLetter()));
-        gt.setTile(tiles[i]);
-        gt.setVisiblee(true);
-        i++;
+    if (GameInformation.getInstance().getClientmatch()
+        .isStartingTiles()) {
+      int d = 0;
+      for (Tile t : match.getNewTilesOnRack()) {
+        gtiles[d].setTile(t);
+        gtiles[d].setLetter(t.getLetter());
+        gtiles[d].getLetter().setFont(new Font(20));
+        gtiles[d].setXy(402 + (d * 36), 644);
+        gtiles[d].getLetter().setVisible(true);
+        d++;
+      }
+      match.setStartingTiles(false);
+    }else{
+      for (GraphicTile gt : gtiles) {
+        if (!gt.isVisiblee() || gt.toDraw()) {
+          gt.getLetter().setText(String.valueOf(tiles[i].getLetter()));
+          gt.setTile(tiles[i]);
+          gt.setVisiblee(true);
+          i++;
+        }
       }
     }
     deactivateServerMessage();
   }
+
 
   /**
    * Shows a server message onto the screen.
@@ -766,7 +780,6 @@ public class GameScreenController extends Thread {
                             }
                             if (!match.checkTimer()
                                 && Main.profile.getName().equals(match.getCurrentPlayerName())) {
-                              endTurnFunction();
                             }
                             if (match.dropTiles()) {
                               resetTilesAction();
@@ -832,14 +845,6 @@ public class GameScreenController extends Thread {
         for (int j = 0; j < 16; j++) {
           tilesOnBoard[i][j] = false;
         }
-      }
-      try {
-        GameInformation.getInstance()
-            .getClientmatch()
-            .getProtocol()
-            .sendToServer(new SendStartRackMessage(Main.profile.getName(), new Tile[7]));
-      } catch (IOException ie) {
-        ie.printStackTrace();
       }
       Player[] players = GameInformation.getInstance().getPlayers();
       if (players[0] != null) {

@@ -17,7 +17,7 @@ import java.util.HashSet;
  *
  * @author peichhor
  */
-public class WordCheckDB {
+public class WordCheckDb {
 
   public static HashSet<String> words = new HashSet<String>();
 
@@ -36,7 +36,7 @@ public class WordCheckDB {
     } catch (final ClassNotFoundException e) {
       System.out.println(e);
     }
-    try (Connection conn = DriverManager.getConnection(WordCheckDB.url)) {
+    try (Connection conn = DriverManager.getConnection(WordCheckDb.url)) {
       java.sql.Statement stm = conn.createStatement();
       word = word.toUpperCase();
       stm.execute("PRAGMA  case_sensitive_like = true;");
@@ -115,7 +115,7 @@ public class WordCheckDB {
       System.out.println(e);
     }
     int count = 0;
-    try (Connection conn = DriverManager.getConnection(WordCheckDB.url)) {
+    try (Connection conn = DriverManager.getConnection(WordCheckDb.url)) {
       java.sql.Statement stm = conn.createStatement();
       stm.execute("DROP TABLE IF EXISTS words;");
       stm.execute("CREATE TABLE words (word VARCHAR(100) PRIMARY KEY)");

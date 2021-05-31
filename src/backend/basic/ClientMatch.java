@@ -86,7 +86,7 @@ public class ClientMatch {
   public void yourTurn() {
     yourTurnNum = currentPlayer;
     scrabbleBoard.nextTurn();
-    this.writeTextMessages("You have 2 minutes to make a move!");
+    this.writeTextMessages("Make your move now!");
   }
 
   /**
@@ -98,7 +98,6 @@ public class ClientMatch {
 
   public void turnTaken(int nowTurn) {
     timer.setTimerTo(nowTurn);
-    System.out.println("infinity loop");
     currentPlayer = nowTurn;
     if (players[currentPlayer].getName()
         .equals(GameInformation.getInstance().getProfile().getName())) {
@@ -224,7 +223,6 @@ public class ClientMatch {
       System.out.println(this.textMessages.size());
       System.out.println(message.getFeedback());
       this.textMessages.addAll(message.getFeedback());
-      System.out.println("poop " + this.textMessages.size());
       removeChangedTiles();
     }
   }

@@ -128,10 +128,8 @@ public class TileBag implements Serializable {
       }
 
       this.bag = newTileSet; // Override the bag with the new tileset
-      System.out.println("Tilebag size: " + this.size() + ": " + drawnTile.getLetter());
       return drawnTile;
     } else {
-      System.out.println("NOTHING LEFT IN THE BAG");
       return null;
     }
   }

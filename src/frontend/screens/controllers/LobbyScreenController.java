@@ -9,7 +9,7 @@ import backend.basic.GameInformation;
 import backend.basic.Player;
 import backend.basic.Player.Playerstatus;
 import backend.basic.ServerMatch;
-import backend.basic.WordCheckDB;
+import backend.basic.WordCheckDb;
 import backend.network.client.ClientProtocol;
 import backend.network.messages.game.LobbyInformationMessage;
 import backend.network.server.Server;
@@ -415,7 +415,7 @@ public class LobbyScreenController {
       try {
         if (selectedFile != null
             && Files.probeContentType(selectedFile.toPath()).equals("text/plain")) {
-          WordCheckDB.loadNewLibrary(selectedFile.getPath());
+          WordCheckDb.loadNewLibrary(selectedFile.getPath());
           loadLibraryButton.setText("Success");
         } else {
           GameScreenController.AlertBox.display(
@@ -503,7 +503,7 @@ public class LobbyScreenController {
         .getTileBag()
         .importBagSet(LetterSetHolder.getInstance().getTileSet());
     GameInformation.getInstance().getServermatch().startMatch();
-    WordCheckDB.importTextToDB();
+    WordCheckDb.importTextToDB();
     Main m = new Main();
     m.changeScene("screens/gameScreen.fxml");
     GameInformation.getInstance().getChat().display();
