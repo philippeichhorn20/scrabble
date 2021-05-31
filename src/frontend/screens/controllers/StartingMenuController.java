@@ -16,9 +16,10 @@ import javafx.scene.input.MouseEvent;
  */
 public class StartingMenuController {
 
-  @FXML private Button newProfileButton;
-  @FXML private Button existProfileButton;
-
+  @FXML
+  private Button newProfileButton;
+  @FXML
+  private Button existProfileButton;
 
 
   /**

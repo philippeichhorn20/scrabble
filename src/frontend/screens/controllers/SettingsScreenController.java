@@ -16,58 +16,67 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.MediaPlayer;
 
-/*
- *
- @author vivanova
- * @version 1.0
+/**
+ * @author jawinter This is an empty controller for the settings screen. Here the user should be
+ * able to change multiple settings concerning the game. (Ideas: sound, different backgrounds,
+ * dictionary used)
  */
-
-/*
-   This is an empty controller for the settings screen. Here the user should be able to change multiple settings concerning the game.
-   (Ideas: sound, different backgrounds, dictionary used)
-   
-*/
 public class SettingsScreenController {
-	@FXML
-	private Button backButton;
-	@FXML
-	private static Slider volumeKey;
-	@FXML
-	private RadioButton radioButton;
-	@FXML
-	private TextArea textArea;
-	@FXML
-	private Button aboutButton;
 
-	public static MediaPlayer player;
+  @FXML
+  private RadioButton radioButton;
+  @FXML
+  private TextArea textArea;
+  @FXML
+  private Button aboutButton;
 
-	public void goBack(ActionEvent e) throws IOException {
-		Main m = new Main();
-		m.changeScene("screens/mainMenu.fxml");
-	}
-	
-	public void goAbout(ActionEvent e) throws IOException{
-		Main m = new Main();
-		m.changeScene("screens/about.fxml");
-	}
+  public static MediaPlayer player;
 
-	public void radioButton(ActionEvent e) throws IOException {
+  /**
+   * Handles click on back button
+   *
+   * @param e
+   * @throws IOException
+   */
+  public void goBack(ActionEvent e) throws IOException {
+    Main m = new Main();
+    m.changeScene("screens/mainMenu.fxml");
+  }
 
-		player = GameInformation.getInstance().getMusic().getPlayer();
-		boolean isSelected = radioButton.isSelected();
+  /**
+   * Change scene to about
+   * @param e click
+   * @throws IOException
+   */
+  public void goAbout(ActionEvent e) throws IOException {
+    Main m = new Main();
+    m.changeScene("screens/about.fxml");
+  }
 
-		if (isSelected == true) {
-			player.play();
-		} else {
-			player.pause();
-		}
+  /**
+   * Handles click on radio Button
+   *
+   * @param e click
+   * @throws IOException
+   */
+  public void radioButton(ActionEvent e) throws IOException {
+    player = GameInformation.getInstance().getMusic().getPlayer();
+    boolean isSelected = radioButton.isSelected();
 
-	}
-	
-	@FXML
-	public void initialize() {
+    if (isSelected == true) {
+      player.play();
+    } else {
+      player.pause();
+    }
 
-		player = GameInformation.getInstance().getMusic().getPlayer();
+  }
+
+  /**
+   * Sets up settings look
+   */
+  public void initialize() {
+
+    player = GameInformation.getInstance().getMusic().getPlayer();
 //		player.setVolume(0.3);
 //		volumeKey.setValue(player.getVolume() * 100);
 //		volumeKey.valueProperty().addListener(new InvalidationListener() {
@@ -79,7 +88,7 @@ public class SettingsScreenController {
 //			}
 //
 //		});
-	}
-	
-	
+  }
+
+
 }

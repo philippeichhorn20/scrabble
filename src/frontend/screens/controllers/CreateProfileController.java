@@ -17,16 +17,23 @@ import javafx.scene.text.Text;
 
 /**
  * Controller for the create profile screen. Here the user can create a new profile. The class
- * checks if the profile is already in the database; if it isn't the profile is created successfully
+ * checks if the profile is already in the database; if it isn't the profile is created
+ * successfully
  *
  * @author mkolinsk
  */
 public class CreateProfileController {
-  @FXML private TextField username;
-  @FXML private Button enterButton;
-  @FXML private Text nameText;
-  @FXML private Text wrongText;
-  @FXML private Button backButton;
+
+  @FXML
+  private TextField username;
+  @FXML
+  private Button enterButton;
+  @FXML
+  private Text nameText;
+  @FXML
+  private Text wrongText;
+  @FXML
+  private Button backButton;
 
   boolean noNewNameAdded;
   String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
@@ -66,7 +73,9 @@ public class CreateProfileController {
     m.changeScene("screens/startingMenu.fxml");
   }
 
-  /** Checks if the profile with the given name already exists in the database. */
+  /**
+   * Checks if the profile with the given name already exists in the database.
+   */
   private void check() {
     String name = username.getText();
     name = name.trim();

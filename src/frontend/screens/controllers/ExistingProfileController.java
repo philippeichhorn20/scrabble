@@ -21,18 +21,31 @@ import javafx.scene.input.MouseEvent;
  * @author mkolinsk
  */
 public class ExistingProfileController {
-  @FXML private Button button00;
-  @FXML private Button button01;
-  @FXML private Button button02;
-  @FXML private Button button03;
-  @FXML private Button button10;
-  @FXML private Button button11;
-  @FXML private Button button12;
-  @FXML private Button button13;
-  @FXML private Button backButton;
-  @FXML private ImageView nextButton;
-  @FXML private ImageView lastPageButton;
-  @FXML private Label wrongProfileText;
+
+  @FXML
+  private Button button00;
+  @FXML
+  private Button button01;
+  @FXML
+  private Button button02;
+  @FXML
+  private Button button03;
+  @FXML
+  private Button button10;
+  @FXML
+  private Button button11;
+  @FXML
+  private Button button12;
+  @FXML
+  private Button button13;
+  @FXML
+  private Button backButton;
+  @FXML
+  private ImageView nextButton;
+  @FXML
+  private ImageView lastPageButton;
+  @FXML
+  private Label wrongProfileText;
 
   public String profile;
   private boolean first = true;
@@ -61,7 +74,7 @@ public class ExistingProfileController {
     lastPageButton.setVisible(true);
     // nextButton.setVisible(false);
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13
+        button00, button01, button02, button03, button10, button11, button12, button13
     };
     String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
     int i = 0;
@@ -102,7 +115,7 @@ public class ExistingProfileController {
     nextButton.setVisible(true);
     currentPage--;
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13
+        button00, button01, button02, button03, button10, button11, button12, button13
     };
     String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
     int i = 0;
@@ -171,7 +184,7 @@ public class ExistingProfileController {
   private void loadProfiles() {
 
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13
+        button00, button01, button02, button03, button10, button11, button12, button13
     };
     String jdbcUrl = "jdbc:sqlite:src/resources/profilesdb.db";
     int i = 0;
@@ -207,7 +220,7 @@ public class ExistingProfileController {
 
   private void clear() {
     Button[] buttonNames = {
-      button00, button01, button02, button03, button10, button11, button12, button13
+        button00, button01, button02, button03, button10, button11, button12, button13
     };
     for (int i = 0; i < 8; i++) {
       buttonNames[i].setText("");

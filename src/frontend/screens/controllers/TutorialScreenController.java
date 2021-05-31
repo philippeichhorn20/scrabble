@@ -46,44 +46,60 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/*
-   @author nilschae
-*/
-public class TutorialScreenController extends Thread{
-  @FXML private Rectangle tile1;
-  @FXML private Rectangle tile2;
-  @FXML private Rectangle tile3;
-  @FXML private Rectangle tile4;
-  @FXML private Rectangle tile5;
-  @FXML private Rectangle tile6;
-  @FXML private Rectangle tile7;
-  @FXML private Button backButton;
-  @FXML private Text text1;
-  @FXML private Text text2;
-  @FXML private Text text3;
-  @FXML private Text text4;
-  @FXML private Text text5;
-  @FXML private Text text6;
-  @FXML private Text text7;
-  @FXML private Label name1;
-  @FXML private Label name2;
-  @FXML private Label name3;
-  @FXML private Label name4;
-  @FXML private Label nameScore1;
-  @FXML private Label nameScore2;
-  @FXML private Label nameScore3;
-  @FXML private Label nameScore4;
-  @FXML private GridPane board;
-  @FXML private Button boun;
-  @FXML private AnchorPane scoreboard;
-  @FXML private Label currPlayer;
-  @FXML private Label time;
-  @FXML private AnchorPane pane;
-  @FXML private ImageView tileBagIcon;
-  @FXML private Button resetTilesButton;
-  @FXML private Label currPlayerText;
-  Player currentPlayer = new Player(Main.profile.getName(),"Red",Main.profile.getGames(), Main.profile
-      .getWins(), Playerstatus.WAIT);
+/**
+ * @author nilschae Controller for tutorial
+ */
+public class TutorialScreenController extends Thread {
+
+  @FXML
+  private Rectangle tile1;
+  @FXML
+  private Rectangle tile2;
+  @FXML
+  private Rectangle tile3;
+  @FXML
+  private Rectangle tile4;
+  @FXML
+  private Rectangle tile5;
+  @FXML
+  private Rectangle tile6;
+  @FXML
+  private Rectangle tile7;
+  @FXML
+  private Text text1;
+  @FXML
+  private Text text2;
+  @FXML
+  private Text text3;
+  @FXML
+  private Text text4;
+  @FXML
+  private Text text5;
+  @FXML
+  private Text text6;
+  @FXML
+  private Text text7;
+  @FXML
+  private Label nameScore1;
+  @FXML
+  private Label nameScore2;
+  @FXML
+  private Label nameScore3;
+  @FXML
+  private Label nameScore4;
+  @FXML
+  private GridPane board;
+  @FXML
+  private AnchorPane pane;
+  @FXML
+  private ImageView tileBagIcon;
+  @FXML
+  private Button resetTilesButton;
+  @FXML
+  private Label currPlayerText;
+  Player currentPlayer = new Player(Main.profile.getName(), "Red", Main.profile.getGames(),
+      Main.profile
+          .getWins(), Playerstatus.WAIT);
   private TutorialInformation tutorialInformation = TutorialInformation.getInstance();
   private ScrabbleBoard scrabbleBoard = new ScrabbleBoard();
   private Tile[] placedTiles;
@@ -94,20 +110,30 @@ public class TutorialScreenController extends Thread{
   private int setTiles = 0;
 
 
-
   private boolean setUpDone = false;
   private int totalNumberOfTiles = 0;
-  @FXML private Label history1;
-  @FXML private Label history2;
-  @FXML private Label history3;
-  @FXML private Label history4;
-  @FXML private Label history5;
-  @FXML private Label history6;
-  @FXML private Label history7;
-  @FXML private Label history8;
-  @FXML private Label history9;
-  @FXML private Label history10;
-  @FXML private Label history11;
+  @FXML
+  private Label history1;
+  @FXML
+  private Label history2;
+  @FXML
+  private Label history3;
+  @FXML
+  private Label history4;
+  @FXML
+  private Label history5;
+  @FXML
+  private Label history6;
+  @FXML
+  private Label history7;
+  @FXML
+  private Label history8;
+  @FXML
+  private Label history9;
+  @FXML
+  private Label history10;
+  @FXML
+  private Label history11;
   private Label[] history = new Label[11];// = {history1,history2,history3,history4,history5,history6,history7,history8,history9,history10,history11};
   private GraphicTile gtile1;
   private GraphicTile gtile2;
@@ -119,42 +145,76 @@ public class TutorialScreenController extends Thread{
   private GraphicTile[] gtiles = new GraphicTile[7];
   private int turn = 0;
 
+  /**
+   * Handles click on back button. Goes back to main menu.
+   *
+   * @throws IOException
+   */
   public void goBack() throws IOException {
     Main m = new Main();
     m.changeScene("screens/mainMenu.fxml");
   }
 
+  /**
+   * Handles click on settings button.Opens setttings screen.
+   *
+   * @param e
+   * @throws IOException
+   */
   public void goSettings(MouseEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/settingsScreen.fxml");
   }
 
+  /**
+   * Method gets bounds for tile
+   *
+   * @param e click
+   */
   public void getBounds(ActionEvent e) {
     Tile tile = new Tile('c', 5);
     setTile(tile, 5, 7);
   }
+
   int timInt = 0;
+
+  /**
+   * Update something i guess
+   *
+   * @param e click
+   */
   public void update(MouseEvent e) {
     // Player[] players = match.getPlayers();
     // currPlayer.setText(players[match.getCurrentPlayer()].getName());
 
-
-
   }
+
   int fdg = 1;
+
+  /**
+   * Handles click on endTurn button. Checks what user has done
+   *
+   * @param e click
+   * @throws IOException
+   */
   public void endTurn(ActionEvent e) throws IOException {
     boolean correctMove = true;
-    for(int i = 0; i < 5; i++) {
-      if(turnTiles[i] != null) {
-        if(turnTiles[i].getX() == 6 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'H') {
+    for (int i = 0; i < 5; i++) {
+      if (turnTiles[i] != null) {
+        if (turnTiles[i].getX() == 6 && turnTiles[i].getY() == 8
+            && turnTiles[i].getLetter() == 'H') {
 
-        } else if(turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'E') {
+        } else if (turnTiles[i].getX() == 7 && turnTiles[i].getY() == 8
+            && turnTiles[i].getLetter() == 'E') {
 
-        } else if(turnTiles[i].getX() == 8 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'L') {
+        } else if (turnTiles[i].getX() == 8 && turnTiles[i].getY() == 8
+            && turnTiles[i].getLetter() == 'L') {
 
-        } else if(turnTiles[i].getX() == 9 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'L') {
+        } else if (turnTiles[i].getX() == 9 && turnTiles[i].getY() == 8
+            && turnTiles[i].getLetter() == 'L') {
 
-        } else if(turnTiles[i].getX() == 10 && turnTiles[i].getY() == 8 && turnTiles[i].getLetter() == 'O') {
+        } else if (turnTiles[i].getX() == 10 && turnTiles[i].getY() == 8
+            && turnTiles[i].getLetter() == 'O') {
 
         } else {
           correctMove = false;
@@ -164,16 +224,20 @@ public class TutorialScreenController extends Thread{
       }
     }
 
-    if(correctMove) {
+    if (correctMove) {
       TutorialInformation.getInstance().getTutorialMatch().endFlag();
     } else {
       resetTiles(e);
-      for(int i = 0; i < 5; i++) {
+      for (int i = 0; i < 5; i++) {
         turnTiles[i] = null;
       }
     }
   }
-  private void endTurnB(){
+
+  /**
+   * Other method to implement other alternative to endTurn
+   */
+  private void endTurnB() {
     turn++;
     drawTiles();
     tileBagIcon.setVisible(true);
@@ -182,7 +246,13 @@ public class TutorialScreenController extends Thread{
     new FadeIn(tileBagIcon).play();
   }
 
-
+  /**
+   * Sets tile on board
+   *
+   * @param tile Tile to place
+   * @param x    coordinate
+   * @param y    coordinate
+   */
   public void setTile(Tile tile, int x, int y) {
     Rectangle newTile = new Rectangle(36, 36, Color.web("#ffe5b4"));
     newTile.setStroke(Color.BLACK);
@@ -193,10 +263,18 @@ public class TutorialScreenController extends Thread{
     board.add(gt, x, y);
   }
 
+  /**
+   * Drwas tiles for player.
+   *
+   * @param e
+   */
   public void getNewTiles(MouseEvent e) {
     drawTiles();
   }
 
+  /**
+   * Draws tiles for player.
+   */
   private void drawTiles() {
     resetColor();
     for (GraphicTile gt : gtiles) {
@@ -223,6 +301,11 @@ public class TutorialScreenController extends Thread{
     }
   }
 
+  /**
+   * Sets tile on board.
+   *
+   * @param e
+   */
   public void setTileOnBoard(MouseEvent e) {
     for (int i = 0; i < 17; i++) {
       for (int j = 0; j < 16; j++) {
@@ -271,7 +354,6 @@ public class TutorialScreenController extends Thread{
                 placeTilesList.add(newTile);
                 tilesOnBoard[i][j] = true;
 
-
                 resetColor();
               }
             }
@@ -281,6 +363,11 @@ public class TutorialScreenController extends Thread{
     }
   }
 
+  /**
+   * Resets tiles. For example player wants to put other word or maid mistake.
+   *
+   * @param e click
+   */
   public void resetTiles(ActionEvent e) {
     if (tileBagIcon.isMouseTransparent()) {
       new FadeIn(tileBagIcon).play();
@@ -293,7 +380,7 @@ public class TutorialScreenController extends Thread{
     for (Node node : boardChildren) {
       int x = 0;
       int y = 0;
-      if (node.getId()==null){
+      if (node.getId() == null) {
 
       } else {
 
@@ -324,6 +411,11 @@ public class TutorialScreenController extends Thread{
     nodesToRemove = null;
   }
 
+  /**
+   * Increases visual representation of picked tile.
+   *
+   * @param e
+   */
   public void highlightTile(MouseEvent e) {
     Rectangle tile = (Rectangle) e.getSource();
     if (e.isControlDown()) {
@@ -360,8 +452,15 @@ public class TutorialScreenController extends Thread{
       }
     }
   }
+
   private int keyIterator = 0;
-  public void highlightTileKey(KeyEvent e){
+
+  /**
+   * Highlights Tile
+   *
+   * @param e
+   */
+  public void highlightTileKey(KeyEvent e) {
     if (e.getCode().equals(KeyCode.D)) {
       boolean allInvis = true;
       for (int i = 0; i < 7; i++) {
@@ -387,12 +486,18 @@ public class TutorialScreenController extends Thread{
           keyIterator = 0;
         }
       }
-      }
+    }
   }
-  private void newHistoryMessage(String mess){
+
+  /**
+   * Can be used to set history messages
+   *
+   * @param mess string for the message
+   */
+  private void newHistoryMessage(String mess) {
     boolean full = false;
-    for (int i = 0;i<=10;i++){
-     if (history[i].getText().equals("")){
+    for (int i = 0; i <= 10; i++) {
+      if (history[i].getText().equals("")) {
         history[i].setText(mess);
         new FadeIn(history[i]).play();
         full = true;
@@ -400,26 +505,38 @@ public class TutorialScreenController extends Thread{
       }
 
     }
-    if (!full){
+    if (!full) {
       String help = history[10].getText();
-      for (int i = 0;i<=9;i++){
-        history[i].setText(history[i+1].getText());
+      for (int i = 0; i <= 9; i++) {
+        history[i].setText(history[i + 1].getText());
       }
       history[10].setText(mess);
       new FadeIn(history[10]).play();
 
     }
   }
-  private boolean checkNextVisible(){
-    if (keyIterator >= 7){
+
+  /**
+   * Checks whether next is visible
+   *
+   * @return true if is visible
+   */
+  private boolean checkNextVisible() {
+    if (keyIterator >= 7) {
       keyIterator = 0;
     }
-    if (gtiles[keyIterator].isVisiblee()){
+    if (gtiles[keyIterator].isVisiblee()) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
+
+  /**
+   * Sets up whole board
+   *
+   * @param e
+   */
   public void setUp(MouseEvent e) {
     if (!setUpDone) {
       Thread taskThread = new Thread(new Runnable() {
@@ -427,23 +544,26 @@ public class TutorialScreenController extends Thread{
         public void run() {
           int progress = 100;
           while (!TutorialInformation.getInstance().getTutorialMatch().isOver()) {
-            try{
+            try {
               Thread.sleep(1000);
-            }catch(InterruptedException ie){
+            } catch (InterruptedException ie) {
               ie.printStackTrace();
             }
             progress -= 1;
-            if (progress <= 0){
+            if (progress <= 0) {
               break;
             }
             final double reportedProgress = progress;
             Platform.runLater(new Runnable() {
               @Override
               public void run() {
-                if(tutorialInformation.getTutorialMatch().getStartFlag()) {
+                if (tutorialInformation.getTutorialMatch().getStartFlag()) {
                   for (int i = 0; i < 7; i++) {
-                    gtiles[i].setTile(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]);
-                    gtiles[i].getLetter().setText(String.valueOf(TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i].getLetter()));
+                    gtiles[i].setTile(
+                        TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]);
+                    gtiles[i].getLetter().setText(String.valueOf(
+                        TutorialInformation.getInstance().getTutorialMatch().tutorialRackTiles[i]
+                            .getLetter()));
                     gtiles[i].getLetter().setFont(new Font(20));
                     gtiles[i].setXy(402 + (i * 36), 644);
                     gtiles[i].getLetter().setVisible(true);
@@ -453,65 +573,74 @@ public class TutorialScreenController extends Thread{
 
                   welcomeAlert.setTitle(tutorialInformation.getTutorialMatch().welcomeContentTitel);
                   welcomeAlert.setHeaderText(null);
-                  welcomeAlert.setContentText(tutorialInformation.getTutorialMatch().welcomeContentText);
+                  welcomeAlert
+                      .setContentText(tutorialInformation.getTutorialMatch().welcomeContentText);
 
                   TutorialInformation.getInstance().getTutorialMatch().setStartFlag(false);
 
                   Optional<ButtonType> result = welcomeAlert.showAndWait();
-                  if (result.get() == ButtonType.OK){
+                  if (result.get() == ButtonType.OK) {
                     tutorialInformation.getTutorialMatch().highligthTiles();
 
-                    for(int i = 0; i < 5; i++){
+                    for (int i = 0; i < 5; i++) {
                       gtiles[i].getRec().setFill(Color.RED);
                     }
                   }
 
-                } else if(tutorialInformation.getTutorialMatch().getHighligthTilesFlag()) {
+                } else if (tutorialInformation.getTutorialMatch().getHighligthTilesFlag()) {
                   Alert higlitedTilesAlert = new Alert(AlertType.INFORMATION);
 
-                  higlitedTilesAlert.setTitle(tutorialInformation.getTutorialMatch().highlightedTilesTitle);
+                  higlitedTilesAlert
+                      .setTitle(tutorialInformation.getTutorialMatch().highlightedTilesTitle);
                   higlitedTilesAlert.setHeaderText(null);
-                  higlitedTilesAlert.setContentText(tutorialInformation.getTutorialMatch().higlightedTilesContentText);
+                  higlitedTilesAlert.setContentText(
+                      tutorialInformation.getTutorialMatch().higlightedTilesContentText);
 
                   TutorialInformation.getInstance().getTutorialMatch().setHighligthTilesFlag(false);
 
                   Optional<ButtonType> result = higlitedTilesAlert.showAndWait();
-                  if (result.get() == ButtonType.OK){
+                  if (result.get() == ButtonType.OK) {
                     tutorialInformation.getTutorialMatch().highlightScrabbleboardPosition();
 
-                    for(int i = 0; i < 5; i++) {
-                      Rectangle highligth = new Rectangle(36,36,Color.RED);
-                      board.add(highligth,6 + i, 8);
+                    for (int i = 0; i < 5; i++) {
+                      Rectangle highligth = new Rectangle(36, 36, Color.RED);
+                      board.add(highligth, 6 + i, 8);
                     }
 
                   }
 
-                } else if(tutorialInformation.getTutorialMatch().getHighlightScrabbleboardPositionFlag()) {
+                } else if (tutorialInformation.getTutorialMatch()
+                    .getHighlightScrabbleboardPositionFlag()) {
                   Alert highligthScrabbleboardPositionAlert = new Alert(AlertType.INFORMATION);
 
-                  highligthScrabbleboardPositionAlert.setTitle(tutorialInformation.getTutorialMatch().highligthScrabbleboardPositionTitle);
+                  highligthScrabbleboardPositionAlert.setTitle(
+                      tutorialInformation.getTutorialMatch().highligthScrabbleboardPositionTitle);
                   highligthScrabbleboardPositionAlert.setHeaderText(null);
-                  highligthScrabbleboardPositionAlert.setContentText(tutorialInformation.getTutorialMatch().highligthScrabbleboardPositionContentText);
+                  highligthScrabbleboardPositionAlert.setContentText(tutorialInformation
+                      .getTutorialMatch().highligthScrabbleboardPositionContentText);
 
-                  TutorialInformation.getInstance().getTutorialMatch().setHighlightScrabbleboardPositionFlag(false);
+                  TutorialInformation.getInstance().getTutorialMatch()
+                      .setHighlightScrabbleboardPositionFlag(false);
                   Optional<ButtonType> result = highligthScrabbleboardPositionAlert.showAndWait();
-                  if (result.get() == ButtonType.OK){
+                  if (result.get() == ButtonType.OK) {
 
                   }
 
 
-                } else if(tutorialInformation.getTutorialMatch().getEndFlag()) {
+                } else if (tutorialInformation.getTutorialMatch().getEndFlag()) {
                   try {
-                    Alert endGameAlert =  new Alert(AlertType.INFORMATION);
+                    Alert endGameAlert = new Alert(AlertType.INFORMATION);
 
-                    endGameAlert.setTitle(TutorialInformation.getInstance().getTutorialMatch().endGameTitle);
+                    endGameAlert.setTitle(
+                        TutorialInformation.getInstance().getTutorialMatch().endGameTitle);
                     endGameAlert.setHeaderText(null);
-                    endGameAlert.setContentText(TutorialInformation.getInstance().getTutorialMatch().endGameContentText);
+                    endGameAlert.setContentText(
+                        TutorialInformation.getInstance().getTutorialMatch().endGameContentText);
 
                     TutorialInformation.getInstance().getTutorialMatch().setEndFlag(false);
 
                     Optional<ButtonType> result = endGameAlert.showAndWait();
-                    if (result.get() == ButtonType.OK){
+                    if (result.get() == ButtonType.OK) {
                       goBack();
                       TutorialInformation.getInstance().getTutorialMatch().setGameOver();
                     }
@@ -528,16 +657,15 @@ public class TutorialScreenController extends Thread{
       taskThread.start();
       history[0] = history1;
       history[1] = history2;
-      history[2] =  history3;
+      history[2] = history3;
       history[3] = history4;
-      history[4] =  history5;
-      history[5] =  history6;
+      history[4] = history5;
+      history[5] = history6;
       history[6] = history7;
-      history[7] =  history8;
-      history[8] =  history9;
-      history[9] =  history10;
-      history[10] =  history11;
-
+      history[7] = history8;
+      history[8] = history9;
+      history[9] = history10;
+      history[10] = history11;
 
       gtiles[0] = new GraphicTile(tile1, text1);
       gtiles[1] = new GraphicTile(tile2, text2);
@@ -546,30 +674,34 @@ public class TutorialScreenController extends Thread{
       gtiles[4] = new GraphicTile(tile5, text5);
       gtiles[5] = new GraphicTile(tile6, text6);
       gtiles[6] = new GraphicTile(tile7, text7);
-      for (int i = 0;i<17;i++){
-        for (int j = 0;j<16;j++){
+      for (int i = 0; i < 17; i++) {
+        for (int j = 0; j < 16; j++) {
           tilesOnBoard[i][j] = false;
         }
       }
 
       //Player[] players = GameInformation.getInstance().getClientmatch().getPlayers();
 
-
-
-        currPlayerText.setText(this.currentPlayer.getName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
-        //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
-        //name2.setText(players[1].getName() + ":");
-        //name3.setText(players[2].getName() + ":");
-        //name4.setText(players[3].getName() + ":");
-        nameScore1.setText("0");
-        nameScore2.setText("0");
-        nameScore3.setText("0");
-        nameScore4.setText("0");
+      currPlayerText.setText(this.currentPlayer
+          .getName());//players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase());
+      //name1.setText(players[0].getName().substring(0,1).toUpperCase()+players[0].getName().substring(1).toLowerCase() + ":");
+      //name2.setText(players[1].getName() + ":");
+      //name3.setText(players[2].getName() + ":");
+      //name4.setText(players[3].getName() + ":");
+      nameScore1.setText("0");
+      nameScore2.setText("0");
+      nameScore3.setText("0");
+      nameScore4.setText("0");
 
       setUpDone = true;
     }
   }
 
+  /**
+   * Places sever tiles
+   *
+   * @param tiles array of tiles to place on board
+   */
   public void placeTiles(Tile[] tiles) {
     for (Tile t : tiles) {
       Rectangle rec = new Rectangle(36, 36, Color.web("ffe5b4"));
@@ -582,7 +714,13 @@ public class TutorialScreenController extends Thread{
       board.add(tileChar, t.getX(), t.getY());
     }
   }
-  public void placeTile(Tile tile){
+
+  /**
+   * PLace tile
+   *
+   * @param tile to place
+   */
+  public void placeTile(Tile tile) {
     Rectangle rec = new Rectangle(36, 36, Color.web("ffe5b4"));
     rec.setId("tiles");
     Text tileChar = new Text(" " + String.valueOf(tile.getLetter()).toUpperCase());
@@ -606,7 +744,17 @@ public class TutorialScreenController extends Thread{
     }
   }
 
+  /**
+   * Alertbox which can be called for information
+   */
   public static class AlertBox {
+
+    /**
+     * responsible for display
+     *
+     * @param title   title of display
+     * @param message string with information
+     */
     public static void display(String title, String message) {
       Stage window = new Stage();
       window.initModality(Modality.APPLICATION_MODAL);

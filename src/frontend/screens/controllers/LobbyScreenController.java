@@ -51,33 +51,60 @@ import javafx.stage.Stage;
  */
 public class LobbyScreenController {
 
-  @FXML private VBox joinGameView;
-  @FXML private ImageView lobbyView;
-  @FXML private VBox startGameView;
-  @FXML private TextField hostIP;
-  @FXML private TextField adressIP;
-  @FXML private Button startGameButton;
-  @FXML private Button loadLibraryButton;
-  @FXML private Text player1Name;
-  @FXML private Text player2Name;
-  @FXML private Text player3Name;
-  @FXML private Text player4Name;
-  @FXML private ImageView player1Icon;
-  @FXML private ImageView player2Icon;
-  @FXML private ImageView player3Icon;
-  @FXML private ImageView player4Icon;
-  @FXML private Label statPlayer1Name;
-  @FXML private Label statPlayer1Games;
-  @FXML private Label statPlayer1Wins;
-  @FXML private Label statPlayer2Name;
-  @FXML private Label statPlayer2Games;
-  @FXML private Label statPlayer2Wins;
-  @FXML private Label statPlayer3Name;
-  @FXML private Label statPlayer3Games;
-  @FXML private Label statPlayer3Wins;
-  @FXML private Label statPlayer4Name;
-  @FXML private Label statPlayer4Games;
-  @FXML private Label statPlayer4Wins;
+  @FXML
+  private VBox joinGameView;
+  @FXML
+  private ImageView lobbyView;
+  @FXML
+  private VBox startGameView;
+  @FXML
+  private TextField hostIP;
+  @FXML
+  private TextField adressIP;
+  @FXML
+  private Button startGameButton;
+  @FXML
+  private Button loadLibraryButton;
+  @FXML
+  private Text player1Name;
+  @FXML
+  private Text player2Name;
+  @FXML
+  private Text player3Name;
+  @FXML
+  private Text player4Name;
+  @FXML
+  private ImageView player1Icon;
+  @FXML
+  private ImageView player2Icon;
+  @FXML
+  private ImageView player3Icon;
+  @FXML
+  private ImageView player4Icon;
+  @FXML
+  private Label statPlayer1Name;
+  @FXML
+  private Label statPlayer1Games;
+  @FXML
+  private Label statPlayer1Wins;
+  @FXML
+  private Label statPlayer2Name;
+  @FXML
+  private Label statPlayer2Games;
+  @FXML
+  private Label statPlayer2Wins;
+  @FXML
+  private Label statPlayer3Name;
+  @FXML
+  private Label statPlayer3Games;
+  @FXML
+  private Label statPlayer3Wins;
+  @FXML
+  private Label statPlayer4Name;
+  @FXML
+  private Label statPlayer4Games;
+  @FXML
+  private Label statPlayer4Wins;
 
   boolean isHost = true;
 
@@ -216,9 +243,9 @@ public class LobbyScreenController {
 
                           if (players[0] != null
                               && !player1Name
-                                  .getText()
-                                  .toLowerCase()
-                                  .equals(players[0].getName())) {
+                              .getText()
+                              .toLowerCase()
+                              .equals(players[0].getName())) {
                             String name =
                                 players[0].getName().substring(0, 1).toUpperCase()
                                     + players[0].getName().substring(1).toLowerCase();
@@ -235,9 +262,9 @@ public class LobbyScreenController {
                           }
                           if (players[1] != null
                               && !player2Name
-                                  .getText()
-                                  .toLowerCase()
-                                  .equals(players[1].getName())) {
+                              .getText()
+                              .toLowerCase()
+                              .equals(players[1].getName())) {
                             String name =
                                 players[1].getName().substring(0, 1).toUpperCase()
                                     + players[1].getName().substring(1).toLowerCase();
@@ -254,9 +281,9 @@ public class LobbyScreenController {
                           }
                           if (players[2] != null
                               && !player3Name
-                                  .getText()
-                                  .toLowerCase()
-                                  .equals(players[2].getName())) {
+                              .getText()
+                              .toLowerCase()
+                              .equals(players[2].getName())) {
                             String name =
                                 players[2].getName().substring(0, 1).toUpperCase()
                                     + players[2].getName().substring(1).toLowerCase();
@@ -274,9 +301,9 @@ public class LobbyScreenController {
                           }
                           if (players[3] != null
                               && !player4Name
-                                  .getText()
-                                  .toLowerCase()
-                                  .equals(players[3].getName())) {
+                              .getText()
+                              .toLowerCase()
+                              .equals(players[3].getName())) {
                             String name =
                                 players[3].getName().substring(0, 1).toUpperCase()
                                     + players[3].getName().substring(1).toLowerCase();
@@ -330,14 +357,19 @@ public class LobbyScreenController {
     gameInformation.setClientmatch(clientProtocol.getMatch());
   }
 
-  /** Helping function that sets the nodes in case the player 1 leaves the lobby. */
+  /**
+   * Helping function that sets the nodes in case the player 1 leaves the lobby.
+   */
   public void setPlayer1NotExist() {
     player1Name.setText("Waiting");
     statPlayer1Name.setText("");
     statPlayer1Games.setText("");
     statPlayer1Wins.setText("");
   }
-  /** Helping function that sets the nodes in case the player 2 leaves the lobby. */
+
+  /**
+   * Helping function that sets the nodes in case the player 2 leaves the lobby.
+   */
 
   public void setPlayer2NotExist() {
     player2Name.setText("Waiting");
@@ -345,7 +377,10 @@ public class LobbyScreenController {
     statPlayer2Games.setText("");
     statPlayer2Wins.setText("");
   }
-  /** Helping function that sets the nodes in case the player 3 leaves the lobby. */
+
+  /**
+   * Helping function that sets the nodes in case the player 3 leaves the lobby.
+   */
 
   public void setPlayer3NotExist() {
     player3Name.setText("Waiting");
@@ -353,7 +388,10 @@ public class LobbyScreenController {
     statPlayer3Games.setText("");
     statPlayer3Wins.setText("");
   }
-  /** Helping function that sets the nodes in case the player 4 leaves the lobby. */
+
+  /**
+   * Helping function that sets the nodes in case the player 4 leaves the lobby.
+   */
 
   public void setPlayer4NotExist() {
     player4Name.setText("Waiting");
@@ -439,7 +477,9 @@ public class LobbyScreenController {
     }
   }
 
-  /** Removes all players from lobby with Playerstatus AI. */
+  /**
+   * Removes all players from lobby with Playerstatus AI.
+   */
   public void removeAI() {
     for (Player p : GameInformation.getInstance().getServermatch().getPlayers()) {
       if (p != null) {
@@ -516,9 +556,9 @@ public class LobbyScreenController {
                             }
                             if (players[0] != null
                                 && !player1Name
-                                    .getText()
-                                    .toLowerCase()
-                                    .equals(players[0].getName())) {
+                                .getText()
+                                .toLowerCase()
+                                .equals(players[0].getName())) {
                               String name =
                                   players[0].getName().substring(0, 1).toUpperCase()
                                       + players[0].getName().substring(1).toLowerCase();
@@ -536,9 +576,9 @@ public class LobbyScreenController {
                             }
                             if (players[1] != null
                                 && !player2Name
-                                    .getText()
-                                    .toLowerCase()
-                                    .equals(players[1].getName())) {
+                                .getText()
+                                .toLowerCase()
+                                .equals(players[1].getName())) {
                               String name =
                                   players[1].getName().substring(0, 1).toUpperCase()
                                       + players[1].getName().substring(1).toLowerCase();
@@ -553,9 +593,9 @@ public class LobbyScreenController {
                             }
                             if (players[2] != null
                                 && !player3Name
-                                    .getText()
-                                    .toLowerCase()
-                                    .equals(players[2].getName())) {
+                                .getText()
+                                .toLowerCase()
+                                .equals(players[2].getName())) {
                               String name =
                                   players[2].getName().substring(0, 1).toUpperCase()
                                       + players[2].getName().substring(1).toLowerCase();
@@ -573,9 +613,9 @@ public class LobbyScreenController {
                             }
                             if (players[3] != null
                                 && !player4Name
-                                    .getText()
-                                    .toLowerCase()
-                                    .equals(players[3].getName())) {
+                                .getText()
+                                .toLowerCase()
+                                .equals(players[3].getName())) {
                               String name =
                                   players[3].getName().substring(0, 1).toUpperCase()
                                       + players[3].getName().substring(1).toLowerCase();
@@ -666,7 +706,6 @@ public class LobbyScreenController {
 
   /**
    * Creates pop up screen from Select letter set fxml file.
-   *
    */
   public class Window {
 

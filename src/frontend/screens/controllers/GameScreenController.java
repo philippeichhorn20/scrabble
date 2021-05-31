@@ -47,52 +47,94 @@ import javafx.stage.Stage;
  * Controller for the game screen. It's here where the interaction between the front-end of the
  * application and the back-end.
  *
- * @author mkolinsk,peichhor
+ * @author mkolinsk, peichhor
  */
 public class GameScreenController extends Thread {
 
-  @FXML private Rectangle tile1;
-  @FXML private Rectangle tile2;
-  @FXML private Rectangle tile3;
-  @FXML private Rectangle tile4;
-  @FXML private Rectangle tile5;
-  @FXML private Rectangle tile6;
-  @FXML private Rectangle tile7;
-  @FXML private Text text1;
-  @FXML private Text text2;
-  @FXML private Text text3;
-  @FXML private Text text4;
-  @FXML private Text text5;
-  @FXML private Text text6;
-  @FXML private Text text7;
-  @FXML private Label name1;
-  @FXML private Label name2;
-  @FXML private Label name3;
-  @FXML private Label name4;
-  @FXML private Label nameScore1;
-  @FXML private Label nameScore2;
-  @FXML private Label nameScore3;
-  @FXML private Label nameScore4;
-  @FXML private Label history1;
-  @FXML private Label history2;
-  @FXML private Label history3;
-  @FXML private Label history4;
-  @FXML private Label history5;
-  @FXML private Label history6;
-  @FXML private Label history7;
-  @FXML private Label history8;
-  @FXML private Label history9;
-  @FXML private Label history10;
-  @FXML private Label history11;
-  @FXML private GridPane board;
-  @FXML private Label time;
-  @FXML private Button openChatButton;
-  @FXML private AnchorPane pane;
-  @FXML private ImageView tileBagIcon;
-  @FXML private Button resetTilesButton;
-  @FXML public Label currPlayerText;
-  @FXML private Label serverMessage;
-  @FXML private Button endTurnButton;
+  @FXML
+  private Rectangle tile1;
+  @FXML
+  private Rectangle tile2;
+  @FXML
+  private Rectangle tile3;
+  @FXML
+  private Rectangle tile4;
+  @FXML
+  private Rectangle tile5;
+  @FXML
+  private Rectangle tile6;
+  @FXML
+  private Rectangle tile7;
+  @FXML
+  private Text text1;
+  @FXML
+  private Text text2;
+  @FXML
+  private Text text3;
+  @FXML
+  private Text text4;
+  @FXML
+  private Text text5;
+  @FXML
+  private Text text6;
+  @FXML
+  private Text text7;
+  @FXML
+  private Label name1;
+  @FXML
+  private Label name2;
+  @FXML
+  private Label name3;
+  @FXML
+  private Label name4;
+  @FXML
+  private Label nameScore1;
+  @FXML
+  private Label nameScore2;
+  @FXML
+  private Label nameScore3;
+  @FXML
+  private Label nameScore4;
+  @FXML
+  private Label history1;
+  @FXML
+  private Label history2;
+  @FXML
+  private Label history3;
+  @FXML
+  private Label history4;
+  @FXML
+  private Label history5;
+  @FXML
+  private Label history6;
+  @FXML
+  private Label history7;
+  @FXML
+  private Label history8;
+  @FXML
+  private Label history9;
+  @FXML
+  private Label history10;
+  @FXML
+  private Label history11;
+  @FXML
+  private GridPane board;
+  @FXML
+  private Label time;
+  @FXML
+  private Button openChatButton;
+  @FXML
+  private AnchorPane pane;
+  @FXML
+  private ImageView tileBagIcon;
+  @FXML
+  private Button resetTilesButton;
+  @FXML
+  public Label currPlayerText;
+  @FXML
+  private Label serverMessage;
+  @FXML
+  private Button endTurnButton;
 
   private ClientMatch match = GameInformation.getInstance().getClientmatch();
   private final GraphicTile[] gtiles = new GraphicTile[7];
@@ -131,6 +173,7 @@ public class GameScreenController extends Thread {
     new Bounce(endTurnButton).play();
     endTurnFunction();
   }
+
   /**
    * This function sends the tiles that are placed on the current turn to the serverthrough a
    * function in Clientmatch.
@@ -142,12 +185,18 @@ public class GameScreenController extends Thread {
     }
     GameInformation.getInstance().getClientmatch().sendPlacedTilesToServer();
   }
-  /** AlertBox that pops up after the player has won the game. */
+
+  /**
+   * AlertBox that pops up after the player has won the game.
+   */
 
   public void sendWinBox() {
     TutorialScreenController.AlertBox.display("You win!", "Congratulations,you have won!");
   }
-  /** AlertBox that pops up after the player has lost the game. */
+
+  /**
+   * AlertBox that pops up after the player has lost the game.
+   */
 
   public void sendLostBox() {
     TutorialScreenController.AlertBox.display("Game over", "The game is over, you have lost");
@@ -271,7 +320,9 @@ public class GameScreenController extends Thread {
     serverMessage.setText(textString);
   }
 
-  /** Hides the server message from the screen. */
+  /**
+   * Hides the server message from the screen.
+   */
   public void deactivateServerMessage() {
     new FadeOut(serverMessage).play();
     serverMessage.setMouseTransparent(true);
@@ -280,40 +331,40 @@ public class GameScreenController extends Thread {
   /**
    * Shows a server message on the screen for a certain duration.
    *
-   * @param mess Message to be shown.
+   * @param mess     Message to be shown.
    * @param duration Duration how long the message should be visible (in seconds).
    */
   public void showServerMessage(String mess, int duration) {
     new Thread(
-            new Runnable() {
-              @Override
-              public void run() {
-                for (int i = 0; i < 8; i++) {
-                  try {
-                    Thread.sleep(100);
-                  } catch (InterruptedException e) {
-                    e.printStackTrace();
-                  }
-                  final int f = i;
-
-                  Platform.runLater(
-                      new Runnable() {
-                        @Override
-                        public void run() {
-
-                          if (f == 0) {
-                            serverMessage.setVisible(true);
-                            serverMessage.setText(mess);
-                            new FadeIn(serverMessage).play();
-                          } else if (f == duration) {
-                            new FadeOut(serverMessage).play();
-                            serverMessage.setMouseTransparent(true);
-                          }
-                        }
-                      });
-                }
+        new Runnable() {
+          @Override
+          public void run() {
+            for (int i = 0; i < 8; i++) {
+              try {
+                Thread.sleep(100);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
               }
-            })
+              final int f = i;
+
+              Platform.runLater(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+
+                      if (f == 0) {
+                        serverMessage.setVisible(true);
+                        serverMessage.setText(mess);
+                        new FadeIn(serverMessage).play();
+                      } else if (f == duration) {
+                        new FadeOut(serverMessage).play();
+                        serverMessage.setMouseTransparent(true);
+                      }
+                    }
+                  });
+            }
+          }
+        })
         .start();
   }
 
@@ -394,7 +445,9 @@ public class GameScreenController extends Thread {
     resetTilesAction();
   }
 
-  /** This function sets all the tiles that were placed during the current turn back on the rack. */
+  /**
+   * This function sets all the tiles that were placed during the current turn back on the rack.
+   */
   public void resetTilesAction() {
     this.match.getScrabbleBoard().nextTurn();
     if (tileBagIcon.isMouseTransparent()) {
@@ -626,6 +679,7 @@ public class GameScreenController extends Thread {
       board.add(tileChar, t.getX(), t.getY());
     }
   }
+
   /**
    * Function that is called only once, but starts the thread that will run throughout the whole
    * game. It sets up most nodes, starts the important thread that updates the whole screen.
@@ -658,15 +712,15 @@ public class GameScreenController extends Thread {
                             } else {
                               currPlayerText.setText(
                                   GameInformation.getInstance()
-                                          .getClientmatch()
-                                          .getCurrentPlayerName()
-                                          .substring(0, 1)
-                                          .toUpperCase()
+                                      .getClientmatch()
+                                      .getCurrentPlayerName()
+                                      .substring(0, 1)
+                                      .toUpperCase()
                                       + GameInformation.getInstance()
-                                          .getClientmatch()
-                                          .getCurrentPlayerName()
-                                          .substring(1)
-                                          .toLowerCase());
+                                      .getClientmatch()
+                                      .getCurrentPlayerName()
+                                      .substring(1)
+                                      .toLowerCase());
                             }
                             nameScore1.setText(
                                 (match.getPlayers()[0] != null)
@@ -712,7 +766,7 @@ public class GameScreenController extends Thread {
                             }
                             if (!match.checkTimer()
                                 && Main.profile.getName().equals(match.getCurrentPlayerName())) {
-                               endTurnFunction();
+                              endTurnFunction();
                             }
                             if (match.dropTiles()) {
                               resetTilesAction();
@@ -746,7 +800,8 @@ public class GameScreenController extends Thread {
                               match.setStartingTiles(false);
                             }
 
-                            time.setText(String.valueOf(match.getTimer().getTimerCurrentPlayerString()));
+                            time.setText(
+                                String.valueOf(match.getTimer().getTimerCurrentPlayerString()));
                           }
                         });
                   }
@@ -816,7 +871,9 @@ public class GameScreenController extends Thread {
     }
   }
 
-  /** Internal function to reset the color of the tiles on the rack. */
+  /**
+   * Internal function to reset the color of the tiles on the rack.
+   */
   private void resetColor() {
     GraphicTile gtile1 = new GraphicTile(tile1, text1);
     GraphicTile gtile2 = new GraphicTile(tile2, text2);
@@ -841,7 +898,7 @@ public class GameScreenController extends Thread {
     /**
      * Used to display the AlertBox.
      *
-     * @param title The tile of the window.
+     * @param title   The tile of the window.
      * @param message The message that will be shown in the scene.
      */
     public static void display(String title, String message) {
@@ -853,21 +910,21 @@ public class GameScreenController extends Thread {
       Label label = new Label(message);
       Button button = new Button("CLOSE");
       button.setOnAction(new EventHandler<ActionEvent>() {
-                           @Override
-                           public void handle(ActionEvent actionEvent) {
-                             if (GameInformation.getInstance().getClientmatch().isOver()){
-                               try{
-                                 Main m = new Main();
-                                 m.changeScene("screens/mainMenu.fxml");
-                               }catch(IOException e){
-                                 e.printStackTrace();
-                               }
-                             }else{
-                               window.close();
-                             }
-                           }
-                         });
-          VBox layout = new VBox(10);
+        @Override
+        public void handle(ActionEvent actionEvent) {
+          if (GameInformation.getInstance().getClientmatch().isOver()) {
+            try {
+              Main m = new Main();
+              m.changeScene("screens/mainMenu.fxml");
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          } else {
+            window.close();
+          }
+        }
+      });
+      VBox layout = new VBox(10);
       layout.getChildren().addAll(label, button);
       layout.setAlignment(Pos.CENTER);
       Scene scene = new Scene(layout);

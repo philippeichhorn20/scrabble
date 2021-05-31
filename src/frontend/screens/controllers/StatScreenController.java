@@ -20,11 +20,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
-/*
- * Controller for the statistics screen. User career statistics are shown here
- *
- * @author jawinter
- * @version 1.1
+/**
+ * @author jawinter Controller for the stat screen.
  */
 public class StatScreenController {
 
@@ -45,7 +42,12 @@ public class StatScreenController {
   @FXML
   private Text avgPoints;
 
-  // Fills texts with according values of player logged in.
+  /**
+   * Fills texts with according values of profile logged in.
+   *
+   * @param e something with mouse
+   * @throws IOException
+   */
   public void setStage(MouseEvent e) throws IOException {
     String name = Main.profile.getName();
     name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
@@ -62,12 +64,16 @@ public class StatScreenController {
     }
   }
 
-  // Changes name and color to typed value
+  /**
+   * Handles click on save button and makes changes permanent by executing database statements
+   *
+   * @param e click
+   */
   public void saveChanges(ActionEvent e) {
     String newColor = profileColor.getText();
     String newName = profileNickname.getText();
     if (Main.profile.checkName(newName)) {
-      Main.profile.setColor(newColor,Main.profile.getId());
+      Main.profile.setColor(newColor, Main.profile.getId());
       Main.profile.setName(newName, Main.profile.getId());
 
       Alert successfulSaved = new Alert(AlertType.INFORMATION);
@@ -88,7 +94,11 @@ public class StatScreenController {
     }
   }
 
-  //Resets all statistics to zero.
+  /**
+   * Handles click on reset stat button
+   *
+   * @param e click
+   */
   public void resetStatistics(ActionEvent e) {
     Alert areYouSure = new Alert(AlertType.CONFIRMATION);
     areYouSure.setTitle("Confirm Reset");
@@ -106,6 +116,14 @@ public class StatScreenController {
     }
   }
 
+  /**
+   * Handles click on delete profile and removes it from database. Then throws player to
+   * startingMenu
+   *
+   * @param e click
+   * @throws SQLException
+   * @throws IOException
+   */
   public void deleteProfile(ActionEvent e) throws SQLException, IOException {
     Connection connection = DriverManager.getConnection(jdbcUrl);
     String deleteSql = "DELETE FROM profiles WHERE ROWID=" + Main.profile.getId();
@@ -115,7 +133,12 @@ public class StatScreenController {
     m.changeScene("screens/startingMenu.fxml");
   }
 
-  //Method to go back to main menu.
+  /**
+   * Handles click on back button and gos back to menu.
+   *
+   * @param e click
+   * @throws IOException
+   */
   public void goBack(ActionEvent e) throws IOException {
     Main m = new Main();
     m.changeScene("screens/mainMenu.fxml");
