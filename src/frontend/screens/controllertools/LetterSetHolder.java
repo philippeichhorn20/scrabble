@@ -5,23 +5,23 @@ import backend.basic.Tile.Tilestatus;
 import javafx.stage.Stage;
 
 /**
- * @author nilschae a class to hold different variables for the letter set screen
+ * a class to hold different variables for the letter set screen.
+ *
+ * @author nilschae
  */
 public final class LetterSetHolder {
 
   private Stage window;
-  private final static LetterSetHolder INSTANCE = new LetterSetHolder();
+  private static final LetterSetHolder INSTANCE = new LetterSetHolder();
   private Tile[] tileSet;
   private char[] possibleLetters = {
-      'A', 'B', 'C', 'D', 'E', 'F', 'G',
-      'H', 'I', 'J', 'K', 'L', 'M', 'N',
-      'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-      'V', 'W', 'X', 'Y', 'Z', ' '
+    'A', 'B', 'C', 'D', 'E', 'F', 'G',
+    'H', 'I', 'J', 'K', 'L', 'M', 'N',
+    'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+    'V', 'W', 'X', 'Y', 'Z', ' '
   };
 
-  /**
-   * set the default letter set
-   */
+  /** set the default letter set. */
   private LetterSetHolder() {
     setDefaultLetterSet();
   }
@@ -30,9 +30,7 @@ public final class LetterSetHolder {
     return INSTANCE;
   }
 
-  /**
-   * Default letter set without tweaks from user setup.
-   */
+  /** Default letter set without tweaks from user setup. */
   private void setDefaultLetterSet() {
     tileSet = new Tile[100];
     for (int i = 0; i < tileSet.length; i++) {
