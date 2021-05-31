@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.MediaPlayer;
 
@@ -33,12 +34,21 @@ public class SettingsScreenController {
 	private static Slider volumeKey;
 	@FXML
 	private RadioButton radioButton;
+	@FXML
+	private TextArea textArea;
+	@FXML
+	private Button aboutButton;
 
 	public static MediaPlayer player;
 
 	public void goBack(ActionEvent e) throws IOException {
 		Main m = new Main();
 		m.changeScene("screens/mainMenu.fxml");
+	}
+	
+	public void goAbout(ActionEvent e) throws IOException{
+		Main m = new Main();
+		m.changeScene("screens/about.fxml");
 	}
 
 	public void radioButton(ActionEvent e) throws IOException {

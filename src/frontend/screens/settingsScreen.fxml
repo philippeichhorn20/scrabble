@@ -1,65 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.effect.Reflection?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SettingsScreenController">
+<HBox prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.SettingsScreenController">
    <children>
-      <ImageView fitHeight="720.0" fitWidth="1080.0" layoutX="-2.0" layoutY="-1.0">
-         <image>
-            <Image url="@resources/wooden-bg.jpg" />
-         </image>
-      </ImageView>
-      <Label layoutX="401.0" layoutY="77.0" text="Settings" textFill="#30fd02">
-         <font>
-            <Font size="51.0" />
-         </font>
-      </Label>
-      <Label layoutX="246.0" layoutY="190.0" text="Volume">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <effect>
-            <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
-         </effect>
-      </Label>
-      <Slider fx:id="volumeKey" layoutX="437.0" layoutY="195.0" prefHeight="43.0" prefWidth="293.0" value="10.0" />
-      <Button fx:id="backButton" layoutX="888.0" layoutY="617.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: green; -fx-border-color: black;" text="Back">
-         <font>
-            <Font name="HoloLens MDL2 Assets" size="19.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Label layoutX="261.0" layoutY="299.0" text="Music">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <effect>
-            <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
-         </effect>
-      </Label>
-      <RadioButton fx:id="radioButton" layoutX="438.0" layoutY="310.0" mnemonicParsing="false" onAction="#radioButton" prefHeight="27.0" prefWidth="123.0" selected="true" text="On/Off">
-         <font>
-            <Font name="System Bold" size="21.0" />
-         </font>
-      </RadioButton>
-      <Label layoutX="179.0" layoutY="395.0" text="Dictionary Used:">
-         <font>
-            <Font size="36.0" />
-         </font>
-         <effect>
-            <Reflection bottomOpacity="0.22" fraction="0.54" topOpacity="0.65" />
-         </effect>
-      </Label>
+      <BorderPane prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #9C6644;">
+         <top>
+            <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #606C38;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
+                     <font>
+                        <Font name="Consolas" size="60.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </top>
+         <bottom>
+            <Button fx:id="backButton" minWidth="380.0" mnemonicParsing="false" onAction="#goBack" prefHeight="50.0" style="-fx-background-color: #B08968;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
+         <center>
+            <Slider BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+      <BorderPane maxWidth="700.0" prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: #9C6644;">
+         <top>
+            <Label text="Settings" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="24.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="30.0" top="50.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <padding>
+            <Insets bottom="50.0" />
+         </padding>
+         <bottom>
+            <Button fx:id="aboutButton" minWidth="380.0" mnemonicParsing="false" onAction="#goAbout" prefHeight="50.0" style="-fx-background-color: #B08968;" text="About" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </bottom>
+         <center>
+            <RadioButton fx:id="radioButton" mnemonicParsing="false" onAction="#radioButton" selected="true" text="On/Off" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Music" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Text>
+         </left>
+      </BorderPane>
    </children>
-</AnchorPane>
+</HBox>
