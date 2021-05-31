@@ -13,6 +13,10 @@ import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author jawinter
+ * test basic brain functions
+ */
 public class BrainTest {
 
   ScrabbleBoard board = new ScrabbleBoard();
@@ -22,6 +26,9 @@ public class BrainTest {
   Tile[] testHand3 = new Tile[7];
 
   @BeforeEach
+  /**
+   * prepares the board and racks for AI
+   */
   void prepare() {
     board.placeTile(new Tile('H', 4, Tilestatus.ONBOARD), 9, 1);
     board.placeTile(new Tile('D', 2, Tilestatus.ONBOARD), 12, 1);
@@ -89,6 +96,9 @@ public class BrainTest {
   }
 
   @Test
+  /**
+   * tests if the points calculation is correct
+   */
   void testPointsCalculation() {
     easyAI.getEasyBrain().setScrabbleboard(board);
     TreeSet<PossibleWord> wordsTest = easyAI.getEasyBrain().getPlayableWords(easyAI.getTiles());
@@ -105,6 +115,9 @@ public class BrainTest {
   }
 
   @Test
+  /**
+   * test if AI can cope with an empty board and find words to place
+   */
   void testIfFirstMove() {
     ScrabbleBoard newBoard = new ScrabbleBoard();
     easyAI.getEasyBrain().setScrabbleboard(newBoard);
