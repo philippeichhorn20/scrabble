@@ -175,7 +175,6 @@ public class ClientMatch {
     if (this.checkTimer()) {
       currentPlayer = nextPlayer;
     }
-    this.getTimer().setTimerTo(currentPlayer);
     scrabbleBoard.nextTurn();
   }
 

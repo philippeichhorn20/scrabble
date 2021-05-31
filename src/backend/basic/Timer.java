@@ -75,7 +75,7 @@ public class Timer extends Thread implements Serializable {
   }
 
   public long getTimerCurrentPlayer() {
-    return timerCurrentPlayer;
+    return 60*10-clientTimes[currentPlayer];
   }
 
   public long getTimerCurrentPlayerString() {

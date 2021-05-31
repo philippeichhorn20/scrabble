@@ -814,7 +814,7 @@ public class GameScreenController extends Thread {
                             }
 
                             time.setText(
-                                String.valueOf(match.getTimer().getTimerCurrentPlayerString()));
+                                String.valueOf(match.getTimer().getTimerCurrentPlayer()));
                           }
                         });
                   }
