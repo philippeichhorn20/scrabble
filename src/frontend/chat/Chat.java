@@ -50,6 +50,9 @@ public class Chat {
     inputField.setPrefWidth(220);
     inputField.setMaxHeight(50);
 
+    /**
+     * Adding buttons
+     */
     Button btnClose = new Button("Close");
     btnClose.setOnAction(e -> window.close());
     Button btnSend = new Button("Send");
@@ -71,6 +74,10 @@ public class Chat {
     ((VBox) layout)
         .setBackground(
             new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+    
+    /**
+     * Designing the buttons
+     */
 
     btnClose.setMaxWidth(60);
     btnClose.setMinWidth(60);
@@ -148,6 +155,10 @@ public class Chat {
             }
           }
         });
+    
+    /**
+     * Inserting the buttons, text area and input to the window
+     */
     layout.getChildren().addAll(textArea, inputField, btnSend, btnClose);
     layout.setAlignment(Pos.TOP_CENTER);
     Scene scene = new Scene(layout);
