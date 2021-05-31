@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.screens.controllers.About, Controller">
+   <children>
+      <BorderPane prefHeight="720.0" prefWidth="380.0" style="-fx-background-color: #9C6644;">
+         <top>
+            <Pane prefHeight="150.0" prefWidth="380.0" style="-fx-background-color: #606C38;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text boundsType="VISUAL" fill="WHITE" layoutX="50.0" layoutY="71.0" stroke="WHITE" strokeType="OUTSIDE" text="Scrabble" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="289.5306091308594">
+                     <font>
+                        <Font name="Consolas" size="60.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </top>
+         <bottom>
+            <Button fx:id="backButton" minWidth="380.0" mnemonicParsing="false" onAction="#goBack" prefHeight="50.0" style="-fx-background-color: #B08968;" text="Back" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
+      </BorderPane>
+      <BorderPane maxWidth="700.0" prefHeight="626.0" prefWidth="700.0" style="-fx-background-color: #9C6644;">
+         <top>
+            <Label text="About" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Consolas Bold" size="24.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="30.0" top="50.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <padding>
+            <Insets bottom="50.0" />
+         </padding>
+         <right>
+            <TextArea fx:id="textArea" editable="false" onContextMenuRequested="#image" prefHeight="532.0" prefWidth="695.0" style="-fx-background-color: #9C6644;" styleClass="text-area" stylesheets="@resources/style.css" text="&#10;&#10;Scrabble Version 1.0&#10;&#10;This is a message from our team to you. &#10;&#10;We are happy to represent our first self-made Scrabble Game. &#10;&#10;We tried making it as user-friendly as possible, added music and animations, implemented Easy and Hard AI, &#10;so you can play&#10;even when your friends are away.&#10;&#10;We focused not only on the &quot;Normal&quot; User but also on the Java-Geeks that are eager to get into programming. That's why our code is open-source and can be found on GitLab. WIth the code being open-source you can change it and tweak it to your likings. We have also commented on our every step of the code so it is easier to understand and get into. &#10;&#10;Advantages for you if you use our Scrabble application:&#10;    1) We don't sell your data to 3rd parties like Facebook or Google&#10;    2) We don't even collect your data&#10;    3) You can expand your English vocabulary and Java skills&#10;    4) Have some quality time&#10;&#10;Hope you enjoy!&#10;&#10;Disclaimer: Music is not copy-righted. It can be found on &quot;https://freemusicarchive.org/&quot;.&#10;&#10;                                                                                                                 Sincerely, your 14 Team&#10;                                                                                                                 Prakltikum Software Engineering&#10;&#10;                                                                                                                Authors: Michal, Nils, Philipp, Jann, Viktoria" wrapText="true" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Leelawadee UI Bold" size="12.0" />
+               </font>
+            </TextArea>
+         </right>
+      </BorderPane>
+   </children>
+</HBox>
