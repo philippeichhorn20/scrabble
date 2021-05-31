@@ -1,13 +1,14 @@
 package backend.basic;
 
-/*
- * @author Nils Schäfer
- * @version 1.0
- * */
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Tile is a tile - it contains the letter, the coordinates on the board, its status and if it is a
+ * joker.
+ *
+ * @author nilschae
+ */
 public class Tile implements Serializable {
 
   private char letter; // A holder for a letter of a tile
@@ -17,40 +18,48 @@ public class Tile implements Serializable {
   private int x; // The position of the Tile in the field
   private int y; // The position of the Tile in the field
 
-  /*The main constructor of a tile
-   * @param letter letter of the tile
-   * @param value  value of the tile
-   * @param status represents where the tile is
-   * */
+  /**
+   * Constructor.
+   *
+   * @param letter letter
+   * @param value value
+   * @param status status
+   */
   public Tile(char letter, int value, Tilestatus status) {
     this.letter = letter;
     this.value = value;
     this.status = status;
   }
 
-  /*A constructor which set the status automatic to INBAG
-   * @param letter letter of the tile
-   * @param value  value of the tile
-   * */
+  /**
+   * Constructor with default status inbag.
+   *
+   * @param letter letter
+   * @param value value
+   */
   public Tile(char letter, int value) {
     this.letter = letter;
     this.value = value;
     this.status = Tilestatus.INBAG;
   }
 
-  /*A constructor which creates a joker tile
-   * @param isJoker defines if the tile is a Joker what have to be if this constructor get called
-   * @param status set the Location where the tile is at the moment
-   * */
+  /**
+   * Constructor for joker.
+   *
+   * @param isJoker boolean if tile should be joker
+   * @param status tilestatus.
+   */
   public Tile(boolean isJoker, Tilestatus status) {
     this.joker = isJoker;
     this.value = 0;
     this.status = status;
   }
 
-  /*Copy constructor for a tile
-   * @param tile the tile to copy
-   * */
+  /**
+   * Copy contstructor.
+   *
+   * @param tile tile.
+   */
   public Tile(Tile tile) {
     this.letter = tile.letter;
     this.value = tile.value;
@@ -108,26 +117,29 @@ public class Tile implements Serializable {
     return this.x;
   }
 
-
   public int getY() {
     return this.y;
   }
 
   public int getYOnBoard() {
-    return this.y-1;
+    return this.y - 1;
   }
 
   public int getXOnBoard() {
-    return this.x-1;
+    return this.x - 1;
   }
-
 
   public void setXY(int x, int y) {
     this.x = x;
     this.y = y;
   }
 
-  /*A methode which compares a tile by it's joker status or letter*/
+  /**
+   * Compare method.
+   *
+   * @param tile tile to compare to.
+   * @return whether the tiles are the same
+   */
   public boolean equals(Tile tile) {
     if (this.joker && tile.joker) {
       return true;
@@ -138,10 +150,17 @@ public class Tile implements Serializable {
     }
     return false;
   }
-  public String toString(){
+
+  public String toString() {
     return "Tile " + this.letter + " of value " + this.value + " and status " + this.status;
   }
 
+  /**
+   * Funnily, does exactly the oppositive - transfers an array list of tiles to an array of tiles.
+   *
+   * @param tiles arraylist of tiles
+   * @return tile array
+   */
   public static Tile[] tileArrayToList(ArrayList<Tile> tiles) {
     Tile[] tiles1 = new Tile[tiles.size()];
     for (int x = 0; x < tiles1.length; x++) {
@@ -150,11 +169,10 @@ public class Tile implements Serializable {
     return tiles1;
   }
 
-  /*Enum to set a status for a tile*/
+  /** Enum for the status of the tile. */
   public enum Tilestatus {
     INBAG,
     ONPLAYERRACK,
     ONBOARD,
-    ONSWITCHPANEL // Status for switching tiles back into the tilebag
   }
 }

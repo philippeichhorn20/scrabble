@@ -3,7 +3,6 @@ package frontend;
 import animatefx.animation.FadeIn;
 import backend.basic.ClientMatch;
 import backend.basic.GameInformation;
-import backend.basic.Lobby;
 import backend.basic.Profile;
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,13 +28,13 @@ public class Main extends Application {
 
   private static Stage stg;
 
-  public static Lobby lobby;
+
 
   public static ClientMatch clientMatch;
 
   /**
    * Starts the application, creates an empty database if not already created.
-   *   
+   *
    * @param primaryStage The stage which is shown on the screen
    * @throws Exception exception
    */

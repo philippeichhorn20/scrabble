@@ -2,9 +2,11 @@ package backend.basic;
 
 import java.io.Serializable;
 
-/* @author nilschae
- * @version 1.0
- * @description a class which represents a player in the game scrabble*/
+/**
+ * Class that represents a player in the game of scrabble.
+ *
+ * @author nilschae
+ */
 public class Player implements Serializable {
 
   String name;
@@ -15,7 +17,16 @@ public class Player implements Serializable {
   int games;
   int wins;
 
-  public Player(String name, String color, int games,int wins,  Playerstatus status) {
+  /**
+   * Constructor.
+   *
+   * @param name name of the player.
+   * @param color color he likes.
+   * @param games amount of games played.
+   * @param wins amount of wins played.
+   * @param status playerstatus.
+   */
+  public Player(String name, String color, int games, int wins, Playerstatus status) {
     this.name = name;
     this.color = color;
     this.score = 0;
@@ -24,22 +35,28 @@ public class Player implements Serializable {
     this.wins = wins;
   }
 
-  /*A methode to shuffle chosen tiles from the players rack and drawing new random tile instead*/
+  /**
+   * A method to shuffle chosen tiles from the players rack and drawing new random tile instead.
+   *
+   * @param tilesToShuffel tiles to be exchanged.
+   * @param bag tilebag
+   * @return new tiles.
+   */
   public Tile[] shuffleRack(Tile[] tilesToShuffel, TileBag bag) {
     Tile[] newTiles = new Tile[tilesToShuffel.length];
     for (int i = 0; i < tilesToShuffel.length; i++) {
       newTiles[i] = bag.drawTile();
       bag.insertTileToBag(tilesToShuffel[i]);
     }
-      /*
-      int count = 0;
-      for (int i = 0; i < this.rack.length; i++) {
-        if (this.rack[i] == null) {
-          this.rack[i] = newTiles[count];
-          count++;
-        }
+    /*
+    int count = 0;
+    for (int i = 0; i < this.rack.length; i++) {
+      if (this.rack[i] == null) {
+        this.rack[i] = newTiles[count];
+        count++;
       }
-       */
+    }
+     */
     return newTiles;
   }
 
@@ -48,10 +65,13 @@ public class Player implements Serializable {
     this.score += points;
   }
 
-  /*check if the timer of the current turn is out of time. When timer out of time it return false, when time is left it returns true*/
 
-
-  /*A methode which fills the rack bag to 7 tiles*/
+  /**
+   * A method which fills the rack with tiles from tilebag.
+   *
+   * @param bag tilebag
+   * @return tile array.
+   */
   public Tile[] fillRack(TileBag bag) {
     if (!bag.isEmpty()) {
       for (int i = 0; i < rack.length; i++) {
@@ -67,7 +87,12 @@ public class Player implements Serializable {
     return null;
   }
 
-  /*draw a spezific tile from the players rack*/
+  /**
+   * Draw a specific tile from players rack.
+   *
+   * @param tileToDraw tile that needs to be drawn.
+   * @return that tile.
+   */
   public Tile drawTileFromRack(Tile tileToDraw) {
     for (int i = 0; i < this.rack.length; i++) {
       if (rack[i].equals(tileToDraw)) {
@@ -108,6 +133,7 @@ public class Player implements Serializable {
   public void setColor(String color) {
     this.color = color;
   }
+
   public String getName() {
     return this.name;
   }
@@ -128,6 +154,11 @@ public class Player implements Serializable {
     return this.status;
   }
 
+  /**
+   * Puts a tile back on rack.
+   *
+   * @param tile the tile that gets put back on rack.
+   */
   public void putBackOnRack(Tile tile) {
     for (int x = 0; x < rack.length; x++) {
       if (this.rack[x] == null) {
@@ -137,12 +168,13 @@ public class Player implements Serializable {
     }
   }
 
-  public void setTimerPersonalTimerToZero() {
-  }
+  public void setTimerPersonalTimerToZero() {}
 
-  public void setTimerToZero() {
-  }
+  public void setTimerToZero() {}
 
+  /**
+   * Enum of the playerstatus.
+   */
   public enum Playerstatus {
     OUTOFGAME,
     WAIT,
@@ -150,28 +182,44 @@ public class Player implements Serializable {
     AI
   }
 
+  /**
+   * Returns the name of the player.
+   *
+   * @return returns the name.
+   */
   public String toString() {
-    if(this.name == null) {
+    if (this.name == null) {
       return "null";
     } else {
       return this.name;
     }
-
   }
 
-  public static boolean isEmptyRack(GraphicTile[] gts){
-    for(int x = 0; x < gts.length; x++){
-      if(gts[x].isVisible()){
+  /**
+   * Returns if the players rack is empty.
+   *
+   * @param gts graphictiles.
+   * @return boolean.
+   */
+  public static boolean isEmptyRack(GraphicTile[] gts) {
+    for (int x = 0; x < gts.length; x++) {
+      if (gts[x].isVisible()) {
         return false;
       }
     }
     return true;
   }
 
-  public static int getPlayerCount(Player[] players){
+  /**
+   * Return the number of players in the lobby.
+   *
+   * @param players the whole lobby
+   * @return number of players that aren't == null;
+   */
+  public static int getPlayerCount(Player[] players) {
     int count = 0;
-    for(int x = 0; x < players.length; x++){
-      if(players[x] != null){
+    for (int x = 0; x < players.length; x++) {
+      if (players[x] != null) {
         x++;
       }
     }

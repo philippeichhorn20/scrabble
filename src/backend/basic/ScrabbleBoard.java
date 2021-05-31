@@ -8,19 +8,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * this class is the representation of the physical scrabble board. It keeps track of the actual
- * board as well as the latest move scrabbleBoard: is the physical representation fo the actual
- * boards. It contains matchfield which all have a certain premiumstatus that is used to calcualte
- * the points of a play. After a tile is played this tile will be added to the matchfield that it is
- * placed on it also has a two variables which saves information for a single turn
- * newTilesOfCurrentMove keeps track of the tiles that were placed in the current turn in order to
- * find out which words were affected by this play. editedWords Those are then saved in the
+ * This class is the representation of the physical scrabble board. It keeps track of the actual
+ * board as well as the latest move. It contains matchfield which all have a certain premiumstatus
+ * that is used to calcualte the points of a play. After a tile is played this tile will be added to
+ * the matchfield that it is placed on. It also has a two variables which save information for a
+ * single turn newTilesOfCurrentMove keeps track of the tiles that were placed in the current turn
+ * in order to find out which words were affected by this play. Those are then saved in the
  * editedWords variable.
- *
- * @author peichhor
- * @version 1.0
  */
-
 public class ScrabbleBoard implements Serializable {
 
   private final ArrayList<Tile> tilesOnScrabbleBoard = new ArrayList<>();
@@ -28,12 +23,9 @@ public class ScrabbleBoard implements Serializable {
   ArrayList<backend.basic.Tile> newTilesOfCurrentMove = new ArrayList<>();
   ArrayList<ArrayList<backend.basic.Tile>> editedWords = new ArrayList<>();
 
-  /**
-   * this cunstructor creates an empty Scrabble Board with all the right Matchfields.
-   */
+  /** this cunstructor creates an empty Scrabble Board with all the right Matchfields. */
   public ScrabbleBoard() {
     this.scrabbleBoard = setUpScrabbleBoard();
-
   }
 
   /**
@@ -44,7 +36,6 @@ public class ScrabbleBoard implements Serializable {
   public ScrabbleBoard(Matchfield[][] scrabbleBoard) {
     this.scrabbleBoard = scrabbleBoard;
   }
-
 
   /**
    * adds the premiusstatus to the respective fields.
@@ -161,9 +152,7 @@ public class ScrabbleBoard implements Serializable {
     return temporaryScrabbleBoard;
   }
 
-  /**
-   * prints the scrabbleboard in console.
-   */
+  /** prints the scrabbleboard in console. */
   public void printScrabbleBoard() {
     int count = 0;
     for (int y = 1; y < 16; y++) {
@@ -202,18 +191,13 @@ public class ScrabbleBoard implements Serializable {
       }
     }
     System.out.println("\n" + count);
-
-
   }
 
-  /**
-   * prints edited words that were found.
-   */
+  /** prints edited words that were found. */
   public void printEditedWords() {
     for (int i = 0; i < editedWords.size(); i++) {
       ArrayList<Tile> word = editedWords.get(i);
-      for (int s = 0; s < word.size(); s++) {
-      }
+      for (int s = 0; s < word.size(); s++) {}
     }
   }
 
@@ -253,13 +237,13 @@ public class ScrabbleBoard implements Serializable {
     ArrayList<Tile> word = new ArrayList<Tile>();
 
     word.add(tile);
-    while (tile.getX() <= 15 && tile.getY() <= 15 && scrabbleBoard[tile.getX()][tile.getY() + 1]
-        .hasTile()) {
+    while (tile.getX() <= 15
+        && tile.getY() <= 15
+        && scrabbleBoard[tile.getX()][tile.getY() + 1].hasTile()) {
       tile = scrabbleBoard[tile.getX()][tile.getY() + 1].getTile();
       word.add(tile);
     }
     return word;
-
   }
 
   /**
@@ -271,14 +255,13 @@ public class ScrabbleBoard implements Serializable {
   ArrayList<Tile> getWordFromLeadingTileHorizontal(Tile tile) {
     ArrayList<Tile> word = new ArrayList<Tile>();
     word.add(tile);
-    while (tile.getX() < 15 && tile.getY() < 15 && scrabbleBoard[tile.getX() + 1][tile.getY()]
-        .hasTile()) {
+    while (tile.getX() < 15
+        && tile.getY() < 15
+        && scrabbleBoard[tile.getX() + 1][tile.getY()].hasTile()) {
       tile = scrabbleBoard[tile.getX() + 1][tile.getY()].getTile();
       word.add(tile);
     }
     return word;
-
-
   }
 
   /**
@@ -309,8 +292,8 @@ public class ScrabbleBoard implements Serializable {
    * temporary list that keeps track of the current move.
    *
    * @param newTile the tile
-   * @param x       the index in the matchfield array
-   * @param y       the index in the matchfield array
+   * @param x the index in the matchfield array
+   * @param y the index in the matchfield array
    */
   public void placeTile(backend.basic.Tile newTile, int x, int y) {
     this.newTilesOfCurrentMove.add(newTile);
@@ -342,15 +325,13 @@ public class ScrabbleBoard implements Serializable {
       int y = tile.getY();
       Tile firstTile = editedWords.get(i).get(0);
       if ((x == firstTile.getX()) && (y == firstTile.getY())) {
-        if (scrabbleBoard[x + 1][y].hasTile() && (scrabbleBoard[x + 1][y].getTile().getX()
-            == editedWords.get(i).get(1).getX())) {
+        if (scrabbleBoard[x + 1][y].hasTile()
+            && (scrabbleBoard[x + 1][y].getTile().getX() == editedWords.get(i).get(1).getX())) {
           return true;
         } else if (scrabbleBoard[x][y + 1].hasTile()
             && scrabbleBoard[x][y + 1].getTile().getY() == editedWords.get(i).get(1).getY()) {
           return true;
-
         }
-
       }
     }
     return false;
@@ -366,12 +347,17 @@ public class ScrabbleBoard implements Serializable {
   public PlayFeedbackMessage submitTiles(String from) {
     for (int i = 0; i < newTilesOfCurrentMove.size(); i++) {
       if (getWordFromLeadingTileHorizontal(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))
-          .size() > 1 && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
-        editedWords.add(getWordFromLeadingTileHorizontal(
-            getLeadingTileHorizontal(newTilesOfCurrentMove.get(i))));
+                  .size()
+              > 1
+          && !isInEditedTiles(getLeadingTileHorizontal(newTilesOfCurrentMove.get(i)))) {
+        editedWords.add(
+            getWordFromLeadingTileHorizontal(
+                getLeadingTileHorizontal(newTilesOfCurrentMove.get(i))));
       }
       if (getWordFromLeadingTileVertical(getLeadingTileVertical(newTilesOfCurrentMove.get(i)))
-          .size() > 1 && !isInEditedTiles(getLeadingTileVertical(newTilesOfCurrentMove.get(i)))) {
+                  .size()
+              > 1
+          && !isInEditedTiles(getLeadingTileVertical(newTilesOfCurrentMove.get(i)))) {
         editedWords.add(
             getWordFromLeadingTileVertical(getLeadingTileVertical(newTilesOfCurrentMove.get(i))));
       }
@@ -415,7 +401,6 @@ public class ScrabbleBoard implements Serializable {
             break;
           default:
             break;
-
         }
         pointsOfWord += letterValue;
       }
@@ -423,7 +408,7 @@ public class ScrabbleBoard implements Serializable {
       points += pointsOfWord;
     }
     if (this.newTilesOfCurrentMove.size() == 7) {
-      points += 50; //Bingo rule
+      points += 50; // Bingo rule
     }
     return points;
   }
@@ -464,26 +449,20 @@ public class ScrabbleBoard implements Serializable {
           break;
         default:
           break;
-
       }
       pointsOfWord += letterValue;
-
     }
     pointsOfWord *= wordMultiplikant;
     return pointsOfWord;
   }
 
-  /**
-   * this method clears the fields that are only tracking the information of the current move.
-   */
+  /** this method clears the fields that are only tracking the information of the current move. */
   public void nextTurn() {
     editedWords.clear();
     newTilesOfCurrentMove.clear();
   }
 
-  /**
-   * this method drops the changed tiles.
-   */
+  /** this method drops the changed tiles. */
   public void dropChangedTiles() {
     this.editedWords.clear();
     Iterator<Tile> iterator = newTilesOfCurrentMove.iterator();
@@ -514,7 +493,7 @@ public class ScrabbleBoard implements Serializable {
     return words;
   }
 
-  //getter and setter
+  // getter and setter
 
   public Matchfield[][] getScrabbleBoard() {
     return this.scrabbleBoard;
@@ -545,9 +524,9 @@ public class ScrabbleBoard implements Serializable {
   }
 
   /**
-   * returns th tiles that were placed last.
+   * This functions returns the tiles that were placed on this turn.
    *
-   * @return the tiles
+   * @return tile array.
    */
   public Tile[] lastPlacedTiles() {
     Tile[] tiles = new Tile[this.newTilesOfCurrentMove.size()];
@@ -557,14 +536,25 @@ public class ScrabbleBoard implements Serializable {
     return tiles;
   }
 
+  /*
+  @author peichhor
+  this method finds out weather the tiles are placed properly.
+  For the tiles to be valid there always has to be a tile which is placed on the center matchfield
+  and all the words need to be connected to each other.
+
+  @explanation We solved this implementing a recursive algorithm.
+  Each tile adds their neighbouring tiles to the @variable discovered list.
+  And then the new tile does the same
+
+   */
 
   /**
    * this method finds out weather the tiles are placed properly. For the tiles to be valid there
    * always has to be a tile which is placed on the center matchfield and all the words need to be
-   * connected to each other. We solved this implementing a recursive algorithm. Each tile adds
-   * their * neighbouring tiles to the @variable discovered list. And then the new tile does the
-   * same.
+   * connected to each other.
    *
+   * @explanation We solved this implementing a recursive algorithm. Each tile adds their
+   *     neighbouring tiles to the @variable discovered list. And then the new tile does the same
    * @param tiles the new tiles of the move
    * @return if the tales were placed properly (ignoring content)
    */
@@ -582,44 +572,40 @@ public class ScrabbleBoard implements Serializable {
     return false;
   }
 
-
   /**
    * this method looks in all 4 directions to find neighbouring tiles.
    *
-   * @param tile              The tile of which neighbouring tiles are searched for
-   * @param board             the board in which the tiles are
+   * @param tile The tile of which neighbouring tiles are searched for
+   * @param board the board in which the tiles are
    * @param alreadyDiscovered the tiles that were already dicovered
    */
   public void discoverTile(Tile tile, Matchfield[][] board, ArrayList<Tile> alreadyDiscovered) {
-    if (tile.getY() < 15 && board[tile.getX()][tile.getY() + 1].hasTile()
+    if (tile.getY() < 15
+        && board[tile.getX()][tile.getY() + 1].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX()][tile.getY() + 1].getTile())) {
       alreadyDiscovered.add(board[tile.getX()][tile.getY() + 1].getTile());
       discoverTile(board[tile.getX()][tile.getY() + 1].getTile(), board, alreadyDiscovered);
     }
-    if (tile.getX() < 15 && board[tile.getX() + 1][tile.getY()].hasTile()
+    if (tile.getX() < 15
+        && board[tile.getX() + 1][tile.getY()].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX() + 1][tile.getY()].getTile())) {
       alreadyDiscovered.add(board[tile.getX() + 1][tile.getY()].getTile());
       discoverTile(board[tile.getX() + 1][tile.getY()].getTile(), board, alreadyDiscovered);
     }
-    if (tile.getY() > 1 && board[tile.getX()][tile.getY() - 1].hasTile()
+    if (tile.getY() > 1
+        && board[tile.getX()][tile.getY() - 1].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX()][tile.getY() - 1].getTile())) {
       alreadyDiscovered.add(board[tile.getX()][tile.getY() - 1].getTile());
       discoverTile(board[tile.getX()][tile.getY() - 1].getTile(), board, alreadyDiscovered);
     }
-    if (tile.getX() > 1 && board[tile.getX() - 1][tile.getY()].hasTile()
+    if (tile.getX() > 1
+        && board[tile.getX() - 1][tile.getY()].hasTile()
         && !alreadyDiscovered.contains(board[tile.getX() - 1][tile.getY()].getTile())) {
       alreadyDiscovered.add(board[tile.getX() - 1][tile.getY()].getTile());
       discoverTile(board[tile.getX() - 1][tile.getY()].getTile(), board, alreadyDiscovered);
-
     }
-
-
   }
 }
-
-
-
-
 
 /*
 BIN:

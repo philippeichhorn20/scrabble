@@ -4,9 +4,12 @@ import backend.basic.Tile.Tilestatus;
 import java.io.Serializable;
 import java.util.Random;
 
-/* @author Nils Sch�fer
- * @version 1.0
- * @description A class which represents the tilebag of the game scrabbel with 100 Tiles and the standart letter set for english scrabbel*/
+/**
+ * A class which represents the tile bag of the game scrabble with 100 Tiles and the standard letter
+ * set for english scrabble.
+ *
+ * @author nilschae
+ */
 public class TileBag implements Serializable {
 
   private Tile[] bag = new Tile[100]; // stores the tiles in the tilebag
@@ -98,11 +101,13 @@ public class TileBag implements Serializable {
     return (this.bag.length > 0) ? false : true;
   }
 
-  /* A funktion to draw a tile random out of the bag.
-   * This returns the tile which got drawn and delete it out of the bag.
-   * @return the drawn tile*/
+  /**
+   * A function to draw a random tile from the bag.
+   *
+   * @return drawn tile.
+   */
   public Tile drawTile() {
-    if(this.bag.length-1>=0){
+    if (this.bag.length - 1 >= 0) {
       Tile[] newTileSet = new Tile[this.bag.length - 1];
       Random randomNumber = new Random();
       int randomPosition = randomNumber.nextInt(bag.length);
@@ -116,26 +121,26 @@ public class TileBag implements Serializable {
           newTileSet[i] = this.bag[i];
 
         } else if (i == randomPosition) {
-
+          //donothing
         } else {
           newTileSet[i - 1] = this.bag[i];
         }
       }
 
       this.bag = newTileSet; // Override the bag with the new tileset
-      System.out.println("Tilebag size: "+ this.size() +": "+drawnTile.getLetter());
+      System.out.println("Tilebag size: " + this.size() + ": " + drawnTile.getLetter());
       return drawnTile;
-    }else{
+    } else {
       System.out.println("NOTHING LEFT IN THE BAG");
       return null;
     }
-
-
-
   }
 
-  /*Add a new tile to the bag and increase the size of the bag by one
-   * @param tileToAdd the tile that will be added to the bag*/
+  /**
+   * Add a new tile to the bag and increase the size of the bag by one.
+   *
+   * @param tileToAdd tiletoadd.
+   */
   public void insertTileToBag(Tile tileToAdd) {
     Tile[] newTileSet = new Tile[this.bag.length + 1];
     for (int i = 0; i < this.bag.length; i++) {
