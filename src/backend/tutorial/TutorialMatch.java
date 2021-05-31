@@ -4,19 +4,27 @@ import backend.basic.ScrabbleBoard;
 import backend.basic.Tile;
 import backend.basic.TileBag;
 
-/*@author nilschae
-* @version 1.0
-* @description a Class which controlls the flow of the tutorial*/
+/**
+ * A match class for the tutorial.
+ *
+ * @author nilschae
+ */
 public class TutorialMatch {
   private TileBag tutorialBag;
   private ScrabbleBoard tutorialBoard;
   public Tile[] tutorialRackTiles = new Tile[7];
-  private boolean startFlag, highligthTilesFlag, highlightScrabbleboardPositionFlag, endFlag, gameOver;
-  public String welcomeContentTitel = "", welcomeContentText = "" ;
+  private boolean startFlag,
+      highligthTilesFlag,
+      highlightScrabbleboardPositionFlag,
+      endFlag,
+      gameOver;
+  public String welcomeContentTitel = "", welcomeContentText = "";
   public String highlightedTilesTitle = "", higlightedTilesContentText = "";
-  public String highligthScrabbleboardPositionTitle = "", highligthScrabbleboardPositionContentText = "";
+  public String highligthScrabbleboardPositionTitle = "",
+      highligthScrabbleboardPositionContentText = "";
   public String endGameTitle = "", endGameContentText = "";
 
+  /** A constructor for the tutorial match. */
   public TutorialMatch() {
     tutorialBag = new TileBag();
     tutorialBoard = new ScrabbleBoard();
@@ -35,28 +43,33 @@ public class TutorialMatch {
     endFlag = false;
 
     welcomeContentTitel = "Welcome!";
-    welcomeContentText = "Welcome to the tutorial of Scrabble Online! \n"
-        + "In this tutorial you will learn how to use the UI. \n"
-        + "First of all you will learn how to place a tile from your rack.";
+    welcomeContentText =
+        "Welcome to the tutorial of Scrabble Online! \n"
+            + "In this tutorial you will learn how to use the UI. \n"
+            + "First of all you will learn how to place a tile from your rack.";
 
     highlightedTilesTitle = "Your tiles are highligted now";
-    higlightedTilesContentText = "First of all you have to draw tiles from the tilebag.\n"
-        + "This is done automatically by the tilebag. \n"
-        + "Your tiles are in your rack at the bottom of the screen.\n";
+    higlightedTilesContentText =
+        "First of all you have to draw tiles from the tilebag.\n"
+            + "This is done automatically by the tilebag. \n"
+            + "Your tiles are in your rack at the bottom of the screen.\n";
 
     highligthScrabbleboardPositionTitle = "Place a word with your tiles!";
-    highligthScrabbleboardPositionContentText = "Now place HELLO at the highlighted area on the board. \n"
-        + "To select a Tile you first have to click on it \n"
-        + "or press D on your keyboard to highlight it.\n"
-        + "Then you can click on the board to place it.";
+    highligthScrabbleboardPositionContentText =
+        "Now place HELLO at the highlighted area on the board. \n"
+            + "To select a Tile you first have to click on it \n"
+            + "or press D on your keyboard to highlight it.\n"
+            + "Then you can click on the board to place it.";
 
     endGameTitle = "Congratulations!";
-    endGameContentText = "You mastered the tutorial for the \n"
-        + "UI of scrabble online. Now you can play a game with \n"
-        + "someone else or against an AI. \n"
-        + "Good bye and have a nice time with the game!";
+    endGameContentText =
+        "You mastered the tutorial for the \n"
+            + "UI of scrabble online. Now you can play a game with \n"
+            + "someone else or against an AI. \n"
+            + "Good bye and have a nice time with the game!";
   }
 
+  /** starts the tutorial. */
   public void startTutorial() {
     startFlag = true;
     highligthTilesFlag = false;
@@ -65,6 +78,7 @@ public class TutorialMatch {
     gameOver = false;
   }
 
+  /** set the highlight tiles flag. */
   public void highligthTiles() {
     startFlag = false;
     highligthTilesFlag = true;
@@ -73,6 +87,7 @@ public class TutorialMatch {
     gameOver = false;
   }
 
+  /** set the highlightScrabbleboard flag. */
   public void highlightScrabbleboardPosition() {
     startFlag = false;
     highligthTilesFlag = false;
@@ -81,6 +96,7 @@ public class TutorialMatch {
     gameOver = false;
   }
 
+  /** set the end flag. */
   public void endFlag() {
     startFlag = false;
     highligthTilesFlag = false;
@@ -89,6 +105,7 @@ public class TutorialMatch {
     gameOver = false;
   }
 
+  /** set the gameover flag. */
   public void setGameOver() {
     startFlag = false;
     highligthTilesFlag = false;
@@ -141,6 +158,7 @@ public class TutorialMatch {
     return endFlag;
   }
 
-  public boolean isOver() {return gameOver;}
-
+  public boolean isOver() {
+    return gameOver;
+  }
 }

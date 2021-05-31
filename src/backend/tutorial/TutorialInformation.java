@@ -1,19 +1,21 @@
 package backend.tutorial;
 
-import backend.basic.ClientMatch;
-import backend.basic.Player;
 import backend.basic.Profile;
-import backend.basic.ServerMatch;
 
+/**
+ * A holder class for the tutorial.
+ *
+ * @author nilschae
+ */
 public final class TutorialInformation {
   private Profile profile;
   private TutorialMatch match;
 
-  private final static TutorialInformation INSTANCE = new TutorialInformation();
+  private static final TutorialInformation INSTANCE = new TutorialInformation();
 
   private TutorialInformation() {}
 
-  public static TutorialInformation getInstance(){
+  public static TutorialInformation getInstance() {
     return INSTANCE;
   }
 
@@ -25,8 +27,7 @@ public final class TutorialInformation {
     this.match = tutorialmatch;
   }
 
-
-  public void setProfile(Profile p){
+  public void setProfile(Profile p) {
     this.profile = p;
   }
 
