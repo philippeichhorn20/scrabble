@@ -18,6 +18,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 
+/**
+ * Protocol for Ai's.
+ *
+ * @author nilschae
+ */
 public class AIProtocol extends Thread implements Serializable {
 
   private String username;
@@ -29,15 +34,23 @@ public class AIProtocol extends Thread implements Serializable {
   private boolean running = true;
   private Message lastMessage = new Message(MessageType.GAME_LOOSE, "");
 
-  public AIProtocol(String ip, int port, String username,PlayerAI playerAI) {
+  /**
+   * Constructor for an Ai protocol.
+   *
+   * @param ip to connect.
+   * @param port to connect.
+   * @param username of the ai.
+   * @param playerAi player which then can be stored.
+   */
+  public AIProtocol(String ip, int port, String username, PlayerAI playerAi) {
     try {
       this.username = username;
       this.clientSocket = new Socket(ip, port);
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
-      this.ai = playerAI;
+      this.ai = playerAi;
 
-      ConnectMessage connectMessage = new ConnectMessage(this.username,playerAI);
+      ConnectMessage connectMessage = new ConnectMessage(this.username, playerAi);
       connectMessage.setMessageType(MessageType.CONNECT_AI);
       this.out.writeObject(connectMessage);
       out.flush();
@@ -46,8 +59,13 @@ public class AIProtocol extends Thread implements Serializable {
 
     } catch (IOException e) {
       System.out.println(e.getMessage());
-      System.out.println("Could not establish connection to " + ip + ":" + port + ".\n"
-          + "Please make sure the ip is correct and the server is online");
+      System.out.println(
+          "Could not establish connection to "
+              + ip
+              + ":"
+              + port
+              + ".\n"
+              + "Please make sure the ip is correct and the server is online");
     }
   }
 
@@ -55,7 +73,7 @@ public class AIProtocol extends Thread implements Serializable {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 
-  /*process the incoming messages from the server*/
+  /** process the incoming messages from the server. */
   public void run() {
     while (running) {
       try {
@@ -64,34 +82,34 @@ public class AIProtocol extends Thread implements Serializable {
         if (message != null && lastMessage != null && !lastMessage.equals(message)) {
           switch (message.getMessageType()) {
             case GAME_INFO:
-              ai.handleStartGame(((LobbyInformationMessage)message).getPlayers());
+              ai.handleStartGame(((LobbyInformationMessage) message).getPlayers());
               break;
 
             case GAME_START:
-              ai.handleGameStartMessage(((GameStartMessage)message).getTiles());
+              ai.handleGameStartMessage(((GameStartMessage) message).getTiles());
               break;
 
             case GAME_TURN:
-              ai.handleGameTurnMessage(((GameTurnMessage)message).getNowTurn());
+              ai.handleGameTurnMessage(((GameTurnMessage) message).getNowTurn());
               break;
 
             case GET_NEW_TILES:
-              ai.acceptNewTiles(((GetNewTilesMessage)message).getTiles());
+              ai.acceptNewTiles(((GetNewTilesMessage) message).getTiles());
               break;
 
             case PLACE_TILES:
-              ai.placeTilesFromServer(((PlaceTilesMessage)message).getTiles());
+              ai.placeTilesFromServer(((PlaceTilesMessage) message).getTiles());
               break;
             case PLAY_FEEDBACK:
               PlayFeedbackMessage feedbackMessage = (PlayFeedbackMessage) message;
-                  if(!feedbackMessage.isSuccessfulMove()){
-                    ai.acceptNewTiles(ai.getLastTilesSent().toArray(new Tile[0]));
-                    ai.handleTurn();
-                  } else if(feedbackMessage.isSuccessfulMove()) {
-                    ai.flushTried();
-                    ai.validWordConfirmation();
-                  }
-                  break;
+              if (!feedbackMessage.isSuccessfulMove()) {
+                ai.acceptNewTiles(ai.getLastTilesSent().toArray(new Tile[0]));
+                ai.handleTurn();
+              } else if (feedbackMessage.isSuccessfulMove()) {
+                ai.flushTried();
+                ai.validWordConfirmation();
+              }
+              break;
 
             default:
               break;
@@ -106,7 +124,7 @@ public class AIProtocol extends Thread implements Serializable {
     }
   }
 
-  /*Disconnect the client from the server*/
+  /** Disconnect the client from the server. */
   public void disconnect() {
     running = false;
     try {
@@ -123,11 +141,10 @@ public class AIProtocol extends Thread implements Serializable {
     return running;
   }
 
-  /*Send messages from client to server*/
+  /** Send messages from client to server. */
   public void sendToServer(Message message) throws IOException {
     this.out.writeObject(message);
     out.flush();
     out.reset();
   }
 }
-
