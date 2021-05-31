@@ -1,6 +1,7 @@
 package frontend.screens.controllers;
 
 import backend.basic.GameInformation;
+import frontend.screens.controllers.AboutController;
 import frontend.Main;
 import java.io.IOException;
 import javafx.event.ActionEvent;

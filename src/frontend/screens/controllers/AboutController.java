@@ -1,6 +1,7 @@
 package frontend.screens.controllers;
 
 import frontend.Main;
+import frontend.screens.controllers.SettingsScreenController;
 import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
