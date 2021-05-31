@@ -15,7 +15,7 @@ public class Music {
 		player = new MediaPlayer(media);
 		player.play();
 		// player.setAutoPlay(true);
-		player.setVolume(0.1);
+		player.setVolume(0.3);
 
 	}
 	

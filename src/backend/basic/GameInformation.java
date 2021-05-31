@@ -33,6 +33,10 @@ public final class GameInformation {
    *
    * @author vivanova */
   public Music getMusic() {
+	  if(music == null) {
+		  startMusic();
+		  return music;
+	  }
     return music;
   }
 
