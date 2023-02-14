@@ -12,3 +12,4 @@ Skills portrayed:
 - server
 - interfaces in Java
 - documentation
+- Google Style Guide
